@@ -2,8 +2,9 @@ package com.inved.realestatemanager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.widget.TextView;
+
+import com.inved.realestatemanager.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.inved.realestatemanager;
+package com.inved.realestatemanager.Utils;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
