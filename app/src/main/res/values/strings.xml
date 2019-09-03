@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
+
+    //MENU
+    <string name="menu_add">Add</string>
+    <string name="menu_update">Update</string>
+    <string name="menu_search">Search</string>
+
+    //MENU DRAWER
+    <string name="menu_drawer_profile">Profile</string>
+    <string name="menu_drawer_map">Map</string>
+    <string name="menu_drawer_logout">Logout</string>
+    <string name="firstname">firstname</string>
+    <string name="lastname">lastname</string>
+    <string name="description_image">Description image vide</string>
+    <string name="email">prenom.nom@realestatemanager.com</string>
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+    <string name="title_activity_maps">Map</string>
+
+
+    //LIST PROPERTY ITEM FRAGMENT
+    <string name="list_property_type">Appartement</string>
+    <string name="list_property_city">Ottange</string>
+    <string name="list_property_unit_price">$</string>
+    <string name="list_property_price">150000</string>
+
 </resources>
