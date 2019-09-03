@@ -2,9 +2,9 @@ package com.inved.realestatemanager.injections;
 
 import android.content.Context;
 
-import com.example.testimmo.database.dao.RealEstateManagerDatabase;
-import com.example.testimmo.repositories.PropertyDataRepository;
-import com.example.testimmo.repositories.RealEstateAgentDataRepository;
+import com.inved.realestatemanager.dao.RealEstateManagerDatabase;
+import com.inved.realestatemanager.repositories.PropertyDataRepository;
+import com.inved.realestatemanager.repositories.RealEstateAgentDataRepository;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testimmo.R;
-import com.example.testimmo.models.Property;
+import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.models.Property;
 
 import java.util.ArrayList;
 import java.util.List;

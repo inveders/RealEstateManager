@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.testimmo.R;
+import com.inved.realestatemanager.R;
 
 public class ListPropertyFragment extends Fragment {
     public ListPropertyFragment() {

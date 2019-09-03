@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.controller;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,21 +9,19 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testimmo.R;
-import com.example.testimmo.base.BaseActivity;
-import com.example.testimmo.injections.Injection;
-import com.example.testimmo.injections.ViewModelFactory;
-import com.example.testimmo.models.Property;
-import com.example.testimmo.property.CreatePropertyActivity;
-import com.example.testimmo.property.DetailPropertyFragment;
-import com.example.testimmo.property.ListPropertyFragment;
-import com.example.testimmo.property.PropertyAdapter;
-import com.example.testimmo.property.PropertyViewModel;
+import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
+import com.inved.realestatemanager.injections.Injection;
+import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.Property;
+import com.inved.realestatemanager.property.CreatePropertyActivity;
+import com.inved.realestatemanager.property.DetailPropertyFragment;
+import com.inved.realestatemanager.property.ListPropertyFragment;
+import com.inved.realestatemanager.property.PropertyAdapter;
+import com.inved.realestatemanager.property.PropertyViewModel;
 
 import java.util.List;
 

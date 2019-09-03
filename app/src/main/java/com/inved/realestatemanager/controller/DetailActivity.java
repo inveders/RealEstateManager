@@ -4,10 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.example.testimmo.R;
-import com.example.testimmo.base.BaseActivity;
-import com.example.testimmo.property.DetailPropertyFragment;
+import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
+import com.inved.realestatemanager.property.DetailPropertyFragment;
 
 public class DetailActivity extends BaseActivity {
 

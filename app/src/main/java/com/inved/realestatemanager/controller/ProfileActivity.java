@@ -1,7 +1,5 @@
 package com.inved.realestatemanager.controller;
 
-import com.example.testimmo.R;
-import com.example.testimmo.base.BaseActivity;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 

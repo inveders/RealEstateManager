@@ -2,8 +2,8 @@ package com.inved.realestatemanager.property;
 
 import android.widget.EditText;
 
-import com.example.testimmo.R;
-import com.example.testimmo.base.BaseActivity;
+import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.base.BaseActivity;
 
 public class CreatePropertyActivity extends BaseActivity {
 

@@ -4,10 +4,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.testimmo.models.Property;
-import com.example.testimmo.models.RealEstateAgents;
-import com.example.testimmo.repositories.PropertyDataRepository;
-import com.example.testimmo.repositories.RealEstateAgentDataRepository;
+import com.inved.realestatemanager.models.Property;
+import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.repositories.PropertyDataRepository;
+import com.inved.realestatemanager.repositories.RealEstateAgentDataRepository;
 
 import java.util.List;
 import java.util.concurrent.Executor;

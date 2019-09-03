@@ -2,8 +2,8 @@ package com.inved.realestatemanager.repositories;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.testimmo.database.dao.RealEstateAgentsDao;
-import com.example.testimmo.models.RealEstateAgents;
+import com.inved.realestatemanager.dao.RealEstateAgentsDao;
+import com.inved.realestatemanager.models.RealEstateAgents;
 
 public class RealEstateAgentDataRepository {
 

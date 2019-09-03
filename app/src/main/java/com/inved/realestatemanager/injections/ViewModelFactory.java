@@ -3,9 +3,9 @@ package com.inved.realestatemanager.injections;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.testimmo.property.PropertyViewModel;
-import com.example.testimmo.repositories.PropertyDataRepository;
-import com.example.testimmo.repositories.RealEstateAgentDataRepository;
+import com.inved.realestatemanager.property.PropertyViewModel;
+import com.inved.realestatemanager.repositories.PropertyDataRepository;
+import com.inved.realestatemanager.repositories.RealEstateAgentDataRepository;
 
 import java.util.concurrent.Executor;
 
