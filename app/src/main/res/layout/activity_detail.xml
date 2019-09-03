@@ -17,14 +17,8 @@
         android:orientation="vertical"
         >
 
-        <!-- Toolbar -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/activity_detail_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:theme="@style/Toolbar.TitleText"
-            />
+        <!-- Include Toolbar -->
+        <include layout="@layout/toolbar" />
 
         <!-- FrameLayout for our fragments -->
         <FrameLayout
