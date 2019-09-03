@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager;
+package com.inved.realestatemanager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
