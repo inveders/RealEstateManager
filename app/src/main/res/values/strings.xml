@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
-    //MENU
+    <!-- MENU -->
     <string name="menu_add">Add</string>
     <string name="menu_update">Update</string>
     <string name="menu_search">Search</string>
 
-    //MENU DRAWER
+    <!-- MENU DRAWER -->
     <string name="menu_drawer_profile">Profile</string>
     <string name="menu_drawer_map">Map</string>
     <string name="menu_drawer_logout">Logout</string>
@@ -19,10 +19,26 @@
     <string name="title_activity_maps">Map</string>
 
 
-    //LIST PROPERTY ITEM FRAGMENT
+    <!-- LIST PROPERTY ITEM FRAGMENT -->
     <string name="list_property_type">Appartement</string>
     <string name="list_property_city">Ottange</string>
     <string name="list_property_unit_price">$</string>
     <string name="list_property_price">150000</string>
+
+    <!-- DETAIL FRAGMENT -->
+    <string name="detail_property_description_title">Description</string>
+    <string name="detail_property_description_texte">Non loin de la mairie, ce bien d\'exception est fait pour vous ! Véritable
+    atout dans notre région, proche de la frontière, et près de toutes commodités, pour vous, seul ou avec votre famille, venez découvrir
+    ce qui constituera certainement votre coup de coeur !</string>
+    <string name="detail_property_surface_area_title">Surface</string>
+    <string name="detail_property_surface_area_text">750 sq m</string>
+    <string name="detail_property_number_of_room_title">Rooms</string>
+    <string name="detail_property_number_of_room_text">6</string>
+    <string name="detail_property_number_of_bathroom_title">Number of bathrooms</string>
+    <string name="detail_property_number_of_bathroom_text">2</string>
+    <string name="detail_property_number_of_bedroom_title">Number of bedrooms</string>
+    <string name="detail_property_number_of_bedroom_text">4</string>
+    <string name="detail_property_location_title">Location</string>
+    <string name="detail_property_location_text">740 Park Avenue&#xA;Apt 6/7A&#xA;New-York&#xA;NY 10021&#xA;United States&#xA;</string>
 
 </resources>
