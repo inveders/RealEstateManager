@@ -1,6 +1,6 @@
 package com.inved.realestatemanager;
 
-import com.inved.realestatemanager.Utils.Utils;
+import com.inved.realestatemanager.utils.Utils;
 
 import junit.framework.Assert;
 

@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.inved.realestatemanager.Utils.Utils;
+import com.inved.realestatemanager.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 

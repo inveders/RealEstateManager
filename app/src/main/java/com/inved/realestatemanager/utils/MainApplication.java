@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.Utils;
+package com.inved.realestatemanager.utils;
 
 import android.app.Application;
 
