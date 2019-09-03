@@ -15,24 +15,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.textViewMain = findViewById(R.id.activity_second_activity_text_view_main);
+        /** 1. I change activity_second in findbiewbyid by activity_main)*/
+        this.textViewMain = findViewById(R.id.activity_main_activity_text_view_main);
         this.textViewQuantity = findViewById(R.id.activity_main_activity_text_view_quantity);
-
 
         this.configureTextViewMain();
         this.configureTextViewQuantity();
     }
 
 
-    /**I add a unit value to the setTextSize. Before setTextSize(15). After setTextSize(15,TypedValue.COMPLEX_UNIT_PX)*/
     private void configureTextViewMain(){
-        this.textViewMain.setTextSize(15, TypedValue.COMPLEX_UNIT_PX);
+        this.textViewMain.setTextSize(15);
         this.textViewMain.setText("Le premier bien immobilier enregistré vaut ");
     }
 
+    /** 2. I put a string in the setText because before there was an integer (quantity) in the setText. I had Integer.toString(quantity)*/
     private void configureTextViewQuantity(){
         int quantity = Utils.convertDollarToEuro(100);
-        this.textViewQuantity.setTextSize(20, TypedValue.COMPLEX_UNIT_PX    );
-        this.textViewQuantity.setText(quantity);
+        this.textViewQuantity.setTextSize(20);
+        this.textViewQuantity.setText(Integer.toString(quantity));
     }
 }
