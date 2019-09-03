@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import com.example.testimmo.R;
 import com.example.testimmo.base.BaseActivity;
 import com.example.testimmo.property.DetailPropertyFragment;
+import com.inved.realestatemanager.base.BaseActivity;
 
 public class DetailActivity extends BaseActivity {
 
