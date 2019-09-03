@@ -1,11 +1,8 @@
 package com.inved.realestatemanager.models;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.PrimaryKey;
-import android.graphics.Bitmap;
-
-import java.util.List;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
 
 @Entity(foreignKeys = @ForeignKey(entity = RealEstateAgents.class,parentColumns = "id",childColumns = "realEstateAgendId"))
 public class Property {
@@ -19,10 +16,10 @@ public class Property {
     private int numberBathroomsInProperty;
     private int numberBedroomsInProperty;
     private String fullDescriptionProperty;
-    private List<Bitmap> photo;
+    private Photos photos;
     private String photoDescription;
     private String addressProperty;
-    private List<String> pointsOfInterestNearProperty;
+    private PointsOfInterest pointsOfInterestNearProperty;
     private String statusProperty;
     private String dateOfEntryOnMarketForProperty;
     private String dateOfSaleForPorperty;
@@ -37,9 +34,9 @@ public class Property {
     public Property(String typeProperty, double pricePropertyInDollar,
                     double surfaceAreaProperty, int numberRoomsInProperty,
                     int numberBathroomsInProperty, int numberBedroomsInProperty,
-                    String fullDescriptionProperty, List<Bitmap> photo,
+                    String fullDescriptionProperty, Photos photos,
                     String photoDescription, String addressProperty,
-                    List<String> pointsOfInterestNearProperty,
+                    PointsOfInterest pointsOfInterestNearProperty,
                     String statusProperty, String dateOfEntryOnMarketForProperty,
                     String dateOfSaleForPorperty, boolean selected, long realEstateAgentId) {
         this.typeProperty = typeProperty;
@@ -49,7 +46,7 @@ public class Property {
         this.numberBathroomsInProperty = numberBathroomsInProperty;
         this.numberBedroomsInProperty = numberBedroomsInProperty;
         this.fullDescriptionProperty = fullDescriptionProperty;
-        this.photo = photo;
+        this.photos = photos;
         this.photoDescription = photoDescription;
         this.addressProperty = addressProperty;
         this.pointsOfInterestNearProperty = pointsOfInterestNearProperty;
@@ -116,12 +113,11 @@ public class Property {
         this.fullDescriptionProperty = fullDescriptionProperty;
     }
 
-    public List<Bitmap> getPhoto() {
-        return photo;
+    public Photos getPhoto() {
+        return photos;
     }
 
-    public void setPhoto(List<Bitmap> photo) {
-        this.photo = photo;
+    public void setPhoto(Photos photo) {
     }
 
     public String getPhotoDescription() {
@@ -140,11 +136,11 @@ public class Property {
         this.addressProperty = addressProperty;
     }
 
-    public List<String> getPointsOfInterestNearProperty() {
+    public PointsOfInterest getPointsOfInterestNearProperty() {
         return pointsOfInterestNearProperty;
     }
 
-    public void setPointsOfInterestNearProperty(List<String> pointsOfInterestNearProperty) {
+    public void setPointsOfInterestNearProperty(PointsOfInterest pointsOfInterestNearProperty) {
         this.pointsOfInterestNearProperty = pointsOfInterestNearProperty;
     }
 

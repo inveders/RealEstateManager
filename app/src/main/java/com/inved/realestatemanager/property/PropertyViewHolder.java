@@ -19,35 +19,35 @@ import butterknife.ButterKnife;
 public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
-    @BindView(R.id.fragment_property_description_item_typeProperty)
+    @BindView(R.id.fragment_list_property_item_type)
     TextView typeProperty;
-    @BindView(R.id.fragment_property_description_item_pricePropertyInDollar)
+    @BindView(R.id.fragment_list_property_item_price)
     TextView pricePropertyInDollar;
-    @BindView(R.id.fragment_property_description_item_surfaceAreaProperty)
+    @BindView(R.id.fragment_detail_property_surface_area_text)
     TextView surfaceAreaProperty;
-    @BindView(R.id.fragment_property_description_item_numberRoomsInProperty)
+    @BindView(R.id.fragment_detail_property_number_of_room_text)
     TextView numberRoomsInProperty;
-    @BindView(R.id.fragment_property_description_item_numberBathroomsInProperty)
+    @BindView(R.id.fragment_detail_property_number_of_bathroom_text)
     TextView numberBathroomsInProperty;
-    @BindView(R.id.fragment_property_description_item_numberBedroomsInProperty)
+    @BindView(R.id.fragment_detail_property_number_of_bedroom_text)
     TextView numberBedroomsInProperty;
-    @BindView(R.id.fragment_property_description_item_fullDescriptionProperty)
+    @BindView(R.id.fragment_detail_property_description_text)
     TextView fullDescriptionProperty;
-    @BindView(R.id.fragment_property_description_item_photo)
+    @BindView(R.id.fragment_detail_property_image)
     ImageView photo;
-    @BindView(R.id.fragment_property_description_item_photoDescription)
-    TextView photoDescription;
-    @BindView(R.id.fragment_property_description_item_addressProperty)
+ /*   @BindView(R.id.fragment_detail_property_image_description)
+    TextView photoDescription;*/
+    @BindView(R.id.fragment_detail_property_location_text)
     TextView addressProperty;
-    @BindView(R.id.fragment_property_description_item_pointsOfInterestNearProperty)
+    @BindView(R.id.fragment_detail_property_points_of_interest_text)
     TextView pointsOfInterestNearProperty;
-    @BindView(R.id.fragment_property_description_item_statusProperty)
+    @BindView(R.id.fragment_detail_property_status_text)
     TextView statusProperty;
-    @BindView(R.id.fragment_property_description_item_dateOfEntryOnMarketForProperty)
+    @BindView(R.id.fragment_detail_property_date_of_entry_on_market_text)
     TextView dateOfEntryOnMarketForProperty;
-    @BindView(R.id.fragment_property_description_item_dateOfSaleForPorperty)
+    @BindView(R.id.fragment_detail_property_date_of_sale_text)
     TextView dateOfSaleForPorperty;
-    @BindView(R.id.fragment_property_description_item_realEstateAgent)
+    @BindView(R.id.fragment_detail_property_real_estate_agent_text)
     TextView realEstateAgent;
 
     // FOR DATA
@@ -90,7 +90,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
         this.numberBathroomsInProperty.setText(property.getNumberBathroomsInProperty());
         this.numberBedroomsInProperty.setText(property.getNumberBedroomsInProperty());
         this.fullDescriptionProperty.setText(property.getFullDescriptionProperty());
-        this.photoDescription.setText(property.getPhotoDescription());
+      //  this.photoDescription.setText(property.getPhotoDescription());
         this.addressProperty.setText(property.getAddressProperty());
         this.pointsOfInterestNearProperty.setText(builderPointOfInterest.toString());
         this.statusProperty.setText(property.getStatusProperty());

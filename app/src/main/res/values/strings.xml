@@ -40,5 +40,15 @@
     <string name="detail_property_number_of_bedroom_text">4</string>
     <string name="detail_property_location_title">Location</string>
     <string name="detail_property_location_text">740 Park Avenue&#xA;Apt 6/7A&#xA;New-York&#xA;NY 10021&#xA;United States&#xA;</string>
+    <string name="detail_property_points_of_interest_title">Points of interest</string>
+    <string name="detail_property_points_of_interest_text">School, Restaurants, markets</string>
+    <string name="detail_property_real_estate_agent_title">Real estate agent :</string>
+    <string name="detail_property_real_estate_agent_text">Alexandra GNIMADI</string>
+    <string name="detail_property_date_of_entry_on_market_title">Date of entry on market :</string>
+    <string name="detail_property_date_of_entry_on_market_text">15/08/2019</string>
+    <string name="detail_property_status_title">Status :</string>
+    <string name="detail_property_status_text">In progress</string>
+    <string name="detail_property_date_of_sale_title">Date of Sale :</string>
+    <string name="detail_property_date_of_sale_text">03/09/2019</string>
 
 </resources>

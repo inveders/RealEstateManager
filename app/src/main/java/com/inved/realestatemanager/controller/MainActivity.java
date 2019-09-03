@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.controller;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -92,7 +91,7 @@ public class MainActivity extends BaseActivity implements PropertyAdapter.Listen
     }
 
 
-    @OnClick(R.id.main_activity_button_add)
+    @OnClick(R.id.menu_action_add)
     public void onClickAddButton() {
         // 7 - Create item after user clicked on button
         //  this.createProperty(); GO ON THE CREATE PROPERTY ACTIVITY
@@ -101,7 +100,7 @@ public class MainActivity extends BaseActivity implements PropertyAdapter.Listen
         startActivity(intent);
     }
 
-    @OnClick(R.id.main_activity_button_update)
+    @OnClick(R.id.menu_action_update)
     public void onClickUpdateButton() {
         // 7 - Create item after user clicked on button
         // GO ON THE UPDATE PROPERTY ACTIVITY
@@ -120,7 +119,7 @@ public class MainActivity extends BaseActivity implements PropertyAdapter.Listen
     // 2 - Configuring ViewModel
     private void configureViewModel(){
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+      /***///  this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
         this.propertyViewModel.init(REAL_ESTATE_AGENT_ID);
     }
 
@@ -137,9 +136,6 @@ public class MainActivity extends BaseActivity implements PropertyAdapter.Listen
     private void getProperties(int realEstateAgentId){
         this.propertyViewModel.getProperties(realEstateAgentId).observe(this, this::updatePropertyList);
     }
-
-
-
 
 
     // 3 - Update an property (selected or not)
@@ -187,7 +183,7 @@ public class MainActivity extends BaseActivity implements PropertyAdapter.Listen
 
 
     //Navigation drawer
-    @Override
+  //  @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
         // 4 - Handle Navigation Item Click
