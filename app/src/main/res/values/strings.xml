@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
+    <!-- PAGE NAME -->
+    <string name="page_name_activity_main">List Property</string>
+    <string name="page_name_activity_detail">Detail Property</string>
+    <string name="page_name_activity_create_property">Create Property</string>
+    <string name="page_name_activity_udpdate_property">Update Property</string>
+    <string name="page_name_activity_profile">Profile</string>
+    <string name="page_name_activity_maps">Maps</string>
+
     <!-- MENU -->
     <string name="menu_add">Add</string>
     <string name="menu_update">Update</string>
@@ -50,5 +58,63 @@
     <string name="detail_property_status_text">In progress</string>
     <string name="detail_property_date_of_sale_title">Date of Sale :</string>
     <string name="detail_property_date_of_sale_text">03/09/2019</string>
+
+
+    <!-- SEARCH FULLSCREEN DIALOG-->
+    <string name="fullscreen_dialog_search_text">SEARCH</string>
+    <string name="fullscreen_dialog_page_title">Find properties</string>
+    <string name="fullscreen_dialog__by_price">Price</string>
+    <string name="fullscreen_dialog__by_surface">Surface</string>
+    <string name="fullscreen_dialog__by_points_of_interest">Points of Interests</string>
+    <string name="fullscreen_dialog__by_date_entry">Date entry </string>
+    <string name="fullscreen_dialog__by_date_sale">Date sale</string>
+    <string name="fullscreen_dialog__by_localisation">Near from (ZIP code): </string>
+    <string name="fullscreen_dialog_by_number_of_photos">Number of photos</string>
+    <string name="fullscreen_dialog__by_type_of_property">Type of property : </string>
+    <string name="fullscreen_dialog_by_number_of_rooms">Number of rooms</string>
+    <string name="fullscreen_dialog_by_number_of_bathroom">Number of bathroom</string>
+    <string name="fullscreen_dialog_by_number_of_bedroom">Number of bedroom</string>
+
+    <string name="fullscreen_dialog__value">VALUE</string>
+    <string name="fullscreen_dialog__value_in_meter" translatable="false">%d m</string>
+    <string name="fullscreen_dialog__value_in_hours" translatable="false">%d h</string>
+    <string name="fullscreen_dialog__value_in_dollars" translatable="false">%d</string>
+
+    <string name="fullscreen_dialog__poi_school">schools</string>
+    <string name="fullscreen_dialog__poi_restaurants">restaurants</string>
+    <string name="fullscreen_dialog_poi_oil_station">Oil station</string>
+    <string name="fullscreen_dialog__poi_shops">shops</string>
+    <string name="fullscreen_dialog_poi_car_parks">car parks</string>
+    <string name="fullscreen_dialog_poi_tourist_attraction">tourist attraction</string>
+
+    <string name="image_content_description">Image description</string>
+
+    <!-- SPINNER ARRAYS-->
+    <string name="typeProperty_flat">Flat</string>
+    <string name="typeProperty_house">House</string>
+    <string name="typeProperty_room">Room</string>
+
+    <string name="select_type_property">--Select type property--</string>
+    <string name="select_number_photos">--Select number of photos--</string>
+    <string name="select_number_rooms">--Select number of rooms--</string>
+    <string name="select_number_bedrooms">--Select number of bedrooms--</string>
+    <string name="select_number_bathrooms">--Select number of bathrooms--</string>
+
+
+    <!-- SEARCH FULLSCREEN DIALOG-->
+    <string name="create_update_by_price">Price : </string>
+    <string name="create_update_by_surface">Surface area : </string>
+    <string name="create_update_by_points_of_interest">Points of Interests</string>
+    <string name="create_update_by_date_entry">Date entry </string>
+    <string name="create_update_by_date_sale">Date sale</string>
+    <string name="create_update_by_street_number">Street number: </string>
+    <string name="create_update_by_street_name">Street name: </string>
+    <string name="create_update_by_zip_code">ZIP code: </string>
+    <string name="create_update_by_town_name">Town: </string>
+    <string name="create_update_by_number_of_photos">Number of photos</string>
+    <string name="create_update_by_type_of_property">Type of property : </string>
+    <string name="create_update_by_number_of_rooms">Number of rooms</string>
+    <string name="create_update_by_number_of_bathroom">Number of bathroom</string>
+    <string name="create_update_by_number_of_bedroom">Number of bedroom</string>
 
 </resources>

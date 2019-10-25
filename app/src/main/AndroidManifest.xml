@@ -12,15 +12,51 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:name=".utils.MainApplication"
+        tools:ignore="GoogleAppIndexingWarning"
+        android:fullBackupContent="@xml/backup_descriptor">
+        <activity
+            android:theme="@style/AppTheme"
+            android:name="com.inved.realestatemanager.controller.MainActivity"
+            android:label="@string/page_name_activity_main"
+            >
 
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.inved.realestatemanager.controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- DETAIL ACTIVITY -->
+        <activity
+            android:name=".controller.activity.DetailActivity"
+            android:label="@string/page_name_activity_detail"
+            android:parentActivityName=".controller.MainActivity" />
+
+        <!-- CREATE PROPERTY ACTIVITY -->
+        <activity
+            android:name=".controller.activity.CreatePropertyActivity"
+            android:label="@string/page_name_activity_create_property"
+            android:parentActivityName=".controller.MainActivity" />
+
+        <!-- UPDATE PROPERTY ACTIVITY -->
+        <activity
+            android:name=".controller.activity.UpdatePropertyActivity"
+            android:label="@string/page_name_activity_udpdate_property"
+            android:parentActivityName=".controller.MainActivity" />
+
+        <!-- PROFILE ACTIVITY -->
+        <activity
+            android:name=".controller.activity.ProfileActivity"
+            android:label="@string/page_name_activity_create_property"
+            android:parentActivityName=".controller.MainActivity" />
+
+        <!-- MAPS ACTIVITY -->
+        <activity
+            android:name=".controller.activity.MapsActivity"
+            android:label="@string/page_name_activity_create_property"
+            android:parentActivityName=".controller.MainActivity" />
     </application>
 
 </manifest>

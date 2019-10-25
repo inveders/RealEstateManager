@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.controller;
+package com.inved.realestatemanager.controller.activity;
 
 import android.os.Bundle;
 
@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
-import com.inved.realestatemanager.property.DetailPropertyFragment;
+import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 
 public class DetailActivity extends BaseActivity {
 

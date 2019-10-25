@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.property;
+package com.inved.realestatemanager.controller.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

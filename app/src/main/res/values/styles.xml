@@ -8,23 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- TOOLBAR TITLE THEME -->
-    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">21sp</item>
-        <item name="android:textStyle">normal</item>
-    </style>
 
-    <!-- NAV HEADER THEME -->
-    <style name="NavHeader_Theme_Title">
-        <item name="android:textSize">21sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
-    <style name="NavHeader_Theme_Textview">
-        <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/colorAccent</item>
+    <!-- FullScreen Dialog -->
+    <style name="FullscreenDialogTheme" parent="Theme.AppCompat.DayNight.DialogWhenLarge">
+       <!-- <item name="android:statusBarColor">@color/colorPrimary</item>-->
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
     </style>
 
 </resources>

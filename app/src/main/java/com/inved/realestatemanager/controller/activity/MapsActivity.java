@@ -1,7 +1,8 @@
-package com.inved.realestatemanager.controller;
+package com.inved.realestatemanager.controller.activity;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,11 +16,16 @@ import com.inved.realestatemanager.R;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        /*this.toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        setTitle(getString(R.string.app_name));*/
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

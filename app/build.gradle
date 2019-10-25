@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.inved.realestatemanager"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -26,17 +27,33 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+
+    //NAVIGATION UI
+    def nav_version = "2.1.0"
+
+    // Java
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+
+    // Java
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
 
     //TESTS
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-android:2.23.4'
-    testImplementation 'org.robolectric:robolectric:4.2.1'
+    testImplementation 'org.robolectric:robolectric:4.3'
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.8.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation "android.arch.core:core-testing:1.1.1"
+    androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
+
+    //STETHO
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
     //JODATIME
     implementation 'net.danlew:android.joda:2.10.1.1'
@@ -54,13 +71,20 @@ dependencies {
     implementation 'pub.devrel:easypermissions:1.1.1'
 
     //ROOM
-    implementation 'android.arch.persistence.room:runtime:1.1.1'
-    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    implementation 'androidx.room:room-runtime:2.2.1'
+    annotationProcessor 'androidx.room:room-compiler:2.2.1'
 
     //VIEW MODEL & LIVE DATA
-    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     //STETHO TO SEE SQL DATABASE FROM PC
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.fragment:fragment:1.1.0'
+
+    //seekbar
+    // sample: implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
+    implementation 'com.github.Jay-Goo:RangeSeekBar:3.0.0'
 }
