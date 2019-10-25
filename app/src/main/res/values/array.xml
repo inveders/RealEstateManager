@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="typeProperty">
+        <item>@string/select_type_property</item>
+        <item>@string/typeProperty_flat</item>
+        <item>@string/typeProperty_house</item>
+        <item>@string/typeProperty_room</item>
+    </string-array>
+
+    <string-array name="numberPhotos">
+        <item>@string/select_number_photos</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="numberRooms">
+        <item>@string/select_number_rooms</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7+</item>
+    </string-array>
+
+    <string-array name="numberBathrooms">
+        <item>@string/select_number_bathrooms</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+
+    </string-array>
+
+    <string-array name="numberBedrooms">
+        <item>@string/select_number_bedrooms</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7+</item>
+    </string-array>
+
+
+</resources>
