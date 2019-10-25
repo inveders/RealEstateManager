@@ -58,10 +58,10 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
         ButterKnife.bind(this, propertyItemView);
     }
 
-    public void updateWithProperty(Property property, PropertyAdapter.Listener callback){
+    void updateWithProperty(Property property, PropertyAdapter.Listener callback){
         this.callbackWeakRef = new WeakReference<>(callback);
 
-        if(property.getPhoto().size() > 0)
+      /*  if(property.getPhoto().size() > 0)
         {
             int index = property.getPhoto().size() -1;
             Bitmap lastbitmap = property.getPhoto().get(index);
@@ -69,7 +69,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
             photo.setImageBitmap(lastbitmap);
         } else{
             photo.setImageBitmap(property.getPhoto().get(0));
-        }
+        }*/
 
         //Put double and long values in textview
         double surfaceAreDouble = property.getSurfaceAreaProperty();
@@ -78,9 +78,9 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
 
         //Put all points of interests in one textview
         StringBuilder builderPointOfInterest = new StringBuilder();
-        for (String detailsPointOfInterest : property.getPointsOfInterestNearProperty()) {
+      /*  for (String detailsPointOfInterest : property.getPointsOfInterestNearProperty()) {
             builderPointOfInterest.append(detailsPointOfInterest + ",");
-        }
+        }*/
 
 
         this.typeProperty.setText(property.getTypeProperty());
