@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 
-@Database(entities = {Property.class, RealEstateAgents.class}, version = 1, exportSchema = false)
+@Database(entities = {Property.class, RealEstateAgents.class}, version = 2, exportSchema = false)
 public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
     // --- SINGLETON ---
@@ -31,6 +31,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             RealEstateManagerDatabase.class, "MyDatabase.db")
                             .addCallback(prepopulateDatabase())
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
@@ -53,7 +54,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                 contentValues.put("lastname", "Gnimadi");
                 contentValues.put("urlPicture", "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2");
 
-                db.insert("RealEstateAgent", OnConflictStrategy.IGNORE, contentValues);
+                db.insert("RealEstateAgents", OnConflictStrategy.IGNORE, contentValues);
             }
         };
     }

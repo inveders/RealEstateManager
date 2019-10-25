@@ -2,9 +2,14 @@ package com.inved.realestatemanager.models;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
-@Entity(foreignKeys = @ForeignKey(entity = RealEstateAgents.class,parentColumns = "id",childColumns = "realEstateAgendId"))
+@Entity(foreignKeys = @ForeignKey(entity = RealEstateAgents.class,parentColumns = "id",childColumns = "realEstateAgentId"),
+        indices = {@Index("propertyId"), @Index(value = {"realEstateAgentId", "propertyId"})})
+
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
@@ -16,10 +21,12 @@ public class Property {
     private int numberBathroomsInProperty;
     private int numberBedroomsInProperty;
     private String fullDescriptionProperty;
-    private Photos photos;
+   /* @TypeConverters(Photos.class)
+    private Photos photos;*/
     private String photoDescription;
     private String addressProperty;
-    private PointsOfInterest pointsOfInterestNearProperty;
+   /* @TypeConverters(PointsOfInterest.class)
+    private PointsOfInterest pointsOfInterestNearProperty;*/
     private String statusProperty;
     private String dateOfEntryOnMarketForProperty;
     private String dateOfSaleForPorperty;
@@ -46,15 +53,24 @@ public class Property {
         this.numberBathroomsInProperty = numberBathroomsInProperty;
         this.numberBedroomsInProperty = numberBedroomsInProperty;
         this.fullDescriptionProperty = fullDescriptionProperty;
-        this.photos = photos;
+     //   this.photos = photos;
         this.photoDescription = photoDescription;
         this.addressProperty = addressProperty;
-        this.pointsOfInterestNearProperty = pointsOfInterestNearProperty;
+      //  this.pointsOfInterestNearProperty = pointsOfInterestNearProperty;
         this.statusProperty = statusProperty;
         this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
         this.dateOfSaleForPorperty = dateOfSaleForPorperty;
         this.selected = selected;
         this.realEstateAgentId = realEstateAgentId;
+    }
+
+
+    public long getPropertyId() {
+        return propertyId;
+    }
+
+    public void setPropertyId(long propertyId) {
+        this.propertyId = propertyId;
     }
 
     public String getTypeProperty() {
@@ -113,9 +129,9 @@ public class Property {
         this.fullDescriptionProperty = fullDescriptionProperty;
     }
 
-    public Photos getPhoto() {
+ /*   public Photos getPhoto() {
         return photos;
-    }
+    }*/
 
     public void setPhoto(Photos photo) {
     }
@@ -136,13 +152,13 @@ public class Property {
         this.addressProperty = addressProperty;
     }
 
-    public PointsOfInterest getPointsOfInterestNearProperty() {
+  /*  public PointsOfInterest getPointsOfInterestNearProperty() {
         return pointsOfInterestNearProperty;
     }
 
     public void setPointsOfInterestNearProperty(PointsOfInterest pointsOfInterestNearProperty) {
         this.pointsOfInterestNearProperty = pointsOfInterestNearProperty;
-    }
+    }*/
 
     public String getStatusProperty() {
         return statusProperty;

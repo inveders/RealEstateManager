@@ -1,5 +1,7 @@
 package com.inved.realestatemanager.models;
 
+import androidx.room.TypeConverter;
+
 import java.util.List;
 
 public class PointsOfInterest {
@@ -10,10 +12,12 @@ public class PointsOfInterest {
         this.pointsOfInterest = pointsOfInterest;
     }
 
+    @TypeConverter
     public List<String> getPointsOfInterest() {
         return pointsOfInterest;
     }
 
+    @TypeConverter
     public void setPointsOfInterest(List<String> pointsOfInterest) {
         this.pointsOfInterest = pointsOfInterest;
     }
