@@ -13,7 +13,7 @@ import androidx.room.TypeConverters;
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
-    private long propertyId;
+    private int propertyId;
     private String typeProperty;
     private double pricePropertyInDollar;
     private double surfaceAreaProperty;
@@ -21,12 +21,9 @@ public class Property {
     private int numberBathroomsInProperty;
     private int numberBedroomsInProperty;
     private String fullDescriptionProperty;
-   /* @TypeConverters(Photos.class)
-    private Photos photos;*/
     private String photoDescription;
     private String addressProperty;
-   /* @TypeConverters(PointsOfInterest.class)
-    private PointsOfInterest pointsOfInterestNearProperty;*/
+    private String townProperty;
     private String statusProperty;
     private String dateOfEntryOnMarketForProperty;
     private String dateOfSaleForPorperty;
@@ -34,18 +31,17 @@ public class Property {
 
 
 
-    private long realEstateAgentId;
+    private int realEstateAgentId;
 
     public Property(){}
 
     public Property(String typeProperty, double pricePropertyInDollar,
                     double surfaceAreaProperty, int numberRoomsInProperty,
                     int numberBathroomsInProperty, int numberBedroomsInProperty,
-                    String fullDescriptionProperty, Photos photos,
-                    String photoDescription, String addressProperty,
-                    PointsOfInterest pointsOfInterestNearProperty,
+                    String fullDescriptionProperty,
+                    String photoDescription, String addressProperty,String townProperty,
                     String statusProperty, String dateOfEntryOnMarketForProperty,
-                    String dateOfSaleForPorperty, boolean selected, long realEstateAgentId) {
+                    String dateOfSaleForPorperty, boolean selected, int realEstateAgentId) {
         this.typeProperty = typeProperty;
         this.pricePropertyInDollar = pricePropertyInDollar;
         this.surfaceAreaProperty = surfaceAreaProperty;
@@ -53,10 +49,9 @@ public class Property {
         this.numberBathroomsInProperty = numberBathroomsInProperty;
         this.numberBedroomsInProperty = numberBedroomsInProperty;
         this.fullDescriptionProperty = fullDescriptionProperty;
-     //   this.photos = photos;
         this.photoDescription = photoDescription;
         this.addressProperty = addressProperty;
-      //  this.pointsOfInterestNearProperty = pointsOfInterestNearProperty;
+        this.townProperty = townProperty;
         this.statusProperty = statusProperty;
         this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
         this.dateOfSaleForPorperty = dateOfSaleForPorperty;
@@ -65,11 +60,11 @@ public class Property {
     }
 
 
-    public long getPropertyId() {
+    public int getPropertyId() {
         return propertyId;
     }
 
-    public void setPropertyId(long propertyId) {
+    public void setPropertyId(int propertyId) {
         this.propertyId = propertyId;
     }
 
@@ -125,13 +120,13 @@ public class Property {
         return fullDescriptionProperty;
     }
 
+    public String getTownProperty() {
+        return townProperty;
+    }
+
     public void setFullDescriptionProperty(String fullDescriptionProperty) {
         this.fullDescriptionProperty = fullDescriptionProperty;
     }
-
- /*   public Photos getPhoto() {
-        return photos;
-    }*/
 
     public void setPhoto(Photos photo) {
     }
@@ -152,13 +147,6 @@ public class Property {
         this.addressProperty = addressProperty;
     }
 
-  /*  public PointsOfInterest getPointsOfInterestNearProperty() {
-        return pointsOfInterestNearProperty;
-    }
-
-    public void setPointsOfInterestNearProperty(PointsOfInterest pointsOfInterestNearProperty) {
-        this.pointsOfInterestNearProperty = pointsOfInterestNearProperty;
-    }*/
 
     public String getStatusProperty() {
         return statusProperty;
@@ -184,11 +172,11 @@ public class Property {
         this.dateOfSaleForPorperty = dateOfSaleForPorperty;
     }
 
-    public long getRealEstateAgentId() {
+    public int getRealEstateAgentId() {
         return realEstateAgentId;
     }
 
-    public void setRealEstateAgentId(long realEstateAgentId) {
+    public void setRealEstateAgentId(int realEstateAgentId) {
         this.realEstateAgentId = realEstateAgentId;
     }
 
@@ -198,5 +186,9 @@ public class Property {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public void setTownProperty(String townProperty) {
+        this.townProperty = townProperty;
     }
 }

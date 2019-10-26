@@ -12,5 +12,5 @@ public class RealEstateAgentDataRepository {
     public RealEstateAgentDataRepository(RealEstateAgentsDao userDao) { this.realEstateAgentsDao = userDao; }
 
     // --- GET REAL ESTATE AGENT ---
-    public LiveData<RealEstateAgents> getRealEstateAgent(long realEstateAgentId) { return this.realEstateAgentsDao.getRealEstateAgent(realEstateAgentId); }
+    public LiveData<RealEstateAgents> getRealEstateAgent(int realEstateAgentId) { return this.realEstateAgentsDao.getRealEstateAgent(realEstateAgentId); }
 }

@@ -8,6 +8,7 @@ import androidx.room.Database;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.inved.realestatemanager.models.Property;
@@ -22,6 +23,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     // --- DAO ---
     public abstract RealEstateAgentsDao realEstateAgentsDao();
     public abstract PropertyDao propertyDao();
+
 
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {

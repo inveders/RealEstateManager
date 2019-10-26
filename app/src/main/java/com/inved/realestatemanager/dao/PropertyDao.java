@@ -13,8 +13,8 @@ import java.util.List;
 @Dao
 public interface PropertyDao {
 
-    @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
-    LiveData<List<Property>> getProperty(long propertyId);
+    @Query("SELECT * FROM Property WHERE realEstateAgentId = :realEstateAgentId")
+    LiveData<List<Property>> getProperty(int realEstateAgentId);
 
     @Insert
     long insertProperty(Property property);

@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Photos {
 
-
     private List<BitmapDrawable> photos;
 
 

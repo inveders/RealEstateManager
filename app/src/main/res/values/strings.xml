@@ -14,6 +14,10 @@
     <string name="menu_update">Update</string>
     <string name="menu_search">Search</string>
 
+    <!-- MENU -->
+    <string name="create_button">Create</string>
+    <string name="update_button">Update</string>
+
     <!-- MENU DRAWER -->
     <string name="menu_drawer_profile">Profile</string>
     <string name="menu_drawer_map">Map</string>
@@ -32,6 +36,9 @@
     <string name="list_property_city">Ottange</string>
     <string name="list_property_unit_price">$</string>
     <string name="list_property_price">150000</string>
+    <string name="list_property_no_price_indicated">No price indicated</string>
+    <string name="none">No one</string>
+    <string name="list_property_no_property_found">No property found</string>
 
     <!-- DETAIL FRAGMENT -->
     <string name="detail_property_description_title">Description</string>
@@ -51,7 +58,7 @@
     <string name="detail_property_points_of_interest_title">Points of interest</string>
     <string name="detail_property_points_of_interest_text">School, Restaurants, markets</string>
     <string name="detail_property_real_estate_agent_title">Real estate agent :</string>
-    <string name="detail_property_real_estate_agent_text">Alexandra GNIMADI</string>
+    <string name="detail_property_real_estate_agent_text">%1$s %2$s</string>
     <string name="detail_property_date_of_entry_on_market_title">Date of entry on market :</string>
     <string name="detail_property_date_of_entry_on_market_text">15/08/2019</string>
     <string name="detail_property_status_title">Status :</string>
@@ -96,9 +103,9 @@
 
     <string name="select_type_property">--Select type property--</string>
     <string name="select_number_photos">--Select number of photos--</string>
-    <string name="select_number_rooms">--Select number of rooms--</string>
-    <string name="select_number_bedrooms">--Select number of bedrooms--</string>
-    <string name="select_number_bathrooms">--Select number of bathrooms--</string>
+    <string name="select_number_rooms">0</string>
+    <string name="select_number_bedrooms">0</string>
+    <string name="select_number_bathrooms">0</string>
 
 
     <!-- SEARCH FULLSCREEN DIALOG-->
@@ -116,5 +123,9 @@
     <string name="create_update_by_number_of_rooms">Number of rooms</string>
     <string name="create_update_by_number_of_bathroom">Number of bathroom</string>
     <string name="create_update_by_number_of_bedroom">Number of bedroom</string>
+
+    <!-- MESSAGE -->
+    <string name="create_update_creation_confirmation">New property added</string>
+
 
 </resources>

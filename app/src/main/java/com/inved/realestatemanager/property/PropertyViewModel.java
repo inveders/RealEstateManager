@@ -29,7 +29,7 @@ public class PropertyViewModel extends ViewModel {
         this.executor = executor;
     }
 
-    public void init(long realEstateAgentId) {
+    public void init(int realEstateAgentId) {
         if (this.currentAgent != null) {
             return;
         }
@@ -40,13 +40,13 @@ public class PropertyViewModel extends ViewModel {
     // FOR USER
     // -------------
 
-    public LiveData<RealEstateAgents> getRealEstateAgent(long realEstateAgentId) { return this.currentAgent;  }
+    public LiveData<RealEstateAgents> getRealEstateAgent(int realEstateAgentId) { return this.currentAgent;  }
 
     // -------------
     // FOR ITEM
     // -------------
 
-    public LiveData<List<Property>> getProperties(long realEstateAgentId) {
+    public LiveData<List<Property>> getProperties(int realEstateAgentId) {
         return propertyDataSource.getItems(realEstateAgentId);
     }
 

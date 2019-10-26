@@ -1,71 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:id="@+id/fragment_list_property_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:layout_margin="@dimen/default_large_margin"
+    android:orientation="vertical"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
 
-    <ImageView
-        android:id="@+id/fragment_list_property_item_image"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/description_image"
-        app:srcCompat="?attr/actionModeSplitBackground"
-        />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/fragment_list_property_item_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/list_property_type"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/fragment_list_property_item_image"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"
-        />
-
-    <TextView
-        android:id="@+id/fragment_list_property_item_city"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:text="@string/list_property_city"
-        app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_type"
-        android:layout_marginTop="15dp"
-        app:layout_constraintLeft_toLeftOf="@id/fragment_list_property_item_type"
-        />
+        <ImageView
+            android:id="@+id/fragment_list_property_item_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/description_image"
+            android:scaleType="fitXY"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="?attr/actionModeSplitBackground" />
 
 
 
-    <TextView
-        android:id="@+id/fragment_list_property_item_unit_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/list_property_unit_price"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_city"
-        app:layout_constraintLeft_toLeftOf="@id/fragment_list_property_item_type"
-        />
 
-    <TextView
-        android:id="@+id/fragment_list_property_item_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/list_property_price"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_city"
-        app:layout_constraintLeft_toRightOf="@id/fragment_list_property_item_unit_price"
-
-        />
+        <TextView
+            android:id="@+id/fragment_list_property_item_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/list_property_type"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_image" />
 
 
+        <ImageView
+            android:id="@+id/fragment_detail_property_surface_area_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_list_property_item_type"
+            app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_type"
+            android:contentDescription="@string/description_image"
+            app:srcCompat="@drawable/detail_icon_surface_24dp"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/fragment_detail_property_surface_area_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_property_surface_area_text"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_image"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_surface_area_image"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            />
+
+        <TextView
+            android:id="@+id/fragment_list_property_item_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+
+            android:text="@string/list_property_city"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/fragment_list_property_item_type" />
+
+
+        <TextView
+            android:id="@+id/fragment_list_property_item_unit_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/list_property_unit_price"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintRight_toLeftOf="@id/fragment_list_property_item_price"
+            app:layout_constraintTop_toTopOf="@id/fragment_list_property_item_price" />
+
+        <TextView
+            android:id="@+id/fragment_list_property_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/list_property_price"
+            app:layout_constraintRight_toRightOf="@id/fragment_list_property_item_city"
+            app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_city"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+</androidx.cardview.widget.CardView>

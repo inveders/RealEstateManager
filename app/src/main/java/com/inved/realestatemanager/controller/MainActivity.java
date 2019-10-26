@@ -36,11 +36,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * On peut aussi enlever le bouton de suppression de notre recycler view et tout le code relatif à cela
      */
 
-
-
-   /* @BindView(R.id.main_activity_spinner)
-    Spinner spinner;*/
-
     //Declaration for Navigation Drawer
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
