@@ -9,7 +9,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -23,6 +25,9 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.REAL_ESTATE_AGENT_ID;
 
@@ -51,37 +56,47 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     //String for spinners
     private String typeProperty = null;
-    private int numberRoomsInProperty = 0;
-    private int numberBathroomsInProperty = 0;
-    private int numberBedroomsInProperty = 0;
+    private String numberRoomsInProperty = "0";
+    private String numberBathroomsInProperty = "0";
+    private String numberBedroomsInProperty = "0";
+    private String photoUri1 = null;
+    private String photoUri2 = null;
+    private String photoUri3 = null;
+    private String photoUri4 = null;
+    private String photoUri5 = null;
+    private String photoDescription1 = null;
+    private String photoDescription2 = null;
+    private String photoDescription3 = null;
+    private String photoDescription4 = null;
+    private String photoDescription5 = null;
 
-    private Button nextButton;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_create_update_one, container, false);
-        nextButton = v.findViewById(R.id.create_update_next_button);
+        Button nextButton = v.findViewById(R.id.create_update_next_button);
 
         typePropertySpinner = v.findViewById(R.id.create_update_spinner_type_property);
         numberRoomSpinner = v.findViewById(R.id.create_update_spinner_number_rooms);
         numberBedroomSpinner = v.findViewById(R.id.create_update_spinner_number_bedroom);
         numberBathroomSpinner = v.findViewById(R.id.create_update_spinner_number_bathrooms);
 
-        priceEditText= v.findViewById(R.id.create_updtate_price_edittext);
-        surfaceEditText= v.findViewById(R.id.create_update_surface_edittext);
-        streetNumberEditText= v.findViewById(R.id.create_update_street_number_edittext);
-        streetNameEditText= v.findViewById(R.id.create_update_street_name_edittext);
-        zipCodeEditText= v.findViewById(R.id.create_update_zip_code_edittext);
-        townNameEditText= v.findViewById(R.id.create_update_town_name_edittext);
+        priceEditText = v.findViewById(R.id.create_updtate_price_edittext);
+        surfaceEditText = v.findViewById(R.id.create_update_surface_edittext);
+        streetNumberEditText = v.findViewById(R.id.create_update_street_number_edittext);
+        streetNameEditText = v.findViewById(R.id.create_update_street_name_edittext);
+        zipCodeEditText = v.findViewById(R.id.create_update_zip_code_edittext);
+        townNameEditText = v.findViewById(R.id.create_update_town_name_edittext);
 
-        schoolCheckBox= v.findViewById(R.id.create_update_checkbox_poi_schools);
-        restaurantsCheckBox= v.findViewById(R.id.create_update_checkbox_poi_restaurants);
-        carParksCheckBox= v.findViewById(R.id.create_update_checkbox_poi_car_parks);
-        shopsCheckBox= v.findViewById(R.id.create_update_checkbox_poi_shops);
-        touristAttractionCheckBox= v.findViewById(R.id.create_update_checkbox_poi_tourist_attraction);
-        oilStationCheckBox= v.findViewById(R.id.create_update_checkbox_poi_oil_station);
+        schoolCheckBox = v.findViewById(R.id.create_update_checkbox_poi_schools);
+        restaurantsCheckBox = v.findViewById(R.id.create_update_checkbox_poi_restaurants);
+        carParksCheckBox = v.findViewById(R.id.create_update_checkbox_poi_car_parks);
+        shopsCheckBox = v.findViewById(R.id.create_update_checkbox_poi_shops);
+        touristAttractionCheckBox = v.findViewById(R.id.create_update_checkbox_poi_tourist_attraction);
+        oilStationCheckBox = v.findViewById(R.id.create_update_checkbox_poi_oil_station);
 
         nextButton.setOnClickListener(view -> createProperty());
         typePropertySpinner.setOnItemSelectedListener(this);
@@ -92,7 +107,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
         this.configureViewModel();
 
-        return v ;
+        return v;
     }
 
     // Create a new property A TERMINER AVEC LES CONTROLES, SURTOUT SUR L'APPUI DU BOUTON, RAJOUTER LES CHAMPS OBLIGATOIRES, VOIR COMMENT PASSER A UNE AUTRE PAGE
@@ -102,12 +117,13 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         double pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
         double surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
         String fullDescriptionProperty = "";
-        String photoDescription = null;
         String streetNumber = streetNumberEditText.getText().toString();
-        String streetName =streetNameEditText.getText().toString();
+        String streetName = streetNameEditText.getText().toString();
         String zipCode = zipCodeEditText.getText().toString();
         String townProperty = townNameEditText.getText().toString();
         String country = townNameEditText.getText().toString();
+        String pointOfInterest = fillPoiCheckboxList();
+        String addressProeprty = streetNumber + " " + streetName + " " + zipCode + " " + townProperty + "," + country;
         String statusProperty = "";
         String dateOfEntryOnMarketForProperty = "";
         String dateOfSaleForPorperty = "";
@@ -117,41 +133,55 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         Property newProperty = new Property(typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
-                fullDescriptionProperty,
-                photoDescription, streetNumber,streetName,zipCode,townProperty,country,
+                fullDescriptionProperty,streetNumber, streetName, zipCode, townProperty, country,addressProeprty,pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty,
-                dateOfSaleForPorperty, selected, realEstateAgentId);
+                dateOfSaleForPorperty, selected,photoUri1,photoUri2,photoUri3,photoUri4,photoUri5,photoDescription1,photoDescription2,
+                photoDescription3,photoDescription4,photoDescription5,realEstateAgentId);
 
-        RealEstateAgents newAgent= new RealEstateAgents(REAL_ESTATE_AGENT_ID,"Alexandra","Gnimadi","http://mikoumusique.com");
+
 
         this.propertyViewModel.createProperty(newProperty);
-        this.propertyViewModel.createRealEstateAgent(newAgent);
 
         Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation), Toast.LENGTH_SHORT).show();
-        startMainActivity();
-
+       // startSecondPage();
 
     }
 
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
-        if(parent.getId() == R.id.create_update_spinner_type_property)
-        {
+        if (parent.getId() == R.id.create_update_spinner_type_property) {
             typeProperty = typePropertySpinner.getSelectedItem().toString();
+        } else if (parent.getId() == R.id.create_update_spinner_number_rooms) {
+            numberRoomsInProperty = numberRoomSpinner.getSelectedItem().toString();
+        } else if (parent.getId() == R.id.create_update_spinner_number_bedroom) {
+            numberBedroomsInProperty = numberBedroomSpinner.getSelectedItem().toString();
+        } else if (parent.getId() == R.id.create_update_spinner_number_bathrooms) {
+            numberBathroomsInProperty = numberBathroomSpinner.getSelectedItem().toString();
         }
-        else if(parent.getId() == R.id.create_update_spinner_number_rooms)
-        {
-            numberRoomsInProperty = Integer.valueOf(numberRoomSpinner.getSelectedItem().toString());
-        }
-        else if(parent.getId() == R.id.create_update_spinner_number_bedroom)
-        {
-            numberBedroomsInProperty = Integer.valueOf(numberBedroomSpinner.getSelectedItem().toString());
-        }
-        else if(parent.getId() == R.id.create_update_spinner_number_bathrooms)
-        {
-            numberBathroomsInProperty = Integer.valueOf(numberBathroomSpinner.getSelectedItem().toString());
-        }
+    }
+
+    private String fillPoiCheckboxList() {
+
+        List<String> pointsOfInterestList = new ArrayList<>();
+        //Delete all elements of the List before to verify is checkbox are checked.
+        pointsOfInterestList.clear();
+
+        // Check which checkbox was clicked
+        if (shopsCheckBox.isChecked())
+            pointsOfInterestList.add(getString(R.string.fullscreen_dialog__poi_shops));
+        if (restaurantsCheckBox.isChecked())
+            pointsOfInterestList.add(getString(R.string.fullscreen_dialog__poi_restaurants));
+        if (schoolCheckBox.isChecked())
+            pointsOfInterestList.add(getString(R.string.fullscreen_dialog__poi_school));
+        if (carParksCheckBox.isChecked())
+            pointsOfInterestList.add(getString(R.string.fullscreen_dialog_poi_car_parks));
+        if (touristAttractionCheckBox.isChecked())
+            pointsOfInterestList.add(getString(R.string.fullscreen_dialog_poi_tourist_attraction));
+        if (oilStationCheckBox.isChecked())
+            pointsOfInterestList.add(getString(R.string.fullscreen_dialog_poi_oil_station));
+
+        return pointsOfInterestList.toString();
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
@@ -174,10 +204,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     }
 
-    private void startMainActivity() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        startActivity(intent);
-    }
+
 
 
 }

@@ -8,8 +8,10 @@
     android:layout_height="wrap_content"
     >
 
-    <ImageView
-        android:id="@+id/fragment_detail_property_image"
+
+
+    <ImageSwitcher
+        android:id="@+id/fragment_detail_property_image_switcher"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -26,8 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/detail_property_description_title"
-        app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_image"
-        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image"
+        app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_image_switcher"
+        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
         android:layout_marginTop="5dp"
         android:textStyle="bold"
         />
@@ -38,8 +40,8 @@
         android:layout_height="wrap_content"
         android:text="@string/detail_property_description_texte"
         app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_description_title"
-        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image"
-        app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image"
+        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
+        app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
         android:layout_marginTop="5dp"
         android:paddingBottom="15dp"
         />
@@ -50,7 +52,7 @@
         android:id="@+id/fragment_detail_property_surface_area_image"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image"
+        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
         app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_surface_area_title"
         app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_title"
         android:contentDescription="@string/description_image"
@@ -85,7 +87,7 @@
         android:id="@+id/fragment_detail_property_number_of_bedroom_image"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image"
+        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
         app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_number_of_bedroom_title"
         app:layout_constraintTop_toTopOf="@id/fragment_detail_property_number_of_bedroom_title"
         android:contentDescription="@string/description_image"
@@ -195,7 +197,7 @@
         android:id="@+id/fragment_detail_property_location_image"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image"
+        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
         app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_location_title"
         app:layout_constraintTop_toTopOf="@id/fragment_detail_property_location_title"
         android:contentDescription="@string/description_image"
@@ -228,7 +230,7 @@
         android:layout_width="170dp"
         android:layout_height="100dp"
         app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_bathroom_image"
-        app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image"
+        app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
         app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_location_text"
         app:layout_constraintTop_toTopOf="@id/fragment_detail_property_location_title"
         android:contentDescription="@string/description_image"
@@ -241,7 +243,7 @@
         android:id="@+id/fragment_detail_property_points_of_interest_image"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image"
+        app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
         app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_points_of_interest_title"
         app:layout_constraintTop_toTopOf="@id/fragment_detail_property_points_of_interest_title"
         android:contentDescription="@string/description_image"

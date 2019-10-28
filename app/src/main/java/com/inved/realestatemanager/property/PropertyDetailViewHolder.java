@@ -1,23 +1,34 @@
 package com.inved.realestatemanager.property;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.RequestManager;
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.models.Photos;
-import com.inved.realestatemanager.models.PointsOfInterest;
+import com.inved.realestatemanager.injections.Injection;
+import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
+import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.REAL_ESTATE_AGENT_ID;
 
-public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class PropertyDetailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private TextView typeProperty;
     private TextView pricePropertyInDollar;
@@ -28,7 +39,8 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
     private TextView numberBathroomsInProperty;
     private TextView numberBedroomsInProperty;
     private TextView fullDescriptionProperty;
-    private ImageView photo;
+    private ImageSwitcher imageSwitcher;
+
     private TextView addressProperty;
 
     private TextView pointsOfInterestNearProperty;
@@ -37,10 +49,12 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
     private TextView dateOfSaleForPorperty;
     private TextView realEstateAgent;
 
-    // FOR DATA
-    private WeakReference<PropertyAdapter.Listener> callbackWeakRef;
+    private PropertyViewModel propertyViewModel;
 
-    PropertyViewHolder(View propertyItemView) {
+    // FOR DATA
+    private WeakReference<PropertyListAdapter.Listener> callbackWeakRef;
+
+    PropertyDetailViewHolder(View propertyItemView) {
         super(propertyItemView);
 
         typeProperty = propertyItemView.findViewById(R.id.fragment_list_property_item_type);
@@ -50,7 +64,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
         numberBedroomsInProperty = propertyItemView.findViewById(R.id.fragment_detail_property_number_of_bedroom_text);
         numberBathroomsInProperty = propertyItemView.findViewById(R.id.fragment_detail_property_number_of_bathroom_text);
         fullDescriptionProperty = propertyItemView.findViewById(R.id.fragment_detail_property_description_text);
-        photo = propertyItemView.findViewById(R.id.fragment_detail_property_image);
+        imageSwitcher = propertyItemView.findViewById(R.id.fragment_detail_property_image_switcher);
         addressProperty = propertyItemView.findViewById(R.id.fragment_detail_property_location_text);
         townProperty = propertyItemView.findViewById(R.id.fragment_list_property_item_city);
         pointsOfInterestNearProperty = propertyItemView.findViewById(R.id.fragment_detail_property_points_of_interest_text);
@@ -61,11 +75,9 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
     }
 
 
+    void updateWithProperty(Property property) {
 
-    void updateWithProperty(Property property, PropertyAdapter.Listener callback) {
-        this.callbackWeakRef = new WeakReference<>(callback);
-
-        Log.d("debago","city :"+property.getTownProperty()+" type"+property.getTownProperty());
+        Log.d("debago", "city :" + property.getTownProperty() + " type" + property.getTownProperty());
         //TYPE PROPERTY
         if (property.getTypeProperty() != null) {
             this.typeProperty.setText(property.getTypeProperty());
@@ -94,7 +106,66 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
         } else {
             this.surfaceAreaProperty.setText(MainApplication.getResourses().getString(R.string.none));
         }
-/*
+
+        //IMAGE SWITCHER
+
+        imageSwitcher.setFactory(() -> {
+            // TODO Auto-generated method stub
+
+            // Create a new ImageView and set it's properties
+            ImageView imageView = new ImageView(MainApplication.getInstance().getApplicationContext());
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            return imageView;
+        });
+
+        Animation in = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_in_left);
+        Animation out = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_out_right);
+        imageSwitcher.setInAnimation(in);
+        imageSwitcher.setOutAnimation(out);
+
+
+        ArrayList<String> myImages = new ArrayList<>();
+
+        if (property.getPhotoUri1() != null) {
+            myImages.add(property.getPhotoUri1());
+         //   photoDescription1.setText(property.getPhotoDescription1());
+
+        }
+        if (property.getPhotoUri2() != null) {
+            myImages.add(property.getPhotoUri2());
+            //   photoDescription1.setText(property.getPhotoDescription1());
+
+        }
+        if (property.getPhotoUri3() != null) {
+            myImages.add(property.getPhotoUri3());
+            //   photoDescription1.setText(property.getPhotoDescription1());
+
+        }
+        if (property.getPhotoUri4() != null) {
+            myImages.add(property.getPhotoUri4());
+            //   photoDescription1.setText(property.getPhotoDescription1());
+
+        }
+        if (property.getPhotoUri5() != null) {
+            myImages.add(property.getPhotoUri5());
+            //   photoDescription1.setText(property.getPhotoDescription1());
+
+        }
+
+        if(myImages.get(0)!=null){
+            imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
+        }
+
+
+         //POINT OF INTEREST
+        if (property.getPointOfInterest() != null) {
+            this.pointsOfInterestNearProperty.setText(property.getPointOfInterest());
+        } else {
+            this.pointsOfInterestNearProperty.setText(MainApplication.getResourses().getString(R.string.none));
+        }
+
+
         //FULL DESCRIPTION PROPERTY
         if (property.getFullDescriptionProperty() != null) {
             this.fullDescriptionProperty.setText(property.getFullDescriptionProperty());
@@ -112,8 +183,8 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
             this.addressProperty.setText(property.getAddressProperty());
         } else {
             this.addressProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }*/
-/*
+        }
+
         //STATUS PROPERTY
         if (property.getStatusProperty() != null) {
             this.statusProperty.setText(property.getStatusProperty());
@@ -135,76 +206,43 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder implements View.
             this.dateOfSaleForPorperty.setText(MainApplication.getResourses().getString(R.string.none));
         }
 
-        //PHOTO DESCRIPTION
-      /*  if (property.getPhotoDescription() != null) {
-            this.fullDescriptionProperty.setText(property.getPhotoDescription());
-        } else {
-            this.fullDescriptionProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }*/
-
-    }
-
-    void updateWithPointsOfInterest(PointsOfInterest pointsOfInterest, PropertyAdapter.Listener callback) {
-        //this.callbackWeakRef = new WeakReference<>(callback);
-
-        //Put all points of interests in one textview
-        //  StringBuilder builderPointOfInterest = new StringBuilder();
-      /*  for (String detailsPointOfInterest : property.getPointsOfInterestNearProperty()) {
-            builderPointOfInterest.append(detailsPointOfInterest + ",");
-        }*/
-
-        //POINT OF INTEREST
-      /*  if (pointsOfInterest.getPointsOfInterest() != null) {
-            this.pointsOfInterestNearProperty.setText(pointsOfInterest.getPointsOfInterest().toString());
-        } else {
-            this.pointsOfInterestNearProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }*/
+        long agentId = property.getRealEstateAgentId();
 
 
-    }
-
-    void updateWithPhoto(Photos photos, PropertyAdapter.Listener callback) {
-        //this.callbackWeakRef = new WeakReference<>(callback);
-
-
-      /*  if(property.getPhoto().size() > 0)
-        {
-            int index = property.getPhoto().size() -1;
-            Bitmap lastbitmap = property.getPhoto().get(index);
-
-            photo.setImageBitmap(lastbitmap);
-        } else{
-            photo.setImageBitmap(property.getPhoto().get(0));
-        }*/
-
-        //PHOTOS
-       /* if (photos.getPhotos() != null) {
-            this.photo.setImageBitmap(photos.getPhotos().get(0).getBitmap());
-        } else {
-            //this.photo.setText(MainApplication.getResourses().getString(R.string.none));
-        }*/
-
-
-    }
-
-
-    void updateWithRealEstateAgent(RealEstateAgents realEstateAgents, PropertyAdapter.Listener callback) {
-        //this.callbackWeakRef = new WeakReference<>(callback);
-
-      /*  //REAL ESTATE AGENT
-        if (realEstateAgents.getFirstname() != null) {
+        //REAL ESTATE AGENT
+     /*   if (realEstateAgents.getFirstname() != null) {
             this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text,realEstateAgents.getFirstname(),realEstateAgents.getLastname()));
         } else {
             this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.none));
         }*/
 
-
     }
+
+
+  /*  void updateWithRealEstateAgent(RealEstateAgents realEstateAgents) {
+
+
+
+        //REAL ESTATE AGENT
+        if (realEstateAgents.getFirstname() != null) {
+            this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text,realEstateAgents.getFirstname(),realEstateAgents.getLastname()));
+        } else {
+            this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.none));
+        }
+
+
+    }*/
 
     @Override
     public void onClick(View view) {
-        PropertyAdapter.Listener callback = callbackWeakRef.get();
+        PropertyListAdapter.Listener callback = callbackWeakRef.get();
         if (callback != null) callback.onClickDeleteButton(getAdapterPosition());
     }
 
+    // 2 - Configuring ViewModel
+   /* private void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
+        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+        this.propertyViewModel.init(REAL_ESTATE_AGENT_ID);
+    }*/
 }

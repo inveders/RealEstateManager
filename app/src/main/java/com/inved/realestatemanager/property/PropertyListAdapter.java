@@ -9,13 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.RequestManager;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.models.Property;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropertyAdapter extends RecyclerView.Adapter<PropertyViewHolder> {
+public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListViewHolder> {
 
     // CALLBACK
     public interface Listener { void onClickDeleteButton(int position); }
@@ -25,40 +26,37 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyViewHolder> {
 
     // FOR DATA
     private List<Property> properties;
+    private final RequestManager glide;
 
     // CONSTRUCTOR
-    public PropertyAdapter(Context context,Listener callback) {
+    public PropertyListAdapter(Context context, Listener callback, RequestManager glide) {
         this.properties = new ArrayList<>();
         this.callback = callback;
         this.context = context;
+        this.glide=glide;
     }
 
     @Override
     @NonNull
-    public PropertyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PropertyListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(R.layout.fragment_list_property_item, parent, false);
         textViewNoProperty = view.findViewById(R.id.fragment_list_property_no_property_found_text);
 
-        return new PropertyViewHolder(view);
+        return new PropertyListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PropertyViewHolder holder, int position) {
+    public void onBindViewHolder(PropertyListViewHolder holder, int position) {
 
-        holder.updateWithProperty(this.properties.get(position), this.callback);
+        holder.updateWithProperty(this.properties.get(position), this.callback,this.glide);
     }
 
     @Override
     public int getItemCount() {
 
-      /*  if(properties.size()>0){
-            textViewNoProperty.setVisibility(View.GONE);
-        }else{
-            textViewNoProperty.setVisibility(View.VISIBLE);
-        }*/
         return this.properties.size();
     }
 

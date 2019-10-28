@@ -15,23 +15,24 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.property.PropertyAdapter;
+import com.inved.realestatemanager.property.PropertyListAdapter;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.util.List;
 
 
-public class ListPropertyFragment extends Fragment implements PropertyAdapter.Listener {
+public class ListPropertyFragment extends Fragment implements PropertyListAdapter.Listener {
 
     // FOR DESIGN
 
     private RecyclerView recyclerView;
-    private PropertyAdapter adapter;
+    private PropertyListAdapter adapter;
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
     public static long REAL_ESTATE_AGENT_ID = 1;
@@ -44,7 +45,7 @@ public class ListPropertyFragment extends Fragment implements PropertyAdapter.Li
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context=context;
-        adapter=new PropertyAdapter(context,this);
+        adapter=new PropertyListAdapter(context,this, Glide.with(this));
     }
 
     public ListPropertyFragment() {

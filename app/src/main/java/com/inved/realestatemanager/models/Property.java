@@ -15,32 +15,45 @@ public class Property {
     private String typeProperty;
     private double pricePropertyInDollar;
     private double surfaceAreaProperty;
-    private int numberRoomsInProperty;
-    private int numberBathroomsInProperty;
-    private int numberBedroomsInProperty;
+    private String numberRoomsInProperty;
+    private String numberBathroomsInProperty;
+    private String numberBedroomsInProperty;
     private String fullDescriptionProperty;
-    private String photoDescription;
+
     private String streeNumber;
     private String streetName;
     private String zipCode;
     private String townProperty;
     private String country;
+    private String addressProperty;
+    private String pointOfInterest;
     private String statusProperty;
     private String dateOfEntryOnMarketForProperty;
     private String dateOfSaleForPorperty;
     private boolean selected;
-
+    private String photoUri1;
+    private String photoUri2;
+    private String photoUri3;
+    private String photoUri4;
+    private String photoUri5;
+    private String photoDescription1;
+    private String photoDescription2;
+    private String photoDescription3;
+    private String photoDescription4;
+    private String photoDescription5;
     private long realEstateAgentId;
 
     public Property(){}
 
     public Property(String typeProperty, double pricePropertyInDollar,
-                    double surfaceAreaProperty, int numberRoomsInProperty,
-                    int numberBathroomsInProperty, int numberBedroomsInProperty,
-                    String fullDescriptionProperty,
-                    String photoDescription,String streetNumber,String streetName, String zipCode, String townProperty, String country,
-                    String statusProperty, String dateOfEntryOnMarketForProperty,
-                    String dateOfSaleForPorperty, boolean selected, int realEstateAgentId) {
+                    double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
+                    String numberBedroomsInProperty, String fullDescriptionProperty, String streeNumber,
+                    String streetName, String zipCode, String townProperty, String country,String addressProperty, String pointOfInterest,
+                    String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
+                    boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
+                    String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
+                    String photoDescription4, String photoDescription5, long realEstateAgentId) {
+
         this.typeProperty = typeProperty;
         this.pricePropertyInDollar = pricePropertyInDollar;
         this.surfaceAreaProperty = surfaceAreaProperty;
@@ -48,46 +61,36 @@ public class Property {
         this.numberBathroomsInProperty = numberBathroomsInProperty;
         this.numberBedroomsInProperty = numberBedroomsInProperty;
         this.fullDescriptionProperty = fullDescriptionProperty;
-        this.photoDescription = photoDescription;
-        this.streeNumber = streetNumber;
+        this.streeNumber = streeNumber;
         this.streetName = streetName;
         this.zipCode = zipCode;
         this.townProperty = townProperty;
         this.country = country;
+        this.addressProperty = addressProperty;
+        this.pointOfInterest = pointOfInterest;
         this.statusProperty = statusProperty;
         this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
         this.dateOfSaleForPorperty = dateOfSaleForPorperty;
         this.selected = selected;
+        this.photoUri1 = photoUri1;
+        this.photoUri2 = photoUri2;
+        this.photoUri3 = photoUri3;
+        this.photoUri4 = photoUri4;
+        this.photoUri5 = photoUri5;
+        this.photoDescription1 = photoDescription1;
+        this.photoDescription2 = photoDescription2;
+        this.photoDescription3 = photoDescription3;
+        this.photoDescription4 = photoDescription4;
+        this.photoDescription5 = photoDescription5;
         this.realEstateAgentId = realEstateAgentId;
     }
-
 
     public long getPropertyId() {
         return propertyId;
     }
 
-    public void setPropertyId(long propertyId) {
-        this.propertyId = propertyId;
-    }
-
     public String getTypeProperty() {
         return typeProperty;
-    }
-
-    public String getStreeNumber() {
-        return streeNumber;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public String getCountry() {
-        return country;
     }
 
     public void setTypeProperty(String typeProperty) {
@@ -110,27 +113,27 @@ public class Property {
         this.surfaceAreaProperty = surfaceAreaProperty;
     }
 
-    public int getNumberRoomsInProperty() {
+    public String getNumberRoomsInProperty() {
         return numberRoomsInProperty;
     }
 
-    public void setNumberRoomsInProperty(int numberRoomsInProperty) {
+    public void setNumberRoomsInProperty(String numberRoomsInProperty) {
         this.numberRoomsInProperty = numberRoomsInProperty;
     }
 
-    public int getNumberBathroomsInProperty() {
+    public String getNumberBathroomsInProperty() {
         return numberBathroomsInProperty;
     }
 
-    public void setNumberBathroomsInProperty(int numberBathroomsInProperty) {
+    public void setNumberBathroomsInProperty(String numberBathroomsInProperty) {
         this.numberBathroomsInProperty = numberBathroomsInProperty;
     }
 
-    public int getNumberBedroomsInProperty() {
+    public String getNumberBedroomsInProperty() {
         return numberBedroomsInProperty;
     }
 
-    public void setNumberBedroomsInProperty(int numberBedroomsInProperty) {
+    public void setNumberBedroomsInProperty(String numberBedroomsInProperty) {
         this.numberBedroomsInProperty = numberBedroomsInProperty;
     }
 
@@ -138,36 +141,64 @@ public class Property {
         return fullDescriptionProperty;
     }
 
-    public String getTownProperty() {
-        return townProperty;
-    }
-
     public void setFullDescriptionProperty(String fullDescriptionProperty) {
         this.fullDescriptionProperty = fullDescriptionProperty;
     }
 
-    public String getPhotoDescription() {
-        return photoDescription;
-    }
-
-    public void setPhotoDescription(String photoDescription) {
-        this.photoDescription = photoDescription;
+    public String getStreeNumber() {
+        return streeNumber;
     }
 
     public void setStreeNumber(String streeNumber) {
         this.streeNumber = streeNumber;
     }
 
+    public String getStreetName() {
+        return streetName;
+    }
+
     public void setStreetName(String streetName) {
         this.streetName = streetName;
+    }
+
+    public String getZipCode() {
+        return zipCode;
     }
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
+    public String getTownProperty() {
+        return townProperty;
+    }
+
+    public void setTownProperty(String townProperty) {
+        this.townProperty = townProperty;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getAddressProperty() {
+        return addressProperty;
+    }
+
+    public void setAddressProperty(String addressProperty) {
+        this.addressProperty = addressProperty;
+    }
+
+    public String getPointOfInterest() {
+        return pointOfInterest;
+    }
+
+    public void setPointOfInterest(String pointOfInterest) {
+        this.pointOfInterest = pointOfInterest;
     }
 
     public String getStatusProperty() {
@@ -194,14 +225,6 @@ public class Property {
         this.dateOfSaleForPorperty = dateOfSaleForPorperty;
     }
 
-    public long getRealEstateAgentId() {
-        return realEstateAgentId;
-    }
-
-    public void setRealEstateAgentId(long realEstateAgentId) {
-        this.realEstateAgentId = realEstateAgentId;
-    }
-
     public boolean isSelected() {
         return selected;
     }
@@ -210,7 +233,91 @@ public class Property {
         this.selected = selected;
     }
 
-    public void setTownProperty(String townProperty) {
-        this.townProperty = townProperty;
+    public String getPhotoUri1() {
+        return photoUri1;
+    }
+
+    public void setPhotoUri1(String photoUri1) {
+        this.photoUri1 = photoUri1;
+    }
+
+    public String getPhotoUri2() {
+        return photoUri2;
+    }
+
+    public void setPhotoUri2(String photoUri2) {
+        this.photoUri2 = photoUri2;
+    }
+
+    public String getPhotoUri3() {
+        return photoUri3;
+    }
+
+    public void setPhotoUri3(String photoUri3) {
+        this.photoUri3 = photoUri3;
+    }
+
+    public String getPhotoUri4() {
+        return photoUri4;
+    }
+
+    public void setPhotoUri4(String photoUri4) {
+        this.photoUri4 = photoUri4;
+    }
+
+    public String getPhotoUri5() {
+        return photoUri5;
+    }
+
+    public void setPhotoUri5(String photoUri5) {
+        this.photoUri5 = photoUri5;
+    }
+
+    public String getPhotoDescription1() {
+        return photoDescription1;
+    }
+
+    public void setPhotoDescription1(String photoDescription1) {
+        this.photoDescription1 = photoDescription1;
+    }
+
+    public String getPhotoDescription2() {
+        return photoDescription2;
+    }
+
+    public void setPhotoDescription2(String photoDescription2) {
+        this.photoDescription2 = photoDescription2;
+    }
+
+    public String getPhotoDescription3() {
+        return photoDescription3;
+    }
+
+    public void setPhotoDescription3(String photoDescription3) {
+        this.photoDescription3 = photoDescription3;
+    }
+
+    public String getPhotoDescription4() {
+        return photoDescription4;
+    }
+
+    public void setPhotoDescription4(String photoDescription4) {
+        this.photoDescription4 = photoDescription4;
+    }
+
+    public String getPhotoDescription5() {
+        return photoDescription5;
+    }
+
+    public void setPhotoDescription5(String photoDescription5) {
+        this.photoDescription5 = photoDescription5;
+    }
+
+    public long getRealEstateAgentId() {
+        return realEstateAgentId;
+    }
+
+    public void setRealEstateAgentId(long realEstateAgentId) {
+        this.realEstateAgentId = realEstateAgentId;
     }
 }
