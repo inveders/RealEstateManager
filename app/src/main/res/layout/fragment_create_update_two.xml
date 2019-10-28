@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_margin">
+
+    <TextView
+        android:id="@+id/activity_create_update_real_estate_agent_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_property_real_estate_agent_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/activity_create_update_real_estate_agent_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_property_real_estate_agent_text"
+        android:layout_marginStart="@dimen/default_margin"
+        app:layout_constraintLeft_toRightOf="@id/activity_create_update_real_estate_agent_title"
+        app:layout_constraintTop_toTopOf="@id/activity_create_update_real_estate_agent_title"
+        />
+
+
+    <TextView
+        android:id="@+id/activity_create_update_property_date_entry_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_property_date_of_entry_on_market_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/default_large_margin"
+        app:layout_constraintTop_toBottomOf="@id/activity_create_update_real_estate_agent_title"
+        />
+
+
+    <TextView
+        android:id="@+id/activity_create_update_property_date_entry_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_property_date_of_entry_on_market_text"
+        android:layout_marginStart="@dimen/default_margin"
+        app:layout_constraintLeft_toRightOf="@id/activity_create_update_property_date_entry_title"
+        app:layout_constraintTop_toTopOf="@id/activity_create_update_property_date_entry_title"
+        />
+
+
+    <TextView
+        android:id="@+id/activity_create_update_property_photos_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_update_by_number_of_photos"
+        android:layout_marginTop="@dimen/default_large_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_create_update_property_date_entry_title"
+        />
+
+    <ImageView
+        android:id="@+id/activity_create_update_add_photo"
+        android:layout_width="300sp"
+        android:layout_height="300sp"
+        android:layout_marginTop="@dimen/default_large_margin"
+        app:layout_constraintTop_toBottomOf="@id/activity_create_update_property_photos_title"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        android:contentDescription="@string/description_image"
+        android:src="@mipmap/ic_logo_appli_round"/>
+
+    <ImageView
+        android:id="@+id/activity_create_update_added_photo_one"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginTop="@dimen/default_large_margin"
+        app:layout_constraintTop_toBottomOf="@id/activity_create_update_add_photo"
+        app:layout_constraintLeft_toLeftOf="@id/activity_create_update_add_photo"
+        android:contentDescription="@string/description_image"
+        android:src="@mipmap/ic_logo_appli_round"/>
+
+    <ImageView
+        android:id="@+id/activity_create_update_added_photo_two"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="10sp"
+        app:layout_constraintTop_toTopOf="@id/activity_create_update_added_photo_one"
+        app:layout_constraintLeft_toRightOf="@id/activity_create_update_added_photo_one"
+        android:contentDescription="@string/description_image"
+        android:src="@mipmap/ic_logo_appli_round"/>
+
+    <ImageView
+        android:id="@+id/activity_create_update_added_photo_three"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="10sp"
+        app:layout_constraintTop_toTopOf="@id/activity_create_update_added_photo_one"
+        app:layout_constraintLeft_toRightOf="@id/activity_create_update_added_photo_two"
+        android:contentDescription="@string/description_image"
+        android:src="@mipmap/ic_logo_appli_round"/>
+
+    <ImageView
+        android:id="@+id/activity_create_update_added_photo_four"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="10sp"
+        app:layout_constraintTop_toTopOf="@id/activity_create_update_added_photo_one"
+        app:layout_constraintLeft_toRightOf="@id/activity_create_update_added_photo_three"
+        android:contentDescription="@string/description_image"
+        android:src="@mipmap/ic_logo_appli_round"
+         />
+
+    <ImageView
+        android:id="@+id/activity_create_update_added_photo_five"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="10sp"
+        app:layout_constraintTop_toTopOf="@id/activity_create_update_added_photo_one"
+        app:layout_constraintLeft_toRightOf="@id/activity_create_update_added_photo_four"
+        android:contentDescription="@string/description_image"
+        android:src="@mipmap/ic_logo_appli_round"/>
+    <Button
+        android:id="@+id/activity_create_update_add_photo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_update_add_photo_button"
+        app:layout_constraintLeft_toRightOf="@id/activity_create_update_add_photo"
+        app:layout_constraintRight_toLeftOf="@id/activity_create_update_add_photo"
+        app:layout_constraintTop_toBottomOf="@id/activity_create_update_added_photo_one"
+        android:layout_marginTop="@dimen/default_large_margin"/>
+
+    <Button
+        android:id="@+id/create_update_confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/activity_create_update_add_photo_button"
+
+        android:layout_marginBottom="@dimen/default_large_margin"
+        android:gravity="center"
+        android:text="@string/create_update_confirm_button" />
+
+    <Button
+        android:id="@+id/create_update_previous_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/default_large_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/activity_create_update_add_photo_button"
+
+        android:layout_marginBottom="@dimen/default_large_margin"
+        android:gravity="center"
+        android:text="@string/create_update_previous_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

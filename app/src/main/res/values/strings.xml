@@ -108,7 +108,7 @@
     <string name="select_number_bathrooms">0</string>
 
 
-    <!-- SEARCH FULLSCREEN DIALOG-->
+    <!-- CREATE UPDATE ACTIVITY-->
     <string name="create_update_by_price">Price : </string>
     <string name="create_update_by_surface">Surface area : </string>
     <string name="create_update_by_points_of_interest">Points of Interests</string>
@@ -124,6 +124,10 @@
     <string name="create_update_by_number_of_rooms">Number of rooms</string>
     <string name="create_update_by_number_of_bathroom">Number of bathroom</string>
     <string name="create_update_by_number_of_bedroom">Number of bedroom</string>
+    <string name="create_update_next_button">NEXT PAGE</string>
+    <string name="create_update_add_photo_button">ADD PHOTO</string>
+    <string name="create_update_confirm_button">CREATE PROPERTY</string>
+    <string name="create_update_previous_button">PREVIOUS PAGE</string>
 
     <!-- MESSAGE -->
     <string name="create_update_creation_confirmation">New property added</string>
