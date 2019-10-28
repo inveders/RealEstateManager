@@ -2,10 +2,8 @@ package com.inved.realestatemanager.models;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 @Entity(foreignKeys = @ForeignKey(entity = RealEstateAgents.class,parentColumns = "id",childColumns = "realEstateAgentId"),
         indices = {@Index("propertyId"), @Index(value = {"realEstateAgentId", "propertyId"})})
@@ -13,7 +11,7 @@ import androidx.room.TypeConverters;
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
-    private int propertyId;
+    private long propertyId;
     private String typeProperty;
     private double pricePropertyInDollar;
     private double surfaceAreaProperty;
@@ -22,16 +20,17 @@ public class Property {
     private int numberBedroomsInProperty;
     private String fullDescriptionProperty;
     private String photoDescription;
-    private String addressProperty;
+    private String streeNumber;
+    private String streetName;
+    private String zipCode;
     private String townProperty;
+    private String country;
     private String statusProperty;
     private String dateOfEntryOnMarketForProperty;
     private String dateOfSaleForPorperty;
     private boolean selected;
 
-
-
-    private int realEstateAgentId;
+    private long realEstateAgentId;
 
     public Property(){}
 
@@ -39,7 +38,7 @@ public class Property {
                     double surfaceAreaProperty, int numberRoomsInProperty,
                     int numberBathroomsInProperty, int numberBedroomsInProperty,
                     String fullDescriptionProperty,
-                    String photoDescription, String addressProperty,String townProperty,
+                    String photoDescription,String streetNumber,String streetName, String zipCode, String townProperty, String country,
                     String statusProperty, String dateOfEntryOnMarketForProperty,
                     String dateOfSaleForPorperty, boolean selected, int realEstateAgentId) {
         this.typeProperty = typeProperty;
@@ -50,8 +49,11 @@ public class Property {
         this.numberBedroomsInProperty = numberBedroomsInProperty;
         this.fullDescriptionProperty = fullDescriptionProperty;
         this.photoDescription = photoDescription;
-        this.addressProperty = addressProperty;
+        this.streeNumber = streetNumber;
+        this.streetName = streetName;
+        this.zipCode = zipCode;
         this.townProperty = townProperty;
+        this.country = country;
         this.statusProperty = statusProperty;
         this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
         this.dateOfSaleForPorperty = dateOfSaleForPorperty;
@@ -60,16 +62,32 @@ public class Property {
     }
 
 
-    public int getPropertyId() {
+    public long getPropertyId() {
         return propertyId;
     }
 
-    public void setPropertyId(int propertyId) {
+    public void setPropertyId(long propertyId) {
         this.propertyId = propertyId;
     }
 
     public String getTypeProperty() {
         return typeProperty;
+    }
+
+    public String getStreeNumber() {
+        return streeNumber;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public String getCountry() {
+        return country;
     }
 
     public void setTypeProperty(String typeProperty) {
@@ -128,9 +146,6 @@ public class Property {
         this.fullDescriptionProperty = fullDescriptionProperty;
     }
 
-    public void setPhoto(Photos photo) {
-    }
-
     public String getPhotoDescription() {
         return photoDescription;
     }
@@ -139,14 +154,21 @@ public class Property {
         this.photoDescription = photoDescription;
     }
 
-    public String getAddressProperty() {
-        return addressProperty;
+    public void setStreeNumber(String streeNumber) {
+        this.streeNumber = streeNumber;
     }
 
-    public void setAddressProperty(String addressProperty) {
-        this.addressProperty = addressProperty;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public String getStatusProperty() {
         return statusProperty;
@@ -172,11 +194,11 @@ public class Property {
         this.dateOfSaleForPorperty = dateOfSaleForPorperty;
     }
 
-    public int getRealEstateAgentId() {
+    public long getRealEstateAgentId() {
         return realEstateAgentId;
     }
 
-    public void setRealEstateAgentId(int realEstateAgentId) {
+    public void setRealEstateAgentId(long realEstateAgentId) {
         this.realEstateAgentId = realEstateAgentId;
     }
 

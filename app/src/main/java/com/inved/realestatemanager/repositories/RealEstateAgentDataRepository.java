@@ -3,6 +3,7 @@ package com.inved.realestatemanager.repositories;
 import androidx.lifecycle.LiveData;
 
 import com.inved.realestatemanager.dao.RealEstateAgentsDao;
+import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 
 public class RealEstateAgentDataRepository {
@@ -12,5 +13,10 @@ public class RealEstateAgentDataRepository {
     public RealEstateAgentDataRepository(RealEstateAgentsDao userDao) { this.realEstateAgentsDao = userDao; }
 
     // --- GET REAL ESTATE AGENT ---
-    public LiveData<RealEstateAgents> getRealEstateAgent(int realEstateAgentId) { return this.realEstateAgentsDao.getRealEstateAgent(realEstateAgentId); }
+    public LiveData<RealEstateAgents> getRealEstateAgent(long realEstateAgentId) { return this.realEstateAgentsDao.getRealEstateAgent(realEstateAgentId); }
+
+// --- CREATE ---
+
+    public void createAgent(RealEstateAgents realEstateAgents){ realEstateAgentsDao.createRealEstateAgent(realEstateAgents); }
+
 }

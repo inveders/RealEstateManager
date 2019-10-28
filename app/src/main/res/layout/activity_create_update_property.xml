@@ -178,6 +178,26 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:layout_marginEnd="@dimen/default_margin"/>
 
+
+                <TextView
+                    android:id="@+id/create_update_country_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/create_update_by_country_name"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+                    app:layout_constraintTop_toBottomOf="@id/create_update_town_name_text" />
+
+                <EditText
+                    android:id="@+id/create_update_country_name_edittext"
+                    android:layout_width="200sp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/create_update_country_name_text"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginEnd="@dimen/default_margin"/>
+
                 <!--POINTS OF INTERESTS-->
 
                 <TextView
@@ -274,7 +294,7 @@
                     android:textSize="20sp"
                     android:layout_marginTop="@dimen/default_large_margin"
                     app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
-                    app:layout_constraintTop_toBottomOf="@id/create_update_town_name_text" />
+                    app:layout_constraintTop_toBottomOf="@id/create_update_country_name_text" />
 
                 <Spinner
                     android:id="@+id/create_update_spinner_number_rooms"
@@ -284,7 +304,6 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:layout_marginEnd="@dimen/default_margin"
                     android:entries="@array/numberRooms"/>
-
 
 
                 <!-- NUMBER BEDROOM -->

@@ -118,6 +118,7 @@
     <string name="create_update_by_street_name">Street name: </string>
     <string name="create_update_by_zip_code">ZIP code: </string>
     <string name="create_update_by_town_name">Town: </string>
+    <string name="create_update_by_country_name">Country: </string>
     <string name="create_update_by_number_of_photos">Number of photos</string>
     <string name="create_update_by_type_of_property">Type of property : </string>
     <string name="create_update_by_number_of_rooms">Number of rooms</string>

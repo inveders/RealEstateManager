@@ -8,7 +8,7 @@ public class RealEstateAgents {
 
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     private String firstname;
     private String lastname;
@@ -16,18 +16,18 @@ public class RealEstateAgents {
 
     public RealEstateAgents(){}
 
-    public RealEstateAgents(int id, String firstname, String lastname, String urlPicture) {
+    public RealEstateAgents(long id, String firstname, String lastname, String urlPicture) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.urlPicture = urlPicture;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

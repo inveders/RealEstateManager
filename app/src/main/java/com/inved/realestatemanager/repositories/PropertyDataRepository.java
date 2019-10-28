@@ -17,7 +17,7 @@ public class PropertyDataRepository {
 
     // --- GET ---
 
-    public LiveData<List<Property>> getItems(int realEstateAgentId){ return this.propertyDao.getProperty(realEstateAgentId); }
+    public LiveData<List<Property>> getItems(long realEstateAgentId){ return this.propertyDao.getProperty(realEstateAgentId); }
 
     // --- CREATE ---
 

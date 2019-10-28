@@ -14,7 +14,7 @@ import java.util.List;
 public interface PropertyDao {
 
     @Query("SELECT * FROM Property WHERE realEstateAgentId = :realEstateAgentId")
-    LiveData<List<Property>> getProperty(int realEstateAgentId);
+    LiveData<List<Property>> getProperty(long realEstateAgentId);
 
     @Insert
     long insertProperty(Property property);

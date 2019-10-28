@@ -14,7 +14,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 
-@Database(entities = {Property.class, RealEstateAgents.class}, version = 2, exportSchema = false)
+@Database(entities = {Property.class, RealEstateAgents.class}, version = 4, exportSchema = false)
 public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
     // --- SINGLETON ---
@@ -33,9 +33,13 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             RealEstateManagerDatabase.class, "MyDatabase.db")
                             .addCallback(prepopulateDatabase())
+                           // .addMigrations(MIGRATION_2_4)
                             .fallbackToDestructiveMigration()
                             .build();
                 }
+
+
+
             }
         }
         return INSTANCE;
@@ -60,4 +64,28 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
             }
         };
     }
+
+    private static final Migration MIGRATION_2_4 = new Migration(2,4) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+           database.execSQL("ALTER TABLE Property "
+                    + " ADD COLUMN townProperty STRING");
+
+            database.execSQL("ALTER TABLE Property "
+                    + " ADD COLUMN streetNumber STRING");
+
+            database.execSQL("ALTER TABLE Property "
+                    + " ADD COLUMN streetName STRING");
+
+            database.execSQL("ALTER TABLE Property "
+                    + " ADD COLUMN zipCode STRING");
+
+            database.execSQL("ALTER TABLE Property "
+                    + " ADD COLUMN country STRING");
+
+          /*  database.execSQL("ALTER TABLE Property "
+                    + " RENAME COLUMN addressProperty STRING");*/
+        }
+    };
+
 }

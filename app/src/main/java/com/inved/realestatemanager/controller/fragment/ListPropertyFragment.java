@@ -34,7 +34,7 @@ public class ListPropertyFragment extends Fragment implements PropertyAdapter.Li
     private PropertyAdapter adapter;
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
-    public static int REAL_ESTATE_AGENT_ID = 1;
+    public static long REAL_ESTATE_AGENT_ID = 1;
     private Context context;
     public static ListPropertyFragment newInstance(){
         return new ListPropertyFragment();
@@ -84,7 +84,7 @@ public class ListPropertyFragment extends Fragment implements PropertyAdapter.Li
     }
 
     // 3 - Get all properties for a real estate agent
-    private void getProperties(int realEstateAgentId) {
+    private void getProperties(long realEstateAgentId) {
         this.propertyViewModel.getProperties(realEstateAgentId).observe(this, this::updatePropertyList);
     }
 
@@ -97,7 +97,7 @@ public class ListPropertyFragment extends Fragment implements PropertyAdapter.Li
     }
 
     // 3 - Get Current Agent
-    private void getCurrentAgent(int realEstateAgentId) {
+    private void getCurrentAgent(long realEstateAgentId) {
         this.propertyViewModel.getRealEstateAgent(realEstateAgentId);
     }
 

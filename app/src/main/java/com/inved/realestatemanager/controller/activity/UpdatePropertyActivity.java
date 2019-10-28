@@ -21,7 +21,7 @@ import com.inved.realestatemanager.property.PropertyViewModel;
 
 public class UpdatePropertyActivity extends BaseActivity {
 
-    private static int REAL_ESTATE_AGENT_ID = 1;
+    private static long REAL_ESTATE_AGENT_ID = 1;
 
     Spinner typePropertySpinner;
     Spinner numberRoomSpinner;
@@ -34,6 +34,7 @@ public class UpdatePropertyActivity extends BaseActivity {
     EditText streetNameEditText;
     EditText zipCodeEditText;
     EditText townNameEditText;
+    EditText countryEditText;
 
     CheckBox schoolCheckBox;
     CheckBox restaurantsCheckBox;
@@ -55,6 +56,7 @@ public class UpdatePropertyActivity extends BaseActivity {
     String NameStreet;
     String zipCode;
     String townName;
+    String country;
 
     private PropertyViewModel propertyViewModel;
 
@@ -82,6 +84,7 @@ public class UpdatePropertyActivity extends BaseActivity {
         streetNameEditText= findViewById(R.id.create_update_street_name_edittext);
         zipCodeEditText= findViewById(R.id.create_update_zip_code_edittext);
         townNameEditText= findViewById(R.id.create_update_town_name_edittext);
+        countryEditText= findViewById(R.id.create_update_country_name_edittext);
 
         schoolCheckBox= findViewById(R.id.create_update_checkbox_poi_schools);
         restaurantsCheckBox= findViewById(R.id.create_update_checkbox_poi_restaurants);
@@ -130,7 +133,7 @@ public class UpdatePropertyActivity extends BaseActivity {
 
 
     // 3 - Get all properties for a real estate agent
-    private void getProperties(int realEstateAgentId) {
+    private void getProperties(long realEstateAgentId) {
         this.propertyViewModel.getProperties(realEstateAgentId).observe(this, properties -> {
 
             /**CREATE SQL FUNCTION WHO RETRIEVE ONLY ONE PROPERTY WITH IS ID*/
@@ -143,10 +146,11 @@ public class UpdatePropertyActivity extends BaseActivity {
             numberBedroomsInProperty=properties.get(0).getNumberBedroomsInProperty();
             priceDollars=properties.get(0).getPricePropertyInDollar();
             surfaceText=properties.get(0).getSurfaceAreaProperty();
-            numberStreet=properties.get(0).getAddressProperty();
-            NameStreet=properties.get(0).getAddressProperty();
-            zipCode=properties.get(0).getAddressProperty();
+            numberStreet=properties.get(0).getStreeNumber();
+            NameStreet=properties.get(0).getStreetName();
+            zipCode=properties.get(0).getZipCode();
             townName=properties.get(0).getTownProperty();
+            country=properties.get(0).getCountry();
 
         });
     }

@@ -20,6 +20,7 @@ import com.inved.realestatemanager.controller.MainActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
+import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
@@ -117,8 +118,11 @@ public class CreatePropertyActivity extends BaseActivity implements AdapterView.
         double surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
         String fullDescriptionProperty = "";
         String photoDescription = null;
-        String addressProperty = streetNumberEditText.getText().toString() + " " + streetNameEditText.getText().toString() + " " + zipCodeEditText.getText().toString() + " " + townNameEditText.getText().toString();
+        String streetNumber = streetNumberEditText.getText().toString();
+        String streetName =streetNameEditText.getText().toString();
+        String zipCode = zipCodeEditText.getText().toString();
         String townProperty = townNameEditText.getText().toString();
+        String country = townNameEditText.getText().toString();
         String statusProperty = "";
         String dateOfEntryOnMarketForProperty = "";
         String dateOfSaleForPorperty = "";
@@ -129,14 +133,19 @@ public class CreatePropertyActivity extends BaseActivity implements AdapterView.
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionProperty,
-                photoDescription, addressProperty,townProperty,
+                photoDescription, streetNumber,streetName,zipCode,townProperty,country,
                 statusProperty, dateOfEntryOnMarketForProperty,
                 dateOfSaleForPorperty, selected, realEstateAgentId);
 
+        RealEstateAgents newAgent= new RealEstateAgents(REAL_ESTATE_AGENT_ID,"Alexandra","Gnimadi","http://mikoumusique.com");
+
         this.propertyViewModel.createProperty(newProperty);
+        this.propertyViewModel.createRealEstateAgent(newAgent);
 
         Toast.makeText(this, getString(R.string.create_update_creation_confirmation), Toast.LENGTH_SHORT).show();
         startMainActivity();
+
+
 
     }
 
