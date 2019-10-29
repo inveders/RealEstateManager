@@ -1,10 +1,12 @@
 package com.inved.realestatemanager.property;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
@@ -13,19 +15,18 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 
 
-public class PropertyListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
+    public static final String PROPERTY_ID = "PROPERTY_ID";
     private TextView typeProperty;
     private TextView pricePropertyInDollar;
     private TextView surfaceAreaProperty;
     private TextView townProperty;
     private ImageView photo;
-
-    // FOR DATA
-    private WeakReference<PropertyListAdapter.Listener> callbackWeakRef;
+    private CardView mCardview;
+    private Context context;
 
     PropertyListViewHolder(View propertyItemView) {
         super(propertyItemView);
@@ -33,15 +34,14 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder implements V
         typeProperty = propertyItemView.findViewById(R.id.fragment_list_property_item_type);
         pricePropertyInDollar = propertyItemView.findViewById(R.id.fragment_list_property_item_price);
         townProperty = propertyItemView.findViewById(R.id.fragment_list_property_item_city);
-
+        mCardview = propertyItemView.findViewById(R.id.fragment_list_property_item);
         surfaceAreaProperty = propertyItemView.findViewById(R.id.fragment_detail_property_surface_area_text);
         photo = propertyItemView.findViewById(R.id.fragment_list_property_item_image);
 
     }
 
 
-    void updateWithProperty(Property property, PropertyListAdapter.Listener callback, RequestManager glide) {
-        this.callbackWeakRef = new WeakReference<>(callback);
+    void updateWithProperty(Property property, PropertyListInterface callback, RequestManager glide) {
 
         Log.d("debago", "city :" + property.getTownProperty() + " type" + property.getTownProperty());
         //TYPE PROPERTY
@@ -90,13 +90,28 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder implements V
 
 
 
+        //CLICK ON CARDVIEW
+        mCardview.setOnClickListener(view -> {
+
+            long propertyId = property.getPropertyId();
+            callback.clickOnCardView(propertyId);
+
+
+            // Launch Detail fragment
+          //  Intent intent = new Intent(view.getContext(), DetailPropertyFragment.class);
+          //  view.getContext().startActivity(intent);
+
+
+
+        });
+
+
     }
 
+    public interface PropertyListInterface{
+        void clickOnCardView(long propertyId); //Je lui donne ce dont j'avais besoin pour faire l'action
+        void onClickDeleteButton(long propertyId);
 
-    @Override
-    public void onClick(View view) {
-        PropertyListAdapter.Listener callback = callbackWeakRef.get();
-        if (callback != null) callback.onClickDeleteButton(getAdapterPosition());
     }
 
 }

@@ -40,9 +40,10 @@ public class PropertyViewModel extends ViewModel {
     // FOR USER
     // -------------
 
-    public LiveData<RealEstateAgents> getRealEstateAgent(long realEstateAgentId) {
+    public LiveData<RealEstateAgents> getRealEstateAgent() {
         return this.currentAgent;
     }
+
 
     public void createRealEstateAgent(RealEstateAgents realEstateAgent) {
 
@@ -58,6 +59,10 @@ public class PropertyViewModel extends ViewModel {
 
     public LiveData<List<Property>> getProperties(long realEstateAgentId) {
         return propertyDataSource.getItems(realEstateAgentId);
+    }
+
+    public LiveData<Property> getOneProperty(long propertyId) {
+        return propertyDataSource.getOneItem(propertyId);
     }
 
     public void createProperty(Property property) {

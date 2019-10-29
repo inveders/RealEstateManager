@@ -19,8 +19,8 @@ import java.util.List;
 public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListViewHolder> {
 
     // CALLBACK
-    public interface Listener { void onClickDeleteButton(int position); }
-    private final Listener callback;
+
+    private final PropertyListViewHolder.PropertyListInterface callback;
     private Context context;
     private TextView textViewNoProperty;
 
@@ -29,7 +29,7 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListViewHo
     private final RequestManager glide;
 
     // CONSTRUCTOR
-    public PropertyListAdapter(Context context, Listener callback, RequestManager glide) {
+    public PropertyListAdapter(Context context, PropertyListViewHolder.PropertyListInterface callback, RequestManager glide) {
         this.properties = new ArrayList<>();
         this.callback = callback;
         this.context = context;

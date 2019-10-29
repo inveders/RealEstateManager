@@ -131,6 +131,8 @@
 
     <!-- MESSAGE -->
     <string name="create_update_creation_confirmation">New property added</string>
+    <string name="limited_to_300_letters">Limited to 300 letters</string>
+    <string name="create_update_choose_date">CHOOSE DATE</string>
 
 
 </resources>

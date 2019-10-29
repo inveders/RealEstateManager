@@ -16,6 +16,9 @@ public interface PropertyDao {
     @Query("SELECT * FROM Property WHERE realEstateAgentId = :realEstateAgentId")
     LiveData<List<Property>> getProperty(long realEstateAgentId);
 
+    @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
+    LiveData<Property> getOneProperty(long propertyId);
+
     @Insert
     long insertProperty(Property property);
 

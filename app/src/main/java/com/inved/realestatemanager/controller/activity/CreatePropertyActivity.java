@@ -1,12 +1,16 @@
 package com.inved.realestatemanager.controller.activity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -14,14 +18,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne;
+import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne.CreateUpdateInterface;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentTwo;
 
 import java.util.ArrayList;
 
-public class CreatePropertyActivity extends BaseActivity {
-
-
-
+public class CreatePropertyActivity extends BaseActivity implements CreateUpdateInterface {
 
     //ViewPager
     ViewPager2 viewPager2;
@@ -83,6 +85,36 @@ public class CreatePropertyActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
+                                  String numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
+                                  String streetNumber, String streetName, String zipCode, String townProperty, String country,
+                                  String pointOfInterest, String addressProperty, int realEstateAgentId) {
+
+        Fragment fragmentTwo = new CreateUpdatePropertyFragmentTwo();
+        Bundle args = new Bundle();
+
+        args.putString("typeProperty", typeProperty);
+        args.putString("numberRoomsInProperty", numberRoomsInProperty);
+        args.putString("numberBathroomsInProperty", numberBathroomsInProperty);
+        args.putString("numberBedroomsInProperty", numberBedroomsInProperty);
+        args.putDouble("pricePropertyInDollar", pricePropertyInDollar);
+        args.putDouble("surfaceAreaProperty", surfaceAreaProperty);
+        args.putString("streetNumber", streetNumber);
+        args.putString("streetName", streetName);
+        args.putString("zipCode", zipCode);
+        args.putString("townProperty", townProperty);
+        args.putString("country", country);
+        args.putString("pointOfInterest", pointOfInterest);
+        args.putString("addressProperty", addressProperty);
+        args.putInt("realEstateAgentId", realEstateAgentId);
+
+        fragmentTwo.setArguments(args);
+        Log.d("debago","args :"+args.toString());
+        viewPager2.setCurrentItem(1);
+
+    }
+
     /**
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
@@ -111,6 +143,15 @@ public class CreatePropertyActivity extends BaseActivity {
         public int getItemCount() {
             return NUM_PAGES;
         }
+    }
+
+    // CHECKBOX CLICK
+    public void onCheckboxClicked(View view) {
+
+        ((CheckBox) view).setOnCheckedChangeListener((compoundButton, b) -> {
+
+        });
+
     }
 
 

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_create_property"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_create_property">
+    android:orientation="vertical">
 
     <!-- Include Toolbar -->
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar"
-        />
+        layout="@layout/toolbar" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/include"
-        />
+        android:layout_below="@id/include"/>
+
 
 </RelativeLayout>

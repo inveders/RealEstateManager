@@ -20,7 +20,7 @@ public class Property {
     private String numberBedroomsInProperty;
     private String fullDescriptionProperty;
 
-    private String streeNumber;
+    private String streetNumber;
     private String streetName;
     private String zipCode;
     private String townProperty;
@@ -61,7 +61,7 @@ public class Property {
         this.numberBathroomsInProperty = numberBathroomsInProperty;
         this.numberBedroomsInProperty = numberBedroomsInProperty;
         this.fullDescriptionProperty = fullDescriptionProperty;
-        this.streeNumber = streeNumber;
+        this.streetNumber = streeNumber;
         this.streetName = streetName;
         this.zipCode = zipCode;
         this.townProperty = townProperty;
@@ -83,6 +83,10 @@ public class Property {
         this.photoDescription4 = photoDescription4;
         this.photoDescription5 = photoDescription5;
         this.realEstateAgentId = realEstateAgentId;
+    }
+
+    public void setPropertyId(long propertyId) {
+        this.propertyId = propertyId;
     }
 
     public long getPropertyId() {
@@ -145,12 +149,12 @@ public class Property {
         this.fullDescriptionProperty = fullDescriptionProperty;
     }
 
-    public String getStreeNumber() {
-        return streeNumber;
+    public String getStreetNumber() {
+        return streetNumber;
     }
 
-    public void setStreeNumber(String streeNumber) {
-        this.streeNumber = streeNumber;
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
     }
 
     public String getStreetName() {

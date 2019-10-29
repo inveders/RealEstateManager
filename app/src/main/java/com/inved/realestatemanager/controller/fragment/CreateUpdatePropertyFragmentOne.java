@@ -1,7 +1,8 @@
 package com.inved.realestatemanager.controller.fragment;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +10,17 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.controller.MainActivity;
+import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
-import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
@@ -32,6 +30,8 @@ import java.util.List;
 import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.REAL_ESTATE_AGENT_ID;
 
 public class CreateUpdatePropertyFragmentOne extends Fragment implements AdapterView.OnItemSelectedListener {
+
+    private CreateUpdateInterface callback;
 
     private PropertyViewModel propertyViewModel;
 
@@ -47,6 +47,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private EditText zipCodeEditText;
     private EditText townNameEditText;
 
+
     private CheckBox schoolCheckBox;
     private CheckBox restaurantsCheckBox;
     private CheckBox carParksCheckBox;
@@ -59,17 +60,14 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private String numberRoomsInProperty = "0";
     private String numberBathroomsInProperty = "0";
     private String numberBedroomsInProperty = "0";
-    private String photoUri1 = null;
-    private String photoUri2 = null;
-    private String photoUri3 = null;
-    private String photoUri4 = null;
-    private String photoUri5 = null;
-    private String photoDescription1 = null;
-    private String photoDescription2 = null;
-    private String photoDescription3 = null;
-    private String photoDescription4 = null;
-    private String photoDescription5 = null;
 
+    public interface CreateUpdateInterface {
+        void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
+                               String numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
+                               String streetNumber, String streetName, String zipCode, String townProperty, String country,
+                               String pointOfInterest, String addressProperty, int realEstateAgentId);
+
+    }
 
 
     @Override
@@ -116,35 +114,46 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
         double pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
         double surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
-        String fullDescriptionProperty = "";
         String streetNumber = streetNumberEditText.getText().toString();
         String streetName = streetNameEditText.getText().toString();
         String zipCode = zipCodeEditText.getText().toString();
         String townProperty = townNameEditText.getText().toString();
         String country = townNameEditText.getText().toString();
         String pointOfInterest = fillPoiCheckboxList();
-        String addressProeprty = streetNumber + " " + streetName + " " + zipCode + " " + townProperty + "," + country;
-        String statusProperty = "";
-        String dateOfEntryOnMarketForProperty = "";
-        String dateOfSaleForPorperty = "";
-        boolean selected = false;
+        String addressProperty = streetNumber + " " + streetName + " " + zipCode + " " + townProperty + "," + country;
         int realEstateAgentId = 1; //CHANGE AFTER
 
-        Property newProperty = new Property(typeProperty, pricePropertyInDollar,
-                surfaceAreaProperty, numberRoomsInProperty,
-                numberBathroomsInProperty, numberBedroomsInProperty,
-                fullDescriptionProperty,streetNumber, streetName, zipCode, townProperty, country,addressProeprty,pointOfInterest,
-                statusProperty, dateOfEntryOnMarketForProperty,
-                dateOfSaleForPorperty, selected,photoUri1,photoUri2,photoUri3,photoUri4,photoUri5,photoDescription1,photoDescription2,
-                photoDescription3,photoDescription4,photoDescription5,realEstateAgentId);
+
+        Log.d("debago","callback before ");
+        callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
+                pointOfInterest, addressProperty, realEstateAgentId);
+        Log.d("debago","callback after ");
+
+        Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
+        startSecondPage();
+
+    }
+
+    private void startSecondPage() {
 
 
 
-        this.propertyViewModel.createProperty(newProperty);
+    }
 
-        Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation), Toast.LENGTH_SHORT).show();
-       // startSecondPage();
-
+    @Override
+    public void onAttach(@NonNull Context context)
+    {
+        super.onAttach(context);
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try
+        {
+            callback = (CreatePropertyActivity) context;
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException(context.toString()+ " must implement OnImageClickListener");
+        }
     }
 
     public void onItemSelected(AdapterView<?> parent, View view,
@@ -193,15 +202,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
         this.propertyViewModel.init(REAL_ESTATE_AGENT_ID);
-    }
-
-    // CHECKBOX CLICK
-    public void onCheckboxClicked(View view) {
-
-        ((CheckBox) view).setOnCheckedChangeListener((compoundButton, b) -> {
-
-        });
-
     }
 
 

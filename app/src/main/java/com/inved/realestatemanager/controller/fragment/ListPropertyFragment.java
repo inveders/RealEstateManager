@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,13 +22,16 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.property.PropertyListAdapter;
+import com.inved.realestatemanager.property.PropertyListViewHolder;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.util.List;
 
+import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
 
-public class ListPropertyFragment extends Fragment implements PropertyListAdapter.Listener {
+
+public class ListPropertyFragment extends Fragment implements PropertyListViewHolder.PropertyListInterface {
 
     // FOR DESIGN
 
@@ -37,15 +41,16 @@ public class ListPropertyFragment extends Fragment implements PropertyListAdapte
     private PropertyViewModel propertyViewModel;
     public static long REAL_ESTATE_AGENT_ID = 1;
     private Context context;
-    public static ListPropertyFragment newInstance(){
+
+    public static ListPropertyFragment newInstance() {
         return new ListPropertyFragment();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context=context;
-        adapter=new PropertyListAdapter(context,this, Glide.with(this));
+        this.context = context;
+        adapter = new PropertyListAdapter(context, this, Glide.with(this));
     }
 
     public ListPropertyFragment() {
@@ -97,14 +102,29 @@ public class ListPropertyFragment extends Fragment implements PropertyListAdapte
         }
     }
 
-    // 3 - Get Current Agent
-    private void getCurrentAgent(long realEstateAgentId) {
-        this.propertyViewModel.getRealEstateAgent(realEstateAgentId);
+    @Override
+    public void clickOnCardView(long propertyId) {
+
+        if(getActivity()!=null){
+            Fragment detailFragment = new DetailPropertyFragment();
+            Bundle bundle = new Bundle();
+            bundle.putLong(PROPERTY_ID, propertyId);
+            detailFragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame_layout, detailFragment); // first the id of the frame layout which contains fragment
+            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+            transaction.commit();
+        }
+
+
+
     }
 
     @Override
-    public void onClickDeleteButton(int position) {
-        // 7 - Delete property after user clicked on button
-        // this.deleteProperty(this.adapter.getProperty(position)); NO NEED IN THIS APP
+    public void onClickDeleteButton(long propertyId) {
+
     }
+
+
 }

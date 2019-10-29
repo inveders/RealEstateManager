@@ -8,8 +8,6 @@
     android:layout_height="wrap_content"
     >
 
-
-
     <ImageSwitcher
         android:id="@+id/fragment_detail_property_image_switcher"
         android:layout_width="match_parent"
