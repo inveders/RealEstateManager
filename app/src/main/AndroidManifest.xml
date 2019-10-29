@@ -4,23 +4,29 @@
     package="com.inved.realestatemanager">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-feature android:name="android.hardware.camera.flash"/>
 
     <application
+        android:name=".utils.MainApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".utils.MainApplication"
-        tools:ignore="GoogleAppIndexingWarning"
-        android:fullBackupContent="@xml/backup_descriptor">
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:theme="@style/AppTheme"
             android:name="com.inved.realestatemanager.controller.MainActivity"
             android:label="@string/page_name_activity_main"
-            >
+            android:theme="@style/AppTheme">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,6 +58,17 @@
             android:name=".controller.activity.MapsActivity"
             android:label="@string/page_name_activity_create_property"
             android:parentActivityName=".controller.MainActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+
     </application>
 
 </manifest>

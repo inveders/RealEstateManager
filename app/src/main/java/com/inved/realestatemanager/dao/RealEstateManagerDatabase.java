@@ -28,7 +28,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
 
-       // context.deleteDatabase("MyDatabase.db");
+        context.deleteDatabase("MyDatabase.db");
 
         if (INSTANCE == null) {
             synchronized (RealEstateManagerDatabase.class) {
@@ -40,8 +40,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                            // .fallbackToDestructiveMigration()
                             .build();
                 }
-
-
 
             }
         }
@@ -59,11 +57,50 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", 1);
-                contentValues.put("firstname", "Alexandra");
+                contentValues.put("firstname", "Alexandra Lembe");
                 contentValues.put("lastname", "Gnimadi");
                 contentValues.put("urlPicture", "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2");
 
                 db.insert("RealEstateAgents", OnConflictStrategy.IGNORE, contentValues);
+
+                ContentValues contentValuesProperty = new ContentValues();
+                contentValuesProperty.put("propertyId", 1);
+                contentValuesProperty.put("realEstateAgentId", 1);
+                contentValuesProperty.put("typeProperty", "house");
+                contentValuesProperty.put("pricePropertyInDollar", 120000.0);
+                contentValuesProperty.put("surfaceAreaProperty", 75);
+                contentValuesProperty.put("numberRoomsInProperty", "1");
+                contentValuesProperty.put("numberBathroomsInProperty", "1");
+                contentValuesProperty.put("numberBedroomsInProperty", "2");
+                contentValuesProperty.put("fullDescriptionProperty", "It's a really good property near to the beach");
+                contentValuesProperty.put("streetNumber", "42");
+                contentValuesProperty.put("streetName", "rue principale");
+                contentValuesProperty.put("zipCode", "57840");
+                contentValuesProperty.put("townProperty", "Ottange");
+                contentValuesProperty.put("country", "France");
+                contentValuesProperty.put("addressProperty", "42 bis rue principale 57840 Ottange");
+                contentValuesProperty.put("pointOfInterest", "school,car parks");
+                contentValuesProperty.put("statusProperty", "in progress");
+                contentValuesProperty.put("dateOfEntryOnMarketForProperty", "29/10/2019");
+
+                /*
+
+                this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
+                this.dateOfSaleForPorperty = dateOfSaleForPorperty;
+                this.selected = selected;
+                this.photoUri1 = photoUri1;
+                this.photoUri2 = photoUri2;
+                this.photoUri3 = photoUri3;
+                this.photoUri4 = photoUri4;
+                this.photoUri5 = photoUri5;
+                this.photoDescription1 = photoDescription1;
+                this.photoDescription2 = photoDescription2;
+                this.photoDescription3 = photoDescription3;
+                this.photoDescription4 = photoDescription4;
+                this.photoDescription5 = photoDescription5;
+                this.realEstateAgentId = realEstateAgentId;*/
+
+                db.insert("Property", OnConflictStrategy.IGNORE, contentValuesProperty);
             }
         };
     }

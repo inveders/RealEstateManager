@@ -1,24 +1,31 @@
 package com.inved.realestatemanager.controller.fragment;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
+import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.MainActivity;
 import com.inved.realestatemanager.injections.Injection;
@@ -27,17 +34,23 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.REAL_ESTATE_AGENT_ID;
 
+@RuntimePermissions
 public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
-    private static final int GALLERY_REQUEST_CODE = 546 ;
+    private static final int REQUEST_CAMERA_PHOTO = 456;
+    private static final int REQUEST_GALLERY_PHOTO = 455;
+    private File mPhotoFile;
+
     private PropertyViewModel propertyViewModel;
     private TextView dateOfEntry;
     private TextView agentName;
@@ -65,7 +78,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     private String typeProperty;
     private String numberRoomsInProperty;
     private String numberBathroomsInProperty;
-    private  String numberBedroomsInProperty;
+    private String numberBedroomsInProperty;
     private double pricePropertyInDollar;
     private double surfaceAreaProperty;
     private String streetNumber;
@@ -77,9 +90,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     private String addressProeprty;
     private int realEstateAgentId;
 
+    private String cameraFilePath;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_create_update_two, container, false);
 
@@ -99,7 +113,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
         confirmButton.setOnClickListener(view -> finishToCreateProperty());
 
         Button addPhotoButton = v.findViewById(R.id.activity_create_update_add_photo_button);
-        addPhotoButton.setOnClickListener(view -> pickFromGallery());
+
+
+
+        addPhotoButton.setOnClickListener(view -> selectImage());
 
         this.configureViewModel();
         this.retriveRealEstateAgents();
@@ -109,41 +126,127 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
         return v;
     }
 
-    private void takePicture() {
+    //TAKE A PICTURE
 
+    /**
+     * Alert dialog for capture or select from galley
+     */
+
+    private void selectImage() {
+        final CharSequence[] items = {
+                MainApplication.getResourses().getString(R.string.dialog_select_image_take_photo), MainApplication.getResourses().getString(R.string.dialog_select_image_choose_from_library),
+                MainApplication.getResourses().getString(R.string.dialog_select_image_cancel)
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setItems(items, (dialog, item) -> {
+            if (items[item].equals(MainApplication.getInstance().getResources().getString(R.string.dialog_select_image_take_photo))) {
+                CreateUpdatePropertyFragmentTwoPermissionsDispatcher.dispatchTakePictureIntentWithPermissionCheck(this);
+                dispatchTakePictureIntent();
+            } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_choose_from_library))) {
+                dispatchGalleryIntent();
+            } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_cancel))) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+
+    /**
+     * Capture image from camera
+     */
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(getActivity()!=null){
+            if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    // Error occurred while creating the File
+                }
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(MainApplication.getInstance().getApplicationContext(),
+                            BuildConfig.APPLICATION_ID + ".provider",
+                            photoFile);
+
+                    mPhotoFile = photoFile;
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePictureIntent, REQUEST_CAMERA_PHOTO);
+                }
+            }
+        }
 
     }
 
-    private void pickFromGallery(){
-        //Create an Intent with action as ACTION_PICK
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        // Sets the type as image/*. This ensures only components of type image are selected
-        intent.setType("image/*");
-        //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
-        String[] mimeTypes = {"image/jpeg", "image/png"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
-        // Launching the Intent
-        startActivityForResult(intent,GALLERY_REQUEST_CODE);
+    /**
+     * Select image fro gallery
+     */
+    private void dispatchGalleryIntent() {
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(pickPhoto, REQUEST_GALLERY_PHOTO);
+
     }
 
-    public void onActivityResult(int requestCode,int resultCode,Intent data) {
+    public void onActivityResult(int requestCode,int resultCode,Intent data){
         // Result code is RESULT_OK only if the user selects an Image
         if (resultCode == Activity.RESULT_OK)
-            switch (requestCode) {
-                case GALLERY_REQUEST_CODE:
+            switch (requestCode){
+                case REQUEST_GALLERY_PHOTO:
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
                     photo1.setImageURI(selectedImage);
-                    photoUri1=selectedImage.toString();
+                    if (selectedImage != null) {
+                        photoUri1=selectedImage.toString();
+                    }
+                    break;
+                case REQUEST_CAMERA_PHOTO:
+                    photo1.setImageURI(Uri.parse(cameraFilePath));
                     break;
             }
     }
 
-        private void retriveRealEstateAgents() {
-        propertyViewModel.getRealEstateAgent().observe(this,realEstateAgents -> {
-            String firstname=realEstateAgents.getFirstname();
-            String lastname=realEstateAgents.getLastname();
-            agentName.setText(getString(R.string.detail_property_real_estate_agent_text,firstname,lastname));
+
+
+
+    /**
+     * Create file with current timestamp name
+     *
+     * @throws IOException
+     */
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        if(getActivity()!=null){
+            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String mFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
+                // Save a file: path for using again
+                cameraFilePath = "file://" + mFile.getAbsolutePath();
+                return mFile;
+            }
+
+            return null;
+        }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        CreateUpdatePropertyFragmentTwoPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    private void retriveRealEstateAgents() {
+        propertyViewModel.getRealEstateAgent().observe(this, realEstateAgents -> {
+            String firstname = realEstateAgents.getFirstname();
+            String lastname = realEstateAgents.getLastname();
+            agentName.setText(getString(R.string.detail_property_real_estate_agent_text, firstname, lastname));
         });
     }
 
@@ -161,102 +264,100 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     }
 
 
-
     private void finishToCreateProperty() {
 
         Bundle args = getArguments();
         if (args != null) {
 
-            typeProperty=args.getString("typeProperty");
-            numberRoomsInProperty=args.getString("numberRoomsInProperty");
-            numberBathroomsInProperty=args.getString("numberBathroomsInProperty");
-            numberBedroomsInProperty=args.getString("numberBedroomsInProperty");
-            pricePropertyInDollar=args.getDouble("pricePropertyInDollar",0.0);
-            surfaceAreaProperty=args.getDouble("surfaceAreaProperty",0.0);
-            streetNumber=args.getString("streetNumber");
-            streetName=args.getString("streetName");
-            zipCode=args.getString("zipCode");
-            townProperty=args.getString("townProperty");
-            country=args.getString("country");
-            pointOfInterest=args.getString("pointOfInterest");
-            addressProeprty=args.getString("addressProperty");
-            realEstateAgentId=args.getInt("realEstateAgentId",1);
+            typeProperty = args.getString("typeProperty");
+            numberRoomsInProperty = args.getString("numberRoomsInProperty");
+            numberBathroomsInProperty = args.getString("numberBathroomsInProperty");
+            numberBedroomsInProperty = args.getString("numberBedroomsInProperty");
+            pricePropertyInDollar = args.getDouble("pricePropertyInDollar", 0.0);
+            surfaceAreaProperty = args.getDouble("surfaceAreaProperty", 0.0);
+            streetNumber = args.getString("streetNumber");
+            streetName = args.getString("streetName");
+            zipCode = args.getString("zipCode");
+            townProperty = args.getString("townProperty");
+            country = args.getString("country");
+            pointOfInterest = args.getString("pointOfInterest");
+            addressProeprty = args.getString("addressProperty");
+            realEstateAgentId = args.getInt("realEstateAgentId", 1);
 
         }
-
 
 
         String statusProperty = "in progress";
         String dateOfEntryOnMarketForProperty = dateOfEntry.getText().toString();
         String fullDescriptionText = fullDescriptionEditText.getText().toString();
-        String dateOfSaleForPorperty=null;
-        boolean selected=false;
+        String dateOfSaleForPorperty = null;
+        boolean selected = false;
 
         Property newProperty = new Property(typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
-                fullDescriptionText,streetNumber, streetName, zipCode, townProperty, country,addressProeprty,pointOfInterest,
+                fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressProeprty, pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty,
-                dateOfSaleForPorperty, selected,photoUri1,photoUri2,photoUri3,photoUri4,photoUri5,photoDescription1,photoDescription2,
-                photoDescription3,photoDescription4,photoDescription5,realEstateAgentId);
+                dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
         //RealEstateAgents newAgent = new RealEstateAgents(REAL_ESTATE_AGENT_ID, "Alexandra", "Gnimadi", "http://mikoumusique.com");
 
         this.propertyViewModel.createProperty(newProperty);
-      //  this.propertyViewModel.createRealEstateAgent(newAgent);
+        //  this.propertyViewModel.createRealEstateAgent(newAgent);
 
         Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation), Toast.LENGTH_SHORT).show();
         startMainActivity();
 
     }
 
-    private void updateUI(){
+    private void updateUI() {
         String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
-        if(photoUri1!=null){
+        if (photoUri1 != null) {
             Glide.with(this)
                     .load(new File(photoUri1))
                     .into(photo1);
-        }else{
+        } else {
             Glide.with(this)
                     .load(urlNoImage)
                     .into(photo1);
         }
 
-        if(photoUri2!=null){
+        if (photoUri2 != null) {
             Glide.with(this)
                     .load(new File(photoUri2))
                     .into(photo2);
-        }else{
+        } else {
             Glide.with(this)
                     .load(urlNoImage)
                     .into(photo2);
         }
 
-        if(photoUri3!=null){
+        if (photoUri3 != null) {
             Glide.with(this)
                     .load(new File(photoUri3))
                     .into(photo3);
-        }else{
+        } else {
             Glide.with(this)
                     .load(urlNoImage)
                     .into(photo3);
         }
 
-        if(photoUri4!=null){
+        if (photoUri4 != null) {
             Glide.with(this)
                     .load(new File(photoUri4))
                     .into(photo4);
-        }else{
+        } else {
             Glide.with(this)
                     .load(urlNoImage)
                     .into(photo4);
         }
 
-        if(photoUri5!=null){
+        if (photoUri5 != null) {
             Glide.with(this)
                     .load(new File(photoUri5))
                     .into(photo5);
-        }else{
+        } else {
             Glide.with(this)
                     .load(urlNoImage)
                     .into(photo5);

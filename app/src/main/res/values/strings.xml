@@ -133,6 +133,9 @@
     <string name="create_update_creation_confirmation">New property added</string>
     <string name="limited_to_300_letters">Limited to 300 letters</string>
     <string name="create_update_choose_date">CHOOSE DATE</string>
+    <string name="dialog_select_image_take_photo">Take Photo</string>
+    <string name="dialog_select_image_choose_from_library">Choose from Library</string>
+    <string name="dialog_select_image_cancel">Cancel</string>
 
 
 </resources>

@@ -69,8 +69,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.google.code.gson:gson:2.8.5'
 
-    //EASY PERMISSIONS
-    implementation 'pub.devrel:easypermissions:1.1.1'
+    //PERMISSION DISPATCHER
+    implementation "org.permissionsdispatcher:permissionsdispatcher:4.5.0"
+    annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:4.5.0"
+
 
     //ROOM
     implementation 'androidx.room:room-runtime:2.2.1'
