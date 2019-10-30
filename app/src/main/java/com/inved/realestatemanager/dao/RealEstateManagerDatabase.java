@@ -14,6 +14,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 
+import static java.sql.Types.NULL;
+
 @Database(entities = {Property.class, RealEstateAgents.class}, version = 1, exportSchema = false)
 public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
@@ -28,7 +30,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
 
-        context.deleteDatabase("MyDatabase.db");
+        //context.deleteDatabase("MyDatabase.db");
 
         if (INSTANCE == null) {
             synchronized (RealEstateManagerDatabase.class) {
@@ -82,32 +84,19 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                 contentValuesProperty.put("pointOfInterest", "school,car parks");
                 contentValuesProperty.put("statusProperty", "in progress");
                 contentValuesProperty.put("dateOfEntryOnMarketForProperty", "29/10/2019");
+                contentValuesProperty.put("dateOfSaleForPorperty", "14/12/2019" );
+                contentValuesProperty.put("selected", false);
 
-                /*
-
-                this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
-                this.dateOfSaleForPorperty = dateOfSaleForPorperty;
-                this.selected = selected;
-                this.photoUri1 = photoUri1;
-                this.photoUri2 = photoUri2;
-                this.photoUri3 = photoUri3;
-                this.photoUri4 = photoUri4;
-                this.photoUri5 = photoUri5;
-                this.photoDescription1 = photoDescription1;
-                this.photoDescription2 = photoDescription2;
-                this.photoDescription3 = photoDescription3;
-                this.photoDescription4 = photoDescription4;
-                this.photoDescription5 = photoDescription5;
-                this.realEstateAgentId = realEstateAgentId;*/
 
                 db.insert("Property", OnConflictStrategy.IGNORE, contentValuesProperty);
             }
         };
     }
 
+
     private static final Migration MIGRATION_2_4 = new Migration(2,4) {
         @Override
-        public void migrate(SupportSQLiteDatabase database) {
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
 
          /*   database.execSQL("ALTER TABLE Property "
                     + " RENAME COLUMN streeNumber TO streetNumber");*/
