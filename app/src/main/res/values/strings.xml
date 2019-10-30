@@ -41,7 +41,7 @@
     <string name="list_property_no_property_found">No property found</string>
 
     <!-- DETAIL FRAGMENT -->
-    <string name="detail_property_description_title">Description</string>
+    <string name="detail_property_description_title">Description :</string>
     <string name="detail_property_description_texte">Non loin de la mairie, ce bien d\'exception est fait pour vous ! Véritable
     atout dans notre région, proche de la frontière, et près de toutes commodités, pour vous, seul ou avec votre famille, venez découvrir
     ce qui constituera certainement votre coup de coeur !</string>
@@ -128,10 +128,11 @@
     <string name="create_update_add_photo_button">ADD PHOTO</string>
     <string name="create_update_confirm_button">CREATE PROPERTY</string>
     <string name="create_update_previous_button">PREVIOUS PAGE</string>
+    <string name="create_update_add_photos">Photos</string>
 
     <!-- MESSAGE -->
     <string name="create_update_creation_confirmation">New property added</string>
-    <string name="limited_to_300_letters">Limited to 300 letters</string>
+    <string name="limited_to_300_letters">Description of property (limit 300 letters)</string>
     <string name="create_update_choose_date">CHOOSE DATE</string>
     <string name="dialog_select_image_take_photo">Take Photo</string>
     <string name="dialog_select_image_choose_from_library">Choose from Library</string>
