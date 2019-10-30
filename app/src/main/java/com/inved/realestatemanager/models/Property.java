@@ -6,12 +6,12 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(foreignKeys = @ForeignKey(entity = RealEstateAgents.class,parentColumns = "id",childColumns = "realEstateAgentId"),
-        indices = {@Index("propertyId"), @Index(value = {"realEstateAgentId", "propertyId"})})
+        indices = {@Index("id"), @Index(value = {"realEstateAgentId", "id"})})
 
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
-    private long propertyId;
+    private long id;
     private String typeProperty;
     private double pricePropertyInDollar;
     private double surfaceAreaProperty;
@@ -85,12 +85,12 @@ public class Property {
         this.realEstateAgentId = realEstateAgentId;
     }
 
-    public void setPropertyId(long propertyId) {
-        this.propertyId = propertyId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public long getPropertyId() {
-        return propertyId;
+    public long getId() {
+        return id;
     }
 
     public String getTypeProperty() {

@@ -66,20 +66,14 @@ public class PropertyViewModel extends ViewModel {
     }
 
     public void createProperty(Property property) {
-        executor.execute(() -> {
-            propertyDataSource.createItem(property);
-        });
+        executor.execute(() -> propertyDataSource.createItem(property));
     }
 
     public void deleteProperty(long propertyId) {
-        executor.execute(() -> {
-            propertyDataSource.deleteItem(propertyId);
-        });
+        executor.execute(() -> propertyDataSource.deleteItem(propertyId));
     }
 
     public void updateProperty(Property property) {
-        executor.execute(() -> {
-            propertyDataSource.updateItem(property);
-        });
+        executor.execute(() -> propertyDataSource.updateItem(property));
     }
 }

@@ -16,7 +16,7 @@ public interface PropertyDao {
     @Query("SELECT * FROM Property WHERE realEstateAgentId = :realEstateAgentId")
     LiveData<List<Property>> getProperty(long realEstateAgentId);
 
-    @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
+    @Query("SELECT * FROM Property WHERE id = :propertyId")
     LiveData<Property> getOneProperty(long propertyId);
 
     @Insert
@@ -25,6 +25,6 @@ public interface PropertyDao {
     @Update
     int updateProperty(Property property);
 
-    @Query("DELETE FROM Property WHERE propertyId = :propertyId")
+    @Query("DELETE FROM Property WHERE id = :propertyId")
     int deleteProperty(long propertyId);
 }

@@ -93,7 +93,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         //CLICK ON CARDVIEW
         mCardview.setOnClickListener(view -> {
 
-            long propertyId = property.getPropertyId();
+            long propertyId = property.getId();
             callback.clickOnCardView(propertyId);
 
 

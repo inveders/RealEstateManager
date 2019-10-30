@@ -16,8 +16,7 @@ public class RealEstateAgents {
 
     public RealEstateAgents(){}
 
-    public RealEstateAgents(long id, String firstname, String lastname, String urlPicture) {
-        this.id = id;
+    public RealEstateAgents(String firstname, String lastname, String urlPicture) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.urlPicture = urlPicture;

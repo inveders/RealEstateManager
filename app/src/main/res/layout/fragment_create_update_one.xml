@@ -203,7 +203,7 @@
             android:id="@+id/create_update_checkbox_poi_schools"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog__poi_school"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_poi_text"

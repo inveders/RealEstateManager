@@ -1,6 +1,7 @@
 package com.inved.realestatemanager.controller.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,9 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
+import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
+import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyListAdapter;
 import com.inved.realestatemanager.property.PropertyListViewHolder;
 import com.inved.realestatemanager.property.PropertyViewModel;
@@ -71,7 +75,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         recyclerView = mView.findViewById(R.id.fragment_list_property_recycler_view);
         this.recyclerView.setAdapter(this.adapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+      //  recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         return mView;
@@ -111,10 +115,15 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             bundle.putLong(PROPERTY_ID, propertyId);
             detailFragment.setArguments(bundle);
 
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            //We open activity if we are in portrait mode
+            Intent intent = new Intent(getContext(), DetailActivity.class);
+            startActivity(intent);
+
+            /**Ici on ouvre le fragment si on est en mode paysage*/
+           /* FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.activity_main_frame_layout, detailFragment); // first the id of the frame layout which contains fragment
             transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-            transaction.commit();
+            transaction.commit();*/
         }
 
 

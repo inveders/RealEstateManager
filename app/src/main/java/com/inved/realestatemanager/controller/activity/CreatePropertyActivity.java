@@ -89,7 +89,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     public void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                   String numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                   String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                                  String pointOfInterest, String addressProperty, int realEstateAgentId) {
+                                  String pointOfInterest, String addressProperty, long realEstateAgentId) {
 
         Fragment fragmentTwo = new CreateUpdatePropertyFragmentTwo();
         Bundle args = new Bundle();
@@ -107,7 +107,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         args.putString("country", country);
         args.putString("pointOfInterest", pointOfInterest);
         args.putString("addressProperty", addressProperty);
-        args.putInt("realEstateAgentId", realEstateAgentId);
+        args.putLong("realEstateAgentId", realEstateAgentId);
 
         fragmentTwo.setArguments(args);
         Log.d("debago","args :"+args.toString());

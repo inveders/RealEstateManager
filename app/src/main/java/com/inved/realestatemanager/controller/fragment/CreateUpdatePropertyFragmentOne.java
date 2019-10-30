@@ -21,6 +21,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
@@ -65,7 +66,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                String numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                               String pointOfInterest, String addressProperty, int realEstateAgentId);
+                               String pointOfInterest, String addressProperty, long realEstateAgentId);
 
     }
 
@@ -121,13 +122,12 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         String country = townNameEditText.getText().toString();
         String pointOfInterest = fillPoiCheckboxList();
         String addressProperty = streetNumber + " " + streetName + " " + zipCode + " " + townProperty + "," + country;
-        int realEstateAgentId = 1; //CHANGE AFTER
+        long realEstateAgentId = 2; /**CHANGE AFTER*/
 
 
         Log.d("debago","callback before ");
         callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
                 pointOfInterest, addressProperty, realEstateAgentId);
-        Log.d("debago","callback after ");
 
         Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
         startSecondPage();
@@ -202,6 +202,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
         this.propertyViewModel.init(REAL_ESTATE_AGENT_ID);
+
     }
 
 

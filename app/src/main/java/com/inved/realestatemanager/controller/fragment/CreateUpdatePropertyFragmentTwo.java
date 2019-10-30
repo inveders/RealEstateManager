@@ -31,6 +31,7 @@ import com.inved.realestatemanager.controller.MainActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
+import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
@@ -88,7 +89,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     private String country;
     private String pointOfInterest;
     private String addressProeprty;
-    private int realEstateAgentId;
+    private long realEstateAgentId;
 
     private String cameraFilePath;
 
@@ -282,7 +283,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
             country = args.getString("country");
             pointOfInterest = args.getString("pointOfInterest");
             addressProeprty = args.getString("addressProperty");
-            realEstateAgentId = args.getInt("realEstateAgentId", 1);
+            realEstateAgentId = args.getLong("realEstateAgentId", 2);
 
         }
 
@@ -301,10 +302,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                 dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                 photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
-        //RealEstateAgents newAgent = new RealEstateAgents(REAL_ESTATE_AGENT_ID, "Alexandra", "Gnimadi", "http://mikoumusique.com");
+
 
         this.propertyViewModel.createProperty(newProperty);
-        //  this.propertyViewModel.createRealEstateAgent(newAgent);
+
 
         Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation), Toast.LENGTH_SHORT).show();
         startMainActivity();
