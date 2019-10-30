@@ -177,11 +177,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
         final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
-        updateProperty.setOnMenuItemClickListener(menuItem -> {
-            startUpdatePropertyActivity();
-
-            return true;
-        });
+        updateProperty.setVisible(false);
 
         final MenuItem searchProperty = menu.findItem(R.id.menu_action_search);
         searchProperty.setOnMenuItemClickListener(menuItem -> {

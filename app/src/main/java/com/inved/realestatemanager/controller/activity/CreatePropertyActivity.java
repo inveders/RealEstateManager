@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -20,8 +19,12 @@ import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne.CreateUpdateInterface;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentTwo;
+import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
 import java.util.ArrayList;
+
+import static com.inved.realestatemanager.controller.activity.DetailActivity.PROPERTY_ID_INTENT;
+
 
 public class CreatePropertyActivity extends BaseActivity implements CreateUpdateInterface {
 
@@ -29,7 +32,9 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     ViewPager2 viewPager2;
     private static final int NUM_PAGES = 2;
     ViewPagerFragmentAdapter myAdapter;
+    private long propertyId;
     private ArrayList<Fragment> arrayList = new ArrayList<>();
+
 
     @Override
     protected int getLayoutContentViewID() {
@@ -44,9 +49,9 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         this.configureToolBar();
 
         // Instantiate a ViewPager2 and a PagerAdapter.
-        viewPager2=findViewById(R.id.viewPager2);
+        viewPager2 = findViewById(R.id.viewPager2);
 
-        myAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(),getLifecycle());
+        myAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(), getLifecycle());
 
         // add Fragments in your ViewPagerFragmentAdapter class
         arrayList.add(new CreateUpdatePropertyFragmentOne());
@@ -54,8 +59,17 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
         // set Orientation in your ViewPager2
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-     //   viewPager2.setUserInputEnabled(false);// SAMPLE CODE to disable swiping in viewpager2
+        viewPager2.setUserInputEnabled(false);// SAMPLE CODE to disable swiping in viewpager2
         viewPager2.setAdapter(myAdapter);
+
+
+        if (getIntent().getLongExtra(PROPERTY_ID_INTENT, 0) != 0) {
+
+            propertyId = getIntent().getLongExtra(PROPERTY_ID_INTENT, 0);
+            //We send values in fragment one of create update activity
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this,propertyId);
+
+        }
 
 
     }
@@ -89,7 +103,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     public void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                   String numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                   String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                                  String pointOfInterest, String addressProperty, long realEstateAgentId) {
+                                  String pointOfInterest, String addressProperty, long realEstateAgentId,long propertyId) {
 
         Fragment fragmentTwo = new CreateUpdatePropertyFragmentTwo();
         Bundle args = new Bundle();
@@ -110,7 +124,6 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         args.putLong("realEstateAgentId", realEstateAgentId);
 
         fragmentTwo.setArguments(args);
-        Log.d("debago","args :"+args.toString());
         viewPager2.setCurrentItem(1);
 
     }
@@ -122,9 +135,8 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
 
-
         ViewPagerFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-            super(fragmentManager,lifecycle);
+            super(fragmentManager, lifecycle);
         }
 
         @NonNull

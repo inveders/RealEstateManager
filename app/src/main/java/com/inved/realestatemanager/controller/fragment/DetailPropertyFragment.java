@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.controller.fragment;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +28,9 @@ import com.inved.realestatemanager.utils.MainApplication;
 
 import java.util.ArrayList;
 
+import static com.inved.realestatemanager.controller.activity.DetailActivity.PROPERTY_ID_INTENT;
 import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
+
 
 public class DetailPropertyFragment extends Fragment {
 
@@ -55,8 +58,12 @@ public class DetailPropertyFragment extends Fragment {
 
     private PropertyViewModel propertyViewModel;
 
+
     public DetailPropertyFragment() {
+
+
     }
+
 
     @Nullable
     @Override
@@ -93,6 +100,8 @@ public class DetailPropertyFragment extends Fragment {
 
         return mView;
     }
+
+
 
     // 2 - Configuring ViewModel
     private void configureViewModel(long propertyId) {
@@ -211,7 +220,6 @@ public class DetailPropertyFragment extends Fragment {
 
         }
 
-        Log.d("debago", "myImages :" + myImages.size());
         if(myImages.size()!=0){
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
         }else{

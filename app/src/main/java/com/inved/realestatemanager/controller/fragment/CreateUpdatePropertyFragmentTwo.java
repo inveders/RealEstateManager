@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,9 +30,9 @@ import com.inved.realestatemanager.controller.MainActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,6 +108,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
         photoDescription = v.findViewById(R.id.activity_create_update_property_added_photo_description);
         fullDescriptionEditText = v.findViewById(R.id.activity_create_update_property_full_description_text);
 
+        long propertyId;
 
         Button confirmButton = v.findViewById(R.id.create_update_confirm_button);
         confirmButton.setOnClickListener(view -> finishToCreateProperty());
@@ -119,12 +119,42 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
         addPhotoButton.setOnClickListener(view -> selectImage());
 
+        if(ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext())!=0){
+            propertyId=ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext());
+            this.updateUIwithDataFromDatabase(propertyId);
+        }
+
+        this.updateUI();
         this.configureViewModel();
         this.retriveRealEstateAgents();
         this.datePickerInit();
-        this.updateUI();
+
 
         return v;
+    }
+
+
+    private void updateUIwithDataFromDatabase(long propertyId) {
+        propertyViewModel.getOneProperty(propertyId).observe(this,property -> {
+
+            if(property.getDateOfEntryOnMarketForProperty().isEmpty()||property.getDateOfEntryOnMarketForProperty()==null){
+                datePickerInit();
+            }else{
+                dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
+            }
+
+            if(!property.getFullDescriptionProperty().isEmpty()||property.getFullDescriptionProperty()!=null){
+                fullDescriptionEditText.setText(property.getFullDescriptionProperty());
+            }
+
+            photoUri1=property.getPhotoUri1();
+            photoUri2=property.getPhotoUri2();
+            photoUri3=property.getPhotoUri3();
+            photoUri4=property.getPhotoUri4();
+            photoUri5=property.getPhotoUri5();
+            updateUI();
+
+        });
     }
 
     //TAKE A PICTURE
@@ -197,7 +227,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         // Result code is RESULT_OK only if the user selects an Image
-        if (resultCode == Activity.RESULT_OK)
+        if (resultCode == Activity.RESULT_OK){
             switch (requestCode){
                 case REQUEST_GALLERY_PHOTO:
                     //data.getData returns the content URI for the selected Image
@@ -211,6 +241,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     photo1.setImageURI(Uri.parse(cameraFilePath));
                     break;
             }
+            updateUI();
+        }
+
     }
 
 
@@ -244,11 +277,13 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     }
 
     private void retriveRealEstateAgents() {
-        propertyViewModel.getRealEstateAgent().observe(this, realEstateAgents -> {
-            String firstname = realEstateAgents.getFirstname();
-            String lastname = realEstateAgents.getLastname();
-            agentName.setText(getString(R.string.detail_property_real_estate_agent_text, firstname, lastname));
-        });
+        if (propertyViewModel.getRealEstateAgent() != null) {
+            propertyViewModel.getRealEstateAgent().observe(this, realEstateAgents -> {
+                String firstname = realEstateAgents.getFirstname();
+                String lastname = realEstateAgents.getLastname();
+                agentName.setText(getString(R.string.detail_property_real_estate_agent_text, firstname, lastname));
+            });
+        }
     }
 
     private void datePickerInit() {
@@ -304,10 +339,14 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
 
 
-        this.propertyViewModel.createProperty(newProperty);
+        if(ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext())!=0){
+            this.propertyViewModel.updateProperty(newProperty);
+            Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
+        }else{
+            this.propertyViewModel.createProperty(newProperty);
+            Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
+        }
 
-
-        Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation), Toast.LENGTH_SHORT).show();
         startMainActivity();
 
     }

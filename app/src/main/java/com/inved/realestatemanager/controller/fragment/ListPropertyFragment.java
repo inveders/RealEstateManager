@@ -110,16 +110,19 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public void clickOnCardView(long propertyId) {
 
         if(getActivity()!=null){
+
+            Log.d("debago"," 1. on click cardview : propertyId "+propertyId);
+            //We open activity if we are in portrait mode
+            Intent intent = new Intent(getContext(), DetailActivity.class);
+            intent.putExtra(PROPERTY_ID, propertyId);
+            startActivity(intent);
+
+            /**Ici on ouvre le fragment si on est en mode paysage*/
             Fragment detailFragment = new DetailPropertyFragment();
             Bundle bundle = new Bundle();
             bundle.putLong(PROPERTY_ID, propertyId);
             detailFragment.setArguments(bundle);
 
-            //We open activity if we are in portrait mode
-            Intent intent = new Intent(getContext(), DetailActivity.class);
-            startActivity(intent);
-
-            /**Ici on ouvre le fragment si on est en mode paysage*/
            /* FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.activity_main_frame_layout, detailFragment); // first the id of the frame layout which contains fragment
             transaction.addToBackStack(null);  // if written, this transaction will be added to backstack

@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.controller.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,11 +22,12 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
-import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.REAL_ESTATE_AGENT_ID;
@@ -33,6 +35,7 @@ import static com.inved.realestatemanager.controller.fragment.ListPropertyFragme
 public class CreateUpdatePropertyFragmentOne extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private CreateUpdateInterface callback;
+
 
     private PropertyViewModel propertyViewModel;
 
@@ -47,6 +50,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private EditText streetNameEditText;
     private EditText zipCodeEditText;
     private EditText townNameEditText;
+    private EditText countryEditText;
 
 
     private CheckBox schoolCheckBox;
@@ -62,11 +66,26 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private String numberBathroomsInProperty = "0";
     private String numberBedroomsInProperty = "0";
 
+    private double pricePropertyInDollar=0.0 ;
+    private double surfaceAreaProperty =0.0;
+    private String streetNumber=null ;
+    private String streetName=null ;
+    private String zipCode=null;
+    private String townProperty =null;
+    private String country=null;
+    private String pointOfInterest=null ;
+    private String addressCompl=null ;
+    private long realEstateAgentId =2;
+
+    private long propertyId;
+
+
+
     public interface CreateUpdateInterface {
         void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                String numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                               String pointOfInterest, String addressProperty, long realEstateAgentId);
+                               String pointOfInterest, String addressCompl, long realEstateAgentId,long propertyId);
 
     }
 
@@ -89,6 +108,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         streetNameEditText = v.findViewById(R.id.create_update_street_name_edittext);
         zipCodeEditText = v.findViewById(R.id.create_update_zip_code_edittext);
         townNameEditText = v.findViewById(R.id.create_update_town_name_edittext);
+        countryEditText = v.findViewById(R.id.create_update_country_name_edittext);
 
         schoolCheckBox = v.findViewById(R.id.create_update_checkbox_poi_schools);
         restaurantsCheckBox = v.findViewById(R.id.create_update_checkbox_poi_restaurants);
@@ -103,31 +123,102 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         numberBedroomSpinner.setOnItemSelectedListener(this);
         numberBathroomSpinner.setOnItemSelectedListener(this);
 
-
         this.configureViewModel();
 
+
+
+        if(ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext())!=0){
+            propertyId=ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext());
+            this.updateUIwithDataFromDatabase(propertyId);
+        }
+
+
         return v;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(),0);
+        //Log.d("debago","6. on detach fragment one "+propertyId);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateUIwithDataFromDatabase(long propertyId) {
+        propertyViewModel.getOneProperty(propertyId).observe(this,property -> {
+
+            priceEditText.setText(Double.toString(property.getPricePropertyInDollar()));
+            surfaceEditText.setText(Double.toString(property.getSurfaceAreaProperty()));
+            streetNumberEditText.setText(property.getStreetNumber());
+            streetNameEditText.setText(property.getStreetName());
+            zipCodeEditText.setText(property.getZipCode());
+            townNameEditText.setText(property.getTownProperty());
+            countryEditText.setText(property.getCountry());
+            splitPoiInCheckbox(property.getPointOfInterest());
+
+            typePropertySpinner.setSelection(getIndexSpinner(typePropertySpinner, property.getTypeProperty()));
+            numberRoomSpinner.setSelection(getIndexSpinner(numberRoomSpinner, property.getNumberRoomsInProperty()));
+            numberBedroomSpinner.setSelection(getIndexSpinner(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
+            numberBathroomSpinner.setSelection(getIndexSpinner(numberBathroomSpinner, property.getNumberBathroomsInProperty()));
+
+
+
+        });
+    }
+
+    //private method of your class
+    private int getIndexSpinner(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private void splitPoiInCheckbox(String propertyPointOfInterest) {
+
+        ArrayList<String> poiList = new ArrayList<>(Arrays.asList(propertyPointOfInterest.split(",")));
+
+        if(poiList.contains(getString(R.string.fullscreen_dialog__poi_school))){
+            schoolCheckBox.setChecked(true);
+        }
+        if(poiList.contains(getString(R.string.fullscreen_dialog__poi_restaurants))){
+            restaurantsCheckBox.setChecked(true);
+        }
+        if(poiList.contains(getString(R.string.fullscreen_dialog__poi_shops))){
+            shopsCheckBox.setChecked(true);
+        }
+        if(poiList.contains(getString(R.string.fullscreen_dialog_poi_tourist_attraction))){
+            touristAttractionCheckBox.setChecked(true);
+        }
+        if(poiList.contains(getString(R.string.fullscreen_dialog_poi_car_parks))){
+            carParksCheckBox.setChecked(true);
+        }
+        if(poiList.contains(getString(R.string.fullscreen_dialog_poi_oil_station))){
+            oilStationCheckBox.setChecked(true);
+        }
+
     }
 
     // Create a new property A TERMINER AVEC LES CONTROLES, SURTOUT SUR L'APPUI DU BOUTON, RAJOUTER LES CHAMPS OBLIGATOIRES, VOIR COMMENT PASSER A UNE AUTRE PAGE
     //VOIR QUE FAIRE DES CHECKBOX
     private void createProperty() {
 
-        double pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
-        double surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
-        String streetNumber = streetNumberEditText.getText().toString();
-        String streetName = streetNameEditText.getText().toString();
-        String zipCode = zipCodeEditText.getText().toString();
-        String townProperty = townNameEditText.getText().toString();
-        String country = townNameEditText.getText().toString();
-        String pointOfInterest = fillPoiCheckboxList();
-        String addressProperty = streetNumber + " " + streetName + " " + zipCode + " " + townProperty + "," + country;
-        long realEstateAgentId = 2; /**CHANGE AFTER*/
+        pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
+        surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
+        streetNumber = streetNumberEditText.getText().toString();
+        streetName = streetNameEditText.getText().toString();
+        zipCode = zipCodeEditText.getText().toString();
+        townProperty = townNameEditText.getText().toString();
+        country = townNameEditText.getText().toString();
+        pointOfInterest = fillPoiCheckboxList();
+        Log.d("debago","after next button,type property "+typeProperty);
 
-
-        Log.d("debago","callback before ");
         callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
-                pointOfInterest, addressProperty, realEstateAgentId);
+                pointOfInterest, addressCompl, realEstateAgentId,ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()));
 
         Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
         startSecondPage();
@@ -140,6 +231,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     }
 
+
+
     @Override
     public void onAttach(@NonNull Context context)
     {
@@ -149,6 +242,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         try
         {
             callback = (CreatePropertyActivity) context;
+            //dataPasser=(CreatePropertyActivity) context;
+
         }
         catch (ClassCastException e)
         {

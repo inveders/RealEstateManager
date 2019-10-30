@@ -1,6 +1,8 @@
 package com.inved.realestatemanager.controller.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,15 +15,24 @@ import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 
 import butterknife.OnClick;
 
-public class DetailActivity extends BaseActivity {
+import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
 
+
+public class DetailActivity extends BaseActivity  {
+
+    public static final String PROPERTY_ID_INTENT = "PROPERTY_ID_INTENT";
     private Toolbar toolbar;
+    private long propertyId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.configureToolbar();
         this.configureAndShowDetailFragment();
+
+        propertyId=getIntent().getLongExtra(PROPERTY_ID,0);
+
+
     }
 
     private void configureToolbar() {
@@ -70,6 +81,7 @@ public class DetailActivity extends BaseActivity {
     public void onClickUpdateButton() {
         // 7 - Create item after user clicked on button
         // GO ON THE UPDATE PROPERTY ACTIVITY
+        startCreatePropertyActivity();
     }
 
 
@@ -85,7 +97,7 @@ public class DetailActivity extends BaseActivity {
 
         final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
         updateProperty.setOnMenuItemClickListener(menuItem -> {
-            startUpdatePropertyActivity();
+            startCreatePropertyActivity();
 
             return true;
         });
@@ -96,7 +108,13 @@ public class DetailActivity extends BaseActivity {
         return true;
     }
 
-    private void startUpdatePropertyActivity() {
+    private void startCreatePropertyActivity() {
 
+        //We send data to the CreateProeprtyActivity
+        Intent intent = new Intent(this, CreatePropertyActivity.class);
+        intent.putExtra(PROPERTY_ID_INTENT,propertyId);
+        startActivity(intent);
     }
+
+
 }
