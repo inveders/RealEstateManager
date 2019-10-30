@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -50,7 +52,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private EditText streetNameEditText;
     private EditText zipCodeEditText;
     private EditText townNameEditText;
-    private EditText countryEditText;
+    private AutoCompleteTextView countryEditText;
 
 
     private CheckBox schoolCheckBox;
@@ -108,7 +110,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         streetNameEditText = v.findViewById(R.id.create_update_street_name_edittext);
         zipCodeEditText = v.findViewById(R.id.create_update_zip_code_edittext);
         townNameEditText = v.findViewById(R.id.create_update_town_name_edittext);
-        countryEditText = v.findViewById(R.id.create_update_country_name_edittext);
+        countryEditText = v.findViewById(R.id.create_update_country_name_autocompleteText);
 
         schoolCheckBox = v.findViewById(R.id.create_update_checkbox_poi_schools);
         restaurantsCheckBox = v.findViewById(R.id.create_update_checkbox_poi_restaurants);
@@ -116,6 +118,14 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         shopsCheckBox = v.findViewById(R.id.create_update_checkbox_poi_shops);
         touristAttractionCheckBox = v.findViewById(R.id.create_update_checkbox_poi_tourist_attraction);
         oilStationCheckBox = v.findViewById(R.id.create_update_checkbox_poi_oil_station);
+
+
+        // Get the string array
+        String[] countries = getResources().getStringArray(R.array.countries_array);
+        // Create the adapter and set it to the AutoCompleteTextView
+        ArrayAdapter<String> adapterCountry =
+                new ArrayAdapter<>(MainApplication.getInstance().getApplicationContext(), android.R.layout.simple_list_item_1, countries);
+        countryEditText.setAdapter(adapterCountry);
 
         nextButton.setOnClickListener(view -> createProperty());
         typePropertySpinner.setOnItemSelectedListener(this);
@@ -207,21 +217,43 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     //VOIR QUE FAIRE DES CHECKBOX
     private void createProperty() {
 
-        pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
-        surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
-        streetNumber = streetNumberEditText.getText().toString();
-        streetName = streetNameEditText.getText().toString();
-        zipCode = zipCodeEditText.getText().toString();
-        townProperty = townNameEditText.getText().toString();
-        country = townNameEditText.getText().toString();
-        pointOfInterest = fillPoiCheckboxList();
-        Log.d("debago","after next button,type property "+typeProperty);
+        if(streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999 )
+        {
+            streetNumberEditText.setError(getString(R.string.set_error_street_number));
+        }else if(priceEditText.getText().toString().trim().isEmpty()|| Double.parseDouble(priceEditText.getText().toString()) > 999999999.0){
+            priceEditText.setError(getString(R.string.set_error_surface_area));
+        }
+        else if(surfaceEditText.getText().toString().trim().isEmpty()|| Double.parseDouble(surfaceEditText.getText().toString()) > 1000000.0){
+            surfaceEditText.setError(getString(R.string.set_error_price));
+        }
+        else if(townNameEditText.getText().toString().trim().isEmpty()){
+            townNameEditText.setError(getString(R.string.set_error_town));
+        }
+        else if(zipCodeEditText.getText().toString().trim().isEmpty()){
+            zipCodeEditText.setError(getString(R.string.set_error_zip_code));
+        }
+        else if(streetNameEditText.getText().toString().trim().isEmpty()){
+            streetNameEditText.setError(getString(R.string.set_error_street_name));
+        }
+        else{
+            pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
+            surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
+            streetNumber = streetNumberEditText.getText().toString();
+            streetName = streetNameEditText.getText().toString();
+            zipCode = zipCodeEditText.getText().toString();
+            townProperty = townNameEditText.getText().toString();
+            country = townNameEditText.getText().toString();
+            pointOfInterest = fillPoiCheckboxList();
+            Log.d("debago","after next button,type property "+typeProperty);
 
-        callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
-                pointOfInterest, addressCompl, realEstateAgentId,ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()));
+            callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
+                    pointOfInterest, addressCompl, realEstateAgentId,ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()));
 
-        Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
-        startSecondPage();
+            Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
+            startSecondPage();
+        }
+
+
 
     }
 

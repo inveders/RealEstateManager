@@ -3,11 +3,14 @@ package com.inved.realestatemanager.controller.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
@@ -37,11 +43,14 @@ import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentTwo.*;
 import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.REAL_ESTATE_AGENT_ID;
 
 @RuntimePermissions
@@ -92,6 +101,18 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
     private String cameraFilePath;
 
+    String selectedDate;
+    public static final int REQUEST_CODE_DATE_PICKER = 11; // Used to identify the result
+
+    private OnFragmentInteractionListener mListener;
+
+    Calendar cal = Calendar.getInstance(TimeZone.getDefault()); // Get current date
+
+    public static CreateUpdatePropertyFragmentTwo newInstance() {
+        CreateUpdatePropertyFragmentTwo fragment = new CreateUpdatePropertyFragmentTwo();
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -115,19 +136,18 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
         Button addPhotoButton = v.findViewById(R.id.activity_create_update_add_photo_button);
 
-
-
         addPhotoButton.setOnClickListener(view -> selectImage());
-
-        if(ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext())!=0){
-            propertyId=ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext());
-            this.updateUIwithDataFromDatabase(propertyId);
-        }
 
         this.updateUI();
         this.configureViewModel();
         this.retriveRealEstateAgents();
         this.datePickerInit();
+
+        if(ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext())!=0){
+            propertyId=ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext());
+            Log.d("debago","prop "+propertyId);
+            this.updateUIwithDataFromDatabase(propertyId);
+        }
 
 
         return v;
@@ -240,9 +260,16 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                 case REQUEST_CAMERA_PHOTO:
                     photo1.setImageURI(Uri.parse(cameraFilePath));
                     break;
+                case REQUEST_CODE_DATE_PICKER:
+                    // get date from string
+                    selectedDate = data.getStringExtra("selectedDate");
+                    // set the value of the editText
+                    dateOfEntry.setText(selectedDate);
+                    break;
             }
             updateUI();
         }
+
 
     }
 
@@ -294,10 +321,43 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
     public void showDatePickerDialog() {
 
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "DatePicker");
+        if(getActivity()!=null){
+            // get fragment manager so we can launch from fragment
+            final FragmentManager fm = getActivity().getSupportFragmentManager();
+            AppCompatDialogFragment newFragment = new DatePickerFragment();
+            // set the targetFragment to receive the results, specifying the request code
+
+            newFragment.setTargetFragment(CreateUpdatePropertyFragmentTwo.this, REQUEST_CODE_DATE_PICKER);
+            // show the datePicker
+            newFragment.show(fm, "datePicker");
+        }
 
     }
+
+   /* @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }*/
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(),0);
+        //Log.d("debago","6. on detach fragment one "+propertyId);
+    }
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+
 
 
     private void finishToCreateProperty() {

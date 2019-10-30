@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -12,8 +12,27 @@
     <!-- FullScreen Dialog -->
     <style name="FullscreenDialogTheme" parent="Theme.AppCompat.DayNight.DialogWhenLarge">
        <!-- <item name="android:statusBarColor">@color/colorPrimary</item>-->
-        <item name="windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
+    </style>
+
+    <!-- Date Picker Dialog -->
+    <style name="MyDatePickerStyle" parent="AppTheme" tools:targetApi="lollipop">
+        <item name="android:headerBackground">@color/colorPrimary</item>
+        <item name="android:calendarTextColor">@color/colorPrimaryDark</item>
+        <item name="android:dayOfWeekBackground">@color/textDatePicker</item>
+        <item name="android:yearListSelectorColor">@color/textDatePicker</item>
+        <item name="android:datePickerMode">calendar</item>
+        <item name="android:minDate">01/01/2000</item>
+    </style>
+
+    <!-- EditText -->
+    <style name="EditTextStyle" parent="AppTheme" tools:targetApi="lollipop">
+        <item name="android:headerBackground">@color/colorPrimary</item>
+        <item name="android:calendarTextColor">@color/colorPrimaryDark</item>
+        <item name="android:dayOfWeekBackground">@color/textDatePicker</item>
+        <item name="android:yearListSelectorColor">@color/textDatePicker</item>
+        <item name="android:datePickerMode">calendar</item>
+        <item name="android:minDate">01/01/2000</item>
     </style>
 
 </resources>
