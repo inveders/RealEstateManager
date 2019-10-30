@@ -34,15 +34,18 @@ public class DetailPropertyFragment extends Fragment {
     private TextView typeProperty;
     private TextView pricePropertyInDollar;
     private TextView surfaceAreaProperty;
+    private TextView streetNumber;
+    private TextView streetName;
+    private TextView complAddress;
     private TextView townProperty;
+    private TextView zipCode;
+    private TextView country;
 
     private TextView numberRoomsInProperty;
     private TextView numberBathroomsInProperty;
     private TextView numberBedroomsInProperty;
     private TextView fullDescriptionProperty;
     private ImageSwitcher imageSwitcher;
-
-    private TextView addressProperty;
 
     private TextView pointsOfInterestNearProperty;
     private TextView statusProperty;
@@ -60,16 +63,20 @@ public class DetailPropertyFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_detail_property, container, false);
 
-        typeProperty = mView.findViewById(R.id.fragment_list_property_item_type);
-        pricePropertyInDollar = mView.findViewById(R.id.fragment_list_property_item_price);
+        typeProperty = mView.findViewById(R.id.fragment_detail_property_type_text);
+        pricePropertyInDollar = mView.findViewById(R.id.fragment_detail_property_price_text);
         surfaceAreaProperty = mView.findViewById(R.id.fragment_detail_property_surface_area_text);
         numberRoomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_room_text);
         numberBedroomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_bedroom_text);
         numberBathroomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_bathroom_text);
         fullDescriptionProperty = mView.findViewById(R.id.fragment_detail_property_description_text);
         imageSwitcher = mView.findViewById(R.id.fragment_detail_property_image_switcher);
-        addressProperty = mView.findViewById(R.id.fragment_detail_property_location_text);
-        townProperty = mView.findViewById(R.id.fragment_list_property_item_city);
+        streetNumber=mView.findViewById(R.id.fragment_detail_property_street_number_text);
+        streetName=mView.findViewById(R.id.fragment_detail_property_street_name_text);
+        complAddress=mView.findViewById(R.id.fragment_detail_property_complement_address_text);
+        townProperty=mView.findViewById(R.id.fragment_detail_property_town_text);
+        zipCode=mView.findViewById(R.id.fragment_detail_property_zip_code_text);
+        country=mView.findViewById(R.id.fragment_detail_property_country_text);
         pointsOfInterestNearProperty = mView.findViewById(R.id.fragment_detail_property_points_of_interest_text);
         statusProperty = mView.findViewById(R.id.fragment_detail_property_status_text);
         dateOfEntryOnMarketForProperty = mView.findViewById(R.id.fragment_detail_property_date_of_entry_on_market_text);
@@ -97,7 +104,7 @@ public class DetailPropertyFragment extends Fragment {
 
     private void updateWithProperty(Property property) {
 
-        Log.d("debago", "city :" + property.getTownProperty() + " type" + property.getTownProperty());
+
         //TYPE PROPERTY
         if (property.getTypeProperty() != null) {
             this.typeProperty.setText(property.getTypeProperty());
@@ -112,11 +119,42 @@ public class DetailPropertyFragment extends Fragment {
             this.pricePropertyInDollar.setText(MainApplication.getResourses().getString(R.string.list_property_no_price_indicated));
         }
 
-        //TOWN PROPERTY
+        //ADDRESS PROPERTY
+
+        if (property.getStreetNumber() != null) {
+            this.streetNumber.setText(property.getStreetNumber());
+        } else {
+            this.streetNumber.setText(MainApplication.getResourses().getString(R.string.none));
+        }
+
+        if (property.getStreetName() != null) {
+            this.streetName.setText(property.getStreetName());
+        } else {
+            this.streetName.setText(MainApplication.getResourses().getString(R.string.none));
+        }
+
+        if (property.getAddressProperty() != null) {
+            this.complAddress.setText(property.getAddressProperty());
+        } else {
+            this.complAddress.setText(MainApplication.getResourses().getString(R.string.none));
+        }
+
         if (property.getTownProperty() != null) {
-            this.townProperty.setText(String.valueOf(property.getTypeProperty()));
+            this.townProperty.setText(property.getTownProperty());
         } else {
             this.townProperty.setText(MainApplication.getResourses().getString(R.string.none));
+        }
+
+        if (property.getZipCode() != null) {
+            this.zipCode.setText(property.getZipCode());
+        } else {
+            this.zipCode.setText(MainApplication.getResourses().getString(R.string.none));
+        }
+
+        if (property.getCountry() != null) {
+            this.country.setText(property.getCountry());
+        } else {
+            this.country.setText(MainApplication.getResourses().getString(R.string.none));
         }
 
 
@@ -173,8 +211,11 @@ public class DetailPropertyFragment extends Fragment {
 
         }
 
-        if(myImages.get(0)!=null){
+        Log.d("debago", "myImages :" + myImages.size());
+        if(myImages.size()!=0){
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
+        }else{
+            imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_round);
         }
 
 
@@ -197,13 +238,6 @@ public class DetailPropertyFragment extends Fragment {
         this.numberRoomsInProperty.setText(String.valueOf(property.getNumberRoomsInProperty()));
         this.numberBathroomsInProperty.setText(String.valueOf(property.getNumberBathroomsInProperty()));
         this.numberBedroomsInProperty.setText(String.valueOf(property.getNumberBedroomsInProperty()));
-
-        //ADDRESS PROPERTY
-        if (property.getAddressProperty() != null) {
-            this.addressProperty.setText(property.getAddressProperty());
-        } else {
-            this.addressProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }
 
         //STATUS PROPERTY
         if (property.getStatusProperty() != null) {
@@ -233,16 +267,18 @@ public class DetailPropertyFragment extends Fragment {
 
     // 3 - Get Current Agent
     private void getCurrentAgent() {
-        this.propertyViewModel.getRealEstateAgent().observe(this,realEstateAgents -> {
-            String firstname = realEstateAgents.getFirstname();
-            String lastname = realEstateAgents.getLastname();
-            //REAL ESTATE AGENT
-            if (firstname != null) {
-                this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text,firstname,lastname));
-            } else {
-                this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.none));
-            }
-        });
+        if (this.propertyViewModel.getRealEstateAgent() != null) {
+            this.propertyViewModel.getRealEstateAgent().observe(this,realEstateAgents -> {
+                String firstname = realEstateAgents.getFirstname();
+                String lastname = realEstateAgents.getLastname();
+                //REAL ESTATE AGENT
+                if (firstname != null) {
+                    this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text,firstname,lastname));
+                } else {
+                    this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.none));
+                }
+            });
+        }
     }
 
 

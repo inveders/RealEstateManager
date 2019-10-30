@@ -114,8 +114,9 @@
     <string name="create_update_by_points_of_interest">Points of Interests</string>
     <string name="create_update_by_date_entry">Date entry </string>
     <string name="create_update_by_date_sale">Date sale</string>
-    <string name="create_update_by_street_number">Street number: </string>
+    <string name="create_update_by_street_number">St nb: </string>
     <string name="create_update_by_street_name">Street name: </string>
+    <string name="create_update_by_compl_address">Appt 6/7 </string>
     <string name="create_update_by_zip_code">ZIP code: </string>
     <string name="create_update_by_town_name">Town: </string>
     <string name="create_update_by_country_name">Country: </string>
