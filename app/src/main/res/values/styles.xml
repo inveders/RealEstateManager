@@ -15,24 +15,56 @@
         <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
     </style>
 
-    <!-- Date Picker Dialog -->
-    <style name="MyDatePickerStyle" parent="AppTheme" tools:targetApi="lollipop">
-        <item name="android:headerBackground">@color/colorPrimary</item>
-        <item name="android:calendarTextColor">@color/colorPrimaryDark</item>
-        <item name="android:dayOfWeekBackground">@color/textDatePicker</item>
-        <item name="android:yearListSelectorColor">@color/textDatePicker</item>
-        <item name="android:datePickerMode">calendar</item>
-        <item name="android:minDate">01/01/2000</item>
+    <!-- EditText Title-->
+    <style name="TextviewStyle" parent="AppTheme" tools:targetApi="lollipop">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+
     </style>
 
-    <!-- EditText -->
-    <style name="EditTextStyle" parent="AppTheme" tools:targetApi="lollipop">
-        <item name="android:headerBackground">@color/colorPrimary</item>
-        <item name="android:calendarTextColor">@color/colorPrimaryDark</item>
-        <item name="android:dayOfWeekBackground">@color/textDatePicker</item>
-        <item name="android:yearListSelectorColor">@color/textDatePicker</item>
-        <item name="android:datePickerMode">calendar</item>
-        <item name="android:minDate">01/01/2000</item>
+    <!-- EditText text-->
+    <style name="EditTextStyleText" parent="AppTheme" tools:targetApi="lollipop">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:background">@drawable/edit_text_design</item>
+        <item name="android:textColor">@android:color/black</item>
+
+    </style>
+
+    <!-- EditText text-->
+    <style name="EditTextStylewithoutText" parent="AppTheme" tools:targetApi="lollipop">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@android:color/black</item>
+
+    </style>
+
+    <!-- Button style-->
+    <style name="ButtonStyle" parent="AppTheme">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/border_button</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">150sp</item>
+        <item name="android:padding">10sp</item>
+
+    </style>
+
+    <!-- Button add photo-->
+    <style name="ButtonIntermediateStyle" parent="AppTheme">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/border_button_aubergine</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">100sp</item>
+        <item name="android:padding">10sp</item>
+
+
     </style>
 
 </resources>

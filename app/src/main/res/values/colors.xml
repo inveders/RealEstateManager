@@ -6,5 +6,6 @@
     <color name="colorAccent">#ffffff</color>
     <color name="textOnPrimary">#ffffff</color>
     <color name="textDatePicker">#F44336</color>
+    <color name="colorAubergine">#370028</color>
 
 </resources>

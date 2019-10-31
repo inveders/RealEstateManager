@@ -18,6 +18,7 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical"
         >
 
@@ -31,8 +32,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp"
             android:text="@string/fullscreen_dialog__by_type_of_property"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,8 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
             android:text="@string/create_update_by_price"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_type_property_text" />
 
@@ -62,7 +61,8 @@
             android:layout_width="100sp"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toRightOf="@id/create_update_surface_text"
-            app:layout_constraintTop_toTopOf="@id/create_update_price_text"
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_price_text"
+            style="@style/EditTextStyleText"
             android:inputType="numberDecimal"/>
 
         <!-- SURFACE -->
@@ -72,8 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_large_margin"
             android:text="@string/create_update_by_surface"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_price_text" />
 
@@ -83,8 +82,9 @@
             android:layout_width="100sp"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toRightOf="@id/create_update_surface_text"
-            app:layout_constraintTop_toTopOf="@id/create_update_surface_text"
-            android:inputType="numberDecimal"/>
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_surface_text"
+            android:inputType="numberDecimal"
+            style="@style/EditTextStyleText"/>
 
 
         <!--LOCALISATION-->
@@ -95,8 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_large_margin"
             android:text="@string/create_update_by_street_number"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_surface_text" />
 
@@ -106,8 +105,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_street_number_text"
-            android:inputType="number"/>
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_number_text"
+            android:inputType="number"
+            style="@style/EditTextStyleText"/>
 
 
         <TextView
@@ -116,8 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
             android:text="@string/create_update_by_street_name"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_street_number_text" />
 
@@ -127,8 +126,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_street_name_text"
-            android:inputType="text"/>
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_name_text"
+            android:inputType="text"
+            style="@style/EditTextStyleText"/>
 
 
         <TextView
@@ -137,8 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
             android:text="@string/create_update_by_zip_code"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_street_name_text"
             android:inputType="number"/>
@@ -149,7 +148,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_zip_code_text" />
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_zip_code_text"
+            style="@style/EditTextStyleText"/>
 
 
         <TextView
@@ -158,8 +158,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
             android:text="@string/create_update_by_town_name"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_zip_code_text" />
 
@@ -169,8 +168,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_town_name_text"
-            android:inputType="text"/>
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_town_name_text"
+            android:inputType="text"
+            style="@style/EditTextStyleText"/>
 
 
         <TextView
@@ -179,8 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
             android:text="@string/create_update_by_country_name"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_town_name_text" />
 
@@ -190,8 +189,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_country_name_text"
-            tools:ignore="LabelFor" />
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_country_name_text"
+            tools:ignore="LabelFor"
+            style="@style/EditTextStyleText"/>
 
         <!--POINTS OF INTERESTS-->
 
@@ -201,8 +201,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_large_margin"
             android:text="@string/fullscreen_dialog__by_points_of_interest"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_number_bathroom_text" />
 
@@ -215,7 +214,7 @@
             android:text="@string/fullscreen_dialog__poi_school"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_poi_text"
-
+            style="@style/EditTextStylewithoutText"
             />
 
         <CheckBox
@@ -227,7 +226,7 @@
             android:text="@string/fullscreen_dialog__poi_restaurants"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_schools"
-
+            style="@style/EditTextStylewithoutText"
             />
 
         <CheckBox
@@ -239,7 +238,7 @@
             android:text="@string/fullscreen_dialog_poi_car_parks"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_restaurants"
-
+            style="@style/EditTextStylewithoutText"
             />
 
         <CheckBox
@@ -250,7 +249,8 @@
             android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog__poi_shops"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_checkbox_poi_schools" />
+            app:layout_constraintTop_toTopOf="@id/create_update_checkbox_poi_schools"
+            style="@style/EditTextStylewithoutText"/>
 
         <CheckBox
             android:id="@+id/create_update_checkbox_poi_tourist_attraction"
@@ -260,7 +260,8 @@
             android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog_poi_tourist_attraction"
             app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_shops"
-            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_shops" />
+            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_shops"
+            style="@style/EditTextStylewithoutText"/>
 
         <CheckBox
             android:id="@+id/create_update_checkbox_poi_oil_station"
@@ -270,7 +271,8 @@
             android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog_poi_oil_station"
             app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_shops"
-            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_tourist_attraction" />
+            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_tourist_attraction"
+            style="@style/EditTextStylewithoutText"/>
 
 
         <!-- NUMBER ROOMS -->
@@ -281,8 +283,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_large_margin"
             android:text="@string/fullscreen_dialog_by_number_of_rooms"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_country_name_text" />
 
@@ -293,7 +294,8 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:entries="@array/numberRooms"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_number_room_text" />
+            app:layout_constraintTop_toTopOf="@id/create_update_number_room_text"
+            style="@style/EditTextStylewithoutText"/>
 
 
         <!-- NUMBER BEDROOM -->
@@ -305,8 +307,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp"
             android:text="@string/fullscreen_dialog_by_number_of_bedroom"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/create_update_number_room_text" />
 
@@ -318,7 +319,8 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:entries="@array/numberBedrooms"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_number_bedroom_text" />
+            app:layout_constraintTop_toTopOf="@id/create_update_number_bedroom_text"
+            style="@style/EditTextStylewithoutText"/>
 
 
         <!-- NUMBER BATHROOM -->
@@ -329,8 +331,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/fullscreen_dialog_by_number_of_bathroom"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_number_bedroom_text" />
 
@@ -341,19 +342,17 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:entries="@array/numberBathrooms"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/create_update_number_bathroom_text" />
+            app:layout_constraintTop_toTopOf="@id/create_update_number_bathroom_text"
+            style="@style/EditTextStylewithoutText"/>
 
         <Button
             android:id="@+id/create_update_next_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="@dimen/default_large_margin"
-            android:gravity="center"
             android:text="@string/create_update_next_button"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_update_checkbox_poi_car_parks" />
+            app:layout_constraintTop_toBottomOf="@id/create_update_checkbox_poi_car_parks"
+            style="@style/ButtonStyle"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
