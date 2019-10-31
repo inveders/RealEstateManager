@@ -65,6 +65,8 @@ public class PropertyViewModel extends ViewModel {
         return propertyDataSource.getOneItem(propertyId);
     }
 
+
+
     public void createProperty(Property property) {
         executor.execute(() -> propertyDataSource.createItem(property));
     }
@@ -75,5 +77,14 @@ public class PropertyViewModel extends ViewModel {
 
     public void updateProperty(Property property) {
         executor.execute(() -> propertyDataSource.updateItem(property));
+    }
+
+    // -------------
+    // FOR SEARCH
+    // -------------
+
+    public LiveData<List<Property>> searchProperty(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
+                                                   int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
+        return propertyDataSource.searchProperty(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId);
     }
 }

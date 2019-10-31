@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="multiSliderStyle">@style/Widget.MultiSlider</item>
     </style>
 
 
@@ -65,6 +66,9 @@
         <item name="android:padding">10sp</item>
 
 
+    </style>
+
+    <style name="Widget.MultiSlider" parent="android:Widget">
     </style>
 
 </resources>

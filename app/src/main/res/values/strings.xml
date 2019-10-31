@@ -75,12 +75,13 @@
     <string name="fullscreen_dialog__by_points_of_interest">Points of Interests</string>
     <string name="fullscreen_dialog__by_date_entry">Date entry </string>
     <string name="fullscreen_dialog__by_date_sale">Date sale</string>
-    <string name="fullscreen_dialog__by_localisation">Near from (ZIP code): </string>
-    <string name="fullscreen_dialog_by_number_of_photos">Number of photos</string>
+    <string name="fullscreen_dialog__by_localisation">Town: </string>
+    <string name="fullscreen_dialog__by_country">Country: </string>
+    <string name="fullscreen_dialog_by_min_bedroom_min">Min bedroom</string>
     <string name="fullscreen_dialog__by_type_of_property">Type of property : </string>
-    <string name="fullscreen_dialog_by_number_of_rooms">Number of rooms</string>
-    <string name="fullscreen_dialog_by_number_of_bathroom">Number of bathroom</string>
-    <string name="fullscreen_dialog_by_number_of_bedroom">Number of bedroom</string>
+    <string name="fullscreen_dialog_by_status">Status</string>
+    <string name="fullscreen_dialog_by_agent">Agent</string>
+    <string name="fullscreen_dialog_by_number_of_bedroom_max">Max bedroom</string>
 
     <string name="fullscreen_dialog__value">VALUE</string>
     <string name="fullscreen_dialog__value_in_meter" translatable="false">%d m</string>
@@ -101,8 +102,8 @@
     <string name="typeProperty_house">House</string>
     <string name="typeProperty_room">Room</string>
 
-    <string name="select_type_property">--Select type property--</string>
-    <string name="select_number_photos">--Select number of photos--</string>
+    <string name="select_type_property">--Type property--</string>
+    <string name="select_status">-Status-</string>
     <string name="select_number_rooms">0</string>
     <string name="select_number_bedrooms">0</string>
     <string name="select_number_bathrooms">0</string>

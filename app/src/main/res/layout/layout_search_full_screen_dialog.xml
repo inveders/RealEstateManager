@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_layout"
     android:orientation="vertical">
 
     <!-- PRICE SURFACE POINTS OF INTEREST DATE ENTRY DATE SALE LOCALISATION NUMBER PHOTOS TYPE ROOM BATH BED -->
+  <!-- double maxSurface,
+    double maxPrice-->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -44,7 +51,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/fullscreen_dialog_action"
+                android:id="@+id/fullscreen_dialog_launch_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -64,6 +71,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:fillViewport="true">
 
 
@@ -86,7 +94,8 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/TextviewStyle"/>
 
             <Spinner
                 android:id="@+id/dialog_spinner_type_property"
@@ -96,6 +105,7 @@
                 app:layout_constraintLeft_toRightOf="@id/dialog_type_property_text"
                 android:layout_marginStart="@dimen/default_margin"
                 android:entries="@array/typeProperty"
+                style="@style/EditTextStylewithoutText"
                 />
 
             <!-- PRICE LEVEL -->
@@ -109,7 +119,8 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_type_property_text" />
+                app:layout_constraintTop_toBottomOf="@id/dialog_type_property_text"
+                style="@style/TextviewStyle"/>
 
             <TextView
                 android:id="@+id/dialog_price_left_value"
@@ -121,7 +132,8 @@
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/dialog_price_text"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                style="@style/EditTextStylewithoutText"/>
 
             <TextView
                 android:id="@+id/dialog_price_right_value"
@@ -132,18 +144,24 @@
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/dialog_price_text"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/EditTextStylewithoutText"/>
 
-            <com.jaygoo.widget.RangeSeekBar
+            <io.apptik.widget.MultiSlider
                 android:id="@+id/dialog_seekbar_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"
-                android:indeterminate="false"
-                android:max="20"
-                android:progress="0"
+
+                app:range1Color="@android:color/holo_orange_dark"
+                app:rangeColor="@color/colorPrimaryDark"
+                app:thumbColor="@color/colorPrimaryDark"
+                app:trackColor="@android:color/holo_orange_dark"
+                app:thumbNumber="2"
+                app:stepsThumbsApart="5"
+                app:drawThumbsApart="true"
                 app:layout_constraintTop_toBottomOf="@id/dialog_price_text"
-                app:rsb_mode="range" />
+                />
 
 
             <!-- SURFACE -->
@@ -156,7 +174,8 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_seekbar_price" />
+                app:layout_constraintTop_toBottomOf="@id/dialog_seekbar_price"
+                style="@style/TextviewStyle"/>
 
             <TextView
                 android:id="@+id/dialog_surface_left_value"
@@ -168,7 +187,8 @@
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/dialog_surface_text"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                style="@style/EditTextStylewithoutText"/>
 
             <TextView
                 android:id="@+id/dialog_surface_right_value"
@@ -179,21 +199,27 @@
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/dialog_surface_text"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/EditTextStylewithoutText"/>
 
-            <com.jaygoo.widget.RangeSeekBar
+            <io.apptik.widget.MultiSlider
                 android:id="@+id/dialog_seekbar_surface"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"
-                android:indeterminate="false"
-                android:max="20"
-                android:progress="0"
+                app:range1Color="@android:color/holo_orange_dark"
+                app:rangeColor="@color/colorPrimaryDark"
+                app:thumbColor="@color/colorPrimaryDark"
+                app:trackColor="@android:color/holo_orange_dark"
+                app:thumbNumber="2"
+                app:stepsThumbsApart="5"
+                app:drawThumbsApart="true"
+
                 app:layout_constraintTop_toBottomOf="@id/dialog_surface_text"
-                app:rsb_mode="range" />
+                 />
 
 
-            <!--NEAR FROM-->
+            <!--TOWN-->
 
             <TextView
                 android:id="@+id/dialog_localisation_text"
@@ -205,240 +231,147 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_seekbar_surface" />
+                app:layout_constraintTop_toBottomOf="@id/dialog_seekbar_surface"
+                style="@style/TextviewStyle"/>
 
-            <EditText
+            <AutoCompleteTextView
+                android:id="@+id/dialog_town_autocompleteText"
                 android:layout_width="200sp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
                 app:layout_constraintTop_toTopOf="@id/dialog_localisation_text"
-                app:layout_constraintLeft_toRightOf="@id/dialog_localisation_text"/>
+                app:layout_constraintLeft_toRightOf="@id/dialog_localisation_text"
+                tools:ignore="LabelFor"
+                style="@style/EditTextStyleText"/>
 
-            <!--POINTS OF INTERESTS-->
 
+            <!--COUNTRY-->
             <TextView
-                android:id="@+id/dialog_poi_text"
+                android:id="@+id/dialog_country_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="30dp"
-                android:text="@string/fullscreen_dialog__by_points_of_interest"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/fullscreen_dialog__by_country"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_localisation_text" />
+                app:layout_constraintTop_toBottomOf="@id/dialog_localisation_text"
+                style="@style/TextviewStyle"/>
 
-
-            <CheckBox
-                android:id="@+id/dialog_checkbox_poi_schools"
-                android:layout_width="wrap_content"
+            <AutoCompleteTextView
+                android:id="@+id/dialog_country_autocompleteText"
+                android:layout_width="200sp"
                 android:layout_height="wrap_content"
-                android:text="@string/fullscreen_dialog__poi_school"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_poi_text"
-                android:onClick="onCheckboxClicked"
+                android:layout_marginEnd="@dimen/default_margin"
+                app:layout_constraintLeft_toRightOf="@id/dialog_country_text"
+                app:layout_constraintBaseline_toBaselineOf="@id/dialog_country_text"
+                tools:ignore="LabelFor"
+                style="@style/EditTextStyleText"/>
 
-                />
 
-            <CheckBox
-                android:id="@+id/dialog_checkbox_poi_restaurants"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fullscreen_dialog__poi_restaurants"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_checkbox_poi_schools"
-                android:layout_marginTop="10dp"
-                android:onClick="onCheckboxClicked"
-
-                />
-
-            <CheckBox
-                android:id="@+id/dialog_checkbox_poi_car_parks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fullscreen_dialog_poi_car_parks"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_checkbox_poi_restaurants"
-                android:layout_marginTop="10dp"
-                android:onClick="onCheckboxClicked"
-
-                />
-
-            <CheckBox
-                android:id="@+id/dialog_checkbox_poi_shops"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fullscreen_dialog__poi_shops"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@id/dialog_checkbox_poi_schools"
-                android:layout_marginStart="200dp"
-                android:onClick="onCheckboxClicked"
-                />
-
-            <CheckBox
-                android:id="@+id/dialog_checkbox_poi_tourist_attraction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fullscreen_dialog_poi_tourist_attraction"
-                app:layout_constraintLeft_toLeftOf="@id/dialog_checkbox_poi_shops"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_checkbox_poi_shops"
-                android:layout_marginTop="10dp"
-                android:onClick="onCheckboxClicked"
-                />
-
-            <CheckBox
-                android:id="@+id/dialog_checkbox_poi_oil_station"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fullscreen_dialog_poi_oil_station"
-                app:layout_constraintLeft_toLeftOf="@id/dialog_checkbox_poi_shops"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_checkbox_poi_tourist_attraction"
-                android:layout_marginTop="10dp"
-                android:onClick="onCheckboxClicked"
-                />
-
-            <!-- NUMBER PHOTOS -->
+            <!-- BEDROOM MIN/MAX -->
 
             <TextView
-                android:id="@+id/dialog_number_photo_text"
+                android:id="@+id/dialog_number_min_bedroom_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp"
-                android:text="@string/fullscreen_dialog_by_number_of_photos"
+                android:text="@string/fullscreen_dialog_by_min_bedroom_min"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_checkbox_poi_car_parks" />
+                app:layout_constraintTop_toBottomOf="@id/dialog_country_text"
+                style="@style/TextviewStyle"/>
 
             <Spinner
-                android:id="@+id/dialog_spinner_number_photos"
+                android:id="@+id/dialog_spinner_number_bedroom_min"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/dialog_number_photo_text"
+                app:layout_constraintTop_toBottomOf="@id/dialog_number_min_bedroom_text"
                 android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="@dimen/default_margin"
-                android:entries="@array/numberPhotos"/>
+                android:entries="@array/numberBedrooms"
+                style="@style/EditTextStylewithoutText"/>
 
-
-
-            <!-- NUMBER ROOMS -->
 
             <TextView
-                android:id="@+id/dialog_number_room_text"
+                android:id="@+id/dialog_number_bedroom_max"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fullscreen_dialog_by_number_of_rooms"
+                android:text="@string/fullscreen_dialog_by_number_of_bedroom_max"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
-                app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_number_rooms"
-                app:layout_constraintTop_toTopOf="@id/dialog_number_photo_text" />
+                app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_number_bedroom_max"
+                app:layout_constraintTop_toTopOf="@id/dialog_number_min_bedroom_text"
+                style="@style/TextviewStyle"/>
 
             <Spinner
-                android:id="@+id/dialog_spinner_number_rooms"
+                android:id="@+id/dialog_spinner_number_bedroom_max"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/dialog_spinner_number_photos"
+                app:layout_constraintTop_toTopOf="@id/dialog_spinner_number_bedroom_min"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginEnd="40sp"
-                android:entries="@array/numberRooms"/>
+                android:entries="@array/numberBedrooms"
+                style="@style/EditTextStylewithoutText"/>
 
 
 
-            <!-- NUMBER BEDROOM -->
+            <!-- STATUS -->
 
             <TextView
-                android:id="@+id/dialog_number_bedroom_text"
+                android:id="@+id/dialog_status_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp"
-                android:text="@string/fullscreen_dialog_by_number_of_bedroom"
+                android:text="@string/fullscreen_dialog_by_status"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_spinner_number_photos" />
+                app:layout_constraintTop_toBottomOf="@id/dialog_spinner_number_bedroom_min"
+                style="@style/TextviewStyle"/>
 
             <Spinner
-                android:id="@+id/dialog_spinner_number_bedroom"
+                android:id="@+id/dialog_spinner_status"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/dialog_number_bedroom_text"
+                app:layout_constraintTop_toBottomOf="@id/dialog_status_text"
                 android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="@dimen/default_margin"
-                android:entries="@array/numberBedrooms"/>
+                android:entries="@array/status"
+                style="@style/EditTextStylewithoutText"/>
 
 
 
-            <!-- NUMBER BATHROOM -->
+            <!-- AGENT NAME -->
 
             <TextView
-                android:id="@+id/dialog_number_bathroom_text"
+                android:id="@+id/dialog_agent_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/fullscreen_dialog_by_number_of_bathroom"
+                android:text="@string/fullscreen_dialog_by_agent"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
-                app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_number_rooms"
-                app:layout_constraintTop_toBottomOf="@id/dialog_spinner_number_photos" />
+                app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_number_bedroom_max"
+                app:layout_constraintTop_toBottomOf="@id/dialog_spinner_number_bedroom_min"
+                style="@style/TextviewStyle"/>
 
             <Spinner
-                android:id="@+id/dialog_spinner_number_bathrooms"
+                android:id="@+id/dialog_spinner_agent_name"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/dialog_spinner_number_bedroom"
+                app:layout_constraintTop_toTopOf="@id/dialog_spinner_status"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginEnd="40sp"
-                android:entries="@array/numberBathrooms"/>
+                style="@style/EditTextStylewithoutText"
+                />
 
-
-            <!-- DATE OF ENTRY -->
-
-            <TextView
-                android:id="@+id/dialog_date_entry_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp"
-                android:text="@string/fullscreen_dialog__by_date_entry"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_spinner_number_bedroom" />
-
-            <Spinner
-                android:id="@+id/dialog_spinner_date_entry"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/dialog_date_entry_text"
-                android:layout_marginTop="@dimen/default_margin"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginStart="@dimen/default_margin"/>
-
-
-
-            <!-- DATE SALE -->
-
-            <TextView
-                android:id="@+id/dialog_date_sale_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/fullscreen_dialog__by_date_sale"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
-                app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_number_rooms"
-                app:layout_constraintTop_toBottomOf="@id/dialog_spinner_number_bedroom" />
-
-            <Spinner
-                android:id="@+id/dialog_spinner_date_sale"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/dialog_spinner_date_entry"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginEnd="40sp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

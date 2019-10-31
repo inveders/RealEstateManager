@@ -101,7 +101,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
     @Override
     public void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
-                                  String numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
+                                 int numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                   String streetNumber, String streetName, String zipCode, String townProperty, String country,
                                   String pointOfInterest, String addressProperty, long realEstateAgentId,long propertyId) {
 
@@ -111,7 +111,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         args.putString("typeProperty", typeProperty);
         args.putString("numberRoomsInProperty", numberRoomsInProperty);
         args.putString("numberBathroomsInProperty", numberBathroomsInProperty);
-        args.putString("numberBedroomsInProperty", numberBedroomsInProperty);
+        args.putInt("numberBedroomsInProperty", numberBedroomsInProperty);
         args.putDouble("pricePropertyInDollar", pricePropertyInDollar);
         args.putDouble("surfaceAreaProperty", surfaceAreaProperty);
         args.putString("streetNumber", streetNumber);

@@ -40,7 +40,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     // FOR DESIGN
 
     private RecyclerView recyclerView;
-    private PropertyListAdapter adapter;
+    public static PropertyListAdapter adapter;
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
     public static long REAL_ESTATE_AGENT_ID = 1;

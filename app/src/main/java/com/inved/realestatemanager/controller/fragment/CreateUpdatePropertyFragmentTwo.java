@@ -3,8 +3,6 @@ package com.inved.realestatemanager.controller.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,10 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -33,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.MainActivity;
+import com.inved.realestatemanager.controller.fullscreendialog.DatePickerFragment;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
@@ -50,7 +47,6 @@ import java.util.TimeZone;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
-import static com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentTwo.*;
 import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.REAL_ESTATE_AGENT_ID;
 
 @RuntimePermissions
@@ -87,7 +83,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     private String typeProperty;
     private String numberRoomsInProperty;
     private String numberBathroomsInProperty;
-    private String numberBedroomsInProperty;
+    private int numberBedroomsInProperty;
     private double pricePropertyInDollar;
     private double surfaceAreaProperty;
     private String streetNumber;
@@ -368,7 +364,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
             typeProperty = args.getString("typeProperty");
             numberRoomsInProperty = args.getString("numberRoomsInProperty");
             numberBathroomsInProperty = args.getString("numberBathroomsInProperty");
-            numberBedroomsInProperty = args.getString("numberBedroomsInProperty");
+            numberBedroomsInProperty = args.getInt("numberBedroomsInProperty");
             pricePropertyInDollar = args.getDouble("pricePropertyInDollar", 0.0);
             surfaceAreaProperty = args.getDouble("surfaceAreaProperty", 0.0);
             streetNumber = args.getString("streetNumber");

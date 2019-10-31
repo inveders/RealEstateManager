@@ -21,6 +21,14 @@ public class PropertyDataRepository {
 
     public LiveData<Property> getOneItem(long propertyId){ return this.propertyDao.getOneProperty(propertyId); }
 
+    // --- SEARCH ---
+
+    public LiveData<List<Property>> searchProperty(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
+                                                     int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
+        return this.propertyDao.searchProperty(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId);
+
+    }
+
     // --- CREATE ---
 
     public void createItem(Property property){ propertyDao.insertProperty(property); }

@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.controller.fragment;
+package com.inved.realestatemanager.controller.fullscreendialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,14 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.fragment.app.DialogFragment;
 
-import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentTwo;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

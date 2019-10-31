@@ -38,7 +38,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     private CreateUpdateInterface callback;
 
-
     private PropertyViewModel propertyViewModel;
 
     private Spinner typePropertySpinner;
@@ -66,28 +65,27 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private String typeProperty = null;
     private String numberRoomsInProperty = "0";
     private String numberBathroomsInProperty = "0";
-    private String numberBedroomsInProperty = "0";
+    private int numberBedroomsInProperty = 0;
 
-    private double pricePropertyInDollar=0.0 ;
-    private double surfaceAreaProperty =0.0;
-    private String streetNumber=null ;
-    private String streetName=null ;
-    private String zipCode=null;
-    private String townProperty =null;
-    private String country=null;
-    private String pointOfInterest=null ;
-    private String addressCompl=null ;
-    private long realEstateAgentId =2;
+    private double pricePropertyInDollar = 0.0;
+    private double surfaceAreaProperty = 0.0;
+    private String streetNumber = null;
+    private String streetName = null;
+    private String zipCode = null;
+    private String townProperty = null;
+    private String country = null;
+    private String pointOfInterest = null;
+    private String addressCompl = null;
+    private long realEstateAgentId = 2;
 
     private long propertyId;
 
 
-
     public interface CreateUpdateInterface {
         void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
-                               String numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
+                               int numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                               String pointOfInterest, String addressCompl, long realEstateAgentId,long propertyId);
+                               String pointOfInterest, String addressCompl, long realEstateAgentId, long propertyId);
 
     }
 
@@ -136,9 +134,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         this.configureViewModel();
 
 
-
-        if(ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext())!=0){
-            propertyId=ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext());
+        if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
+            propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext());
             this.updateUIwithDataFromDatabase(propertyId);
         }
 
@@ -150,13 +147,13 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     public void onDetach() {
         super.onDetach();
 
-        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(),0);
+        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), 0);
         //Log.d("debago","6. on detach fragment one "+propertyId);
     }
 
     @SuppressLint("SetTextI18n")
     private void updateUIwithDataFromDatabase(long propertyId) {
-        propertyViewModel.getOneProperty(propertyId).observe(this,property -> {
+        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
 
             priceEditText.setText(Double.toString(property.getPricePropertyInDollar()));
             surfaceEditText.setText(Double.toString(property.getSurfaceAreaProperty()));
@@ -169,18 +166,28 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
             typePropertySpinner.setSelection(getIndexSpinner(typePropertySpinner, property.getTypeProperty()));
             numberRoomSpinner.setSelection(getIndexSpinner(numberRoomSpinner, property.getNumberRoomsInProperty()));
-            numberBedroomSpinner.setSelection(getIndexSpinner(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
+            numberBedroomSpinner.setSelection(getIndexSpinnerInt(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
             numberBathroomSpinner.setSelection(getIndexSpinner(numberBathroomSpinner, property.getNumberBathroomsInProperty()));
-
 
 
         });
     }
 
     //private method of your class
-    private int getIndexSpinner(Spinner spinner, String myString){
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+    private int getIndexSpinner(Spinner spinner, String myString) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    //private method of your class
+    private int getIndexSpinnerInt(Spinner spinner, int myInt) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (Integer.valueOf(spinner.getItemAtPosition(i).toString()) == myInt) {
                 return i;
             }
         }
@@ -192,22 +199,22 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
         ArrayList<String> poiList = new ArrayList<>(Arrays.asList(propertyPointOfInterest.split(",")));
 
-        if(poiList.contains(getString(R.string.fullscreen_dialog__poi_school))){
+        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_school))) {
             schoolCheckBox.setChecked(true);
         }
-        if(poiList.contains(getString(R.string.fullscreen_dialog__poi_restaurants))){
+        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_restaurants))) {
             restaurantsCheckBox.setChecked(true);
         }
-        if(poiList.contains(getString(R.string.fullscreen_dialog__poi_shops))){
+        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_shops))) {
             shopsCheckBox.setChecked(true);
         }
-        if(poiList.contains(getString(R.string.fullscreen_dialog_poi_tourist_attraction))){
+        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_tourist_attraction))) {
             touristAttractionCheckBox.setChecked(true);
         }
-        if(poiList.contains(getString(R.string.fullscreen_dialog_poi_car_parks))){
+        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_car_parks))) {
             carParksCheckBox.setChecked(true);
         }
-        if(poiList.contains(getString(R.string.fullscreen_dialog_poi_oil_station))){
+        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_oil_station))) {
             oilStationCheckBox.setChecked(true);
         }
 
@@ -217,25 +224,19 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     //VOIR QUE FAIRE DES CHECKBOX
     private void createProperty() {
 
-        if(streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999 )
-        {
+        if (streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999) {
             streetNumberEditText.setError(getString(R.string.set_error_street_number));
-        }else if(priceEditText.getText().toString().trim().isEmpty()|| Double.parseDouble(priceEditText.getText().toString()) > 999999999.0){
+        } else if (priceEditText.getText().toString().trim().isEmpty() || Double.parseDouble(priceEditText.getText().toString()) > 999999999.0) {
             priceEditText.setError(getString(R.string.set_error_surface_area));
-        }
-        else if(surfaceEditText.getText().toString().trim().isEmpty()|| Double.parseDouble(surfaceEditText.getText().toString()) > 1000000.0){
+        } else if (surfaceEditText.getText().toString().trim().isEmpty() || Double.parseDouble(surfaceEditText.getText().toString()) > 1000000.0) {
             surfaceEditText.setError(getString(R.string.set_error_price));
-        }
-        else if(townNameEditText.getText().toString().trim().isEmpty()){
+        } else if (townNameEditText.getText().toString().trim().isEmpty()) {
             townNameEditText.setError(getString(R.string.set_error_town));
-        }
-        else if(zipCodeEditText.getText().toString().trim().isEmpty()){
+        } else if (zipCodeEditText.getText().toString().trim().isEmpty()) {
             zipCodeEditText.setError(getString(R.string.set_error_zip_code));
-        }
-        else if(streetNameEditText.getText().toString().trim().isEmpty()){
+        } else if (streetNameEditText.getText().toString().trim().isEmpty()) {
             streetNameEditText.setError(getString(R.string.set_error_street_name));
-        }
-        else{
+        } else {
             pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
             surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
             streetNumber = streetNumberEditText.getText().toString();
@@ -244,15 +245,14 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             townProperty = townNameEditText.getText().toString();
             country = townNameEditText.getText().toString();
             pointOfInterest = fillPoiCheckboxList();
-            Log.d("debago","after next button,type property "+typeProperty);
+            Log.d("debago", "after next button,type property " + typeProperty);
 
             callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
-                    pointOfInterest, addressCompl, realEstateAgentId,ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()));
+                    pointOfInterest, addressCompl, realEstateAgentId, ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()));
 
             Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
             startSecondPage();
         }
-
 
 
     }
@@ -260,26 +260,20 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private void startSecondPage() {
 
 
-
     }
 
 
-
     @Override
-    public void onAttach(@NonNull Context context)
-    {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         // This makes sure that the host activity has implemented the callback interface
         // If not, it throws an exception
-        try
-        {
+        try {
             callback = (CreatePropertyActivity) context;
             //dataPasser=(CreatePropertyActivity) context;
 
-        }
-        catch (ClassCastException e)
-        {
-            throw new ClassCastException(context.toString()+ " must implement OnImageClickListener");
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnImageClickListener");
         }
     }
 
@@ -291,7 +285,14 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         } else if (parent.getId() == R.id.create_update_spinner_number_rooms) {
             numberRoomsInProperty = numberRoomSpinner.getSelectedItem().toString();
         } else if (parent.getId() == R.id.create_update_spinner_number_bedroom) {
-            numberBedroomsInProperty = numberBedroomSpinner.getSelectedItem().toString();
+
+            if (numberBedroomSpinner.getSelectedItem().toString().equals("7+")) {
+                numberBedroomsInProperty = 7;
+            } else {
+                numberBedroomsInProperty = (int) numberBedroomSpinner.getSelectedItem();
+            }
+
+
         } else if (parent.getId() == R.id.create_update_spinner_number_bathrooms) {
             numberBathroomsInProperty = numberBathroomSpinner.getSelectedItem().toString();
         }
@@ -331,8 +332,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         this.propertyViewModel.init(REAL_ESTATE_AGENT_ID);
 
     }
-
-
 
 
 }

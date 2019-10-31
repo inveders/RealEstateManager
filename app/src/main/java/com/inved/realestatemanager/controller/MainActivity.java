@@ -2,6 +2,8 @@ package com.inved.realestatemanager.controller;
 
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import com.inved.realestatemanager.controller.activity.MapsActivity;
 import com.inved.realestatemanager.controller.activity.ProfileActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
+import com.inved.realestatemanager.controller.fullscreendialog.SearchFullScreenDialog;
 
 import butterknife.OnClick;
 
@@ -124,6 +127,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     // Configure NavigationView
     private void configureNavigationView() {
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
+        navigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.textOnPrimary)));
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -242,7 +246,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void startSearchProperty() {
 
-    /*    SearchFullScreenDialog dialog = SearchFullScreenDialog.newInstance();
+        // Create an instance of the dialog fragment and show it
+        SearchFullScreenDialog dialog = new SearchFullScreenDialog();
+        dialog.show(getSupportFragmentManager(), "FullscreenDialogFragment");
+
+     /*   SearchFullScreenDialog dialog = SearchFullScreenDialog.newInstance();
 
         if (getFragmentManager() != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -252,6 +260,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         dialog.setCallback((ratingChoosen, openForLunchChoosen, customersNumberChoosen, distanceChoosen) -> {
 
         });*/
+
+
+
+
+
 
 
     }

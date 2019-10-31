@@ -17,7 +17,7 @@ public class Property {
     private double surfaceAreaProperty;
     private String numberRoomsInProperty;
     private String numberBathroomsInProperty;
-    private String numberBedroomsInProperty;
+    private int numberBedroomsInProperty;
     private String fullDescriptionProperty;
 
     private String streetNumber;
@@ -47,7 +47,7 @@ public class Property {
 
     public Property(String typeProperty, double pricePropertyInDollar,
                     double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
-                    String numberBedroomsInProperty, String fullDescriptionProperty, String streeNumber,
+                    int numberBedroomsInProperty, String fullDescriptionProperty, String streeNumber,
                     String streetName, String zipCode, String townProperty, String country,String addressProperty, String pointOfInterest,
                     String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                     boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
@@ -133,11 +133,11 @@ public class Property {
         this.numberBathroomsInProperty = numberBathroomsInProperty;
     }
 
-    public String getNumberBedroomsInProperty() {
+    public int getNumberBedroomsInProperty() {
         return numberBedroomsInProperty;
     }
 
-    public void setNumberBedroomsInProperty(String numberBedroomsInProperty) {
+    public void setNumberBedroomsInProperty(int numberBedroomsInProperty) {
         this.numberBedroomsInProperty = numberBedroomsInProperty;
     }
 
@@ -324,4 +324,6 @@ public class Property {
     public void setRealEstateAgentId(long realEstateAgentId) {
         this.realEstateAgentId = realEstateAgentId;
     }
+
+
 }

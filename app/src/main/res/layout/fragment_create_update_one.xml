@@ -282,7 +282,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_large_margin"
-            android:text="@string/fullscreen_dialog_by_number_of_rooms"
+            android:text="@string/create_update_by_number_of_rooms"
             style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_country_name_text" />
@@ -306,7 +306,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp"
-            android:text="@string/fullscreen_dialog_by_number_of_bedroom"
+            android:text="@string/create_update_by_number_of_bedroom"
             style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/create_update_number_room_text" />
@@ -330,7 +330,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/fullscreen_dialog_by_number_of_bathroom"
+            android:text="@string/create_update_by_number_of_bathroom"
             style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_number_bedroom_text" />

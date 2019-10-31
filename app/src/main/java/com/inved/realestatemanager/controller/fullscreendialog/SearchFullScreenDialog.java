@@ -1,183 +1,218 @@
 package com.inved.realestatemanager.controller.fullscreendialog;
 
-import android.app.Dialog;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.RatingBar;
-import android.widget.SeekBar;
-import android.widget.Switch;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
-/*
-public class SearchFullScreenDialog extends DialogFragment implements View.OnClickListener {
+import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
+import com.inved.realestatemanager.injections.Injection;
+import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.property.PropertyViewModel;
 
-    private SeekBar distanceSeekbar;
-    private SeekBar workmatesInSeekbar;
-    private Switch openForLunch;
-    private RatingBar ratingBar;
-    private TextView distanceValue;
-    private TextView restaurantCustomerValue;
+import java.util.List;
 
-    private boolean openForLunchChoice=true;
-    private int ratingChoice=0;
-    private Double distanceChoice=400.0;
-    private int restaurantCustomersChoice=0;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.apptik.widget.MultiSlider;
 
-/*
-    public static final String TAG = "CREATE_DIALOG";
-    private Callback callback;
+public class SearchFullScreenDialog extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
-    public static SearchFullScreenDialog newInstance() {
-        return new SearchFullScreenDialog();
-    }
+    public static final int USER_ID = 1;
+    private static final String TAG = "CustomSearchDialog";
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
-    }
 
-/*
+    //Widget
+    @BindView(R.id.dialog_spinner_type_property)
+    Spinner typePropertySpinner;
 
+    @BindView(R.id.dialog_town_autocompleteText)
+    AutoCompleteTextView townPropertyAutocomplete;
+
+    @BindView(R.id.dialog_seekbar_surface)
+    MultiSlider surfaceSeekbar;
+
+    @BindView(R.id.dialog_surface_left_value)
+    TextView surfaceMinValue;
+
+    @BindView(R.id.dialog_surface_right_value)
+    TextView surfaceMaxValue;
+
+    @BindView(R.id.dialog_seekbar_price)
+    MultiSlider priceSeekbar;
+
+    @BindView(R.id.dialog_price_left_value)
+    TextView priceMinValue;
+
+    @BindView(R.id.dialog_price_right_value)
+    TextView priceMaxValue;
+
+    @BindView(R.id.dialog_spinner_number_bedroom_min)
+    Spinner minBedroomSpinner;
+
+    @BindView(R.id.dialog_spinner_number_bedroom_max)
+    Spinner maxBedroomSpinner;
+
+    @BindView(R.id.dialog_country_autocompleteText)
+    AutoCompleteTextView countryAutocomplete;
+
+    @BindView(R.id.dialog_spinner_status)
+    Spinner statusSpinner;
+
+    @BindView(R.id.dialog_spinner_agent_name)
+    Spinner realEstateAgentNameSpinner;
+
+    @BindView(R.id.fullscreen_dialog_launch_search)
+    TextView searchActionButton;
+
+    @BindView(R.id.fullscreen_dialog_close)
+    ImageButton cancelSearchButton;
+
+    //String for Data
+    private String mTypeProperty = "%";
+    private int mMinBedroom = 0;
+    private int mMaxBedroom = 0;
+    private String mStatus = "%";
+    private long mRealEstateAgentName = 1;
+    private double minSurface = 0;
+    private double maxSurface = 99999;
+    private double minPrice = 0;
+    private double maxPrice=30000;
+
+    //View Model
+    private PropertyViewModel propertyViewModel;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.FullscreenDialogTheme);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.layout_search_full_screen_dialog, container, false);
+        ButterKnife.bind(this, view);
+
+        this.configureViewModel();
+        this.getRealEstateItems(USER_ID);
+        this.seekbarChangements();
+        getDialog().setTitle("Search property");
+        cancelSearchButton.setOnClickListener(v -> getDialog().cancel());
+        searchActionButton.setOnClickListener(v -> this.startSearchProperty());
+        return view;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    private void seekbarChangements() {
 
-        View mView = inflater.inflate(R.layout.layout_search_full_screen_dialog, container, false);
-        ImageButton close = mView.findViewById(R.id.fullscreen_dialog_close);
-        TextView action = mView.findViewById(R.id.fullscreen_dialog_action);
-        distanceSeekbar = mView.findViewById(R.id.dialog_seekbar_distance);
-        openForLunch = mView.findViewById(R.id.dialog_switch_open_for_lunch);
-        workmatesInSeekbar = mView.findViewById(R.id.dialog_seekbar_workmates_in);
-        restaurantCustomerValue= mView.findViewById(R.id.dialog_workmates_in_value);
+        priceMinValue.setText(String.valueOf(priceSeekbar.getThumb(0).getValue()));
+        priceMaxValue.setText(String.valueOf(priceSeekbar.getThumb(1).getValue()));
 
-        distanceValue = mView.findViewById(R.id.dialog_distance_value);
+        surfaceMinValue.setText(String.valueOf(surfaceSeekbar.getThumb(0).getValue()));
+        surfaceMaxValue.setText(String.valueOf(surfaceSeekbar.getThumb(1).getValue()));
 
-        ratingBar = mView.findViewById(R.id.dialog_rating);
-
-        actionButton();
-
-
-
-        close.setOnClickListener(this);
-        action.setOnClickListener(this);
-
-        return mView;
-    }
-
-    private void actionButton() {
-        this.distanceValue.setText(getString(R.string.fullscreen_dialog__value_in_meter,distanceSeekbar.getProgress()));
-     //   this.restaurantCustomerValue.setText(getString(R.string.fullscreen_dialog__value_workmate_in,workmatesInSeekbar.getProgress()));
-
-
-        this.distanceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
-
-            // When Progress value changed.
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
-                progress = progressValue;
-                distanceValue.setText(getString(R.string.fullscreen_dialog__value_in_meter,progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                distanceValue.setText(getString(R.string.fullscreen_dialog__value_in_meter,progress));
-                distanceChoice= (double) progress;
-
+        surfaceSeekbar.setOnThumbValueChangeListener((multiSlider, thumb, thumbIndex, value) -> {
+            if (thumbIndex == 0) {
+                surfaceMinValue.setText(String.valueOf(value));
+                minSurface=value;
+            } else {
+                surfaceMaxValue.setText(String.valueOf(value));
+                maxSurface=value;
             }
         });
 
-        this.workmatesInSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
-
-            // When Progress value changed.
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
-                progress = progressValue;
-            //    restaurantCustomerValue.setText(getString(R.string.fullscreen_dialog__value_workmate_in,progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-              //  restaurantCustomerValue.setText(getString(R.string.fullscreen_dialog__value_workmate_in,progress));
-                restaurantCustomersChoice=progress;
-
+        priceSeekbar.setOnThumbValueChangeListener((multiSlider, thumb, thumbIndex, value) -> {
+            if (thumbIndex == 0) {
+                minPrice=value;
+                priceMinValue.setText(String.valueOf(value));
+            } else {
+                priceMaxValue.setText(String.valueOf(value));
+                maxPrice=value;
             }
         });
+    }
 
-        openForLunch.setOnCheckedChangeListener((compoundButton, bChecked) ->{
-            openForLunchChoice = bChecked;
-        });
+    // --------------
+    // UI
+    // --------------
 
-        ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> ratingChoice = (int) rating);
+    private void configureViewModel() {
+        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
+        this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
+    }
 
+    // Get all items for a user
+    private void getRealEstateItems(long userId) {
+        this.propertyViewModel.getProperties(userId).observe(this, this::updateRealEstateItemsList);
+    }
+
+    // Update the list of Real Estate item
+    private void updateRealEstateItemsList(List<com.inved.realestatemanager.models.Property> properties) {
+        ListPropertyFragment.adapter.updateData(properties);
+
+        Log.d(TAG, "updateRealEstateItemsList: data size = " + properties.size());
 
     }
 
+    // --------------
+    // Action
+    // --------------
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
+    private void startSearchProperty() {
 
-        switch (id) {
+        if(getDialog()!=null){
+            String town = !townPropertyAutocomplete.getText().toString().equals("") ? townPropertyAutocomplete.getText().toString() : "%";
+            String country = !countryAutocomplete.getText().toString().equals("") ?countryAutocomplete.getText().toString() : "%";
 
-            case R.id.fullscreen_dialog_close:
-                dismiss();
-                break;
+            this.propertyViewModel.searchProperty(mTypeProperty,town, minSurface,maxSurface,minPrice, maxPrice,
+                    mMinBedroom, mMaxBedroom, country, mStatus,mRealEstateAgentName)
+                    .observe(this, this::updateRealEstateItemsList);
 
-            case R.id.fullscreen_dialog_action:
-                Log.d("debago","ratingChoosen: "+ratingChoice+" openForLunchChoosen: "+openForLunchChoice+" customerNumberChoosen: "+restaurantCustomersChoice+" distanceChoosen: "+distanceChoice);
-               //    listener.loadDataFromFirebaseSort(ratingChoice,openForLunchChoice,restaurantCustomersChoice,distanceChoice);
-                callback.loadDataFromFirebaseSort(ratingChoice,openForLunchChoice,restaurantCustomersChoice,distanceChoice);
-                dismiss();
-                break;
-
+            getDialog().dismiss();
         }
 
     }
 
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        if (parent.getId() == R.id.dialog_spinner_type_property) {
+            mTypeProperty = typePropertySpinner.getSelectedItem().toString();
+        } else if (parent.getId() == R.id.dialog_spinner_status) {
+            mStatus = statusSpinner.getSelectedItem().toString();
+        } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_min) {
 
-    public interface Callback {
+            if (minBedroomSpinner.getSelectedItem().toString().equals("7+")) {
+                mMinBedroom = 7;
+            } else {
+                mMinBedroom = (int) minBedroomSpinner.getSelectedItem();
+            }
 
-        void loadDataFromFirebaseSort(int ratingChoosen, boolean openForLunchChoosen, int customersNumberChoosen, double distanceChoosen);
+        } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_max) {
+
+            if (maxBedroomSpinner.getSelectedItem().toString().equals("7+")) {
+                mMaxBedroom = 7;
+            } else {
+                mMaxBedroom = (int) maxBedroomSpinner.getSelectedItem();
+            }
+
+        } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
+            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItemId()+1;/**VERIFIER QUE C'EST BON*/
+        }
+
     }
 
-    @Nullable
     @Override
-    public Dialog getDialog() {
-        return super.getDialog();
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-
-    }*/
-//}
+}
