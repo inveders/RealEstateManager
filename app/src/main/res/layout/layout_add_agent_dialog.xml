@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_layout"
+    android:orientation="vertical">
+
+    <!-- PRICE SURFACE POINTS OF INTEREST DATE ENTRY DATE SALE LOCALISATION NUMBER PHOTOS TYPE ROOM BATH BED -->
+    <!-- double maxSurface,
+      double maxPrice-->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/agent_add_dialog_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/image_content_description"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_clear_white_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/agent_add_dialog_close"
+                android:text="@string/add_agent_dialog_title"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/fullscreen_dialog_launch_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:padding="8dp"
+                android:text="@string/add_agent_dialog_add_text"
+                android:textColor="@android:color/white"
+                tools:ignore="RelativeOverlap" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:padding="10dp"
+        android:fillViewport="true">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--TOWN-->
+
+            <TextView
+                android:id="@+id/add_agent_firstname_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/add_agent_dialog_firstname"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/TextviewStyle"/>
+
+            <EditText
+                android:id="@+id/add_agent_edittext_firstname"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                app:layout_constraintTop_toTopOf="@id/add_agent_firstname_text"
+                app:layout_constraintLeft_toRightOf="@id/add_agent_firstname_text"
+                tools:ignore="LabelFor"
+                style="@style/EditTextStyleText"
+                android:autofillHints="@string/add_agent_dialog_firstname"
+                tools:targetApi="o"
+                android:inputType="text"/>
+
+
+            <!--COUNTRY-->
+            <TextView
+                android:id="@+id/add_agent_lastname_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/add_agent_dialog_lastname"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_agent_firstname_text"
+                style="@style/TextviewStyle"/>
+
+            <EditText
+                android:id="@+id/add_agent_edittext_lastname"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                app:layout_constraintLeft_toLeftOf="@id/add_agent_edittext_firstname"
+                app:layout_constraintBaseline_toBaselineOf="@id/add_agent_lastname_text"
+                tools:ignore="LabelFor"
+                style="@style/EditTextStyleText"
+                android:autofillHints="@string/add_agent_dialog_firstname"
+                tools:targetApi="o"
+                android:inputType="text" />
+
+            <ImageView
+                android:id="@+id/add_agent_photo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/description_image"
+                app:layout_constraintCircleRadius="130dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/add_agent_add_photo_button"
+                app:layout_constraintTop_toBottomOf="@id/add_agent_edittext_lastname"
+                android:layout_marginTop="@dimen/default_large_margin"
+                app:srcCompat="@drawable/ic_anon_user_48dp" />
+
+            <Button
+                android:id="@+id/add_agent_add_photo_button"
+
+                android:text="@string/create_update_add_photo_button"
+                app:layout_constraintTop_toBottomOf="@id/add_agent_photo"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintLeft_toRightOf="parent"
+                android:layout_marginTop="@dimen/default_large_margin"
+                android:layout_marginBottom="10dp"
+                style="@style/ButtonIntermediateStyle"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
