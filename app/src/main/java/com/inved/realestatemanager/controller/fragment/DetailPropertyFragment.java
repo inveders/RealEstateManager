@@ -93,9 +93,9 @@ public class DetailPropertyFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             long myPropertyId = bundle.getLong(PROPERTY_ID, 0);
-            configureViewModel(myPropertyId);
+            configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(this, this::updateWithProperty);
-            getCurrentAgent();
+
         }
 
         return mView;
@@ -104,10 +104,9 @@ public class DetailPropertyFragment extends Fragment {
 
 
     // 2 - Configuring ViewModel
-    private void configureViewModel(long propertyId) {
+    private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        this.propertyViewModel.init(propertyId);
 
     }
 
@@ -273,21 +272,7 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
-    // 3 - Get Current Agent
-    private void getCurrentAgent() {
-        if (this.propertyViewModel.getRealEstateAgent() != null) {
-            this.propertyViewModel.getRealEstateAgent().observe(this,realEstateAgents -> {
-                String firstname = realEstateAgents.getFirstname();
-                String lastname = realEstateAgents.getLastname();
-                //REAL ESTATE AGENT
-                if (firstname != null) {
-                    this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text,firstname,lastname));
-                } else {
-                    this.realEstateAgent.setText(MainApplication.getResourses().getString(R.string.none));
-                }
-            });
-        }
-    }
+
 
 
 

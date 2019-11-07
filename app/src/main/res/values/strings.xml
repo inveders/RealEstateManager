@@ -156,7 +156,25 @@
     <string name="set_error_town">Enter a town</string>
     <string name="set_error_surface_area">Enter a surface</string>
     <string name="set_error_price">Enter a price</string>
+    <string name="set_error_agent">Please select an agent</string>
     <string name="date_picker_select_date">Select the date</string>
+
+
+    <!-- STATUS PROPERTY CASES-->
+    <string name="status_property_in_progress">in progress</string>
+    <string name="status_property_sold">sold</string>
+
+    <!-- ALERT DIALOG-->
+    <string name="alert_dialog_yes">Yes</string>
+    <string name="alert_dialog_no">No</string>
+    <string name="alert_dialog_message">Do you want to delete this agent?</string>
+
+    <!-- ADD AGENT DIALOG-->
+    <string name="add_agent_dialog_add_text">ADD</string>
+    <string name="add_agent_dialog_firstname">Firstname : </string>
+    <string name="add_agent_dialog_lastname">Lastname : </string>
+    <string name="add_agent_dialog_photo">Change your photo</string>
+    <string name="add_agent_dialog_title">NEW AGENT</string>
 
     <string-array name="countries_array">
         <item>Afghanistan</item>

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
@@ -31,8 +32,6 @@ import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.REAL_ESTATE_AGENT_ID;
 
 public class CreateUpdatePropertyFragmentOne extends Fragment implements AdapterView.OnItemSelectedListener {
 
@@ -76,7 +75,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private String country = null;
     private String pointOfInterest = null;
     private String addressCompl = null;
-    private long realEstateAgentId = 2;
+
+    private Context context;
 
     private long propertyId;
 
@@ -85,7 +85,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                int numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                               String pointOfInterest, String addressCompl, long realEstateAgentId, long propertyId);
+                               String pointOfInterest, String addressCompl, long propertyId);
 
     }
 
@@ -133,9 +133,15 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
         this.configureViewModel();
 
+        //We check if it's a new add property or just a modification
+        if(getActivity()!=null){
+            context=getActivity();
+        }else{
+            context=MainApplication.getInstance().getApplicationContext();
+        }
 
-        if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
-            propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext());
+        if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != 0) {
+            propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
             this.updateUIwithDataFromDatabase(propertyId);
         }
 
@@ -147,7 +153,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     public void onDetach() {
         super.onDetach();
 
-        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), 0);
+        ManageCreateUpdateChoice.saveCreateUpdateChoice(context, 0);
         //Log.d("debago","6. on detach fragment one "+propertyId);
     }
 
@@ -224,7 +230,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     //VOIR QUE FAIRE DES CHECKBOX
     private void createProperty() {
 
-        if (streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999) {
+      /*  if (streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999) {
             streetNumberEditText.setError(getString(R.string.set_error_street_number));
         } else if (priceEditText.getText().toString().trim().isEmpty() || Double.parseDouble(priceEditText.getText().toString()) > 999999999.0) {
             priceEditText.setError(getString(R.string.set_error_surface_area));
@@ -236,7 +242,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             zipCodeEditText.setError(getString(R.string.set_error_zip_code));
         } else if (streetNameEditText.getText().toString().trim().isEmpty()) {
             streetNameEditText.setError(getString(R.string.set_error_street_name));
-        } else {
+        } else {*/
             pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
             surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
             streetNumber = streetNumberEditText.getText().toString();
@@ -248,11 +254,11 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             Log.d("debago", "after next button,type property " + typeProperty);
 
             callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
-                    pointOfInterest, addressCompl, realEstateAgentId, ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()));
+                    pointOfInterest, addressCompl, ManageCreateUpdateChoice.getCreateUpdateChoice(context));
 
             Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
             startSecondPage();
-        }
+    //    }
 
 
     }
@@ -327,9 +333,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     // 2 - Configuring ViewModel
     private void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(context);
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        this.propertyViewModel.init(REAL_ESTATE_AGENT_ID);
 
     }
 

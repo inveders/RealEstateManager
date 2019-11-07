@@ -4,6 +4,7 @@ package com.inved.realestatemanager.controller;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,6 +22,7 @@ import com.inved.realestatemanager.controller.activity.AgentManagementActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.controller.fullscreendialog.SearchFullScreenDialog;
+import com.inved.realestatemanager.domain.DateOfDay;
 
 import butterknife.OnClick;
 
@@ -58,7 +60,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //  logout=findViewById(R.id.activity_main_drawer_logout); ONLY IN CASE WE NEED TO LOGOUT
         this.configureDrawerLayout();
         this.configureNavigationView();
-
 
 
         this.configureAndShowListFragment();

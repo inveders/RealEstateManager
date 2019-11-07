@@ -16,9 +16,12 @@ public interface RealEstateAgentsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void createRealEstateAgent(RealEstateAgents realEstateAgents);
 
-    @Query("SELECT * FROM RealEstateAgents WHERE id = :realEstateAgentId")
-    LiveData<RealEstateAgents> getRealEstateAgent(long realEstateAgentId);
+    @Query("SELECT * FROM RealEstateAgents WHERE firstname LIKE :firstname AND lastname LIKE :lastname")
+    LiveData<RealEstateAgents> getRealEstateAgentByName(String firstname, String lastname);
 
+
+    @Query("SELECT * FROM RealEstateAgents WHERE id = :realEstateAgentId")
+    LiveData<RealEstateAgents> getRealEstateAgentById(long realEstateAgentId);
 
     @Query("SELECT * FROM RealEstateAgents")
     LiveData<List<RealEstateAgents>> getAllRealEstateAgents();

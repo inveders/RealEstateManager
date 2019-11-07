@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey;
 @Entity
 public class RealEstateAgents {
 
-
     @PrimaryKey(autoGenerate = true)
     private long id;
 

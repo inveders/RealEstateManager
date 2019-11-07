@@ -1,7 +1,11 @@
 package com.inved.realestatemanager.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,20 +49,31 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.mAgentName.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text,realEstateAgentsList.get(position).getFirstname(),realEstateAgentsList.get(position).getLastname()));
+        holder.mAgentName.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text, realEstateAgentsList.get(position).getFirstname(), realEstateAgentsList.get(position).getLastname()));
 
-        if(realEstateAgentsList.get(position).getUrlPicture()!=null){
+        if (realEstateAgentsList.get(position).getUrlPicture() != null) {
             holder.mAgentPhoto.setImageURI(Uri.parse(realEstateAgentsList.get(position).getUrlPicture()));
+        } else {
+            holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
         }
 
 
-        holder.mButtonDelete.setOnClickListener(v -> callback.onClickDeleteButton(position));
+        holder.mButtonDelete.setOnClickListener(v -> {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainApplication.getInstance().getApplicationContext());
+            builder.setMessage(R.string.alert_dialog_message)
+                    .setCancelable(false)
+                    .setPositiveButton(MainApplication.getResourses().getString(R.string.alert_dialog_yes), (dialog, id) -> {
+                                callback.onClickDeleteButton(position);
+                            }
+                    )
+                    .setNegativeButton(MainApplication.getResourses().getString(R.string.alert_dialog_no), (dialog, id) -> dialog.cancel());
+            AlertDialog alert = builder.create();
+            alert.show();
+
+        });
     }
 
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -82,14 +97,21 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
     public void setData(List<RealEstateAgents> data) {
         realEstateAgentsList = data;
-
         //Fill the Recycler View
         notifyDataSetChanged();
 
     }
 
+    @Override
+    public int getItemCount() {
 
-    public interface AgentManagementInterface{
+        if (realEstateAgentsList == null) return 0;
+
+        return realEstateAgentsList.size();
+
+    }
+
+    public interface AgentManagementInterface {
         void onClickDeleteButton(long id);
 
     }

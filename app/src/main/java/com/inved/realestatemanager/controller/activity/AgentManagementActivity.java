@@ -54,15 +54,15 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         setSupportActionBar(toolbar);
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Agent Management");
         }
-        setTitle("Agent Management");
+
     }
 
     // 2 - Configuring ViewModel
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        this.propertyViewModel.init(REAL_ESTATE_AGENT_ID);
         propertyViewModel.getAllRealEstateAgents().observe(this,realEstateAgents -> adapter.setData(realEstateAgents));
     }
 

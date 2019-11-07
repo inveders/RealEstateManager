@@ -89,7 +89,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        this.propertyViewModel.init(REAL_ESTATE_AGENT_ID);
         getProperties(REAL_ESTATE_AGENT_ID);
     }
 
@@ -101,7 +100,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     // 6 - Update the list of properties
     private void updatePropertyList(List<Property> properties) {
         if (!properties.isEmpty()) {
-            Log.d("debago", "MainActivity : updatepropertyList properties value is " + properties);
+
             this.adapter.updateData(properties);
         }
     }
@@ -111,7 +110,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         if(getActivity()!=null){
 
-            Log.d("debago"," 1. on click cardview : propertyId "+propertyId);
             //We open activity if we are in portrait mode
             Intent intent = new Intent(getContext(), DetailActivity.class);
             intent.putExtra(PROPERTY_ID, propertyId);

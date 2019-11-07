@@ -222,7 +222,7 @@
             <!--TOWN-->
 
             <TextView
-                android:id="@+id/dialog_localisation_text"
+                android:id="@+id/add_agent_firstname_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
@@ -239,15 +239,15 @@
                 android:layout_width="200sp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
-                app:layout_constraintTop_toTopOf="@id/dialog_localisation_text"
-                app:layout_constraintLeft_toRightOf="@id/dialog_localisation_text"
+                app:layout_constraintTop_toTopOf="@id/add_agent_firstname_text"
+                app:layout_constraintLeft_toRightOf="@id/add_agent_firstname_text"
                 tools:ignore="LabelFor"
                 style="@style/EditTextStyleText"/>
 
 
             <!--COUNTRY-->
             <TextView
-                android:id="@+id/dialog_country_text"
+                android:id="@+id/add_agent_lastname_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
@@ -256,7 +256,7 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_localisation_text"
+                app:layout_constraintTop_toBottomOf="@id/add_agent_firstname_text"
                 style="@style/TextviewStyle"/>
 
             <AutoCompleteTextView
@@ -264,8 +264,8 @@
                 android:layout_width="200sp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
-                app:layout_constraintLeft_toRightOf="@id/dialog_country_text"
-                app:layout_constraintBaseline_toBaselineOf="@id/dialog_country_text"
+                app:layout_constraintLeft_toRightOf="@id/add_agent_lastname_text"
+                app:layout_constraintBaseline_toBaselineOf="@id/add_agent_lastname_text"
                 tools:ignore="LabelFor"
                 style="@style/EditTextStyleText"/>
 
@@ -282,7 +282,7 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_country_text"
+                app:layout_constraintTop_toBottomOf="@id/add_agent_lastname_text"
                 style="@style/TextviewStyle"/>
 
             <Spinner

@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.property;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -19,9 +18,6 @@ public class PropertyViewModel extends ViewModel {
     private final RealEstateAgentDataRepository realEstateAgentDataSource;
     private final Executor executor; //Nous utilisons la classe Executor afin de réaliser de manière asynchrone les requêtes de mise à jour de nos tables SQLite.
 
-    // DATA
-    @Nullable
-    private LiveData<RealEstateAgents> currentAgent;
 
     public PropertyViewModel(PropertyDataRepository propertyDataSource, RealEstateAgentDataRepository realEstateAgentDataSource, Executor executor) {
         this.propertyDataSource = propertyDataSource;
@@ -29,21 +25,17 @@ public class PropertyViewModel extends ViewModel {
         this.executor = executor;
     }
 
-    public void init(long realEstateAgentId) {
-        if (this.currentAgent != null) {
-            return;
-        }
-        currentAgent = realEstateAgentDataSource.getRealEstateAgent(realEstateAgentId);
-    }
-
     // -------------
     // FOR USER
     // -------------
 
-    public LiveData<RealEstateAgents> getRealEstateAgent() {
-        return this.currentAgent;
+    public LiveData<RealEstateAgents> getRealEstateAgentByName(String firstname, String lastname) {
+        return realEstateAgentDataSource.getRealEstateAgentByName(firstname,lastname);
     }
 
+    public LiveData<RealEstateAgents> getRealEstateAgentById(long realEstateAgentId) {
+        return realEstateAgentDataSource.getRealEstateAgentById(realEstateAgentId);
+    }
 
     public LiveData<List<RealEstateAgents>> getAllRealEstateAgents() {
         return realEstateAgentDataSource.getAllRealEstateAgents();
