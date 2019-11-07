@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/agent_management_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dip">
+
+    <ImageView
+        android:id="@+id/agent_management_item_image"
+        android:layout_width="62dp"
+        android:layout_height="56dp"
+        android:contentDescription="@string/description_image"
+        app:layout_constraintCircleRadius="130dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_anon_user_48dp" />
+
+    <TextView
+        android:id="@+id/agent_management_item_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="@string/agent_management_text"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/agent_management_item_image"
+        app:layout_constraintRight_toLeftOf="@id/agent_management_item_delete"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/agent_management_item_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/description_image"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/agent_management_item_text"
+        app:srcCompat="@drawable/ic_delete_red_24dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

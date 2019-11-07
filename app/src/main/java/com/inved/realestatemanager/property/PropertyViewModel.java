@@ -45,11 +45,13 @@ public class PropertyViewModel extends ViewModel {
     }
 
 
+    public LiveData<List<RealEstateAgents>> getAllRealEstateAgents() {
+        return realEstateAgentDataSource.getAllRealEstateAgents();
+    }
+
     public void createRealEstateAgent(RealEstateAgents realEstateAgent) {
 
-        executor.execute(() -> {
-            realEstateAgentDataSource.createAgent(realEstateAgent);
-        });
+        executor.execute(() -> realEstateAgentDataSource.createAgent(realEstateAgent));
 
     }
 

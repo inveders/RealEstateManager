@@ -3,7 +3,6 @@ package com.inved.realestatemanager.controller;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +17,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
 import com.inved.realestatemanager.controller.activity.MapsActivity;
-import com.inved.realestatemanager.controller.activity.ProfileActivity;
+import com.inved.realestatemanager.controller.activity.AgentManagementActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.controller.fullscreendialog.SearchFullScreenDialog;
@@ -109,6 +108,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         this.toolbar = findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(ColorStateList.valueOf(getResources().getColor(R.color.textOnPrimary)));
 
     }
 
@@ -128,6 +128,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void configureNavigationView() {
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.textOnPrimary)));
+        navigationView.setItemIconTintList(ColorStateList.valueOf(getResources().getColor(R.color.textOnPrimary)));
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -140,14 +141,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.activity_main_drawer_profile:
+            case R.id.activity_main_drawer_agents_management:
                 startProfileActivity();
                 break;
             case R.id.activity_main_drawer_map:
-                startCreatePropertyActivity();
+                startMapsActivity();
                 break;
-          /*  case R.id.activity_main_drawer_logout:signOutUserFromFirebase();
-                break;*/ //IN CASE WE NEED TO LOGOUT BUT NOT NEED HERE
             default:
                 break;
         }
@@ -210,7 +209,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // Launch Profile Activity
     private void startProfileActivity() {
-        Intent intent = new Intent(this, ProfileActivity.class);
+        Intent intent = new Intent(this, AgentManagementActivity.class);
         startActivity(intent);
     }
 

@@ -8,6 +8,8 @@ import androidx.room.Query;
 
 import com.inved.realestatemanager.models.RealEstateAgents;
 
+import java.util.List;
+
 @Dao
 public interface RealEstateAgentsDao {
 
@@ -17,4 +19,7 @@ public interface RealEstateAgentsDao {
     @Query("SELECT * FROM RealEstateAgents WHERE id = :realEstateAgentId")
     LiveData<RealEstateAgents> getRealEstateAgent(long realEstateAgentId);
 
+
+    @Query("SELECT * FROM RealEstateAgents")
+    LiveData<List<RealEstateAgents>> getAllRealEstateAgents();
 }

@@ -63,7 +63,10 @@
             app:layout_constraintLeft_toRightOf="@id/create_update_surface_text"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_price_text"
             style="@style/EditTextStyleText"
-            android:inputType="numberDecimal"/>
+            android:inputType="numberDecimal"
+            tools:ignore="LabelFor"
+            android:autofillHints="@string/create_update_by_price"
+            tools:targetApi="o" />
 
         <!-- SURFACE -->
         <TextView
@@ -84,7 +87,9 @@
             app:layout_constraintLeft_toRightOf="@id/create_update_surface_text"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_surface_text"
             android:inputType="numberDecimal"
-            style="@style/EditTextStyleText"/>
+            style="@style/EditTextStyleText"
+            android:importantForAutofill="no"
+            tools:ignore="LabelFor" />
 
 
         <!--LOCALISATION-->
@@ -107,7 +112,10 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_number_text"
             android:inputType="number"
-            style="@style/EditTextStyleText"/>
+            style="@style/EditTextStyleText"
+            tools:ignore="LabelFor"
+            android:autofillHints="@string/create_update_by_street_number"
+            tools:targetApi="o"/>
 
 
         <TextView
@@ -128,7 +136,10 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_name_text"
             android:inputType="text"
-            style="@style/EditTextStyleText"/>
+            style="@style/EditTextStyleText"
+            tools:ignore="LabelFor"
+            android:autofillHints="@string/create_update_by_street_name"
+            tools:targetApi="o"/>
 
 
         <TextView
@@ -140,7 +151,7 @@
             style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_street_name_text"
-            android:inputType="number"/>
+            />
 
         <EditText
             android:id="@+id/create_update_zip_code_edittext"
@@ -149,7 +160,11 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_zip_code_text"
-            style="@style/EditTextStyleText"/>
+            style="@style/EditTextStyleText"
+            tools:ignore="LabelFor"
+            android:autofillHints="@string/create_update_by_zip_code"
+            tools:targetApi="o"
+            android:inputType="number" />
 
 
         <TextView
@@ -170,7 +185,10 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_town_name_text"
             android:inputType="text"
-            style="@style/EditTextStyleText"/>
+            style="@style/EditTextStyleText"
+            android:autofillHints="@string/create_update_by_town_name"
+            tools:targetApi="o"
+            tools:ignore="LabelFor" />
 
 
         <TextView
@@ -355,6 +373,5 @@
             style="@style/ButtonStyle"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.core.widget.NestedScrollView>

@@ -289,7 +289,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             if (numberBedroomSpinner.getSelectedItem().toString().equals("7+")) {
                 numberBedroomsInProperty = 7;
             } else {
-                numberBedroomsInProperty = (int) numberBedroomSpinner.getSelectedItem();
+                numberBedroomsInProperty = Integer.valueOf(numberBedroomSpinner.getSelectedItem().toString());
             }
 
 

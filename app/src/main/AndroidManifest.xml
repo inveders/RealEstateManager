@@ -23,6 +23,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/GOOGLE_MAPS_API_KEY" />
+
+        <uses-library android:name="com.google.android.maps" />
+
         <activity
             android:name="com.inved.realestatemanager.controller.MainActivity"
             android:label="@string/page_name_activity_main"
@@ -49,7 +56,7 @@
 
         <!-- PROFILE ACTIVITY -->
         <activity
-            android:name=".controller.activity.ProfileActivity"
+            android:name=".controller.activity.AgentManagementActivity"
             android:label="@string/page_name_activity_create_property"
             android:parentActivityName=".controller.MainActivity" />
 

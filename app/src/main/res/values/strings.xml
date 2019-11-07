@@ -19,7 +19,7 @@
     <string name="update_button">Update</string>
 
     <!-- MENU DRAWER -->
-    <string name="menu_drawer_profile">Profile</string>
+    <string name="menu_drawer_agents_management">Agents management</string>
     <string name="menu_drawer_map">Map</string>
     <string name="menu_drawer_logout">Logout</string>
     <string name="firstname">firstname</string>
@@ -143,6 +143,11 @@
 
     <!-- DATE PICKER-->
     <string name="date_picker_date_format">%1$s/%2$s/%3$s</string>
+
+    <!-- AGENT_MANAGEMENT-->
+    <string name="agent_management_text">Stéphane Plazza</string>
+    <string name="agent_management_page_title">Agent Management</string>
+    <string name="agent_management_no_agent">No real estate agent</string>
 
     <!-- SET ERROR -->
     <string name="set_error_street_number">Enter a good street number</string>
