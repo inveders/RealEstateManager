@@ -12,6 +12,8 @@
         android:id="@+id/agent_management_item_image"
         android:layout_width="62dp"
         android:layout_height="56dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:contentDescription="@string/description_image"
         app:layout_constraintCircleRadius="130dp"
         app:layout_constraintLeft_toLeftOf="parent"

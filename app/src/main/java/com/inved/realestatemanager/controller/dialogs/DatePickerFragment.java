@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.controller.fullscreendialog;
+package com.inved.realestatemanager.controller.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentTwo;
+import com.inved.realestatemanager.utils.MainApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,15 +26,21 @@ public class DatePickerFragment extends AppCompatDialogFragment implements DateP
     private final Calendar calendar = Calendar.getInstance();
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        if(getActivity()!=null){
+        if (getActivity() != null) {
             int yy = calendar.get(Calendar.YEAR);
             int mm = calendar.get(Calendar.MONTH);
             int dd = calendar.get(Calendar.DAY_OF_MONTH);
-            return new DatePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK,DatePickerFragment.this, yy, mm, dd);
+            return new DatePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, DatePickerFragment.this, yy, mm, dd);
+        } else {
+            int yy = calendar.get(Calendar.YEAR);
+            int mm = calendar.get(Calendar.MONTH);
+            int dd = calendar.get(Calendar.DAY_OF_MONTH);
+            return new DatePickerDialog(MainApplication.getInstance().getApplicationContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, DatePickerFragment.this, yy, mm, dd);
         }
-        return null;
+
     }
 
     public void onDateSet(DatePicker view, int yy, int mm, int dd) {
@@ -43,11 +51,14 @@ public class DatePickerFragment extends AppCompatDialogFragment implements DateP
 
         Log.d(TAG, "onDateSet: " + selectedDate);
         // send date back to the target fragment
-        getTargetFragment().onActivityResult(
-                getTargetRequestCode(),
-                Activity.RESULT_OK,
-                new Intent().putExtra("selectedDate", selectedDate)
-        );
+        if(getTargetFragment()!=null){
+            getTargetFragment().onActivityResult(
+                    getTargetRequestCode(),
+                    Activity.RESULT_OK,
+                    new Intent().putExtra("selectedDate", selectedDate)
+            );
+        }
+
     }
 
     @Override

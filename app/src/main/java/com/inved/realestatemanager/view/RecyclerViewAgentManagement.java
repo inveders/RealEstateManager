@@ -2,10 +2,7 @@ package com.inved.realestatemanager.view;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
     private Context context;
 
     private List<RealEstateAgents> realEstateAgentsList;
-
 
     public RecyclerViewAgentManagement(Context context, AgentManagementInterface callback) {
         this.realEstateAgentsList = new ArrayList<>();
@@ -53,6 +52,15 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
         if (realEstateAgentsList.get(position).getUrlPicture() != null) {
             holder.mAgentPhoto.setImageURI(Uri.parse(realEstateAgentsList.get(position).getUrlPicture()));
+            Uri fileUri = Uri.parse(realEstateAgentsList.get(position).getUrlPicture());
+            if(fileUri.getPath()!=null){
+                Glide.with(MainApplication.getInstance().getApplicationContext())
+                        .load(new File(fileUri.getPath()))
+                        .apply(RequestOptions.circleCropTransform())
+                        .into((holder.mAgentPhoto));
+            }
+
+
         } else {
             holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
         }
@@ -60,18 +68,18 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
         holder.mButtonDelete.setOnClickListener(v -> {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainApplication.getInstance().getApplicationContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(R.string.alert_dialog_message)
                     .setCancelable(false)
-                    .setPositiveButton(MainApplication.getResourses().getString(R.string.alert_dialog_yes), (dialog, id) -> {
-                                callback.onClickDeleteButton(position);
-                            }
+                    .setPositiveButton(MainApplication.getResourses().getString(R.string.alert_dialog_yes), (dialog, id) -> callback.onClickDeleteButton(position)
                     )
                     .setNegativeButton(MainApplication.getResourses().getString(R.string.alert_dialog_no), (dialog, id) -> dialog.cancel());
             AlertDialog alert = builder.create();
             alert.show();
 
         });
+
+        holder.mAgentName.setOnClickListener(v -> callback.onEditAgent(realEstateAgentsList.get(position).getId()));
     }
 
 
@@ -80,6 +88,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
         TextView mAgentName;
         ImageView mAgentPhoto;
         ImageView mButtonDelete;
+
 
 
         ViewHolder(View itemView) {
@@ -113,7 +122,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
     public interface AgentManagementInterface {
         void onClickDeleteButton(long id);
-
+        void onEditAgent(long id);
     }
 
 }

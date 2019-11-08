@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.controller.fullscreendialog;
+package com.inved.realestatemanager.controller.dialogs;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,7 +29,7 @@ import io.apptik.widget.MultiSlider;
 
 public class SearchFullScreenDialog extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
-    public static final int USER_ID = 1;
+    private static final int USER_ID = 1;
     private static final String TAG = "CustomSearchDialog";
 
 
@@ -104,7 +103,10 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         this.configureViewModel();
         this.getRealEstateItems(USER_ID);
         this.seekbarChangements();
-        getDialog().setTitle("Search property");
+        if(getDialog()!=null){
+            getDialog().setTitle("Search property");
+        }
+
         cancelSearchButton.setOnClickListener(v -> getDialog().cancel());
         searchActionButton.setOnClickListener(v -> this.startSearchProperty());
         return view;

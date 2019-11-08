@@ -33,7 +33,7 @@ import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.MainActivity;
-import com.inved.realestatemanager.controller.fullscreendialog.DatePickerFragment;
+import com.inved.realestatemanager.controller.dialogs.DatePickerFragment;
 import com.inved.realestatemanager.domain.DateOfDay;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.injections.Injection;
@@ -61,6 +61,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
     private File mPhotoFile;
+
+    private String cameraFilePath;
 
     private PropertyViewModel propertyViewModel;
     private TextView dateOfEntry;
@@ -102,19 +104,11 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private long realEstateAgentId;
 
     private Context context;
-    private String cameraFilePath;
     private String selectedAgent;
 
     private List<String> spinnerAgentList = new ArrayList<>();
 
     private static final int REQUEST_CODE_DATE_PICKER = 11; // Used to identify the result
-
-    private OnFragmentInteractionListener mListener;
-
-    public static CreateUpdatePropertyFragmentTwo newInstance() {
-        CreateUpdatePropertyFragmentTwo fragment = new CreateUpdatePropertyFragmentTwo();
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -296,7 +290,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     /**
      * Create file with current timestamp name
      *
-     * @throws IOException
      */
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -313,12 +306,17 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         return null;
     }
 
+
+    //PERMISSION
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // NOTE: delegate the permission handling to generated method
         CreateUpdatePropertyFragmentTwoPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
+
+    //REAL ESTATE AGENT MANAGEMENT AND SPINNER
 
     private void retriveRealEstateAgents() {
         if (propertyViewModel.getAllRealEstateAgents() != null) {
@@ -362,13 +360,41 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         return 0;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // An item was selected. You can retrieve the selected item using
+        Log.d("debago","selected item : ");
+        // if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
+        if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
+            selectedAgent = agentNameSpinner.getSelectedItem().toString();
+            Log.d("debago", "selected agent : " + selectedAgent);
+            SplitString splitString = new SplitString();
+            String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
+            String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
+            this.propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(this, realEstateAgents -> {
+                realEstateAgentId = realEstateAgents.getId();
+                Log.d("debago", "real estate agent id : " + realEstateAgentId);
+            });
+        }
+
+    }
+
+
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    //DATE PICKER
+
     private void datePickerInit() {
         dateOfEntry.setText(getString(R.string.create_update_choose_date));
         dateOfEntry.setOnClickListener(v -> showDatePickerDialog());
 
     }
 
-    public void showDatePickerDialog() {
+    private void showDatePickerDialog() {
 
         if (getActivity() != null) {
             // get fragment manager so we can launch from fragment
@@ -397,35 +423,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), 0);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // An item was selected. You can retrieve the selected item using
-        Log.d("debago","selected item : ");
-       // if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
-        if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
-            selectedAgent = agentNameSpinner.getSelectedItem().toString();
-            Log.d("debago", "selected agent : " + selectedAgent);
-            SplitString splitString = new SplitString();
-            String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
-            String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
-            this.propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(this, realEstateAgents -> {
-                realEstateAgentId = realEstateAgents.getId();
-                Log.d("debago", "real estate agent id : " + realEstateAgentId);
-            });
-        }
 
-    }
-
-
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
@@ -550,7 +551,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-
 
     }
 

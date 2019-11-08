@@ -5,7 +5,9 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
+import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 
 import java.util.List;
@@ -25,4 +27,10 @@ public interface RealEstateAgentsDao {
 
     @Query("SELECT * FROM RealEstateAgents")
     LiveData<List<RealEstateAgents>> getAllRealEstateAgents();
+
+    @Query("DELETE FROM RealEstateAgents WHERE id = :realEstateAgentId")
+    int deleteRealEstateAgent(long realEstateAgentId);
+
+    @Update
+    int updateAgent(RealEstateAgents realEstateAgents);
 }

@@ -158,7 +158,8 @@
     <string name="set_error_price">Enter a price</string>
     <string name="set_error_agent">Please select an agent</string>
     <string name="date_picker_select_date">Select the date</string>
-
+    <string name="set_error_add_agent_firstname">Enter a firstname</string>
+    <string name="set_error_add_agent_lastname">Enter a lastname</string>
 
     <!-- STATUS PROPERTY CASES-->
     <string name="status_property_in_progress">in progress</string>
@@ -171,10 +172,14 @@
 
     <!-- ADD AGENT DIALOG-->
     <string name="add_agent_dialog_add_text">ADD</string>
+    <string name="add_agent_dialog_edit_text">EDIT</string>
     <string name="add_agent_dialog_firstname">Firstname : </string>
     <string name="add_agent_dialog_lastname">Lastname : </string>
     <string name="add_agent_dialog_photo">Change your photo</string>
     <string name="add_agent_dialog_title">NEW AGENT</string>
+    <string name="add_agent_dialog_add_confirm_text">New real estate agent added</string>
+    <string name="add_agent_dialog_update_confirm_text">Real estate agent informations updated</string>
+    <string name="whatsapp_photo_not_possible">It\'s not possible to add photo from WhatsApp</string>
 
     <string-array name="countries_array">
         <item>Afghanistan</item>

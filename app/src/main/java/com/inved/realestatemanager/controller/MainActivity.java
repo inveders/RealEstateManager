@@ -4,7 +4,6 @@ package com.inved.realestatemanager.controller;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,8 +20,7 @@ import com.inved.realestatemanager.controller.activity.MapsActivity;
 import com.inved.realestatemanager.controller.activity.AgentManagementActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
-import com.inved.realestatemanager.controller.fullscreendialog.SearchFullScreenDialog;
-import com.inved.realestatemanager.domain.DateOfDay;
+import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
 
 import butterknife.OnClick;
 

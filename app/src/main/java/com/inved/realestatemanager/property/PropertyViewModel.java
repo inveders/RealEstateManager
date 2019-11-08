@@ -47,6 +47,16 @@ public class PropertyViewModel extends ViewModel {
 
     }
 
+    public void updateRealEstateAgent(RealEstateAgents realEstateAgent) {
+
+        executor.execute(() -> realEstateAgentDataSource.updateAgent(realEstateAgent));
+
+    }
+
+    public void deleteRealEstateAgent(long realEstateAgentId) {
+        executor.execute(() -> realEstateAgentDataSource.deleteRealEstateAgent(realEstateAgentId));
+    }
+
     // -------------
     // FOR ITEM
     // -------------
@@ -58,8 +68,6 @@ public class PropertyViewModel extends ViewModel {
     public LiveData<Property> getOneProperty(long propertyId) {
         return propertyDataSource.getOneItem(propertyId);
     }
-
-
 
     public void createProperty(Property property) {
         executor.execute(() -> propertyDataSource.createItem(property));

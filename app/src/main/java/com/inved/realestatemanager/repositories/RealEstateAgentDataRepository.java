@@ -21,10 +21,14 @@ public class RealEstateAgentDataRepository {
     // --- GET ALL REAL ESTATE AGENTS ---
     public LiveData<List<RealEstateAgents>> getAllRealEstateAgents() { return this.realEstateAgentsDao.getAllRealEstateAgents(); }
 
-
+    public void deleteRealEstateAgent(long realEstateAgentId) { this.realEstateAgentsDao.deleteRealEstateAgent(realEstateAgentId); }
 
 // --- CREATE ---
 
     public void createAgent(RealEstateAgents realEstateAgents){ realEstateAgentsDao.createRealEstateAgent(realEstateAgents); }
+
+    // --- UPDATE ---
+
+    public void updateAgent(RealEstateAgents realEstateAgents){ realEstateAgentsDao.updateAgent(realEstateAgents); }
 
 }
