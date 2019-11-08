@@ -1,5 +1,5 @@
 
-package com.inved.realestatemanager.retrofit;
+package com.inved.realestatemanager.retrofit.modelPojo;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

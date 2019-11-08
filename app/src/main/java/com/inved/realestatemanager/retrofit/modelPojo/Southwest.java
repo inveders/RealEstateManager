@@ -1,10 +1,10 @@
 
-package com.inved.realestatemanager.retrofit;
+package com.inved.realestatemanager.retrofit.modelPojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Northeast {
+public class Southwest {
 
     @SerializedName("lat")
     @Expose
