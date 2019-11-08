@@ -103,7 +103,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     public void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                  int numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                   String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                                  String pointOfInterest, String addressProperty, long propertyId) {
+                                  String pointOfInterest, String addressCompl, long propertyId) {
 
         Fragment fragmentTwo = new CreateUpdatePropertyFragmentTwo();
         Bundle args = new Bundle();
@@ -120,7 +120,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         args.putString("townProperty", townProperty);
         args.putString("country", country);
         args.putString("pointOfInterest", pointOfInterest);
-        args.putString("addressProperty", addressProperty);
+        args.putString("addressCompl", addressCompl);
 
         fragmentTwo.setArguments(args);
         viewPager2.setCurrentItem(1);

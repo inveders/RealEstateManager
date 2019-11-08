@@ -100,7 +100,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private String townProperty;
     private String country;
     private String pointOfInterest;
-    private String addressProeprty;
+    private String addressCompl;
     private long realEstateAgentId;
 
     private Context context;
@@ -462,7 +462,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 townProperty = args.getString("townProperty");
                 country = args.getString("country");
                 pointOfInterest = args.getString("pointOfInterest");
-                addressProeprty = args.getString("addressProperty");
+                addressCompl = args.getString("addressCompl");
 
             }
 
@@ -473,7 +473,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             Property newProperty = new Property(typeProperty, pricePropertyInDollar,
                     surfaceAreaProperty, numberRoomsInProperty,
                     numberBathroomsInProperty, numberBedroomsInProperty,
-                    fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressProeprty, pointOfInterest,
+                    fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                     statusProperty, dateOfEntryOnMarketForProperty,
                     null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                     photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);

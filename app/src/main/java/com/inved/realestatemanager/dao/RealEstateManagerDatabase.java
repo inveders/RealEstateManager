@@ -80,7 +80,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                 contentValuesProperty.put("zipCode", "57840");
                 contentValuesProperty.put("townProperty", "Ottange");
                 contentValuesProperty.put("country", "France");
-                contentValuesProperty.put("addressProperty", "Bis");
+                contentValuesProperty.put("addressCompl", "Bis");
                 contentValuesProperty.put("pointOfInterest", "school,car parks");
                 contentValuesProperty.put("statusProperty", "in progress");
                 contentValuesProperty.put("dateOfEntryOnMarketForProperty", "29/10/2019");

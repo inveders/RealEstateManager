@@ -114,6 +114,9 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     private void seekbarChangements() {
 
+        priceSeekbar.setMax(2000000);
+        surfaceSeekbar.setMax(1000);
+
         priceMinValue.setText(String.valueOf(priceSeekbar.getThumb(0).getValue()));
         priceMaxValue.setText(String.valueOf(priceSeekbar.getThumb(1).getValue()));
 

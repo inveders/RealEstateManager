@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.controller.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.SplitString;
@@ -32,7 +30,6 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
@@ -102,23 +99,22 @@ public class DetailPropertyFragment extends Fragment {
         propertyLocalisationImage = mView.findViewById(R.id.fragment_detail_property_location_map);
 
 
-
-        if(getActivity()!=null){
+        if (getActivity() != null) {
             Intent intent = getActivity().getIntent();
-            long myPropertyId=intent.getLongExtra(PROPERTY_ID,0);
+            long myPropertyId = intent.getLongExtra(PROPERTY_ID, 0);
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(this, this::updateWithProperty);
+            getRealEstateAgent(myPropertyId);
             setMapStatic(myPropertyId);
         }
-
 
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             long myPropertyId = bundle.getLong(PROPERTY_ID, 0);
             configureViewModel();
-
             propertyViewModel.getOneProperty(myPropertyId).observe(this, this::updateWithProperty);
+            getRealEstateAgent(myPropertyId);
             setMapStatic(myPropertyId);
 
         }
@@ -165,8 +161,8 @@ public class DetailPropertyFragment extends Fragment {
             this.streetName.setText(MainApplication.getResourses().getString(R.string.none));
         }
 
-        if (property.getAddressProperty() != null) {
-            this.complAddress.setText(property.getAddressProperty());
+        if (property.getAddressCompl() != null) {
+            this.complAddress.setText(property.getAddressCompl());
         } else {
             this.complAddress.setText(MainApplication.getResourses().getString(R.string.none));
         }
@@ -249,7 +245,6 @@ public class DetailPropertyFragment extends Fragment {
             imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_round);
         }
 
-
         //POINT OF INTEREST
         if (property.getPointOfInterest() != null) {
             this.pointsOfInterestNearProperty.setText(property.getPointOfInterest());
@@ -294,10 +289,24 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
+    private void getRealEstateAgent(long realEstateAgentId) {
+
+        propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this, realEstateAgents -> {
+            if (realEstateAgents.getFirstname() != null && realEstateAgents.getLastname() != null) {
+                String completeName = realEstateAgents.getFirstname() + " " + realEstateAgents.getLastname();
+                this.realEstateAgent.setText(completeName);
+            } else if (realEstateAgents.getFirstname() != null) {
+                this.realEstateAgent.setText(realEstateAgents.getFirstname());
+            } else if (realEstateAgents.getLastname() != null) {
+                this.realEstateAgent.setText(realEstateAgents.getLastname());
+            }
+        });
+
+    }
 
     private void setMapStatic(long propertyId) {
 
-        Log.d("debago","setMapstatic : "+propertyId);
+        Log.d("debago", "setMapstatic : " + propertyId);
         propertyViewModel.getOneProperty(propertyId).observe(this, properties -> {
 
             SplitString splitString = new SplitString();
@@ -310,23 +319,23 @@ public class DetailPropertyFragment extends Fragment {
             String country = properties.getCountry();
             String addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
             String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
-            Log.d("debago","address formated : "+addressFormatted);
+            Log.d("debago", "address formated : " + addressFormatted);
             geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
-                if(results.size()!=0){
-                    Log.d("debago","result : "+results);
+                if (results.size() != 0) {
+                    Log.d("debago", "result : " + results);
                     double latitude = results.get(0).getGeometry().getLocation().getLat();
                     double longitude = results.get(0).getGeometry().getLocation().getLng();
 
                     String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + addressFormatted + "&zoom=16&size=170x100&maptype=roadmap&markers=color:blue%7C" + latitude + "," + longitude + "&key=" + MAP_API_KEY;
 
-                    Log.d("debago","url : "+url);
+                    Log.d("debago", "url : " + url);
                     //IMAGE LOCATION
                     Glide.with(MainApplication.getInstance().getApplicationContext())
                             .load(url)
 
                             .into((propertyLocalisationImage));
-                }else{
-                    Log.d("debago","Geocoding no result ");
+                } else {
+                    Log.d("debago", "Geocoding no result ");
                 }
 
 

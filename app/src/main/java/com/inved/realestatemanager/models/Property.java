@@ -25,7 +25,7 @@ public class Property {
     private String zipCode;
     private String townProperty;
     private String country;
-    private String addressProperty;
+    private String addressCompl;
     private String pointOfInterest;
     private String statusProperty;
     private String dateOfEntryOnMarketForProperty;
@@ -48,7 +48,7 @@ public class Property {
     public Property(String typeProperty, double pricePropertyInDollar,
                     double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                     int numberBedroomsInProperty, String fullDescriptionProperty, String streeNumber,
-                    String streetName, String zipCode, String townProperty, String country,String addressProperty, String pointOfInterest,
+                    String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
                     String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                     boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                     String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
@@ -66,7 +66,7 @@ public class Property {
         this.zipCode = zipCode;
         this.townProperty = townProperty;
         this.country = country;
-        this.addressProperty = addressProperty;
+        this.addressCompl = addressCompl;
         this.pointOfInterest = pointOfInterest;
         this.statusProperty = statusProperty;
         this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
@@ -189,12 +189,12 @@ public class Property {
         this.country = country;
     }
 
-    public String getAddressProperty() {
-        return addressProperty;
+    public String getAddressCompl() {
+        return addressCompl;
     }
 
-    public void setAddressProperty(String addressProperty) {
-        this.addressProperty = addressProperty;
+    public void setAddressCompl(String addressCompl) {
+        this.addressCompl = addressCompl;
     }
 
     public String getPointOfInterest() {
