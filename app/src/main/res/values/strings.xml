@@ -149,6 +149,8 @@
     <string name="agent_management_text">Stéphane Plazza</string>
     <string name="agent_management_page_title">Agent Management</string>
     <string name="agent_management_no_agent">No real estate agent</string>
+    <string name="agent_management_no_delete_possible">You can\'t delete a agent who have at least one registered property</string>
+    <string name="agent_management_ok_choice">OK</string>
 
     <!-- SET ERROR -->
     <string name="set_error_street_number">Enter a good street number</string>

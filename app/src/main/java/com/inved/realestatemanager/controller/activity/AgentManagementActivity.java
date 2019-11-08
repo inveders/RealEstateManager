@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.controller.activity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,7 +24,6 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
     private PropertyViewModel propertyViewModel;
     private RecyclerViewAgentManagement adapter;
-    private FloatingActionButton addAgentFloatingButton;
 
     @Override
     protected int getLayoutContentViewID() {
@@ -35,12 +35,12 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         super.onCreate(savedInstanceState);
 
         RecyclerView recyclerView = findViewById(R.id.agent_management_recycler_view);
-        adapter = new RecyclerViewAgentManagement(this,this);
+        adapter = new RecyclerViewAgentManagement(this, this);
         recyclerView.setAdapter(this.adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        addAgentFloatingButton = findViewById(R.id.agent_management_add_floating_button);
+        FloatingActionButton addAgentFloatingButton = findViewById(R.id.agent_management_add_floating_button);
         this.configureViewModel();
 
         addAgentFloatingButton.setOnClickListener(v -> openDialog());
@@ -59,7 +59,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Agent Management");
         }
@@ -70,14 +70,29 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        propertyViewModel.getAllRealEstateAgents().observe(this,realEstateAgents -> adapter.setData(realEstateAgents));
+        propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> adapter.setData(realEstateAgents));
     }
 
     @Override
-    public void onClickDeleteButton(long id) {
+    public void onClickDeleteButton(long realEstateAgentId) {
 
-        /**VERIFIER S'IL N'Y A PAS DE BIENS AU NOM DE CET AGENT IMMOBILIER AVANT DE LE SUPPRIMER*/
-      //  propertyViewModel.deleteRealEstateAgent(id);
+        propertyViewModel.getProperties(realEstateAgentId).observe(this, properties -> {
+            if (properties.size() > 0) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.agent_management_no_delete_possible)
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, id) -> dialog.dismiss());
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+            } else {
+                propertyViewModel.deleteRealEstateAgent(realEstateAgentId);
+            }
+        });
+
 
     }
 
@@ -86,7 +101,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
         AddAgentDialog dialog = new AddAgentDialog();
         Bundle bundle = new Bundle();
-        bundle.putLong("myLong",id);
+        bundle.putLong("myLong", id);
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "AddAgentDialog");
 
