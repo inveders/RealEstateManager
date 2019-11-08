@@ -1,7 +1,10 @@
 package com.inved.realestatemanager.controller.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +20,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.GeocodingViewModel;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
@@ -53,8 +62,12 @@ public class DetailPropertyFragment extends Fragment {
     private TextView dateOfSaleForPorperty;
     private TextView realEstateAgent;
 
-    private PropertyViewModel propertyViewModel;
+    private ImageView propertyLocalisationImage;
 
+    private PropertyViewModel propertyViewModel;
+    private GeocodingViewModel geocodingViewModel;
+
+    public static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
 
     public DetailPropertyFragment() {
 
@@ -75,23 +88,38 @@ public class DetailPropertyFragment extends Fragment {
         numberBathroomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_bathroom_text);
         fullDescriptionProperty = mView.findViewById(R.id.fragment_detail_property_description_text);
         imageSwitcher = mView.findViewById(R.id.fragment_detail_property_image_switcher);
-        streetNumber=mView.findViewById(R.id.fragment_detail_property_street_number_text);
-        streetName=mView.findViewById(R.id.fragment_detail_property_street_name_text);
-        complAddress=mView.findViewById(R.id.fragment_detail_property_complement_address_text);
-        townProperty=mView.findViewById(R.id.fragment_detail_property_town_text);
-        zipCode=mView.findViewById(R.id.fragment_detail_property_zip_code_text);
-        country=mView.findViewById(R.id.fragment_detail_property_country_text);
+        streetNumber = mView.findViewById(R.id.fragment_detail_property_street_number_text);
+        streetName = mView.findViewById(R.id.fragment_detail_property_street_name_text);
+        complAddress = mView.findViewById(R.id.fragment_detail_property_complement_address_text);
+        townProperty = mView.findViewById(R.id.fragment_detail_property_town_text);
+        zipCode = mView.findViewById(R.id.fragment_detail_property_zip_code_text);
+        country = mView.findViewById(R.id.fragment_detail_property_country_text);
         pointsOfInterestNearProperty = mView.findViewById(R.id.fragment_detail_property_points_of_interest_text);
         statusProperty = mView.findViewById(R.id.fragment_detail_property_status_text);
         dateOfEntryOnMarketForProperty = mView.findViewById(R.id.fragment_detail_property_date_of_entry_on_market_text);
         dateOfSaleForPorperty = mView.findViewById(R.id.fragment_detail_property_date_of_sale_text);
         realEstateAgent = mView.findViewById(R.id.fragment_detail_property_real_estate_agent_text);
+        propertyLocalisationImage = mView.findViewById(R.id.fragment_detail_property_location_map);
+
+
+
+        if(getActivity()!=null){
+            Intent intent = getActivity().getIntent();
+            long myPropertyId=intent.getLongExtra(PROPERTY_ID,0);
+            configureViewModel();
+            propertyViewModel.getOneProperty(myPropertyId).observe(this, this::updateWithProperty);
+            setMapStatic(myPropertyId);
+        }
+
+
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             long myPropertyId = bundle.getLong(PROPERTY_ID, 0);
             configureViewModel();
+
             propertyViewModel.getOneProperty(myPropertyId).observe(this, this::updateWithProperty);
+            setMapStatic(myPropertyId);
 
         }
 
@@ -99,12 +127,11 @@ public class DetailPropertyFragment extends Fragment {
     }
 
 
-
     // 2 - Configuring ViewModel
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-
+        this.geocodingViewModel = ViewModelProviders.of(this).get(GeocodingViewModel.class);
     }
 
     private void updateWithProperty(Property property) {
@@ -216,9 +243,9 @@ public class DetailPropertyFragment extends Fragment {
 
         }
 
-        if(myImages.size()!=0){
+        if (myImages.size() != 0) {
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
-        }else{
+        } else {
             imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_round);
         }
 
@@ -265,19 +292,50 @@ public class DetailPropertyFragment extends Fragment {
         }
 
 
-
-
     }
 
 
+    private void setMapStatic(long propertyId) {
+
+        Log.d("debago","setMapstatic : "+propertyId);
+        propertyViewModel.getOneProperty(propertyId).observe(this, properties -> {
+
+            SplitString splitString = new SplitString();
 
 
+            String streetNumber = properties.getStreetNumber();
+            String streetName = properties.getStreetName();
+            String zipCode = properties.getZipCode();
+            String town = properties.getTownProperty();
+            String country = properties.getCountry();
+            String addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
+            String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
+            Log.d("debago","address formated : "+addressFormatted);
+            geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
+                if(results.size()!=0){
+                    Log.d("debago","result : "+results);
+                    double latitude = results.get(0).getGeometry().getLocation().getLat();
+                    double longitude = results.get(0).getGeometry().getLocation().getLng();
+
+                    String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + addressFormatted + "&zoom=16&size=170x100&maptype=roadmap&markers=color:blue%7C" + latitude + "," + longitude + "&key=" + MAP_API_KEY;
+
+                    Log.d("debago","url : "+url);
+                    //IMAGE LOCATION
+                    Glide.with(MainApplication.getInstance().getApplicationContext())
+                            .load(url)
+
+                            .into((propertyLocalisationImage));
+                }else{
+                    Log.d("debago","Geocoding no result ");
+                }
 
 
+            });
 
 
+        });
 
-
+    }
 
 
 }

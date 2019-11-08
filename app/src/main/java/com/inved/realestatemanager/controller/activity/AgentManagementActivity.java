@@ -43,7 +43,6 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         addAgentFloatingButton = findViewById(R.id.agent_management_add_floating_button);
         this.configureViewModel();
 
-
         addAgentFloatingButton.setOnClickListener(v -> openDialog());
 
     }

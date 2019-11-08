@@ -30,7 +30,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
 
-       // context.deleteDatabase("MyDatabase.db");
+        context.deleteDatabase("MyDatabase.db");
 
         if (INSTANCE == null) {
             synchronized (RealEstateManagerDatabase.class) {
@@ -80,7 +80,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                 contentValuesProperty.put("zipCode", "57840");
                 contentValuesProperty.put("townProperty", "Ottange");
                 contentValuesProperty.put("country", "France");
-                contentValuesProperty.put("addressProperty", "42 bis rue principale 57840 Ottange");
+                contentValuesProperty.put("addressProperty", "Bis");
                 contentValuesProperty.put("pointOfInterest", "school,car parks");
                 contentValuesProperty.put("statusProperty", "in progress");
                 contentValuesProperty.put("dateOfEntryOnMarketForProperty", "29/10/2019");

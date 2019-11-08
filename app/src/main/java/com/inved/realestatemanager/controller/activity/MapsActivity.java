@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -61,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        MapsActivityPermissionsDispatcher.checkLocationWithPermissionCheck(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -88,6 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mGoogleMap.setOnMarkerClickListener(marker -> false);
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mGoogleMap.setMyLocationEnabled(true);
 
         LatLng initialPosition = new LatLng(0, 0);
 
@@ -134,10 +137,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
 
                 geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
-                    double latitude = results.get(0).getGeometry().getLocation().getLat();
-                    double longitude = results.get(0).getGeometry().getLocation().getLng();
-                    String placeId = results.get(0).getPlaceId();
-                    customizeMarker(placeId, latitude, longitude);
+                    if(results.size()!=0){
+                        double latitude = results.get(0).getGeometry().getLocation().getLat();
+                        double longitude = results.get(0).getGeometry().getLocation().getLng();
+                        String placeId = results.get(0).getPlaceId();
+                        customizeMarker(placeId, latitude, longitude);
+                    }else{
+                        Log.d("debago","Geocoding no result ");
+                    }
+
                 });
             }
         });
@@ -191,7 +199,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void moveCamera(double myCurrentLat,double myCurrentLongi) {
 
-        int mZoom = 15;
+        int mZoom = 12;
         int mBearing = 4;
         int mTilt = 35;
 
@@ -272,5 +280,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .setNegativeButton(getString(R.string.alert_dialog_no), (dialog, id) -> dialog.cancel());
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        MapsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 }
