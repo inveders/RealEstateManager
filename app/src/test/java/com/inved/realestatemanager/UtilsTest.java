@@ -2,7 +2,7 @@ package com.inved.realestatemanager;
 
 import com.inved.realestatemanager.utils.Utils;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 import org.mockito.Mockito;

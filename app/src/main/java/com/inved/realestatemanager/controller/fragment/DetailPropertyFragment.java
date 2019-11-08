@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.SplitString;
+import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.GeocodingViewModel;
@@ -132,6 +133,7 @@ public class DetailPropertyFragment extends Fragment {
 
     private void updateWithProperty(Property property) {
 
+        UnitConversion unitConversion = new UnitConversion();
 
         //TYPE PROPERTY
         if (property.getTypeProperty() != null) {
@@ -142,7 +144,7 @@ public class DetailPropertyFragment extends Fragment {
 
         //PRICE IN DOLLARS
         if (property.getPricePropertyInDollar() != 0.0) {
-            this.pricePropertyInDollar.setText(String.valueOf(property.getPricePropertyInDollar()));
+            this.pricePropertyInDollar.setText(unitConversion.changeDoubleToStringWithThousandSeparator(property.getPricePropertyInDollar()));
         } else {
             this.pricePropertyInDollar.setText(MainApplication.getResourses().getString(R.string.list_property_no_price_indicated));
         }
@@ -188,7 +190,7 @@ public class DetailPropertyFragment extends Fragment {
 
         //SURFACE AREA
         if (property.getSurfaceAreaProperty() != 0.0) {
-            this.surfaceAreaProperty.setText(String.valueOf(property.getSurfaceAreaProperty()));
+            this.surfaceAreaProperty.setText(unitConversion.changeDoubleToStringWithThousandSeparator(property.getSurfaceAreaProperty()));
         } else {
             this.surfaceAreaProperty.setText(MainApplication.getResourses().getString(R.string.none));
         }

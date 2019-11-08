@@ -243,7 +243,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxWidth="170sp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:text="@string/create_update_by_street_name"
             app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_street_number_text"
             app:layout_constraintTop_toTopOf="@id/fragment_detail_property_street_number_text" />
