@@ -33,7 +33,7 @@ import com.inved.realestatemanager.utils.MainApplication;
 
 import java.util.ArrayList;
 
-import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
+import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
 
 public class DetailPropertyFragment extends Fragment {

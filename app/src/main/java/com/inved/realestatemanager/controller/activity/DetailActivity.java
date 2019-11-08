@@ -2,7 +2,6 @@ package com.inved.realestatemanager.controller.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,7 +14,7 @@ import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 
 import butterknife.OnClick;
 
-import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
+import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
 
 public class DetailActivity extends BaseActivity  {

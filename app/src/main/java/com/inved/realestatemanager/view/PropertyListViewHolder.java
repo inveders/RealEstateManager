@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.property;
+package com.inved.realestatemanager.view;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.MainApplication;
 
@@ -43,7 +44,8 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     void updateWithProperty(Property property, PropertyListInterface callback, RequestManager glide) {
 
-        Log.d("debago", "city :" + property.getTownProperty() + " type" + property.getTownProperty());
+        UnitConversion unitConversion =new UnitConversion();
+
         //TYPE PROPERTY
         if (property.getTypeProperty() != null) {
             this.typeProperty.setText(property.getTypeProperty());
@@ -53,7 +55,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         //PRICE IN DOLLARS
         if (property.getPricePropertyInDollar() != 0.0) {
-            this.pricePropertyInDollar.setText(String.valueOf(property.getPricePropertyInDollar()));
+            this.pricePropertyInDollar.setText(unitConversion.changeDoubleToStringWithThousandSeparator(property.getPricePropertyInDollar()));
         } else {
             this.pricePropertyInDollar.setText(MainApplication.getResourses().getString(R.string.list_property_no_price_indicated));
         }
@@ -68,7 +70,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         //SURFACE AREA
         if (property.getSurfaceAreaProperty() != 0.0) {
-            this.surfaceAreaProperty.setText(String.valueOf(property.getSurfaceAreaProperty()));
+            this.surfaceAreaProperty.setText(unitConversion.changeDoubleToStringWithThousandSeparator(property.getSurfaceAreaProperty()));
         } else {
             this.surfaceAreaProperty.setText(MainApplication.getResourses().getString(R.string.none));
         }

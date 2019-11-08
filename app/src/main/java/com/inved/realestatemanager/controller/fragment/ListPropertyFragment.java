@@ -20,14 +20,14 @@ import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.property.PropertyListAdapter;
-import com.inved.realestatemanager.property.PropertyListViewHolder;
+import com.inved.realestatemanager.view.PropertyListAdapter;
+import com.inved.realestatemanager.view.PropertyListViewHolder;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.util.List;
 
-import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
+import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
 
 public class ListPropertyFragment extends Fragment implements PropertyListViewHolder.PropertyListInterface {

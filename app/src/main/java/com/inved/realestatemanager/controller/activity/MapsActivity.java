@@ -37,7 +37,7 @@ import com.inved.realestatemanager.models.PropertyViewModel;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
-import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
+import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
 @RuntimePermissions
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {

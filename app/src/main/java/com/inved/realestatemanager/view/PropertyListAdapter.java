@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.property;
+package com.inved.realestatemanager.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
