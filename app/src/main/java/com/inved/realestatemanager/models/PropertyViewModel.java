@@ -1,12 +1,14 @@
-package com.inved.realestatemanager.property;
+package com.inved.realestatemanager.models;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.repositories.GeocodingRepository;
 import com.inved.realestatemanager.repositories.PropertyDataRepository;
 import com.inved.realestatemanager.repositories.RealEstateAgentDataRepository;
+import com.inved.realestatemanager.retrofit.modelPojo.Result;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -89,4 +91,7 @@ public class PropertyViewModel extends ViewModel {
                                                    int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
         return propertyDataSource.searchProperty(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId);
     }
+
+
+
 }
