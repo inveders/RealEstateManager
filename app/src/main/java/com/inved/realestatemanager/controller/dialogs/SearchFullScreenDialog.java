@@ -19,7 +19,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
-import com.inved.realestatemanager.property.PropertyViewModel;
+import com.inved.realestatemanager.models.PropertyViewModel;
 
 import java.util.List;
 

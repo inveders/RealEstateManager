@@ -18,14 +18,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
-import com.inved.realestatemanager.property.PropertyViewModel;
+import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 

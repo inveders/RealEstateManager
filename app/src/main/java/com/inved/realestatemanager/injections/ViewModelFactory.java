@@ -1,9 +1,10 @@
 package com.inved.realestatemanager.injections;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.inved.realestatemanager.property.PropertyViewModel;
+import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.repositories.PropertyDataRepository;
 import com.inved.realestatemanager.repositories.RealEstateAgentDataRepository;
 
@@ -24,6 +25,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     }
 
     @Override
+    @NonNull
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(PropertyViewModel.class)) {
             return (T) new PropertyViewModel(propertyDataSource, realEstateAgentDataSource, executor);

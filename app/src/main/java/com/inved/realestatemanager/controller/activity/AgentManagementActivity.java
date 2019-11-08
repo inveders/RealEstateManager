@@ -15,7 +15,7 @@ import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.dialogs.AddAgentDialog;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
-import com.inved.realestatemanager.property.PropertyViewModel;
+import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.view.RecyclerViewAgentManagement;
 

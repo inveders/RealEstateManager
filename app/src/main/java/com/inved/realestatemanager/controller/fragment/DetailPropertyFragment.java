@@ -1,9 +1,7 @@
 package com.inved.realestatemanager.controller.fragment;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +21,11 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.property.PropertyViewModel;
+import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.util.ArrayList;
 
-import static com.inved.realestatemanager.controller.activity.DetailActivity.PROPERTY_ID_INTENT;
 import static com.inved.realestatemanager.property.PropertyListViewHolder.PROPERTY_ID;
 
 

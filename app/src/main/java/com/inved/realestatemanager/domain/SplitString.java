@@ -20,4 +20,9 @@ public class SplitString {
         }
         return null;
     }
+
+
+    public String replaceAllSpacesOrCommaByAddition(String stringToConvert){
+        return stringToConvert.replaceAll("\\s", "+");
+    }
 }

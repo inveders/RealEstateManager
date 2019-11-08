@@ -3,7 +3,6 @@ package com.inved.realestatemanager.controller.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,23 +10,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
 import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.property.PropertyListAdapter;
 import com.inved.realestatemanager.property.PropertyListViewHolder;
-import com.inved.realestatemanager.property.PropertyViewModel;
+import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.util.List;
@@ -39,11 +34,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     // FOR DESIGN
 
-    private RecyclerView recyclerView;
     public static PropertyListAdapter adapter;
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
-    public static long REAL_ESTATE_AGENT_ID = 1;
+    private static long REAL_ESTATE_AGENT_ID = 1;
     private Context context;
 
     public static ListPropertyFragment newInstance() {
@@ -72,8 +66,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_list_property, container, false);
 
-        recyclerView = mView.findViewById(R.id.fragment_list_property_recycler_view);
-        this.recyclerView.setAdapter(this.adapter);
+        RecyclerView recyclerView = mView.findViewById(R.id.fragment_list_property_recycler_view);
+        recyclerView.setAdapter(this.adapter);
         recyclerView.setHasFixedSize(true);
       //  recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
