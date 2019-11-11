@@ -242,10 +242,12 @@ public class AddAgentDialog extends DialogFragment {
 
                     break;
                 case REQUEST_CAMERA_PHOTO:
+                    Log.d("debago","urlPicture 2bis camerafilepath : "+cameraFilePath);
                     if(cameraFilePath!=null){
-                        showImageInCircle(cameraFilePath);
                         urlPicture = cameraFilePath;
                         Log.d("debago","urlPicture 2 : "+urlPicture);
+                        showImageInCircle(cameraFilePath);
+
                     }
 
                     break;

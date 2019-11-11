@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.MainActivity;
@@ -56,7 +57,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class CreateUpdatePropertyFragmentTwo extends Fragment implements AdapterView.OnItemSelectedListener{
+public class CreateUpdatePropertyFragmentTwo extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
@@ -76,6 +77,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private ImageView photo5;
     private TextView photoDescription;
 
+    private String photoUri = null;
     private String photoUri1 = null;
     private String photoUri2 = null;
     private String photoUri3 = null;
@@ -136,7 +138,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         addPhotoButton.setOnClickListener(view -> selectImage());
 
 
-
         this.updateUI();
         this.configureViewModel();
         this.retriveRealEstateAgents();
@@ -159,7 +160,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
 
     private void updateUIwithDataFromDatabase(long propertyId) {
-        Log.d("debago","update ui with database");
         propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
 
             if (property.getDateOfEntryOnMarketForProperty().isEmpty() || property.getDateOfEntryOnMarketForProperty() == null) {
@@ -168,11 +168,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
             }
 
-            propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this,realEstateAgents -> {
+            propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
                 String firstname = realEstateAgents.getFirstname();
                 String lastname = realEstateAgents.getLastname();
-                Log.d("debago","update ui with database lastname "+lastname);
-                agentNameSpinner.setSelection(getIndexSpinner(agentNameSpinner, firstname+" "+lastname));
+                agentNameSpinner.setSelection(getIndexSpinner(agentNameSpinner, firstname + " " + lastname));
             });
 
 
@@ -262,16 +261,28 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         // Result code is RESULT_OK only if the user selects an Image
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
+
+
+
                 case REQUEST_GALLERY_PHOTO:
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
                     photo1.setImageURI(selectedImage);
                     if (selectedImage != null) {
-                        photoUri1 = selectedImage.toString();
+                        photoUri = selectedImage.toString();
                     }
                     break;
                 case REQUEST_CAMERA_PHOTO:
-                    photo1.setImageURI(Uri.parse(cameraFilePath));
+
+
+                    if (cameraFilePath != null) {
+                        Log.d("debago", "urlPicture two camera file path : " + cameraFilePath);
+                        photoUri = cameraFilePath;
+                       // photo1.setImageURI(Uri.parse(cameraFilePath));
+
+                    }
+
+
                     break;
                 case REQUEST_CODE_DATE_PICKER:
                     // get date from string
@@ -280,6 +291,19 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     dateOfEntry.setText(selectedDate);
                     break;
             }
+
+            if(photoUri1==null){
+                photoUri1=photoUri;
+            }else if(photoUri2==null){
+                photoUri2=photoUri;
+            }else if(photoUri3==null){
+                photoUri3=photoUri;
+            }else if(photoUri4==null){
+                photoUri4=photoUri;
+            }else if(photoUri5==null){
+                photoUri5=photoUri;
+            }
+
             updateUI();
         }
 
@@ -289,7 +313,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     /**
      * Create file with current timestamp name
-     *
      */
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -332,7 +355,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             });
 
             //I fill agent spinner with firstname and lastname of the database programatically
-            Log.d("debago","in retrieve real estate agent");
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
                     MainApplication.getInstance().getApplicationContext(), android.R.layout.simple_spinner_item, spinnerAgentList);
@@ -347,9 +369,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     //private method of your class
     private int getIndexSpinner(Spinner spinner, String myString) {
-        Log.d("debago","in getIndexSpinner count "+spinner.getCount());
         for (int i = 0; i < spinner.getCount(); i++) {
-            Log.d("debago"," spinenr itemposition : "+spinner.getItemAtPosition(0).toString()+" AND  myString :"+myString);
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)) {
 
 
@@ -363,22 +383,18 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // An item was selected. You can retrieve the selected item using
-        Log.d("debago","selected item : ");
         // if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
         if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
             selectedAgent = agentNameSpinner.getSelectedItem().toString();
-            Log.d("debago", "selected agent : " + selectedAgent);
             SplitString splitString = new SplitString();
             String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
             String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
             this.propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(this, realEstateAgents -> {
                 realEstateAgentId = realEstateAgents.getId();
-                Log.d("debago", "real estate agent id : " + realEstateAgentId);
             });
         }
 
     }
-
 
 
     @Override
@@ -427,7 +443,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     }
 
 
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -436,17 +451,17 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void finishToCreateProperty() {
 
-        if (selectedAgent==null) {
+        if (selectedAgent == null) {
             Toast.makeText(context, getString(R.string.set_error_agent), Toast.LENGTH_SHORT).show();
-        }else{
-            selectedAgent="Alexandra Gnimadi"; /**LE TEMPS DE TROUVER POURQUOI ON ARRIVE PAS A SELECTIONNER LE SPINENR*/
+        } else {
+            selectedAgent = "Alexandra Gnimadi"; /**LE TEMPS DE TROUVER POURQUOI ON ARRIVE PAS A SELECTIONNER LE SPINENR*/
         }
         if (fullDescriptionEditText.getText().toString().trim().isEmpty()) {
             fullDescriptionEditText.setError(getString(R.string.set_error_street_number));
         } else if (dateOfEntry.getText().toString().trim().isEmpty()) {
             DateOfDay dateOfDay = new DateOfDay();
             dateOfEntry.setText(dateOfDay.getDateOfDay());
-        }else{
+        } else {
             Bundle args = getArguments();
             if (args != null) {
 
@@ -491,59 +506,98 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         }
 
 
-
-
     }
 
     private void updateUI() {
+
+        Log.d("debago", "photoUri1 : " + photoUri1+" photoUri2 : " + photoUri2+" photoUri3 : " + photoUri3+" photoUri4 : " + photoUri4+" photoUri5 : " + photoUri5);
+
         String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
+        Uri fileUri;
         if (photoUri1 != null) {
-            Glide.with(this)
-                    .load(new File(photoUri1))
-                    .into(photo1);
+            fileUri = Uri.parse(photoUri1);
+            if (fileUri.getPath() != null) {
+                Glide.with(this)
+                        .load(new File(fileUri.getPath()))
+                        .apply(RequestOptions.centerCropTransform())
+                        .override(240, 240)
+                        .fitCenter()
+                        .into(photo1);
+
+            }
         } else {
             Glide.with(this)
                     .load(urlNoImage)
+                    .override(240, 240)
+                    .fitCenter()
                     .into(photo1);
         }
 
         if (photoUri2 != null) {
-            Glide.with(this)
-                    .load(new File(photoUri2))
-                    .into(photo2);
+            fileUri = Uri.parse(photoUri2);
+            if (fileUri.getPath() != null) {
+                Glide.with(this)
+                        .load(new File(fileUri.getPath()))
+                        .override(50, 50)
+                        .fitCenter()
+                        .into(photo2);
+            }
         } else {
             Glide.with(this)
                     .load(urlNoImage)
+                    .override(50, 50)
+                    .fitCenter()
                     .into(photo2);
         }
 
         if (photoUri3 != null) {
-            Glide.with(this)
-                    .load(new File(photoUri3))
-                    .into(photo3);
+            fileUri = Uri.parse(photoUri3);
+            if (fileUri.getPath() != null) {
+                Glide.with(this)
+                        .load(new File(fileUri.getPath()))
+                        .override(50, 50)
+                        .fitCenter()
+                        .into(photo3);
+            }
         } else {
             Glide.with(this)
                     .load(urlNoImage)
+                    .override(50, 50)
+                    .fitCenter()
                     .into(photo3);
         }
 
         if (photoUri4 != null) {
-            Glide.with(this)
-                    .load(new File(photoUri4))
-                    .into(photo4);
+            fileUri = Uri.parse(photoUri4);
+            if (fileUri.getPath() != null) {
+                Glide.with(this)
+                        .load(new File(fileUri.getPath()))
+                        .override(50, 50)
+                        .fitCenter()
+                        .into(photo4);
+            }
         } else {
             Glide.with(this)
                     .load(urlNoImage)
+                    .override(50, 50)
+                    .fitCenter()
                     .into(photo4);
         }
 
         if (photoUri5 != null) {
-            Glide.with(this)
-                    .load(new File(photoUri5))
-                    .into(photo5);
+            fileUri = Uri.parse(photoUri5);
+            if (fileUri.getPath() != null) {
+                Glide.with(this)
+                        .load(new File(fileUri.getPath()))
+                        .override(50, 50)
+                        .fitCenter()
+                        .into(photo5);
+            }
         } else {
             Glide.with(this)
                     .load(urlNoImage)
+                    .override(50, 50)
+                    .fitCenter()
                     .into(photo5);
         }
     }
@@ -558,10 +612,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }
-
-
-
-
 
 
 }

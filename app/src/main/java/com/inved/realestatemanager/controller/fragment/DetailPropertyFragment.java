@@ -35,7 +35,6 @@ import java.util.ArrayList;
 
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
-
 public class DetailPropertyFragment extends Fragment {
 
     private TextView typeProperty;
@@ -65,10 +64,9 @@ public class DetailPropertyFragment extends Fragment {
     private PropertyViewModel propertyViewModel;
     private GeocodingViewModel geocodingViewModel;
 
-    public static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
+    private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
 
     public DetailPropertyFragment() {
-
 
     }
 
@@ -288,7 +286,6 @@ public class DetailPropertyFragment extends Fragment {
             this.dateOfSaleForPorperty.setText(MainApplication.getResourses().getString(R.string.none));
         }
 
-
     }
 
     private void getRealEstateAgent(long realEstateAgentId) {
@@ -308,11 +305,10 @@ public class DetailPropertyFragment extends Fragment {
 
     private void setMapStatic(long propertyId) {
 
-        Log.d("debago", "setMapstatic : " + propertyId);
+
         propertyViewModel.getOneProperty(propertyId).observe(this, properties -> {
 
             SplitString splitString = new SplitString();
-
 
             String streetNumber = properties.getStreetNumber();
             String streetName = properties.getStreetName();
@@ -321,16 +317,15 @@ public class DetailPropertyFragment extends Fragment {
             String country = properties.getCountry();
             String addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
             String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
-            Log.d("debago", "address formated : " + addressFormatted);
+
             geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
                 if (results.size() != 0) {
-                    Log.d("debago", "result : " + results);
+
                     double latitude = results.get(0).getGeometry().getLocation().getLat();
                     double longitude = results.get(0).getGeometry().getLocation().getLng();
 
                     String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + addressFormatted + "&zoom=16&size=170x100&maptype=roadmap&markers=color:blue%7C" + latitude + "," + longitude + "&key=" + MAP_API_KEY;
 
-                    Log.d("debago", "url : " + url);
                     //IMAGE LOCATION
                     Glide.with(MainApplication.getInstance().getApplicationContext())
                             .load(url)
