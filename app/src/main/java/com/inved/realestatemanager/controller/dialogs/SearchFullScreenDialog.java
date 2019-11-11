@@ -80,15 +80,15 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     ImageButton cancelSearchButton;
 
     //String for Data
-    private String mTypeProperty = "%";
+    private String mTypeProperty = null;
     private int mMinBedroom = 0;
-    private int mMaxBedroom = 0;
-    private String mStatus = "%";
-    private long mRealEstateAgentName = 1;
+    private int mMaxBedroom = 7;
+    private String mStatus = null;
+    private long mRealEstateAgentName = 0;
     private double minSurface = 0;
     private double maxSurface = 99999;
     private double minPrice = 0;
-    private double maxPrice=30000;
+    private double maxPrice=3000000;
 
     //View Model
     private PropertyViewModel propertyViewModel;
@@ -173,9 +173,10 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     private void startSearchProperty() {
 
         if(getDialog()!=null){
-            String town = !townPropertyAutocomplete.getText().toString().equals("") ? townPropertyAutocomplete.getText().toString() : "%";
-            String country = !countryAutocomplete.getText().toString().equals("") ?countryAutocomplete.getText().toString() : "%";
+            String town = !townPropertyAutocomplete.getText().toString().equals("") ? townPropertyAutocomplete.getText().toString() : null;
+            String country = !countryAutocomplete.getText().toString().equals("") ?countryAutocomplete.getText().toString() : null;
 
+            /**Si max bedroom est laissé à zéro, envoyer comme valeur la même que min bedroom*/
             this.propertyViewModel.searchProperty(mTypeProperty,town, minSurface,maxSurface,minPrice, maxPrice,
                     mMinBedroom, mMaxBedroom, country, mStatus,mRealEstateAgentName)
                     .observe(this, this::updateRealEstateItemsList);
