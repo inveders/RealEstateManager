@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class RealEstateAgents {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long realEstateAgentId;
 
     private String firstname;
     private String lastname;
@@ -21,12 +21,12 @@ public class RealEstateAgents {
         this.urlPicture = urlPicture;
     }
 
-    public long getId() {
-        return id;
+    public long getRealEstateAgentId() {
+        return realEstateAgentId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setRealEstateAgentId(long realEstateAgentId) {
+        this.realEstateAgentId = realEstateAgentId;
     }
 
     public String getFirstname() {

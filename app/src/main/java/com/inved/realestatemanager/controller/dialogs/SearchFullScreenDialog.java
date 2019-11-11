@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 import io.apptik.widget.MultiSlider;
 
 public class SearchFullScreenDialog extends DialogFragment implements AdapterView.OnItemSelectedListener {
-    
+
     private static final String TAG = "CustomSearchDialog";
 
     //Widget

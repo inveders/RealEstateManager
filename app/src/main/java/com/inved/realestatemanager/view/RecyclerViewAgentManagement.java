@@ -71,7 +71,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(R.string.alert_dialog_message)
                     .setCancelable(false)
-                    .setPositiveButton(MainApplication.getResourses().getString(R.string.alert_dialog_yes), (dialog, id) -> callback.onClickDeleteButton(realEstateAgentsList.get(position).getId())
+                    .setPositiveButton(MainApplication.getResourses().getString(R.string.alert_dialog_yes), (dialog, id) -> callback.onClickDeleteButton(realEstateAgentsList.get(position).getRealEstateAgentId())
                     )
                     .setNegativeButton(MainApplication.getResourses().getString(R.string.alert_dialog_no), (dialog, id) -> dialog.cancel());
             AlertDialog alert = builder.create();
@@ -79,7 +79,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
         });
 
-        holder.mAgentName.setOnClickListener(v -> callback.onEditAgent(realEstateAgentsList.get(position).getId()));
+        holder.mAgentName.setOnClickListener(v -> callback.onEditAgent(realEstateAgentsList.get(position).getRealEstateAgentId()));
     }
 
 

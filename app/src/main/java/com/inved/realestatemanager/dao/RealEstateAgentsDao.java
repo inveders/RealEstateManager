@@ -22,13 +22,13 @@ public interface RealEstateAgentsDao {
     LiveData<RealEstateAgents> getRealEstateAgentByName(String firstname, String lastname);
 
 
-    @Query("SELECT * FROM RealEstateAgents WHERE id = :realEstateAgentId")
+    @Query("SELECT * FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
     LiveData<RealEstateAgents> getRealEstateAgentById(long realEstateAgentId);
 
     @Query("SELECT * FROM RealEstateAgents")
     LiveData<List<RealEstateAgents>> getAllRealEstateAgents();
 
-    @Query("DELETE FROM RealEstateAgents WHERE id = :realEstateAgentId")
+    @Query("DELETE FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
     int deleteRealEstateAgent(long realEstateAgentId);
 
     @Update

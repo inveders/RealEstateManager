@@ -79,10 +79,6 @@ public class PropertyViewModel extends ViewModel {
         executor.execute(() -> propertyDataSource.createItem(property));
     }
 
-    public void deleteProperty(long propertyId) {
-        executor.execute(() -> propertyDataSource.deleteItem(propertyId));
-    }
-
     public void updateProperty(Property property) {
         executor.execute(() -> propertyDataSource.updateItem(property));
     }

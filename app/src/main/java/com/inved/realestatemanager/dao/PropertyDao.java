@@ -23,7 +23,7 @@ public interface PropertyDao {
     LiveData<List<Property>> getAllProperties();
 
 
-    @Query("SELECT * FROM Property WHERE id = :propertyId")
+    @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
     LiveData<Property> getOneProperty(long propertyId);
 
    /* @Query("SELECT * FROM Property WHERE realEstateAgentId = :realEstateAgentId OR typeProperty LIKE :type OR townProperty LIKE :town OR surfaceAreaProperty BETWEEN :minSurface AND :maxSurface " +
@@ -42,7 +42,7 @@ public interface PropertyDao {
     @Update
     int updateProperty(Property property);
 
-    @Query("DELETE FROM Property WHERE id = :propertyId")
+    @Query("DELETE FROM Property WHERE propertyId = :propertyId")
     int deleteProperty(long propertyId);
 }
 

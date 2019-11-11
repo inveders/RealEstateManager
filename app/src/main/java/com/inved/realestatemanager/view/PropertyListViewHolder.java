@@ -1,7 +1,6 @@
 package com.inved.realestatemanager.view;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -95,7 +94,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         //CLICK ON CARDVIEW
         mCardview.setOnClickListener(view -> {
 
-            long propertyId = property.getId();
+            long propertyId = property.getPropertyId();
             callback.clickOnCardView(propertyId);
 
 

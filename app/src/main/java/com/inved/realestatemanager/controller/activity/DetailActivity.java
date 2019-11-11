@@ -93,6 +93,8 @@ public class DetailActivity extends BaseActivity  {
         final MenuItem addProperty = menu.findItem(R.id.menu_action_add);
         addProperty.setVisible(false);
 
+        final MenuItem clearSearch = menu.findItem(R.id.menu_action_clear);
+        clearSearch.setVisible(false);
 
         final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
         updateProperty.setOnMenuItemClickListener(menuItem -> {

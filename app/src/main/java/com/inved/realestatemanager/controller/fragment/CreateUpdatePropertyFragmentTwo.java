@@ -383,14 +383,14 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // An item was selected. You can retrieve the selected item using
-        // if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
+        // if (parent.getRealEstateAgentId() == R.id.create_update_spinner_real_estate_agent_text) {
         if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
             selectedAgent = agentNameSpinner.getSelectedItem().toString();
             SplitString splitString = new SplitString();
             String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
             String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
             this.propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(this, realEstateAgents -> {
-                realEstateAgentId = realEstateAgents.getId();
+                realEstateAgentId = realEstateAgents.getRealEstateAgentId();
             });
         }
 
