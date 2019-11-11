@@ -184,6 +184,7 @@
     <string name="add_agent_dialog_add_confirm_text">New real estate agent added</string>
     <string name="add_agent_dialog_update_confirm_text">Real estate agent informations updated</string>
     <string name="whatsapp_photo_not_possible">It\'s not possible to add photo from WhatsApp</string>
+    <string name="Minbedroom_Maxbedoorm_control">Min number of bedroom can\'t be greater than Max Number</string>
 
     <!-- MAP-->
 

@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -28,10 +29,8 @@ import butterknife.ButterKnife;
 import io.apptik.widget.MultiSlider;
 
 public class SearchFullScreenDialog extends DialogFragment implements AdapterView.OnItemSelectedListener {
-
-    private static final int USER_ID = 1;
+    
     private static final String TAG = "CustomSearchDialog";
-
 
     //Widget
     @BindView(R.id.dialog_spinner_type_property)
@@ -101,7 +100,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         ButterKnife.bind(this, view);
 
         this.configureViewModel();
-        this.getRealEstateItems(USER_ID);
         this.seekbarChangements();
         if(getDialog()!=null){
             getDialog().setTitle("Search property");
@@ -153,11 +151,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
     }
 
-    // Get all items for a user
-    private void getRealEstateItems(long userId) {
-        this.propertyViewModel.getProperties(userId).observe(this, this::updateRealEstateItemsList);
-    }
-
     // Update the list of Real Estate item
     private void updateRealEstateItemsList(List<com.inved.realestatemanager.models.Property> properties) {
         ListPropertyFragment.adapter.updateData(properties);
@@ -173,15 +166,24 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     private void startSearchProperty() {
 
         if(getDialog()!=null){
-            String town = !townPropertyAutocomplete.getText().toString().equals("") ? townPropertyAutocomplete.getText().toString() : null;
-            String country = !countryAutocomplete.getText().toString().equals("") ?countryAutocomplete.getText().toString() : null;
 
-            /**Si max bedroom est laissé à zéro, envoyer comme valeur la même que min bedroom*/
-            this.propertyViewModel.searchProperty(mTypeProperty,town, minSurface,maxSurface,minPrice, maxPrice,
-                    mMinBedroom, mMaxBedroom, country, mStatus,mRealEstateAgentName)
-                    .observe(this, this::updateRealEstateItemsList);
+            if(mMinBedroom>mMaxBedroom){
+                Toast.makeText(getContext(), getString(R.string.Minbedroom_Maxbedoorm_control), Toast.LENGTH_SHORT).show();
 
-            getDialog().dismiss();
+            }else{
+                String town = !townPropertyAutocomplete.getText().toString().equals("") ? townPropertyAutocomplete.getText().toString() : null;
+                String country = !countryAutocomplete.getText().toString().equals("") ?countryAutocomplete.getText().toString() : null;
+
+
+
+                this.propertyViewModel.searchProperty(mTypeProperty,town, minSurface,maxSurface,minPrice, maxPrice,
+                        mMinBedroom, mMaxBedroom, country, mStatus,mRealEstateAgentName)
+                        .observe(this, this::updateRealEstateItemsList);
+
+                getDialog().dismiss();
+            }
+
+
         }
 
     }
@@ -210,7 +212,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
-            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItemId()+1;/**VERIFIER QUE C'EST BON*/
+            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItemId()+1;
         }
 
     }

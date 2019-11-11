@@ -76,7 +76,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
     @Override
     public void onClickDeleteButton(long realEstateAgentId) {
 
-        propertyViewModel.getProperties(realEstateAgentId).observe(this, properties -> {
+        propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
             if (properties.size() > 0) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);

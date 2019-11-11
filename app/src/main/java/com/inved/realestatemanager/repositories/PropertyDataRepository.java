@@ -21,6 +21,8 @@ public class PropertyDataRepository {
 
     public LiveData<List<Property>> getItems(long realEstateAgentId){ return this.propertyDao.getProperty(realEstateAgentId); }
 
+    public LiveData<List<Property>> getAllItems(){ return this.propertyDao.getAllProperties(); }
+
     public LiveData<Property> getOneItem(long propertyId){ return this.propertyDao.getOneProperty(propertyId); }
 
     // --- SEARCH ---

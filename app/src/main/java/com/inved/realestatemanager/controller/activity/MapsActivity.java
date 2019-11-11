@@ -117,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void initializeMap() {
 
-        propertyViewModel.getProperties(1).observe(this, properties -> {
+        propertyViewModel.getAllPropertiesForOneAgent(1).observe(this, properties -> {
 
             String streetNumber;
             String streetName;
@@ -272,10 +272,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.alert_dialog_gps_disabled)
                 .setCancelable(false)
-                .setPositiveButton(getString(R.string.alert_dialog_yes), (dialog, id) -> {
-                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-
-                        }
+                .setPositiveButton(getString(R.string.alert_dialog_yes), (dialog, id) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 )
                 .setNegativeButton(getString(R.string.alert_dialog_no), (dialog, id) -> dialog.cancel());
         AlertDialog alert = builder.create();

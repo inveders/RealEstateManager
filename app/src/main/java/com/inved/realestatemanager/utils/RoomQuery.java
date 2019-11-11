@@ -13,7 +13,7 @@ public class RoomQuery {
     public SimpleSQLiteQuery queryRoomDatabase(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
                                                int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
 
-        Log.d("debago","queryString keys, type : "+type+" town : "+town+" minSurface :"+minSurface+" maxSurface :"+maxSurface+" minPrice :"+minPrice+" maxPrice :"+maxPrice+" minBedroom :"+minBedRoom+" maxBedroom :"+maxBedRoom+" country :"+country+" status :"+status+" realestateagentId :"+realEstateAgentId);
+       // Log.d("debago","queryString keys, type : "+type+" town : "+town+" minSurface :"+minSurface+" maxSurface :"+maxSurface+" minPrice :"+minPrice+" maxPrice :"+maxPrice+" minBedroom :"+minBedRoom+" maxBedroom :"+maxBedRoom+" country :"+country+" status :"+status+" realestateagentId :"+realEstateAgentId);
 
         // RoomQuery string
         String queryString = "";
@@ -146,10 +146,6 @@ public class RoomQuery {
             args.add(status);
         }
 
-        // End of query string
-     //   queryString += ";";
-        Log.d("debago","queryString complete is "+queryString);
-        Log.d("debago","args is : "+args.toArray().length);
         return new SimpleSQLiteQuery(queryString, args.toArray());
 
     }

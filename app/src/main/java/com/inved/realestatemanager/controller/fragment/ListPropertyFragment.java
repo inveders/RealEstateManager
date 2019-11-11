@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.controller.MainActivity;
 import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
@@ -59,6 +60,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         super.onCreate(savedInstanceState);
         // Configure ViewModel
         this.configureViewModel();
+
     }
 
     @Nullable
@@ -71,9 +73,15 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         recyclerView.setHasFixedSize(true);
       //  recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        if(getActivity()!=null){
+
+            ((MainActivity)getActivity()).setFragmentRefreshListener(this::getAllProperties);
+        }
+
 
         return mView;
     }
+
 
     // -------------------
     // DATA
@@ -83,12 +91,12 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        getProperties(REAL_ESTATE_AGENT_ID);
+        getAllProperties();
     }
 
     // 3 - Get all properties for a real estate agent
-    private void getProperties(long realEstateAgentId) {
-        this.propertyViewModel.getProperties(realEstateAgentId).observe(this, this::updatePropertyList);
+    private void getAllProperties() {
+        this.propertyViewModel.getAllProperties().observe(this, this::updatePropertyList);
     }
 
     // 6 - Update the list of properties
@@ -109,7 +117,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             intent.putExtra(PROPERTY_ID, propertyId);
             startActivity(intent);
 
-            /**Ici on ouvre le fragment si on est en mode paysage*/
+            //Here we open fragment in landscape mode
             Fragment detailFragment = new DetailPropertyFragment();
             Bundle bundle = new Bundle();
             bundle.putLong(PROPERTY_ID, propertyId);

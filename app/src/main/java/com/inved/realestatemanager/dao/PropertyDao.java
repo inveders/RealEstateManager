@@ -19,6 +19,10 @@ public interface PropertyDao {
     @Query("SELECT * FROM Property WHERE realEstateAgentId = :realEstateAgentId")
     LiveData<List<Property>> getProperty(long realEstateAgentId);
 
+    @Query("SELECT * FROM Property")
+    LiveData<List<Property>> getAllProperties();
+
+
     @Query("SELECT * FROM Property WHERE id = :propertyId")
     LiveData<Property> getOneProperty(long propertyId);
 

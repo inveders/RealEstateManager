@@ -47,6 +47,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     // Declare fragments
     private ListPropertyFragment listPropertyFragment;
     private DetailPropertyFragment detailPropertyFragment;
+    private FragmentRefreshListener fragmentRefreshListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,8 +182,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
         updateProperty.setVisible(false);
 
+        final MenuItem clearSearch= menu.findItem(R.id.menu_action_clear);
+        clearSearch.setVisible(false);
+        clearSearch.setOnMenuItemClickListener(menuItem -> {
+            menu.findItem(R.id.menu_action_search).setVisible(true);
+            menu.findItem(R.id.menu_action_clear).setVisible(false);
+            refreshFragment();
+            return true;
+        });
+
         final MenuItem searchProperty = menu.findItem(R.id.menu_action_search);
         searchProperty.setOnMenuItemClickListener(menuItem -> {
+            menu.findItem(R.id.menu_action_search).setVisible(false);
+            menu.findItem(R.id.menu_action_clear).setVisible(true);
             startSearchProperty();
 
             return true;
@@ -248,23 +260,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         SearchFullScreenDialog dialog = new SearchFullScreenDialog();
         dialog.show(getSupportFragmentManager(), "FullscreenDialogFragment");
 
-     /*   SearchFullScreenDialog dialog = SearchFullScreenDialog.newInstance();
-
-        if (getFragmentManager() != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            dialog.show(ft, SearchFullScreenDialog.TAG);
-        }
-
-        dialog.setCallback((ratingChoosen, openForLunchChoosen, customersNumberChoosen, distanceChoosen) -> {
-
-        });*/
-
-
-
-
-
-
-
     }
    /* private void configureAndShowDetailFragment() {
         // A - Get FragmentManager (Support) and Try to find existing instance of fragment in FrameLayout container
@@ -294,6 +289,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }*/
 
+    private void refreshFragment() {
+
+
+        if(getFragmentRefreshListener()!=null){
+            getFragmentRefreshListener().onRefresh();
+        }
+    }
+
+    public interface FragmentRefreshListener{
+        void onRefresh();
+    }
+
+    public FragmentRefreshListener getFragmentRefreshListener() {
+        return fragmentRefreshListener;
+    }
+
+    public void setFragmentRefreshListener(FragmentRefreshListener fragmentRefreshListener) {
+        this.fragmentRefreshListener = fragmentRefreshListener;
+    }
 
 }
 

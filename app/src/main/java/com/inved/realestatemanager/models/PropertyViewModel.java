@@ -63,8 +63,12 @@ public class PropertyViewModel extends ViewModel {
     // FOR ITEM
     // -------------
 
-    public LiveData<List<Property>> getProperties(long realEstateAgentId) {
+    public LiveData<List<Property>> getAllPropertiesForOneAgent(long realEstateAgentId) {
         return propertyDataSource.getItems(realEstateAgentId);
+    }
+
+    public LiveData<List<Property>> getAllProperties() {
+        return propertyDataSource.getAllItems();
     }
 
     public LiveData<Property> getOneProperty(long propertyId) {
