@@ -4,6 +4,7 @@
     <!-- PAGE NAME -->
     <string name="page_name_activity_main">List Property</string>
     <string name="page_name_activity_detail">Detail Property</string>
+    <string name="page_name_activity_agent_management">Agent Management</string>
     <string name="page_name_activity_create_property">Create Property</string>
     <string name="page_name_activity_udpdate_property">Update Property</string>
     <string name="page_name_activity_profile">Profile</string>

@@ -102,8 +102,11 @@ public class DetailPropertyFragment extends Fragment {
             Intent intent = getActivity().getIntent();
             long myPropertyId = intent.getLongExtra(PROPERTY_ID, 0);
             configureViewModel();
-            propertyViewModel.getOneProperty(myPropertyId).observe(this, this::updateWithProperty);
-            getRealEstateAgent(myPropertyId);
+            propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
+                updateWithProperty(property);
+                getRealEstateAgent(property.getRealEstateAgentId());
+            });
+
             setMapStatic(myPropertyId);
         }
 
@@ -112,8 +115,10 @@ public class DetailPropertyFragment extends Fragment {
         if (bundle != null) {
             long myPropertyId = bundle.getLong(PROPERTY_ID, 0);
             configureViewModel();
-            propertyViewModel.getOneProperty(myPropertyId).observe(this, this::updateWithProperty);
-            getRealEstateAgent(myPropertyId);
+            propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
+                updateWithProperty(property);
+                getRealEstateAgent(property.getRealEstateAgentId());
+            });
             setMapStatic(myPropertyId);
 
         }
@@ -291,6 +296,8 @@ public class DetailPropertyFragment extends Fragment {
     private void getRealEstateAgent(long realEstateAgentId) {
 
         propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this, realEstateAgents -> {
+
+            Log.d("debago","id is: "+realEstateAgentId);
             if (realEstateAgents.getFirstname() != null && realEstateAgents.getLastname() != null) {
                 String completeName = realEstateAgents.getFirstname() + " " + realEstateAgents.getLastname();
                 this.realEstateAgent.setText(completeName);

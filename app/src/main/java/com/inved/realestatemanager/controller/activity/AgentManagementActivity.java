@@ -61,7 +61,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Agent Management");
+            getSupportActionBar().setTitle(getString(R.string.page_name_activity_agent_management));
         }
 
     }

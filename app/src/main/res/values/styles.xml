@@ -23,7 +23,7 @@
     </style>
 
     <!-- EditText Title-->
-    <style name="TextviewStyle" parent="AppTheme" tools:targetApi="lollipop">
+    <style name="TextviewStyle" parent="AppTheme">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/darker_gray</item>
@@ -31,16 +31,16 @@
     </style>
 
     <!-- EditText text-->
-    <style name="EditTextStyleText" parent="AppTheme" tools:targetApi="lollipop">
+    <style name="EditTextStyleText" parent="AppTheme">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:background">@drawable/edit_text_design</item>
         <item name="android:textColor">@android:color/black</item>
-
+        <item name="android:textCursorDrawable">@android:color/black</item>
     </style>
 
     <!-- EditText text-->
-    <style name="EditTextStylewithoutText" parent="AppTheme" tools:targetApi="lollipop">
+    <style name="EditTextStylewithoutText" parent="AppTheme">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@android:color/black</item>

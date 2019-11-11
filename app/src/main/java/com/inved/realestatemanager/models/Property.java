@@ -5,8 +5,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(foreignKeys = @ForeignKey(entity = RealEstateAgents.class,parentColumns = "propertyId",childColumns = "realEstateAgentId"),
-        indices = {@Index("realEstateAgentId"), @Index(value = {"propertyId", "realEstateAgentId"})})
+@Entity(foreignKeys = @ForeignKey(entity = RealEstateAgents.class,parentColumns = "realEstateAgentId",childColumns = "realEstateAgentId"),
+        indices = {@Index("propertyId"), @Index(value = {"realEstateAgentId", "propertyId"})})
 
 public class Property {
 

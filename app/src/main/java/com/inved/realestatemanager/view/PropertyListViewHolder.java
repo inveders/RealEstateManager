@@ -1,6 +1,7 @@
 package com.inved.realestatemanager.view;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,7 +9,9 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.models.Property;
@@ -74,20 +77,22 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             this.surfaceAreaProperty.setText(MainApplication.getResourses().getString(R.string.none));
         }
 
-        String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
+    //    String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
         //PHOTO URI 1
 
-        if (property.getPhotoUri1() != null) {
 
-            glide.load(new File(property.getPhotoUri1()))
-                    .into(photo);
+      /*  if (property.getPhotoUri1() != null) {
 
+
+               glide.load(property.getPhotoUri1())
+
+                        .into((photo));
 
         } else {
             glide.load(urlNoImage)
                     .into(photo);
 
-        }
+        }*/
 
 
 

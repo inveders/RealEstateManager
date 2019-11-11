@@ -229,7 +229,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     //VOIR QUE FAIRE DES CHECKBOX
     private void createProperty() {
 
-      /*  if (streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999) {
+       if (streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999) {
             streetNumberEditText.setError(getString(R.string.set_error_street_number));
         } else if (priceEditText.getText().toString().trim().isEmpty() || Double.parseDouble(priceEditText.getText().toString()) > 999999999.0) {
             priceEditText.setError(getString(R.string.set_error_surface_area));
@@ -241,7 +241,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             zipCodeEditText.setError(getString(R.string.set_error_zip_code));
         } else if (streetNameEditText.getText().toString().trim().isEmpty()) {
             streetNameEditText.setError(getString(R.string.set_error_street_name));
-        } else {*/
+        } else {
             pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
             surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
             streetNumber = streetNumberEditText.getText().toString();
@@ -257,7 +257,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
             Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
             startSecondPage();
-    //    }
+        }
 
 
     }

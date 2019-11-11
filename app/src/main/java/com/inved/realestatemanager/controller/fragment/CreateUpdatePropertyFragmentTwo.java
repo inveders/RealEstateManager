@@ -154,8 +154,15 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             this.updateUIwithDataFromDatabase(propertyId);
         }
 
+        Bundle args = getArguments();
+        Log.d("debago","args :"+args);
+        if (args != null) {
+            Log.d("debago","create fragment two");
+        }
 
-        return v;
+
+
+            return v;
     }
 
 
@@ -332,12 +339,12 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     //PERMISSION
 
-    @Override
+ /*   @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // NOTE: delegate the permission handling to generated method
         CreateUpdatePropertyFragmentTwoPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
+    }*/
 
     //REAL ESTATE AGENT MANAGEMENT AND SPINNER
 
@@ -478,12 +485,14 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 country = args.getString("country");
                 pointOfInterest = args.getString("pointOfInterest");
                 addressCompl = args.getString("addressCompl");
-
+                Log.d("debago","in args create");
             }
 
             String statusProperty = getString(R.string.status_property_in_progress);
             String dateOfEntryOnMarketForProperty = dateOfEntry.getText().toString();
             String fullDescriptionText = fullDescriptionEditText.getText().toString();
+
+            Log.d("debago","before to create; surface :"+surfaceAreaProperty+" typeProperty :"+typeProperty);
 
             Property newProperty = new Property(typeProperty, pricePropertyInDollar,
                     surfaceAreaProperty, numberRoomsInProperty,
@@ -491,7 +500,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                     statusProperty, dateOfEntryOnMarketForProperty,
                     null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                    photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
+                    photoDescription3, photoDescription4, photoDescription5, 1);
 
 
             if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
@@ -500,6 +509,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             } else {
                 this.propertyViewModel.createProperty(newProperty);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
+                if(getContext()!=null){
+                    ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(),0);
+                }
+
             }
 
             startMainActivity();

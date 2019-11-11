@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -79,10 +80,10 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     private void configureToolBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle(R.string.page_name_activity_create_property);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.page_name_activity_create_property));
         }
 
     }
@@ -105,9 +106,9 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
                                   String streetNumber, String streetName, String zipCode, String townProperty, String country,
                                   String pointOfInterest, String addressCompl, long propertyId) {
 
-        Fragment fragmentTwo = new CreateUpdatePropertyFragmentTwo();
+        CreateUpdatePropertyFragmentTwo fragmentTwo = new CreateUpdatePropertyFragmentTwo();
         Bundle args = new Bundle();
-
+        Log.d("debago","in createpropertyActivity; surface :"+surfaceAreaProperty+" typeProperty :"+typeProperty);
         args.putString("typeProperty", typeProperty);
         args.putString("numberRoomsInProperty", numberRoomsInProperty);
         args.putString("numberBathroomsInProperty", numberBathroomsInProperty);
@@ -122,8 +123,19 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         args.putString("pointOfInterest", pointOfInterest);
         args.putString("addressCompl", addressCompl);
 
-        fragmentTwo.setArguments(args);
         viewPager2.setCurrentItem(1);
+        fragmentTwo.setArguments(args);
+
+       /* FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();*/
+
 
     }
 
@@ -133,9 +145,13 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
      */
     public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
+        private CreateUpdatePropertyFragmentOne mCreateUpdatePropertyFragmentOne;
+        private CreateUpdatePropertyFragmentTwo mCreateUpdatePropertyFragmentTwo;
 
         ViewPagerFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
+            this.mCreateUpdatePropertyFragmentOne=new CreateUpdatePropertyFragmentOne();
+            this.mCreateUpdatePropertyFragmentTwo=new CreateUpdatePropertyFragmentTwo();
         }
 
         @NonNull
@@ -143,9 +159,9 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         public Fragment createFragment(int position) {
             switch (position) {
                 case 0:
-                    return new CreateUpdatePropertyFragmentOne();
+                    return mCreateUpdatePropertyFragmentOne;
                 case 1:
-                    return new CreateUpdatePropertyFragmentTwo();
+                    return mCreateUpdatePropertyFragmentTwo;
             }
             return null;
         }

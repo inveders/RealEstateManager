@@ -40,9 +40,8 @@ public class DetailActivity extends BaseActivity  {
         setSupportActionBar(toolbar);
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.page_name_activity_detail));
         }
-
-
 
     }
 
