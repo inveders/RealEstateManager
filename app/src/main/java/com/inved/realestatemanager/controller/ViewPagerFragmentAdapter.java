@@ -13,7 +13,7 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
 
     /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * A simple pager adapter that represents 2 ScreenSlidePageFragment objects, in
      * sequence.
      */
 
