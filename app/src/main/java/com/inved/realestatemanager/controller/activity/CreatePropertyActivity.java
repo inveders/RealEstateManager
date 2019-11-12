@@ -17,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
+import com.inved.realestatemanager.controller.ViewPagerFragmentAdapter;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne.CreateUpdateInterface;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentTwo;
@@ -31,7 +32,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
     //ViewPager
     ViewPager2 viewPager2;
-    private static final int NUM_PAGES = 2;
+
     ViewPagerFragmentAdapter myAdapter;
     private long propertyId;
     private ArrayList<Fragment> arrayList = new ArrayList<>();
@@ -68,7 +69,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
             propertyId = getIntent().getLongExtra(PROPERTY_ID_INTENT, 0);
             //We send values in fragment one of create update activity
-            ManageCreateUpdateChoice.saveCreateUpdateChoice(this,propertyId);
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, propertyId);
 
         }
 
@@ -102,13 +103,15 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
     @Override
     public void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
-                                 int numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
+                                  int numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
                                   String streetNumber, String streetName, String zipCode, String townProperty, String country,
                                   String pointOfInterest, String addressCompl, long propertyId) {
 
+        CreateUpdatePropertyFragmentTwo frag = (CreateUpdatePropertyFragmentTwo) myAdapter.createFragment(1);
+
         CreateUpdatePropertyFragmentTwo fragmentTwo = new CreateUpdatePropertyFragmentTwo();
         Bundle args = new Bundle();
-        Log.d("debago","in createpropertyActivity; surface :"+surfaceAreaProperty+" typeProperty :"+typeProperty);
+        Log.d("debago", "in createpropertyActivity; surface :" + surfaceAreaProperty + " typeProperty :" + typeProperty);
         args.putString("typeProperty", typeProperty);
         args.putString("numberRoomsInProperty", numberRoomsInProperty);
         args.putString("numberBathroomsInProperty", numberBathroomsInProperty);
@@ -139,38 +142,6 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
-    public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
-
-        private CreateUpdatePropertyFragmentOne mCreateUpdatePropertyFragmentOne;
-        private CreateUpdatePropertyFragmentTwo mCreateUpdatePropertyFragmentTwo;
-
-        ViewPagerFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-            super(fragmentManager, lifecycle);
-            this.mCreateUpdatePropertyFragmentOne=new CreateUpdatePropertyFragmentOne();
-            this.mCreateUpdatePropertyFragmentTwo=new CreateUpdatePropertyFragmentTwo();
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            switch (position) {
-                case 0:
-                    return mCreateUpdatePropertyFragmentOne;
-                case 1:
-                    return mCreateUpdatePropertyFragmentTwo;
-            }
-            return null;
-        }
-
-        @Override
-        public int getItemCount() {
-            return NUM_PAGES;
-        }
-    }
 
     // CHECKBOX CLICK
     public void onCheckboxClicked(View view) {
@@ -180,7 +151,6 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         });
 
     }
-
 
 
 }

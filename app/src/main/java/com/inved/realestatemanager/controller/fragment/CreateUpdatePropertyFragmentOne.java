@@ -250,12 +250,10 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             townProperty = townNameEditText.getText().toString();
             country = townNameEditText.getText().toString();
             pointOfInterest = fillPoiCheckboxList();
-            Log.d("debago", "after next button,type property " + typeProperty);
 
             callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
                     pointOfInterest, addressCompl, ManageCreateUpdateChoice.getCreateUpdateChoice(context));
 
-            Toast.makeText(getContext(), "NextPage", Toast.LENGTH_SHORT).show();
             startSecondPage();
         }
 
