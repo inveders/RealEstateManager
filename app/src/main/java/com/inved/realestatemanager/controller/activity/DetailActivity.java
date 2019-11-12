@@ -102,9 +102,6 @@ public class DetailActivity extends BaseActivity  {
             return true;
         });
 
-        final MenuItem searchProperty = menu.findItem(R.id.menu_action_search);
-        searchProperty.setVisible(false);
-
         return true;
     }
 

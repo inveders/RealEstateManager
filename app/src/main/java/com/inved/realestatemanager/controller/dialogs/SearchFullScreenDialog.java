@@ -158,6 +158,8 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     // Update the list of Real Estate item
     private void updateRealEstateItemsList(List<com.inved.realestatemanager.models.Property> properties) {
+
+        Log.d("debago","properties size "+properties.size());
         callback.searchButton(properties);
 
         Log.d(TAG, "updateRealEstateItemsList: data size = " + properties.size());
