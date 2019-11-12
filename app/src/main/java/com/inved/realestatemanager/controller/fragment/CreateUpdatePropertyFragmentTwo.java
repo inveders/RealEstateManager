@@ -45,6 +45,7 @@ import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.utils.ManageOpenCamera;
 
 import java.io.File;
 import java.io.IOException;
@@ -238,7 +239,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         builder.setItems(items, (dialog, item) -> {
             if (items[item].equals(MainApplication.getInstance().getResources().getString(R.string.dialog_select_image_take_photo))) {
                 CreateUpdatePropertyFragmentTwoPermissionsDispatcher.dispatchTakePictureIntentWithPermissionCheck(this);
-                dispatchTakePictureIntent();
+
             } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_choose_from_library))) {
                 dispatchGalleryIntent();
             } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_cancel))) {
@@ -255,6 +256,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     @NeedsPermission(Manifest.permission.CAMERA)
     void dispatchTakePictureIntent() {
+
+        Log.d("debaga", "before open camera");
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (getActivity() != null) {
             if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -267,15 +271,22 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     // Error occurred while creating the File
                 }
                 if (photoFile != null) {
+
                     Uri photoURI = FileProvider.getUriForFile(MainApplication.getInstance().getApplicationContext(),
                             BuildConfig.APPLICATION_ID + ".provider",
                             photoFile);
 
                     mPhotoFile = photoFile;
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    startActivityForResult(takePictureIntent, REQUEST_CAMERA_PHOTO);
+
+                        Log.d("debaga", "IN OPEN camera");
+                        ManageOpenCamera.saveIfCameraOpen(getActivity(),true);
+                        startActivityForResult(takePictureIntent, REQUEST_CAMERA_PHOTO);
+
+
                 }
-            }
+
+        }
         }
 
     }
@@ -307,13 +318,17 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     break;
                 case REQUEST_CAMERA_PHOTO:
 
+                    Log.d("debaga", "after open camera");
+                        if (cameraFilePath != null) {
+                            Log.d("debago", "urlPicture two camera file path : " + cameraFilePath);
+                            photoUri = cameraFilePath;
+                            if(getActivity()!=null){
+                                ManageOpenCamera.saveIfCameraOpen(getActivity(),false);
+                            }
 
-                    if (cameraFilePath != null) {
-                        Log.d("debago", "urlPicture two camera file path : " + cameraFilePath);
-                        photoUri = cameraFilePath;
-                        // photo1.setImageURI(Uri.parse(cameraFilePath));
+                        }
 
-                    }
+
 
 
                     break;
