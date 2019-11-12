@@ -18,6 +18,7 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
+import java.util.List;
 
 
 public class PropertyListViewHolder extends RecyclerView.ViewHolder {
@@ -116,7 +117,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     public interface PropertyListInterface{
         void clickOnCardView(long propertyId); //Je lui donne ce dont j'avais besoin pour faire l'action
-        void onClickDeleteButton(long propertyId);
 
     }
 

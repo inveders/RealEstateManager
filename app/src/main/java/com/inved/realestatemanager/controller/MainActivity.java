@@ -20,7 +20,6 @@ import com.inved.realestatemanager.controller.activity.MapsActivity;
 import com.inved.realestatemanager.controller.activity.AgentManagementActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
-import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
 
 import butterknife.OnClick;
 
@@ -87,16 +86,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // 7 - Create item after user clicked on button
         // GO ON THE UPDATE PROPERTY ACTIVITY
     }
-
-
-
-
-
-
-
-
-
-
 
 
     // ---------------------------
@@ -175,44 +164,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         final MenuItem addProperty = menu.findItem(R.id.menu_action_add);
         addProperty.setOnMenuItemClickListener(menuItem -> {
-            startCreatePropertyActivity();
+            startCreateUpdatePropertyActivity();
             return true;
         });
 
         final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
         updateProperty.setVisible(false);
 
-        final MenuItem clearSearch= menu.findItem(R.id.menu_action_clear);
+        final MenuItem clearSearch = menu.findItem(R.id.menu_action_clear);
         clearSearch.setVisible(false);
         clearSearch.setOnMenuItemClickListener(menuItem -> {
-            menu.findItem(R.id.menu_action_search).setVisible(true);
             menu.findItem(R.id.menu_action_clear).setVisible(false);
             refreshFragment();
             return true;
         });
 
-        final MenuItem searchProperty = menu.findItem(R.id.menu_action_search);
-        searchProperty.setOnMenuItemClickListener(menuItem -> {
-            menu.findItem(R.id.menu_action_search).setVisible(false);
-            menu.findItem(R.id.menu_action_clear).setVisible(true);
-            startSearchProperty();
-
-            return true;
-        });
 
 
         return true;
     }
 
-    private void startCreatePropertyActivity() {
+    private void startCreateUpdatePropertyActivity() {
         Intent intent = new Intent(this, CreatePropertyActivity.class);
         startActivity(intent);
     }
-
-    private void startUpdatePropertyActivity() {
-
-    }
-
 
     // ---------------------------
     // INTENT TO OPEN NEW ACTIVITY
@@ -249,18 +224,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-
     // -------------------
     // SEARCH IN DATABASE
     // -------------------
 
-    private void startSearchProperty() {
 
-        // Create an instance of the dialog fragment and show it
-        SearchFullScreenDialog dialog = new SearchFullScreenDialog();
-        dialog.show(getSupportFragmentManager(), "FullscreenDialogFragment");
-
-    }
    /* private void configureAndShowDetailFragment() {
         // A - Get FragmentManager (Support) and Try to find existing instance of fragment in FrameLayout container
         detailPropertyFragment = (DetailPropertyFragment) getSupportFragmentManager().findFragmentById(R.id.activity_detail_frame_layout);
@@ -292,12 +260,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void refreshFragment() {
 
 
-        if(getFragmentRefreshListener()!=null){
+        if (getFragmentRefreshListener() != null) {
             getFragmentRefreshListener().onRefresh();
         }
     }
 
-    public interface FragmentRefreshListener{
+    public interface FragmentRefreshListener {
         void onRefresh();
     }
 

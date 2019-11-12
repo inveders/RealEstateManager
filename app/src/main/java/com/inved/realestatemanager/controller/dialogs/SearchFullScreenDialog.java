@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.controller.dialogs;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +18,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 
 import java.util.List;
@@ -87,7 +88,11 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     private double minSurface = 0;
     private double maxSurface = 99999;
     private double minPrice = 0;
-    private double maxPrice=3000000;
+    private double maxPrice = 3000000;
+
+    //Interface
+    private OnClickSearchInterface callback;
+
 
     //View Model
     private PropertyViewModel propertyViewModel;
@@ -101,7 +106,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
         this.configureViewModel();
         this.seekbarChangements();
-        if(getDialog()!=null){
+        if (getDialog() != null) {
             getDialog().setTitle("Search property");
         }
 
@@ -124,20 +129,20 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         surfaceSeekbar.setOnThumbValueChangeListener((multiSlider, thumb, thumbIndex, value) -> {
             if (thumbIndex == 0) {
                 surfaceMinValue.setText(String.valueOf(value));
-                minSurface=value;
+                minSurface = value;
             } else {
                 surfaceMaxValue.setText(String.valueOf(value));
-                maxSurface=value;
+                maxSurface = value;
             }
         });
 
         priceSeekbar.setOnThumbValueChangeListener((multiSlider, thumb, thumbIndex, value) -> {
             if (thumbIndex == 0) {
-                minPrice=value;
+                minPrice = value;
                 priceMinValue.setText(String.valueOf(value));
             } else {
                 priceMaxValue.setText(String.valueOf(value));
-                maxPrice=value;
+                maxPrice = value;
             }
         });
     }
@@ -153,7 +158,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     // Update the list of Real Estate item
     private void updateRealEstateItemsList(List<com.inved.realestatemanager.models.Property> properties) {
-        ListPropertyFragment.adapter.updateData(properties);
+        callback.searchButton(properties);
 
         Log.d(TAG, "updateRealEstateItemsList: data size = " + properties.size());
 
@@ -165,19 +170,18 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     private void startSearchProperty() {
 
-        if(getDialog()!=null){
+        if (getDialog() != null) {
 
-            if(mMinBedroom>mMaxBedroom){
+            if (mMinBedroom > mMaxBedroom) {
                 Toast.makeText(getContext(), getString(R.string.Minbedroom_Maxbedoorm_control), Toast.LENGTH_SHORT).show();
 
-            }else{
+            } else {
                 String town = !townPropertyAutocomplete.getText().toString().equals("") ? townPropertyAutocomplete.getText().toString() : null;
-                String country = !countryAutocomplete.getText().toString().equals("") ?countryAutocomplete.getText().toString() : null;
+                String country = !countryAutocomplete.getText().toString().equals("") ? countryAutocomplete.getText().toString() : null;
 
 
-
-                this.propertyViewModel.searchProperty(mTypeProperty,town, minSurface,maxSurface,minPrice, maxPrice,
-                        mMinBedroom, mMaxBedroom, country, mStatus,mRealEstateAgentName)
+                this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
+                        mMinBedroom, mMaxBedroom, country, mStatus, mRealEstateAgentName)
                         .observe(this, this::updateRealEstateItemsList);
 
                 getDialog().dismiss();
@@ -212,7 +216,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
-            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItemId()+1;
+            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItemId() + 1;
         }
 
     }
@@ -220,6 +224,15 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void setCallback(OnClickSearchInterface callback) {
+        this.callback = callback;
+    }
+
+    public interface OnClickSearchInterface {
+
+        void searchButton(List<Property> properties);
     }
 
 
