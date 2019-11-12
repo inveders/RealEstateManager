@@ -5,21 +5,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.ViewPagerFragmentAdapter;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne;
-import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne.CreateUpdateInterface;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentTwo;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
@@ -28,7 +22,7 @@ import java.util.ArrayList;
 import static com.inved.realestatemanager.controller.activity.DetailActivity.PROPERTY_ID_INTENT;
 
 
-public class CreatePropertyActivity extends BaseActivity implements CreateUpdateInterface {
+public class CreatePropertyActivity extends BaseActivity implements CreateUpdatePropertyFragmentOne.CreateUpdateChangePageInterface {
 
     //ViewPager
     ViewPager2 viewPager2;
@@ -102,44 +96,9 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     }
 
     @Override
-    public void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
-                                  int numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
-                                  String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                                  String pointOfInterest, String addressCompl, long propertyId) {
-
-        CreateUpdatePropertyFragmentTwo frag = (CreateUpdatePropertyFragmentTwo) myAdapter.createFragment(1);
-
-        CreateUpdatePropertyFragmentTwo fragmentTwo = new CreateUpdatePropertyFragmentTwo();
-        Bundle args = new Bundle();
-        Log.d("debago", "in createpropertyActivity; surface :" + surfaceAreaProperty + " typeProperty :" + typeProperty);
-        args.putString("typeProperty", typeProperty);
-        args.putString("numberRoomsInProperty", numberRoomsInProperty);
-        args.putString("numberBathroomsInProperty", numberBathroomsInProperty);
-        args.putInt("numberBedroomsInProperty", numberBedroomsInProperty);
-        args.putDouble("pricePropertyInDollar", pricePropertyInDollar);
-        args.putDouble("surfaceAreaProperty", surfaceAreaProperty);
-        args.putString("streetNumber", streetNumber);
-        args.putString("streetName", streetName);
-        args.putString("zipCode", zipCode);
-        args.putString("townProperty", townProperty);
-        args.putString("country", country);
-        args.putString("pointOfInterest", pointOfInterest);
-        args.putString("addressCompl", addressCompl);
-
+    public void changeFragmentPage() {
+        Log.d("debago","create property activity, in change fragment page");
         viewPager2.setCurrentItem(1);
-        fragmentTwo.setArguments(args);
-
-       /* FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();*/
-
-
     }
 
 

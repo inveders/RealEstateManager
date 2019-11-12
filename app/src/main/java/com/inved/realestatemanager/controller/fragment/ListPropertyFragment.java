@@ -71,7 +71,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         RecyclerView recyclerView = mView.findViewById(R.id.fragment_list_property_recycler_view);
         recyclerView.setAdapter(this.adapter);
         recyclerView.setHasFixedSize(true);
-      //  recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         if(getActivity()!=null){
 

@@ -3,7 +3,6 @@ package com.inved.realestatemanager.controller.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -24,6 +23,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
@@ -34,9 +34,10 @@ import java.util.List;
 
 public class CreateUpdatePropertyFragmentOne extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    private CreateUpdateInterface callback;
+    private CreateUpdateChangePageInterface callbackChangePage;
 
     private PropertyViewModel propertyViewModel;
+    private CreateUpdatePropertyViewModel createUpdatePropertyViewModel;
 
     private Spinner typePropertySpinner;
     private Spinner numberRoomSpinner;
@@ -77,15 +78,9 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     private Context context;
 
-    private long propertyId;
 
-
-    public interface CreateUpdateInterface {
-        void clickOnNextButton(String typeProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
-                               int numberBedroomsInProperty, double pricePropertyInDollar, double surfaceAreaProperty,
-                               String streetNumber, String streetName, String zipCode, String townProperty, String country,
-                               String pointOfInterest, String addressCompl, long propertyId);
-
+    public interface CreateUpdateChangePageInterface {
+        void changeFragmentPage();
     }
 
 
@@ -133,19 +128,30 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         this.configureViewModel();
 
         //We check if it's a new add property or just a modification
-        if(getActivity()!=null){
-            context=getActivity();
-        }else{
-            context=MainApplication.getInstance().getApplicationContext();
+        if (getActivity() != null) {
+            context = getActivity();
+        } else {
+            context = MainApplication.getInstance().getApplicationContext();
         }
 
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != 0) {
-            propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
+            long propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
             this.updateUIwithDataFromDatabase(propertyId);
         }
 
 
         return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            this.createUpdatePropertyViewModel = ViewModelProviders.of(getActivity()).get(CreateUpdatePropertyViewModel.class);
+        }
+
+
     }
 
     @Override
@@ -225,11 +231,9 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     }
 
-    // Create a new property A TERMINER AVEC LES CONTROLES, SURTOUT SUR L'APPUI DU BOUTON, RAJOUTER LES CHAMPS OBLIGATOIRES, VOIR COMMENT PASSER A UNE AUTRE PAGE
-    //VOIR QUE FAIRE DES CHECKBOX
     private void createProperty() {
 
-       if (streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999) {
+        if (streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999) {
             streetNumberEditText.setError(getString(R.string.set_error_street_number));
         } else if (priceEditText.getText().toString().trim().isEmpty() || Double.parseDouble(priceEditText.getText().toString()) > 999999999.0) {
             priceEditText.setError(getString(R.string.set_error_surface_area));
@@ -251,16 +255,32 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             country = townNameEditText.getText().toString();
             pointOfInterest = fillPoiCheckboxList();
 
-            callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
-                    pointOfInterest, addressCompl, ManageCreateUpdateChoice.getCreateUpdateChoice(context));
 
-            startSecondPage();
+          /*  callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
+                    pointOfInterest, addressCompl, ManageCreateUpdateChoice.getCreateUpdateChoice(context));*/
+
+
+            List<Object> myList = new ArrayList<>();
+            myList.add(typeProperty);
+            myList.add(numberRoomsInProperty);
+            myList.add(numberBathroomsInProperty);
+            myList.add(numberBedroomsInProperty);
+            myList.add(pricePropertyInDollar);
+            myList.add(surfaceAreaProperty);
+            myList.add(streetNumber);
+            myList.add(streetName);
+            myList.add(zipCode);
+            myList.add(townProperty);
+            myList.add(country);
+            myList.add(pointOfInterest);
+            myList.add(addressCompl);
+            myList.add(ManageCreateUpdateChoice.getCreateUpdateChoice(context));
+
+            createUpdatePropertyViewModel.setMyData(myList);
+
+            callbackChangePage.changeFragmentPage();
+
         }
-
-
-    }
-
-    private void startSecondPage() {
 
 
     }
@@ -272,8 +292,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         // This makes sure that the host activity has implemented the callback interface
         // If not, it throws an exception
         try {
-            callback = (CreatePropertyActivity) context;
-            //dataPasser=(CreatePropertyActivity) context;
+            callbackChangePage = (CreatePropertyActivity) context;
 
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement OnImageClickListener");
@@ -332,6 +351,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(context);
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+
 
     }
 

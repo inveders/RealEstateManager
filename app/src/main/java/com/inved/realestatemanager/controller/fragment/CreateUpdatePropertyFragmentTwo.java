@@ -22,7 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -39,9 +39,10 @@ import com.inved.realestatemanager.domain.DateOfDay;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
@@ -104,6 +105,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private String pointOfInterest;
     private String addressCompl;
     private long realEstateAgentId;
+    private long propertyId;
 
     private Context context;
     private String selectedAgent;
@@ -128,8 +130,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         photoDescription = v.findViewById(R.id.activity_create_update_property_added_photo_description);
         fullDescriptionEditText = v.findViewById(R.id.activity_create_update_property_full_description_text);
 
-        long propertyId;
-
         Button confirmButton = v.findViewById(R.id.create_update_confirm_button);
         confirmButton.setOnClickListener(view -> finishToCreateProperty());
 
@@ -143,6 +143,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         this.retriveRealEstateAgents();
         this.datePickerInit();
 
+
         if (getActivity() != null) {
             context = getActivity();
         } else {
@@ -154,15 +155,41 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             this.updateUIwithDataFromDatabase(propertyId);
         }
 
-        Bundle args = getArguments();
-        Log.d("debago","args :"+args);
-        if (args != null) {
-            Log.d("debago","create fragment two");
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            CreateUpdatePropertyViewModel createUpdatePropertyViewModel = ViewModelProviders.of(getActivity()).get(CreateUpdatePropertyViewModel.class);
+            createUpdatePropertyViewModel.getMyData().observe(getViewLifecycleOwner(), objects -> {
+
+                this.typeProperty = objects.get(0).toString();
+                this.numberRoomsInProperty = objects.get(1).toString();
+                this.numberBathroomsInProperty = objects.get(2).toString();
+                this.numberBedroomsInProperty = (int) objects.get(3);
+                this.pricePropertyInDollar = Double.valueOf(objects.get(4).toString());
+                this.surfaceAreaProperty = Double.valueOf(objects.get(5).toString());
+                this.streetNumber = objects.get(6).toString();
+                this.streetName = objects.get(7).toString();
+                this.zipCode = objects.get(8).toString();
+                this.townProperty = objects.get(9).toString();
+                this.country = objects.get(10).toString();
+                this.pointOfInterest = objects.get(11).toString();
+
+                if(objects.get(12)!=null){
+                    this.addressCompl = objects.get(12).toString();
+                }else{
+                    this.addressCompl=null;
+                }
+
+                this.propertyId = (long) objects.get(13);
+
+            });
         }
 
-
-
-            return v;
     }
 
 
@@ -270,7 +297,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             switch (requestCode) {
 
 
-
                 case REQUEST_GALLERY_PHOTO:
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
@@ -285,7 +311,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     if (cameraFilePath != null) {
                         Log.d("debago", "urlPicture two camera file path : " + cameraFilePath);
                         photoUri = cameraFilePath;
-                       // photo1.setImageURI(Uri.parse(cameraFilePath));
+                        // photo1.setImageURI(Uri.parse(cameraFilePath));
 
                     }
 
@@ -299,16 +325,16 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     break;
             }
 
-            if(photoUri1==null){
-                photoUri1=photoUri;
-            }else if(photoUri2==null){
-                photoUri2=photoUri;
-            }else if(photoUri3==null){
-                photoUri3=photoUri;
-            }else if(photoUri4==null){
-                photoUri4=photoUri;
-            }else if(photoUri5==null){
-                photoUri5=photoUri;
+            if (photoUri1 == null) {
+                photoUri1 = photoUri;
+            } else if (photoUri2 == null) {
+                photoUri2 = photoUri;
+            } else if (photoUri3 == null) {
+                photoUri3 = photoUri;
+            } else if (photoUri4 == null) {
+                photoUri4 = photoUri;
+            } else if (photoUri5 == null) {
+                photoUri5 = photoUri;
             }
 
             updateUI();
@@ -396,9 +422,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             SplitString splitString = new SplitString();
             String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
             String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
-            this.propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(this, realEstateAgents -> {
-                realEstateAgentId = realEstateAgents.getRealEstateAgentId();
-            });
+            this.propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(this, realEstateAgents -> realEstateAgentId = realEstateAgents.getRealEstateAgentId());
         }
 
     }
@@ -449,7 +473,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), 0);
     }
 
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -469,30 +492,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             DateOfDay dateOfDay = new DateOfDay();
             dateOfEntry.setText(dateOfDay.getDateOfDay());
         } else {
-            Bundle args = getArguments();
-            if (args != null) {
-
-                typeProperty = args.getString("typeProperty");
-                numberRoomsInProperty = args.getString("numberRoomsInProperty");
-                numberBathroomsInProperty = args.getString("numberBathroomsInProperty");
-                numberBedroomsInProperty = args.getInt("numberBedroomsInProperty");
-                pricePropertyInDollar = args.getDouble("pricePropertyInDollar", 0.0);
-                surfaceAreaProperty = args.getDouble("surfaceAreaProperty", 0.0);
-                streetNumber = args.getString("streetNumber");
-                streetName = args.getString("streetName");
-                zipCode = args.getString("zipCode");
-                townProperty = args.getString("townProperty");
-                country = args.getString("country");
-                pointOfInterest = args.getString("pointOfInterest");
-                addressCompl = args.getString("addressCompl");
-                Log.d("debago","in args create");
-            }
 
             String statusProperty = getString(R.string.status_property_in_progress);
             String dateOfEntryOnMarketForProperty = dateOfEntry.getText().toString();
             String fullDescriptionText = fullDescriptionEditText.getText().toString();
-
-            Log.d("debago","before to create; surface :"+surfaceAreaProperty+" typeProperty :"+typeProperty);
 
             Property newProperty = new Property(typeProperty, pricePropertyInDollar,
                     surfaceAreaProperty, numberRoomsInProperty,
@@ -502,15 +505,14 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                     photoDescription3, photoDescription4, photoDescription5, 1);
 
-
             if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
                 this.propertyViewModel.updateProperty(newProperty);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
             } else {
                 this.propertyViewModel.createProperty(newProperty);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
-                if(getContext()!=null){
-                    ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(),0);
+                if (getContext() != null) {
+                    ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(), 0);
                 }
 
             }
@@ -523,7 +525,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void updateUI() {
 
-        Log.d("debago", "photoUri1 : " + photoUri1+" photoUri2 : " + photoUri2+" photoUri3 : " + photoUri3+" photoUri4 : " + photoUri4+" photoUri5 : " + photoUri5);
+        Log.d("debago", "photoUri1 : " + photoUri1 + " photoUri2 : " + photoUri2 + " photoUri3 : " + photoUri3 + " photoUri4 : " + photoUri4 + " photoUri5 : " + photoUri5);
 
         String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
         Uri fileUri;
