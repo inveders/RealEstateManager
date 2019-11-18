@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -40,7 +41,7 @@ import permissions.dispatcher.RuntimePermissions;
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
 @RuntimePermissions
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     //GOOGLE GEOCODING
     private GoogleMap mGoogleMap;
@@ -102,12 +103,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void configureToolbar() {
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-       /* ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        if(getSupportActionBar()!=null){
+        Toolbar toolbar = findViewById(R.id.toolbar_map);
+
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.page_name_activity_detail));
-        }*/
+            getSupportActionBar().setTitle(getString(R.string.page_name_activity_maps));
+        }
     }
 
     private void configureViewModel() {

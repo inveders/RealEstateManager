@@ -57,7 +57,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
     private void configToolbar() {
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_agent_management);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {

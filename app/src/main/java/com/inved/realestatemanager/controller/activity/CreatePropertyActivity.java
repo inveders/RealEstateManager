@@ -1,6 +1,8 @@
 package com.inved.realestatemanager.controller.activity;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -21,7 +23,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
     //ViewPager
     ViewPager2 viewPager2;
-
+    private Toolbar toolbar;
     ViewPagerFragmentAdapter myAdapter;
 
     @Override
@@ -61,9 +63,11 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
     // Configure Toolbar
     private void configureToolBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        this.toolbar = findViewById(R.id.toolbar_create_update);
         setSupportActionBar(toolbar);
+        //setTitleTextColor(ColorStateList.valueOf(getResources().getColor(R.color.textOnPrimary)));
         if (getSupportActionBar() != null) {
+            Log.d("debago","getsupportactionbar is not null");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(getString(R.string.page_name_activity_create_property));

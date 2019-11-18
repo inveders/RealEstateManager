@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="multiSliderStyle">@style/Widget.MultiSlider</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <item name="colorControlNormal">@android:color/white</item>
+
     </style>
 
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
