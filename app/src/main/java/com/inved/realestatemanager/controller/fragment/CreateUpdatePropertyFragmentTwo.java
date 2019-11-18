@@ -45,7 +45,6 @@ import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
-import com.inved.realestatemanager.utils.ManageOpenCamera;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +62,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
-    private File mPhotoFile;
 
     private String cameraFilePath;
 
@@ -77,7 +75,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private ImageView photo3;
     private ImageView photo4;
     private ImageView photo5;
-    private TextView photoDescription;
 
     private String photoUri = null;
     private String photoUri1 = null;
@@ -128,7 +125,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         photo3 = v.findViewById(R.id.activity_create_update_added_photo_three);
         photo4 = v.findViewById(R.id.activity_create_update_added_photo_four);
         photo5 = v.findViewById(R.id.activity_create_update_added_photo_five);
-        photoDescription = v.findViewById(R.id.activity_create_update_property_added_photo_description);
         fullDescriptionEditText = v.findViewById(R.id.activity_create_update_property_full_description_text);
 
         Button confirmButton = v.findViewById(R.id.create_update_confirm_button);
@@ -180,10 +176,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 this.country = objects.get(10).toString();
                 this.pointOfInterest = objects.get(11).toString();
 
-                if(objects.get(12)!=null){
+                if (objects.get(12) != null) {
                     this.addressCompl = objects.get(12).toString();
-                }else{
-                    this.addressCompl=null;
+                } else {
+                    this.addressCompl = null;
                 }
 
                 this.propertyId = (long) objects.get(13);
@@ -276,17 +272,15 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                             BuildConfig.APPLICATION_ID + ".provider",
                             photoFile);
 
-                    mPhotoFile = photoFile;
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
-                        Log.d("debaga", "IN OPEN camera");
-                        ManageOpenCamera.saveIfCameraOpen(getActivity(),true);
-                        startActivityForResult(takePictureIntent, REQUEST_CAMERA_PHOTO);
+
+                    startActivityForResult(takePictureIntent, REQUEST_CAMERA_PHOTO);
 
 
                 }
 
-        }
+            }
         }
 
     }
@@ -319,16 +313,11 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 case REQUEST_CAMERA_PHOTO:
 
                     Log.d("debaga", "after open camera");
-                        if (cameraFilePath != null) {
-                            Log.d("debago", "urlPicture two camera file path : " + cameraFilePath);
-                            photoUri = cameraFilePath;
-                            if(getActivity()!=null){
-                                ManageOpenCamera.saveIfCameraOpen(getActivity(),false);
-                            }
+                    if (cameraFilePath != null) {
+                        Log.d("debago", "urlPicture two camera file path : " + cameraFilePath);
+                        photoUri = cameraFilePath;
 
-                        }
-
-
+                    }
 
 
                     break;
@@ -521,7 +510,20 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     photoDescription3, photoDescription4, photoDescription5, 1);
 
             if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
-                this.propertyViewModel.updateProperty(newProperty);
+                Log.d("debago","update property : "+typeProperty+" "+pricePropertyInDollar+" "+surfaceAreaProperty+" "+numberRoomsInProperty+" "+
+                        numberBathroomsInProperty+" "+numberBedroomsInProperty+" "+fullDescriptionText+" "+streetNumber+" "+streetName+" "+zipCode+" "+
+                        townProperty+" "+country+" "+addressCompl+" "+pointOfInterest+" "+statusProperty+" "+dateOfEntryOnMarketForProperty+" "+null+" "+
+                        false+" "+photoUri1+" "+photoUri2+" "+photoUri3+" "+photoUri4+" "+photoUri5+" "+photoDescription1+" "+photoDescription2+
+                        " "+photoDescription3+" "+photoDescription4+" "+photoDescription5+" "+1+" "+propertyId);
+
+
+                this.propertyViewModel.updateProperty(typeProperty, pricePropertyInDollar,
+                        surfaceAreaProperty, numberRoomsInProperty,
+                        numberBathroomsInProperty, numberBedroomsInProperty,
+                        fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                        statusProperty, dateOfEntryOnMarketForProperty,
+                        null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                        photoDescription3, photoDescription4, photoDescription5, 1,propertyId);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
             } else {
                 this.propertyViewModel.createProperty(newProperty);

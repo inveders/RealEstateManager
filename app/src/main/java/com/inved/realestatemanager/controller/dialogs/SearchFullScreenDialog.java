@@ -1,8 +1,6 @@
 package com.inved.realestatemanager.controller.dialogs;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +28,6 @@ import butterknife.ButterKnife;
 import io.apptik.widget.MultiSlider;
 
 public class SearchFullScreenDialog extends DialogFragment implements AdapterView.OnItemSelectedListener {
-
-    private static final String TAG = "CustomSearchDialog";
 
     //Widget
     @BindView(R.id.dialog_spinner_type_property)
@@ -107,7 +103,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         this.configureViewModel();
         this.seekbarChangements();
         if (getDialog() != null) {
-            getDialog().setTitle("Search property");
+            getDialog().setTitle(getString(R.string.page_name_search_dialog));
         }
 
         cancelSearchButton.setOnClickListener(v -> getDialog().cancel());
@@ -159,10 +155,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     // Update the list of Real Estate item
     private void updateRealEstateItemsList(List<com.inved.realestatemanager.models.Property> properties) {
 
-        Log.d("debago","properties size "+properties.size());
         callback.searchButton(properties);
-
-        Log.d(TAG, "updateRealEstateItemsList: data size = " + properties.size());
 
     }
 

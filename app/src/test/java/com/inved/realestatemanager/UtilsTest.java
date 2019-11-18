@@ -50,25 +50,5 @@ public class UtilsTest {
 
     }
 
-    /*  @Test
-    public void should_ReturnTrue_With_WifiAvailaible() {
 
-        //Given
-        final Context context = mock(Context.class);
-
-        final ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
-        final NetworkInfo networkInfo = mock(NetworkInfo.class);
-        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
-       // Mockito.when(ConnectivityManager.TYPE_WIFI).thenReturn(networkInfo);
-
-
-
-
-        //When
-        boolean isWifiAvailable = conversionEuro.checkNetwork();
-
-        //Then
-        Assert.assertTrue(isWifiAvailable);
-
-    }*/
 }

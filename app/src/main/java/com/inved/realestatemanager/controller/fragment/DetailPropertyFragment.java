@@ -297,7 +297,6 @@ public class DetailPropertyFragment extends Fragment {
 
         propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this, realEstateAgents -> {
 
-            Log.d("debago","id is: "+realEstateAgentId);
             if (realEstateAgents.getFirstname() != null && realEstateAgents.getLastname() != null) {
                 String completeName = realEstateAgents.getFirstname() + " " + realEstateAgents.getLastname();
                 this.realEstateAgent.setText(completeName);

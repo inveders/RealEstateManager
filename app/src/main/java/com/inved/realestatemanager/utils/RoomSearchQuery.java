@@ -1,21 +1,17 @@
 package com.inved.realestatemanager.utils;
 
-import android.util.Log;
-
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomQuery {
+public class RoomSearchQuery {
 
 
     public SimpleSQLiteQuery queryRoomDatabase(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
                                                int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
 
-       // Log.d("debago","queryString keys, type : "+type+" town : "+town+" minSurface :"+minSurface+" maxSurface :"+maxSurface+" minPrice :"+minPrice+" maxPrice :"+maxPrice+" minBedroom :"+minBedRoom+" maxBedroom :"+maxBedRoom+" country :"+country+" status :"+status+" realestateagentId :"+realEstateAgentId);
-
-        // RoomQuery string
+        // RoomSearchQuery string
         String queryString = "";
 
         // List of bind parameters
@@ -139,7 +135,6 @@ public class RoomQuery {
                 queryString += " AND";
             } else {
                 queryString += " WHERE";
-                containsCondition = true;
             }
 
             queryString += " statusProperty LIKE :status";

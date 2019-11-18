@@ -34,6 +34,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.configToolbar();
         RecyclerView recyclerView = findViewById(R.id.agent_management_recycler_view);
         adapter = new RecyclerViewAgentManagement(this, this);
         recyclerView.setAdapter(this.adapter);
@@ -53,8 +54,8 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         dialog.show(getSupportFragmentManager(), "AddAgentDialog");
     }
 
-    @Override
-    protected void configToolbar() {
+
+    private void configToolbar() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 

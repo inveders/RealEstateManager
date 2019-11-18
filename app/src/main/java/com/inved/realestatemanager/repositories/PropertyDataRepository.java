@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData;
 
 import com.inved.realestatemanager.dao.PropertyDao;
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.utils.RoomQuery;
+import com.inved.realestatemanager.utils.RoomSearchQuery;
+import com.inved.realestatemanager.utils.RoomUpdateQuery;
 
 import java.util.List;
 
 public class PropertyDataRepository {
 
-    //Le but du repository est vraiment d'isoler la source de données (DAO) du ViewModel, afin que ce dernier ne manipule pas directement la source de données.
-
     private final PropertyDao propertyDao;
-    private RoomQuery roomQuery = new RoomQuery();
+    private RoomSearchQuery roomSearchQuery = new RoomSearchQuery();
+    private RoomUpdateQuery roomUpdateQuery = new RoomUpdateQuery();
 
     public PropertyDataRepository(PropertyDao propertyDao) { this.propertyDao = propertyDao; }
 
@@ -29,10 +29,9 @@ public class PropertyDataRepository {
 
     public LiveData<List<Property>> searchProperty(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
                                                      int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
-        return this.propertyDao.searchProperty(roomQuery.queryRoomDatabase(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId));
+        return this.propertyDao.searchProperty(roomSearchQuery.queryRoomDatabase(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId));
 
     }
-
 
     // --- CREATE ---
 
@@ -42,5 +41,22 @@ public class PropertyDataRepository {
     public void deleteItem(long propertyId){ propertyDao.deleteProperty(propertyId); }
 
     // --- UPDATE ---
-    public void updateItem(Property property){ propertyDao.updateProperty(property); }
+    public void updateItem(Property property){ propertyDao.updatePropertyGood(property); }
+
+    public LiveData<List<Property>> updateProperty(String typeProperty, double pricePropertyInDollar,
+                                                   double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
+                                                   int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
+                                                   String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
+                                                   String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
+                                                   boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
+                                                   String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
+                                                   String photoDescription4, String photoDescription5, long realEstateAgentId,long propertyId) {
+        return this.propertyDao.updateProperty(roomUpdateQuery.queryRoomUpdateDatabase(typeProperty, pricePropertyInDollar,
+                surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
+                fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                statusProperty, dateOfEntryOnMarketForProperty, dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId,propertyId));
+
+    }
+
 }

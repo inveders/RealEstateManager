@@ -38,17 +38,15 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     // FOR DESIGN
 
-    public PropertyListAdapter adapter;
+    private PropertyListAdapter adapter;
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
-    private Context context;
     private FloatingActionButton openSearchButton;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context = context;
-        adapter = new PropertyListAdapter(context, this, Glide.with(this));
+        adapter = new PropertyListAdapter(context, this);
     }
 
     public ListPropertyFragment() {
@@ -85,6 +83,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private void startSearchProperty() {
 
         openSearchButton.setOnClickListener(v -> {
+
             // Create an instance of the dialog fragment and show it
             SearchFullScreenDialog dialog = new SearchFullScreenDialog();
 
@@ -97,6 +96,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         });
 
     }
+
+
     // -------------------
     // DATA
     // -------------------
@@ -139,9 +140,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         }
 
-
     }
-
 
     @Override
     public void searchButton(List<Property> properties) {

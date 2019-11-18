@@ -3,7 +3,6 @@ package com.inved.realestatemanager.injections;
 import android.content.Context;
 
 import com.inved.realestatemanager.dao.RealEstateManagerDatabase;
-import com.inved.realestatemanager.repositories.GeocodingRepository;
 import com.inved.realestatemanager.repositories.PropertyDataRepository;
 import com.inved.realestatemanager.repositories.RealEstateAgentDataRepository;
 

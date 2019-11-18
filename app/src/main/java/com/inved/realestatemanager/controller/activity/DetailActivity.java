@@ -20,7 +20,6 @@ import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_I
 public class DetailActivity extends BaseActivity  {
 
     public static final String PROPERTY_ID_INTENT = "PROPERTY_ID_INTENT";
-    private Toolbar toolbar;
     private long propertyId;
 
     @Override
@@ -36,7 +35,7 @@ public class DetailActivity extends BaseActivity  {
 
     private void configureToolbar() {
 
-        this.toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -44,9 +43,6 @@ public class DetailActivity extends BaseActivity  {
         }
 
     }
-
-    // Declare detail fragment
-    private DetailPropertyFragment detailPropertyFragment;
 
     @Override
     protected int getLayoutContentViewID() {
@@ -59,7 +55,8 @@ public class DetailActivity extends BaseActivity  {
 
     private void configureAndShowDetailFragment() {
         // A - Get FragmentManager (Support) and Try to find existing instance of fragment in FrameLayout container
-        detailPropertyFragment = (DetailPropertyFragment) getSupportFragmentManager().findFragmentById(R.id.activity_detail_frame_layout);
+        // Declare detail fragment
+        DetailPropertyFragment detailPropertyFragment = (DetailPropertyFragment) getSupportFragmentManager().findFragmentById(R.id.activity_detail_frame_layout);
 
         if (detailPropertyFragment == null) {
             // B - Create new detail property fragment

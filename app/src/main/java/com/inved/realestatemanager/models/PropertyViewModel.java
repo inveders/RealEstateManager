@@ -3,12 +3,8 @@ package com.inved.realestatemanager.models;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.models.RealEstateAgents;
-import com.inved.realestatemanager.repositories.GeocodingRepository;
 import com.inved.realestatemanager.repositories.PropertyDataRepository;
 import com.inved.realestatemanager.repositories.RealEstateAgentDataRepository;
-import com.inved.realestatemanager.retrofit.modelPojo.Result;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -18,7 +14,7 @@ public class PropertyViewModel extends ViewModel {
     // REPOSITORIES
     private final PropertyDataRepository propertyDataSource;
     private final RealEstateAgentDataRepository realEstateAgentDataSource;
-    private final Executor executor; //Nous utilisons la classe Executor afin de réaliser de manière asynchrone les requêtes de mise à jour de nos tables SQLite.
+    private final Executor executor; //We use Executor class to make asynschrone requests to update database SQLite tables.
 
 
     public PropertyViewModel(PropertyDataRepository propertyDataSource, RealEstateAgentDataRepository realEstateAgentDataSource, Executor executor) {
@@ -79,8 +75,24 @@ public class PropertyViewModel extends ViewModel {
         executor.execute(() -> propertyDataSource.createItem(property));
     }
 
-    public void updateProperty(Property property) {
+    public void updateItem(Property property) {
         executor.execute(() -> propertyDataSource.updateItem(property));
+
+    }
+
+    public LiveData<List<Property>> updateProperty(String typeProperty, double pricePropertyInDollar,
+                                                   double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
+                                                   int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
+                                                   String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
+                                                   String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
+                                                   boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
+                                                   String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
+                                                   String photoDescription4, String photoDescription5, long realEstateAgentId,long propertyId) {
+        return propertyDataSource.updateProperty(typeProperty, pricePropertyInDollar,
+                surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
+                fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                statusProperty, dateOfEntryOnMarketForProperty, dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId,propertyId);
     }
 
     // -------------

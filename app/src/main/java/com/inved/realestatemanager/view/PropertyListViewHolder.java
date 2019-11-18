@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.view;
 
-import android.content.Context;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,7 +9,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
@@ -18,7 +16,6 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
-import java.util.List;
 
 
 public class PropertyListViewHolder extends RecyclerView.ViewHolder {
@@ -28,9 +25,8 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     private TextView pricePropertyInDollar;
     private TextView surfaceAreaProperty;
     private TextView townProperty;
-    private ImageView photo;
     private CardView mCardview;
-    private Context context;
+    private ImageView photo;
 
     PropertyListViewHolder(View propertyItemView) {
         super(propertyItemView);
@@ -45,7 +41,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    void updateWithProperty(Property property, PropertyListInterface callback, RequestManager glide) {
+    void updateWithProperty(Property property, PropertyListInterface callback) {
 
         UnitConversion unitConversion =new UnitConversion();
 
@@ -78,22 +74,30 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             this.surfaceAreaProperty.setText(MainApplication.getResourses().getString(R.string.none));
         }
 
-    //    String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
+        String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
         //PHOTO URI 1
 
 
-      /*  if (property.getPhotoUri1() != null) {
+
+        if (property.getPhotoUri1() != null) {
 
 
-               glide.load(property.getPhotoUri1())
-
+            Uri fileUri = Uri.parse(property.getPhotoUri1());
+            if (fileUri.getPath() != null) {
+                Glide.with(MainApplication.getInstance().getApplicationContext())
+                        .load(new File(fileUri.getPath()))
                         .into((photo));
+            }
+
+
 
         } else {
-            glide.load(urlNoImage)
-                    .into(photo);
 
-        }*/
+                Glide.with(MainApplication.getInstance().getApplicationContext())
+                        .load(urlNoImage)
+                        .into((photo));
+
+        }
 
 
 
@@ -103,20 +107,13 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             long propertyId = property.getPropertyId();
             callback.clickOnCardView(propertyId);
 
-
-            // Launch Detail fragment
-          //  Intent intent = new Intent(view.getContext(), DetailPropertyFragment.class);
-          //  view.getContext().startActivity(intent);
-
-
-
         });
 
 
     }
 
     public interface PropertyListInterface{
-        void clickOnCardView(long propertyId); //Je lui donne ce dont j'avais besoin pour faire l'action
+        void clickOnCardView(long propertyId);
 
     }
 

@@ -98,13 +98,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .position(initialPosition));
     }
 
+
+
     private void configureToolbar() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-
-     /*   setSupportActionBar(toolbar);
+       /* ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.page_name_activity_detail));
         }*/
     }
 
@@ -168,8 +170,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.snippet(placeId);
 
         markerOptions.position(latLng);
-
-        //creating and getting restaurant information
 
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
         mGoogleMap.addMarker(markerOptions);
@@ -245,7 +245,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("debago","onlocation changed "+location.getLongitude());
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         moveCamera(latitude,longitude);

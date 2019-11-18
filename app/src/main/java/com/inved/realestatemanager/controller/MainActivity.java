@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         this.configureToolbarAndNavigationDrawer();
         //NavigationDrawer
-        //  logout=findViewById(R.id.activity_main_drawer_logout); ONLY IN CASE WE NEED TO LOGOUT
         this.configureDrawerLayout();
         this.configureNavigationView();
 
@@ -108,8 +107,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        // userInformationFromFirebase();
-
 
     }
 
@@ -242,20 +239,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    // --------------
-    // CallBack
-    // --------------
-
-    /* Nécessite implements ListPropertyFragment.OnButtonClickedListener
-    NO NEED HERE
-    Enfin, nous modifions ( 3 ) notre méthode onButtonClicked( ) afin d'afficher DetailActivity (et son fragment DetailFragment) uniquement lorsque nous sommes sur Smartphone.
-    @Override
-    public void onButtonClicked(View view) {
-        // 3 - Check if detail fragment is not created or if not visible
-        if (detailPropertyFragment == null || !detailPropertyFragment.isVisible()){
-            startActivity(new Intent(this, DetailActivity.class));
-        }
-    }*/
+*/
 
     private void refreshFragment() {
 

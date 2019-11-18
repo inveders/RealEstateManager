@@ -55,6 +55,7 @@
         <activity
             android:name=".controller.activity.CreatePropertyActivity"
             android:label="@string/page_name_activity_create_property"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".controller.MainActivity" />
 
         <!-- PROFILE ACTIVITY -->

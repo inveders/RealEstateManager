@@ -66,14 +66,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private String numberBathroomsInProperty = "0";
     private int numberBedroomsInProperty = 0;
 
-    private double pricePropertyInDollar = 0.0;
-    private double surfaceAreaProperty = 0.0;
-    private String streetNumber = null;
-    private String streetName = null;
-    private String zipCode = null;
-    private String townProperty = null;
-    private String country = null;
-    private String pointOfInterest = null;
     private String addressCompl = null;
 
     private Context context;
@@ -151,7 +143,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             this.createUpdatePropertyViewModel = ViewModelProviders.of(getActivity()).get(CreateUpdatePropertyViewModel.class);
         }
 
-
     }
 
     @Override
@@ -159,7 +150,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         super.onDetach();
 
         ManageCreateUpdateChoice.saveCreateUpdateChoice(context, 0);
-        //Log.d("debago","6. on detach fragment one "+propertyId);
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -246,19 +237,14 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         } else if (streetNameEditText.getText().toString().trim().isEmpty()) {
             streetNameEditText.setError(getString(R.string.set_error_street_name));
         } else {
-            pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
-            surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
-            streetNumber = streetNumberEditText.getText().toString();
-            streetName = streetNameEditText.getText().toString();
-            zipCode = zipCodeEditText.getText().toString();
-            townProperty = townNameEditText.getText().toString();
-            country = townNameEditText.getText().toString();
-            pointOfInterest = fillPoiCheckboxList();
-
-
-          /*  callback.clickOnNextButton(typeProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty, pricePropertyInDollar, surfaceAreaProperty, streetNumber, streetName, zipCode, townProperty, country,
-                    pointOfInterest, addressCompl, ManageCreateUpdateChoice.getCreateUpdateChoice(context));*/
-
+            double pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
+            double surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
+            String streetNumber = streetNumberEditText.getText().toString();
+            String streetName = streetNameEditText.getText().toString();
+            String zipCode = zipCodeEditText.getText().toString();
+            String townProperty = townNameEditText.getText().toString();
+            String country = countryEditText.getText().toString();
+            String pointOfInterest = fillPoiCheckboxList();
 
             List<Object> myList = new ArrayList<>();
             myList.add(typeProperty);
@@ -295,7 +281,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             callbackChangePage = (CreatePropertyActivity) context;
 
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnImageClickListener");
+            throw new ClassCastException(context.toString() + " must implement OnCreatePropertyInterface");
         }
     }
 

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,8 @@ import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
-import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
@@ -128,7 +127,6 @@ public class AddAgentDialog extends DialogFragment {
             String firstname = firstnameEditText.getText().toString();
             String lastname = lastnameEditText.getText().toString();
             RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture);
-            Log.d("debago","urlPicture 3 : "+urlPicture);
             if(bundle!=null){
 
                 this.propertyViewModel.updateRealEstateAgent(realEstateAgents);
@@ -236,16 +234,14 @@ public class AddAgentDialog extends DialogFragment {
                         if (getRealPathFromURI(getContext(),uriToConvert) != null) {
                             showImageInCircle(selectedImage);
                             urlPicture = selectedImage;
-                            Log.d("debago","urlPicture 1 : "+urlPicture);
                         }
                     }
 
                     break;
                 case REQUEST_CAMERA_PHOTO:
-                    Log.d("debago","urlPicture 2bis camerafilepath : "+cameraFilePath);
+
                     if(cameraFilePath!=null){
                         urlPicture = cameraFilePath;
-                        Log.d("debago","urlPicture 2 : "+urlPicture);
                         showImageInCircle(cameraFilePath);
 
                     }
@@ -282,22 +278,6 @@ public class AddAgentDialog extends DialogFragment {
      *
      */
     private String getRealPathFromURI(Context context, Uri uri) {
-       /* Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-            assert cursor != null;
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } catch (Exception e) {
-            Log.e("debago", "getRealPathFromURI Exception : " + e.toString());
-            return "";
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }*/
 
         if (DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
