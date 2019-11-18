@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.domain.UriToStringConversion;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
@@ -55,6 +57,7 @@ public class AddAgentDialog extends DialogFragment {
     private static final int REQUEST_GALLERY_PHOTO = 455;
     private String cameraFilePath;
     private Bundle bundle;
+    private UriToStringConversion uriToStringConversion = new UriToStringConversion();
     //View Model
     private PropertyViewModel propertyViewModel;
 
@@ -224,14 +227,15 @@ public class AddAgentDialog extends DialogFragment {
                 case REQUEST_GALLERY_PHOTO:
                     //data.getData returns the content URI for the selected Image
                     Uri uriToConvert = data.getData();
-                    String selectedImage = "file://" +getRealPathFromURI(getContext(),uriToConvert);
+                    Log.d("debago","uri to convert : "+uriToConvert);
+                    String selectedImage = "file://" +uriToStringConversion.getRealPathFromURI(getContext(),uriToConvert);
 
                     if(selectedImage.contains("WhatsApp")){
                         Toast.makeText(getContext(), getString(R.string.whatsapp_photo_not_possible), Toast.LENGTH_SHORT).show();
                         agentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
                     }else{
                         agentPhoto.setImageURI(Uri.parse(selectedImage));
-                        if (getRealPathFromURI(getContext(),uriToConvert) != null) {
+                        if (uriToStringConversion.getRealPathFromURI(getContext(),uriToConvert) != null) {
                             showImageInCircle(selectedImage);
                             urlPicture = selectedImage;
                         }
@@ -273,123 +277,9 @@ public class AddAgentDialog extends DialogFragment {
         return null;
     }
 
-    /**
-     * Convert content uri to file uri
-     *
-     */
-    private String getRealPathFromURI(Context context, Uri uri) {
-
-        if (DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-
-                // TODO handle non-primary volumes
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-            // Return the remote address
-            if (isGooglePhotosUri(uri))
-                return uri.getLastPathSegment();
-
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
-    }
-
-    private static String getDataColumn(Context context, Uri uri, String selection,
-                                        String[] selectionArgs) {
-
-        final String column = "_data";
-        final String[] projection = {
-                column
-        };
-        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(index);
-            }
-        }
-        return null;
-    }
 
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
-    private static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
-    private static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
-    private static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is Google Photos.
-     */
-    private static boolean isGooglePhotosUri(Uri uri) {
-        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
-    }
 
     //PERMISSION
 
