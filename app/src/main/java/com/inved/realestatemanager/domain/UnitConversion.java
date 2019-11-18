@@ -19,4 +19,18 @@ public class UnitConversion {
 
         return formatter.format(Math.round(doubleToChange));
     }
+
+
+    public String changeIntToStringWithThousandSeparator(int intToChange){
+
+
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+
+        symbols.setGroupingSeparator(' ');
+        formatter.setDecimalFormatSymbols(symbols);
+
+
+        return formatter.format(Math.round(intToChange));
+    }
 }

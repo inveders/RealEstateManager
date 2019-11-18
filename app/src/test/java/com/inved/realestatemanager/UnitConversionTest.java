@@ -12,7 +12,7 @@ public class UnitConversionTest {
     private UnitConversion unitConversion = Mockito.spy(new UnitConversion());
 
     @Test
-    public void should_ConvertInLong_With_Double_120000() {
+    public void should_ConvertInString_With_Double_120000() {
 
         //Given
         double doubleToConvert = 120000.0;
@@ -29,7 +29,7 @@ public class UnitConversionTest {
     }
 
     @Test
-    public void should_ConvertInLong_With_Double_1250000_5() {
+    public void should_ConvertInString_With_Double_1250000_5() {
 
         //Given
         double doubleToConvert = 1250000.5;
@@ -41,6 +41,24 @@ public class UnitConversionTest {
         //Then
 
         Assert.assertEquals("1 250 001", stringToRetrieve);
+
+
+    }
+
+
+    @Test
+    public void should_ConvertInString_With_Int_3000000() {
+
+        //Given
+        int intToConvert = 3000000;
+
+
+        //When
+        String stringToRetrieve = unitConversion.changeDoubleToStringWithThousandSeparator(intToConvert);
+
+        //Then
+
+        Assert.assertEquals("3 000 000", stringToRetrieve);
 
 
     }

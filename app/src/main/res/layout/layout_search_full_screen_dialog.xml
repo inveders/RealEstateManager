@@ -147,24 +147,25 @@
                 app:layout_constraintRight_toRightOf="parent"
                 style="@style/EditTextStylewithoutText"/>
 
+
+            <!-- SURFACE -->
             <io.apptik.widget.MultiSlider
                 android:id="@+id/dialog_seekbar_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"
 
-                app:range1Color="@android:color/holo_orange_dark"
-                app:rangeColor="@color/colorPrimaryDark"
-                app:thumbColor="@color/colorPrimaryDark"
-                app:trackColor="@android:color/holo_orange_dark"
-                app:thumbNumber="2"
-                app:stepsThumbsApart="5"
+                android:layout_marginTop="8dp"
                 app:drawThumbsApart="true"
                 app:layout_constraintTop_toBottomOf="@id/dialog_price_text"
-                />
+                app:range1Color="@android:color/holo_orange_dark"
+                app:rangeColor="@color/colorPrimaryDark"
+                app:stepsThumbsApart="100"
+                app:thumbColor="@color/colorPrimaryDark"
+                app:thumbNumber="2"
+                app:trackColor="@android:color/holo_orange_dark"
+                tools:layout_editor_absoluteX="10dp" />
 
-
-            <!-- SURFACE -->
             <TextView
                 android:id="@+id/dialog_surface_text"
                 android:layout_width="wrap_content"

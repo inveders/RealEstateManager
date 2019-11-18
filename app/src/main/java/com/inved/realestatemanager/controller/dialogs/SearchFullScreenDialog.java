@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.domain.SplitString;
+import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
@@ -76,6 +78,9 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     ImageButton cancelSearchButton;
 
     //String for Data
+    private static final int MAX_PRICE_PROPERTY = 2000000;
+    private static final int MAX_SURFACE_PROPERTY = 500;
+
     private String mTypeProperty = null;
     private int mMinBedroom = 0;
     private int mMaxBedroom = 7;
@@ -88,6 +93,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     //Interface
     private OnClickSearchInterface callback;
+    private UnitConversion unitConversion = new UnitConversion();
 
 
     //View Model
@@ -113,21 +119,23 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     private void seekbarChangements() {
 
-        priceSeekbar.setMax(2000000);
-        surfaceSeekbar.setMax(1000);
+        priceSeekbar.setMax(MAX_PRICE_PROPERTY);
+        surfaceSeekbar.setMax(MAX_SURFACE_PROPERTY);
+        surfaceSeekbar.getThumb(1).setValue(surfaceSeekbar.getMax());
+        priceSeekbar.getThumb(1).setValue(priceSeekbar.getMax());
 
-        priceMinValue.setText(String.valueOf(priceSeekbar.getThumb(0).getValue()));
-        priceMaxValue.setText(String.valueOf(priceSeekbar.getThumb(1).getValue()));
+        priceMinValue.setText(unitConversion.changeIntToStringWithThousandSeparator(priceSeekbar.getThumb(0).getValue()));
+        priceMaxValue.setText(unitConversion.changeIntToStringWithThousandSeparator(priceSeekbar.getMax()));
 
-        surfaceMinValue.setText(String.valueOf(surfaceSeekbar.getThumb(0).getValue()));
-        surfaceMaxValue.setText(String.valueOf(surfaceSeekbar.getThumb(1).getValue()));
+        surfaceMinValue.setText(unitConversion.changeIntToStringWithThousandSeparator(surfaceSeekbar.getThumb(0).getValue()));
+        surfaceMaxValue.setText(unitConversion.changeIntToStringWithThousandSeparator(surfaceSeekbar.getMax()));
 
         surfaceSeekbar.setOnThumbValueChangeListener((multiSlider, thumb, thumbIndex, value) -> {
             if (thumbIndex == 0) {
-                surfaceMinValue.setText(String.valueOf(value));
+                surfaceMinValue.setText(unitConversion.changeIntToStringWithThousandSeparator(value));
                 minSurface = value;
             } else {
-                surfaceMaxValue.setText(String.valueOf(value));
+                surfaceMaxValue.setText(unitConversion.changeIntToStringWithThousandSeparator(value));
                 maxSurface = value;
             }
         });
@@ -135,9 +143,9 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         priceSeekbar.setOnThumbValueChangeListener((multiSlider, thumb, thumbIndex, value) -> {
             if (thumbIndex == 0) {
                 minPrice = value;
-                priceMinValue.setText(String.valueOf(value));
+                priceMinValue.setText(unitConversion.changeIntToStringWithThousandSeparator(value));
             } else {
-                priceMaxValue.setText(String.valueOf(value));
+                priceMaxValue.setText(unitConversion.changeIntToStringWithThousandSeparator(value));
                 maxPrice = value;
             }
         });
