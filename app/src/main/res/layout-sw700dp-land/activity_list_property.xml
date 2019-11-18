@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- 1 | MainActivity RootView -->
+<!-- 1 | ListPropertyActivity RootView -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.inved.realestatemanager.controller.MainActivity"
+    tools:context="com.inved.realestatemanager.controller.activity.ListPropertyActivity"
     tools:openDrawer="start">
 
     <LinearLayout

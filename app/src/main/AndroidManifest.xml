@@ -34,7 +34,7 @@
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name="com.inved.realestatemanager.controller.MainActivity"
+            android:name="com.inved.realestatemanager.controller.activity.ListPropertyActivity"
             android:label="@string/page_name_activity_main"
             android:theme="@style/AppTheme">
 
@@ -49,26 +49,26 @@
         <activity
             android:name=".controller.activity.DetailActivity"
             android:label="@string/page_name_activity_detail"
-            android:parentActivityName=".controller.MainActivity" />
+            android:parentActivityName=".controller.activity.ListPropertyActivity" />
 
         <!-- CREATE PROPERTY ACTIVITY -->
         <activity
             android:name=".controller.activity.CreatePropertyActivity"
             android:label="@string/page_name_activity_create_property"
             android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".controller.MainActivity" />
+            android:parentActivityName=".controller.activity.ListPropertyActivity" />
 
         <!-- PROFILE ACTIVITY -->
         <activity
             android:name=".controller.activity.AgentManagementActivity"
             android:label="@string/page_name_activity_create_property"
-            android:parentActivityName=".controller.MainActivity" />
+            android:parentActivityName=".controller.activity.ListPropertyActivity" />
 
         <!-- MAPS ACTIVITY -->
         <activity
             android:name=".controller.activity.MapsActivity"
             android:label="@string/page_name_activity_create_property"
-            android:parentActivityName=".controller.MainActivity" />
+            android:parentActivityName=".controller.activity.ListPropertyActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

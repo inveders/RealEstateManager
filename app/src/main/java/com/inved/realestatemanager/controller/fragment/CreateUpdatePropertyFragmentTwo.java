@@ -33,7 +33,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.controller.MainActivity;
+import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.DatePickerFragment;
 import com.inved.realestatemanager.domain.DateOfDay;
 import com.inved.realestatemanager.domain.SplitString;
@@ -641,7 +641,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), ListPropertyActivity.class);
         startActivity(intent);
     }
 

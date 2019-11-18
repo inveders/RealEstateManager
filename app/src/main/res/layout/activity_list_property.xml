@@ -9,11 +9,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.inved.realestatemanager.controller.MainActivity"
+    tools:context="com.inved.realestatemanager.controller.activity.ListPropertyActivity"
     tools:openDrawer="start">
 
 
-    <!-- 1 | MainActivity RootView -->
+    <!-- 1 | ListPropertyActivity RootView -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

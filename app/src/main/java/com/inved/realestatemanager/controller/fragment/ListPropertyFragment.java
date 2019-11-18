@@ -15,10 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.controller.MainActivity;
+import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
 import com.inved.realestatemanager.injections.Injection;
@@ -72,7 +71,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         if (getActivity() != null) {
 
-            ((MainActivity) getActivity()).setFragmentRefreshListener(this::getAllProperties);
+            ((ListPropertyActivity) getActivity()).setFragmentRefreshListener(this::getAllProperties);
         }
 
         startSearchProperty();
