@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -83,6 +85,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         openSearchButton.setOnClickListener(v -> {
 
+            setHasOptionsMenu(true);
             // Create an instance of the dialog fragment and show it
             SearchFullScreenDialog dialog = new SearchFullScreenDialog();
 
@@ -96,6 +99,27 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     }
 
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem addItem = menu.findItem(R.id.menu_action_add);
+        MenuItem clearItem = menu.findItem(R.id.menu_action_clear);
+        if (addItem != null) {
+            addItem.setVisible(false);
+        }
+        if (clearItem != null) {
+            clearItem.setVisible(true);
+            clearItem.setOnMenuItemClickListener(menuItem -> {
+
+                menu.findItem(R.id.menu_action_add).setVisible(true);
+                menu.findItem(R.id.menu_action_clear).setVisible(false);
+                getAllProperties();
+
+                return true;
+            });
+        }
+
+    }
 
     // -------------------
     // DATA
