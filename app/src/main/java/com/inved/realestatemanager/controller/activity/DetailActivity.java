@@ -1,7 +1,6 @@
 package com.inved.realestatemanager.controller.activity;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,13 +30,12 @@ public class DetailActivity extends BaseActivity  {
 
         propertyId=getIntent().getLongExtra(PROPERTY_ID,0);
 
-
     }
 
     private void configureToolbar() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(ColorStateList.valueOf(getResources().getColor(R.color.textOnPrimary)));
+
         setSupportActionBar(toolbar);
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

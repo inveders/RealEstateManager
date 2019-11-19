@@ -47,7 +47,7 @@ public class Property {
 
     public Property(String typeProperty, double pricePropertyInDollar,
                     double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
-                    int numberBedroomsInProperty, String fullDescriptionProperty, String streeNumber,
+                    int numberBedroomsInProperty, String fullDescriptionProperty, String streetNumber,
                     String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
                     String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                     boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
@@ -61,7 +61,7 @@ public class Property {
         this.numberBathroomsInProperty = numberBathroomsInProperty;
         this.numberBedroomsInProperty = numberBedroomsInProperty;
         this.fullDescriptionProperty = fullDescriptionProperty;
-        this.streetNumber = streeNumber;
+        this.streetNumber = streetNumber;
         this.streetName = streetName;
         this.zipCode = zipCode;
         this.townProperty = townProperty;

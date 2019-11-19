@@ -9,7 +9,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.models.Property;
@@ -61,7 +60,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         //TOWN PROPERTY
         if (property.getTownProperty() != null) {
-            this.townProperty.setText(String.valueOf(property.getTypeProperty()));
+            this.townProperty.setText(property.getTownProperty());
         } else {
             this.townProperty.setText(MainApplication.getResourses().getString(R.string.none));
         }
@@ -69,7 +68,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         //SURFACE AREA
         if (property.getSurfaceAreaProperty() != 0.0) {
-            this.surfaceAreaProperty.setText(unitConversion.changeDoubleToStringWithThousandSeparator(property.getSurfaceAreaProperty()));
+            this.surfaceAreaProperty.setText(MainApplication.getResourses().getString(R.string.price_in_meter,unitConversion.changeDoubleToStringWithThousandSeparator(property.getSurfaceAreaProperty())));
         } else {
             this.surfaceAreaProperty.setText(MainApplication.getResourses().getString(R.string.none));
         }

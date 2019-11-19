@@ -27,7 +27,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
 
-//        context.deleteDatabase("MyDatabase.db");
+        //context.deleteDatabase("MyDatabase.db");
 
         if (INSTANCE == null) {
             synchronized (RealEstateManagerDatabase.class) {
@@ -63,7 +63,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                 ContentValues contentValuesProperty = new ContentValues();
                 contentValuesProperty.put("propertyId", 1);
                 contentValuesProperty.put("realEstateAgentId", 1);
-                contentValuesProperty.put("typeProperty", "house");
+                contentValuesProperty.put("typeProperty", "Flat");
                 contentValuesProperty.put("pricePropertyInDollar", 120000.0);
                 contentValuesProperty.put("surfaceAreaProperty", 75);
                 contentValuesProperty.put("numberRoomsInProperty", "1");

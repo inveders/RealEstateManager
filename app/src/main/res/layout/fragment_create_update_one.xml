@@ -255,7 +255,9 @@
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_poi_text"
             style="@style/EditTextStylewithoutText"
-            />
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop" />
 
         <CheckBox
             android:id="@+id/create_update_checkbox_poi_restaurants"
@@ -267,6 +269,9 @@
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_schools"
             style="@style/EditTextStylewithoutText"
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop"
             />
 
         <CheckBox
@@ -279,6 +284,9 @@
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_restaurants"
             style="@style/EditTextStylewithoutText"
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop"
             />
 
         <CheckBox
@@ -290,7 +298,10 @@
             android:text="@string/fullscreen_dialog__poi_shops"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/create_update_checkbox_poi_schools"
-            style="@style/EditTextStylewithoutText"/>
+            style="@style/EditTextStylewithoutText"
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop"/>
 
         <CheckBox
             android:id="@+id/create_update_checkbox_poi_tourist_attraction"
@@ -301,7 +312,10 @@
             android:text="@string/fullscreen_dialog_poi_tourist_attraction"
             app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_shops"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_shops"
-            style="@style/EditTextStylewithoutText"/>
+            style="@style/EditTextStylewithoutText"
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop"/>
 
         <CheckBox
             android:id="@+id/create_update_checkbox_poi_oil_station"
@@ -312,7 +326,10 @@
             android:text="@string/fullscreen_dialog_poi_oil_station"
             app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_shops"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_tourist_attraction"
-            style="@style/EditTextStylewithoutText"/>
+            style="@style/EditTextStylewithoutText"
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop"/>
 
 
         <!-- NUMBER ROOMS -->

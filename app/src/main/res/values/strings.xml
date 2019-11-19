@@ -40,6 +40,7 @@
     <string name="list_property_price">150000</string>
     <string name="list_property_no_price_indicated">No price indicated</string>
     <string name="none">No one</string>
+    <string name="price_in_meter">%1$s m2</string>
     <string name="list_property_no_property_found">No property found</string>
 
     <!-- DETAIL FRAGMENT -->
@@ -187,6 +188,8 @@
     <string name="add_agent_dialog_update_confirm_text">Real estate agent informations updated</string>
     <string name="whatsapp_photo_not_possible">It\'s not possible to add photo from WhatsApp</string>
     <string name="Minbedroom_Maxbedoorm_control">Min number of bedroom can\'t be greater than Max Number</string>
+    <string name="no_more_photo">No more photo</string>
+    <string name="first_photo">First photo</string>
 
     <!-- MAP-->
 

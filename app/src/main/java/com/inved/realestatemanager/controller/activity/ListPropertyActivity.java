@@ -38,8 +38,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
 
-    //MenuItem logout; IN CASE WE NEED TO LOGOUT
-
     // Declare fragments
     private ListPropertyFragment listPropertyFragment;
     private DetailPropertyFragment detailPropertyFragment;
@@ -61,7 +59,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
-
     @Override
     protected int getLayoutContentViewID() {
         return R.layout.activity_list_property;
@@ -82,7 +79,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         // 7 - Create item after user clicked on button
         // GO ON THE UPDATE PROPERTY ACTIVITY
     }
-
 
     // ---------------------------
     // NAVIGATION DRAWER & TOOLBAR

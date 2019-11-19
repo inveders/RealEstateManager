@@ -73,6 +73,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.configureToolbar();
         this.configureViewModel();
         this.initializeMap();
+
+
     }
 
 
@@ -98,7 +100,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(initialPosition));
     }
-
 
 
     private void configureToolbar() {
@@ -139,15 +140,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 country = p.getCountry();
                 addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
                 String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
+                long propertyId = p.getPropertyId();
 
                 geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
-                    if(results.size()!=0){
+                    if (results.size() != 0) {
                         double latitude = results.get(0).getGeometry().getLocation().getLat();
                         double longitude = results.get(0).getGeometry().getLocation().getLng();
-                        String placeId = results.get(0).getPlaceId();
-                        customizeMarker(placeId, latitude, longitude);
-                    }else{
-                        Log.d("debago","Geocoding no result ");
+                        customizeMarker(propertyId, latitude, longitude);
+                    } else {
+                        Log.d("debago", "Geocoding no result ");
                     }
 
                 });
@@ -156,50 +157,44 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void customizeMarker(String placeId, double lat, double longi) {
+    private void customizeMarker(long propertyId, double lat, double longi) {
 
-        if (mGoogleMap != null) {
-            mGoogleMap.clear();
-        }
-
-        if (mMarker != null) {
-            mMarker.remove();
-        }
-
+        Log.d("debago", "marker property id customize marker: " + propertyId);
         LatLng latLng = new LatLng(lat, longi);
 
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.snippet(placeId);
+
+        markerOptions.snippet(String.valueOf(propertyId));
 
         markerOptions.position(latLng);
 
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
         mGoogleMap.addMarker(markerOptions);
+        Log.d("debago", "marker property getSnippet: " + markerOptions.getSnippet());
 
-        if(mGoogleMap !=null)
-
-        {
+        if (mGoogleMap != null) {
             //Configure action on marker click
             mGoogleMap.setOnMarkerClickListener(marker -> {
 
-                if (marker.getSnippet() != null) {
-
-                    startDetailActivity(marker.getSnippet());
-
+                if(marker.getSnippet()!=null){
+                    Log.d("debago", "marker property id: " + marker.getSnippet());
+                    startDetailActivity(Long.valueOf(marker.getSnippet()));
                 }
+
                 return true;
             });
         }
+
     }
 
     // Launch View Place Activity
-    private void startDetailActivity(String placeId) {
+    private void startDetailActivity(long propertyId) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(PROPERTY_ID, placeId);
+        intent.putExtra(PROPERTY_ID, propertyId);
         startActivity(intent);
     }
 
-    private void moveCamera(double myCurrentLat,double myCurrentLongi) {
+    private void moveCamera(double myCurrentLat, double myCurrentLongi) {
 
         int mZoom = 12;
         int mBearing = 4;
@@ -236,7 +231,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
             }
-            if ( !lm.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 buildAlertMessageNoGps();
             }
 
@@ -249,7 +244,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onLocationChanged(Location location) {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        moveCamera(latitude,longitude);
+        moveCamera(latitude, longitude);
 
     }
 

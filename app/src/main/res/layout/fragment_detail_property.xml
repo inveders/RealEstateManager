@@ -26,6 +26,28 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="?attr/actionModeSplitBackground" />
 
+        <ImageButton
+            android:id="@+id/prev_button_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_keyboard_arrow_left_black_24dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
+            android:contentDescription="@string/description_image" />
+
+        <ImageButton
+            android:id="@+id/next_button_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
+            android:contentDescription="@string/description_image" />
+
         <TextView
             android:id="@+id/fragment_detail_property_description_title"
             android:layout_width="wrap_content"

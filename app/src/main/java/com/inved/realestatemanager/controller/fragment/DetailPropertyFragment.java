@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +54,8 @@ public class DetailPropertyFragment extends Fragment {
     private TextView numberBedroomsInProperty;
     private TextView fullDescriptionProperty;
     private ImageSwitcher imageSwitcher;
+    private ImageButton nextImage;
+    private ImageButton prevImage;
 
     private TextView pointsOfInterestNearProperty;
     private TextView statusProperty;
@@ -63,6 +67,9 @@ public class DetailPropertyFragment extends Fragment {
 
     private PropertyViewModel propertyViewModel;
     private GeocodingViewModel geocodingViewModel;
+
+    private int imageCount;
+    private int imagePosition=0;
 
     private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
 
@@ -84,6 +91,8 @@ public class DetailPropertyFragment extends Fragment {
         numberBathroomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_bathroom_text);
         fullDescriptionProperty = mView.findViewById(R.id.fragment_detail_property_description_text);
         imageSwitcher = mView.findViewById(R.id.fragment_detail_property_image_switcher);
+        nextImage = mView.findViewById(R.id.next_button_arrow);
+        prevImage = mView.findViewById(R.id.prev_button_arrow);
         streetNumber = mView.findViewById(R.id.fragment_detail_property_street_number_text);
         streetName = mView.findViewById(R.id.fragment_detail_property_street_name_text);
         complAddress = mView.findViewById(R.id.fragment_detail_property_complement_address_text);
@@ -205,15 +214,15 @@ public class DetailPropertyFragment extends Fragment {
 
             // Create a new ImageView and set it's properties
             ImageView imageView = new ImageView(MainApplication.getInstance().getApplicationContext());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
             return imageView;
         });
 
         Animation in = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_in_left);
         Animation out = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_out_right);
-        imageSwitcher.setInAnimation(in);
-        imageSwitcher.setOutAnimation(out);
+
+
 
 
         ArrayList<String> myImages = new ArrayList<>();
@@ -246,9 +255,34 @@ public class DetailPropertyFragment extends Fragment {
 
         if (myImages.size() != 0) {
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
+            imageCount=myImages.size();
         } else {
             imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_round);
+            imageCount=0;
         }
+
+
+        nextImage.setOnClickListener(view -> {
+
+            if(imagePosition+1<imageCount){
+                imageSwitcher.setInAnimation(in);
+                imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition+1)));
+                imagePosition++;
+            }else{
+                Toast.makeText(getContext(), MainApplication.getResourses().getString(R.string.no_more_photo), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        prevImage.setOnClickListener(view -> {
+
+            if(imagePosition-1>=0){
+                imageSwitcher.setOutAnimation(out);
+                imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition-1)));
+                imagePosition--;
+            }else{
+                Toast.makeText(getContext(), MainApplication.getResourses().getString(R.string.first_photo), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //POINT OF INTEREST
         if (property.getPointOfInterest() != null) {
