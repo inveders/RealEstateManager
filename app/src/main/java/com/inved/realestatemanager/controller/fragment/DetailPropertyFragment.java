@@ -63,6 +63,7 @@ public class DetailPropertyFragment extends Fragment {
     private TextView dateOfSaleForPorperty;
     private TextView realEstateAgent;
 
+    private TextView imageNameSwitcher;
     private ImageView propertyLocalisationImage;
 
     private PropertyViewModel propertyViewModel;
@@ -91,6 +92,7 @@ public class DetailPropertyFragment extends Fragment {
         numberBathroomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_bathroom_text);
         fullDescriptionProperty = mView.findViewById(R.id.fragment_detail_property_description_text);
         imageSwitcher = mView.findViewById(R.id.fragment_detail_property_image_switcher);
+        imageNameSwitcher=mView.findViewById(R.id.fragment_detail_property_image_name_text);
         nextImage = mView.findViewById(R.id.next_button_arrow);
         prevImage = mView.findViewById(R.id.prev_button_arrow);
         streetNumber = mView.findViewById(R.id.fragment_detail_property_street_number_text);
@@ -226,35 +228,38 @@ public class DetailPropertyFragment extends Fragment {
 
 
         ArrayList<String> myImages = new ArrayList<>();
+        ArrayList<String> myDescriptionImage = new ArrayList<>();
 
         if (property.getPhotoUri1() != null) {
             myImages.add(property.getPhotoUri1());
-            //   photoDescription1.setText(property.getPhotoDescription1());
+            myDescriptionImage.add(property.getPhotoDescription1());
+
 
         }
         if (property.getPhotoUri2() != null) {
             myImages.add(property.getPhotoUri2());
-            //   photoDescription1.setText(property.getPhotoDescription1());
+            myDescriptionImage.add(property.getPhotoDescription2());
 
         }
         if (property.getPhotoUri3() != null) {
             myImages.add(property.getPhotoUri3());
-            //   photoDescription1.setText(property.getPhotoDescription1());
+            myDescriptionImage.add(property.getPhotoDescription3());
 
         }
         if (property.getPhotoUri4() != null) {
             myImages.add(property.getPhotoUri4());
-            //   photoDescription1.setText(property.getPhotoDescription1());
+            myDescriptionImage.add(property.getPhotoDescription4());
 
         }
         if (property.getPhotoUri5() != null) {
             myImages.add(property.getPhotoUri5());
-            //   photoDescription1.setText(property.getPhotoDescription1());
+            myDescriptionImage.add(property.getPhotoDescription5());
 
         }
 
         if (myImages.size() != 0) {
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
+            imageNameSwitcher.setText(myDescriptionImage.get(0));
             imageCount=myImages.size();
         } else {
             imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_round);
@@ -267,6 +272,7 @@ public class DetailPropertyFragment extends Fragment {
             if(imagePosition+1<imageCount){
                 imageSwitcher.setInAnimation(in);
                 imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition+1)));
+                imageNameSwitcher.setText(myDescriptionImage.get(imagePosition+1));
                 imagePosition++;
             }else{
                 Toast.makeText(getContext(), MainApplication.getResourses().getString(R.string.no_more_photo), Toast.LENGTH_SHORT).show();
@@ -278,6 +284,7 @@ public class DetailPropertyFragment extends Fragment {
             if(imagePosition-1>=0){
                 imageSwitcher.setOutAnimation(out);
                 imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition-1)));
+                imageNameSwitcher.setText(myDescriptionImage.get(imagePosition-1));
                 imagePosition--;
             }else{
                 Toast.makeText(getContext(), MainApplication.getResourses().getString(R.string.first_photo), Toast.LENGTH_SHORT).show();
