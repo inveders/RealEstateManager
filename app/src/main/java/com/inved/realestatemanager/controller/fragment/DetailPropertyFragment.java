@@ -263,6 +263,9 @@ public class DetailPropertyFragment extends Fragment {
             imageCount=myImages.size();
         } else {
             imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_round);
+            nextImage.setVisibility(View.INVISIBLE);
+            prevImage.setVisibility(View.INVISIBLE);
+            imageNameSwitcher.setVisibility(View.INVISIBLE);
             imageCount=0;
         }
 

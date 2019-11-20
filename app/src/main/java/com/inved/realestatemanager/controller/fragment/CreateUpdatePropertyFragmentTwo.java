@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +78,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private ImageView photo3;
     private ImageView photo4;
     private ImageView photo5;
+    private TextView photoDescriptionTextView;
 
     private String photoUri = null;
     private String photoUri1 = null;
@@ -82,6 +86,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private String photoUri3 = null;
     private String photoUri4 = null;
     private String photoUri5 = null;
+    private String photoDescription = null;
     private String photoDescription1 = null;
     private String photoDescription2 = null;
     private String photoDescription3 = null;
@@ -125,6 +130,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         photo3 = v.findViewById(R.id.activity_create_update_added_photo_three);
         photo4 = v.findViewById(R.id.activity_create_update_added_photo_four);
         photo5 = v.findViewById(R.id.activity_create_update_added_photo_five);
+        photoDescriptionTextView = v.findViewById(R.id.activity_create_update_property_added_photo_description);
         fullDescriptionEditText = v.findViewById(R.id.activity_create_update_property_full_description_text);
 
         Button confirmButton = v.findViewById(R.id.create_update_confirm_button);
@@ -146,10 +152,12 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         } else {
             context = MainApplication.getInstance().getApplicationContext();
         }
+
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != 0) {
             propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
 
             this.updateUIwithDataFromDatabase(propertyId);
+            confirmButton.setText(getString(R.string.create_update_confirm_button_update));
         }
 
         return v;
@@ -246,6 +254,38 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     }
 
 
+    private void editImageName(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogCustom))
+                    .setView(R.layout.edittext_dialog)
+                    .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, which) -> {
+
+                        EditText etSujet = ((AlertDialog) dialog).findViewById(R.id.sujet);
+
+                        photoDescription=etSujet.getText().toString();
+                        if (photoDescription1 == null) {
+                            photoDescription1=photoDescription;
+                        } else if (photoDescription2 == null) {
+                            photoDescription2=photoDescription;
+                        } else if (photoDescription3 == null) {
+                            photoDescription3=photoDescription;
+                        } else if (photoDescription4 == null) {
+                            photoDescription4=photoDescription;
+                        } else if (photoDescription5 == null) {
+                            photoDescription5=photoDescription;
+                        }
+                        updateUI();
+
+
+                    })
+                    .setNegativeButton(getString(R.string.dialog_select_image_cancel), (dialog, which) -> {
+                    })
+                    .show();
+        }
+    }
+
+
     /**
      * Capture image from camera
      */
@@ -253,7 +293,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     @NeedsPermission(Manifest.permission.CAMERA)
     void dispatchTakePictureIntent() {
 
-        Log.d("debaga", "before open camera");
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (getActivity() != null) {
@@ -312,9 +351,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     break;
                 case REQUEST_CAMERA_PHOTO:
 
-                    Log.d("debaga", "after open camera");
                     if (cameraFilePath != null) {
-                        Log.d("debago", "urlPicture two camera file path : " + cameraFilePath);
                         photoUri = cameraFilePath;
 
                     }
@@ -329,6 +366,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     break;
             }
 
+            editImageName();
+
             if (photoUri1 == null) {
                 photoUri1 = photoUri;
             } else if (photoUri2 == null) {
@@ -341,7 +380,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 photoUri5 = photoUri;
             }
 
-            updateUI();
         }
 
 
@@ -365,16 +403,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         return null;
     }
-
-
-    //PERMISSION
-
- /*   @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // NOTE: delegate the permission handling to generated method
-        CreateUpdatePropertyFragmentTwoPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }*/
 
     //REAL ESTATE AGENT MANAGEMENT AND SPINNER
 
@@ -460,17 +488,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     }
 
-   /* @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -542,8 +559,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void updateUI() {
 
-        Log.d("debago", "photoUri1 : " + photoUri1 + " photoUri2 : " + photoUri2 + " photoUri3 : " + photoUri3 + " photoUri4 : " + photoUri4 + " photoUri5 : " + photoUri5);
-
         String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
         Uri fileUri;
         if (photoUri1 != null) {
@@ -557,6 +572,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                         .into(photo1);
 
             }
+            photoDescriptionTextView.setText(photoDescription1);
         } else {
             Glide.with(this)
                     .load(urlNoImage)

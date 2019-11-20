@@ -45,6 +45,7 @@
     <string name="list_property_image_name">Image 1 : Le salon</string>
 
     <!-- DETAIL FRAGMENT -->
+
     <string name="detail_property_description_title">Description :</string>
     <string name="detail_property_description_texte">Non loin de la mairie, ce bien d\'exception est fait pour vous ! Véritable
     atout dans notre région, proche de la frontière, et près de toutes commodités, pour vous, seul ou avec votre famille, venez découvrir
@@ -133,9 +134,11 @@
     <string name="create_update_by_number_of_bedroom">Number of bedroom</string>
     <string name="create_update_next_button">NEXT PAGE</string>
     <string name="create_update_add_photo_button">ADD PHOTO</string>
-    <string name="create_update_confirm_button">CREATE PROPERTY</string>
+    <string name="create_update_confirm_button_create">CREATE PROPERTY</string>
+    <string name="create_update_confirm_button_update">UPDATE PROPERTY</string>
     <string name="create_update_previous_button">PREVIOUS PAGE</string>
     <string name="create_update_add_photos">Photos</string>
+    <string name="create_update_add_photos_description">Enter the photo\'s name</string>
 
     <!-- MESSAGE -->
     <string name="create_update_creation_confirmation_creation">New property added</string>
