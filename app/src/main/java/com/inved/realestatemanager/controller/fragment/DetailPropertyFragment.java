@@ -262,7 +262,7 @@ public class DetailPropertyFragment extends Fragment {
             imageNameSwitcher.setText(myDescriptionImage.get(0));
             imageCount=myImages.size();
         } else {
-            imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_round);
+            imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_realestate_round);
             nextImage.setVisibility(View.INVISIBLE);
             prevImage.setVisibility(View.INVISIBLE);
             imageNameSwitcher.setVisibility(View.INVISIBLE);

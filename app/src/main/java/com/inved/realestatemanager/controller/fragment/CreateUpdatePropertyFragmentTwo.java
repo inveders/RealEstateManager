@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -61,7 +60,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class CreateUpdatePropertyFragmentTwo extends Fragment implements AdapterView.OnItemSelectedListener {
+public class CreateUpdatePropertyFragmentTwo extends Fragment{
 
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
@@ -124,7 +123,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         dateOfEntry = v.findViewById(R.id.activity_create_update_property_date_entry_text);
         agentNameSpinner = v.findViewById(R.id.create_update_spinner_real_estate_agent_text);
-
+      //  agentNameSpinner.setOnItemSelectedListener(this);
         photo1 = v.findViewById(R.id.activity_create_update_added_photo_one);
         photo2 = v.findViewById(R.id.activity_create_update_added_photo_two);
         photo3 = v.findViewById(R.id.activity_create_update_added_photo_three);
@@ -139,6 +138,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         Button addPhotoButton = v.findViewById(R.id.activity_create_update_add_photo_button);
 
         addPhotoButton.setOnClickListener(view -> selectImage());
+
 
 
         this.updateUI();
@@ -159,6 +159,28 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             this.updateUIwithDataFromDatabase(propertyId);
             confirmButton.setText(getString(R.string.create_update_confirm_button_update));
         }
+
+        agentNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // An item was selected. You can retrieve the selected item using
+                // if (parent.getRealEstateAgentId() == R.id.create_update_spinner_real_estate_agent_text) {
+                Log.d("debago","in on item selected method: ");
+
+                selectedAgent = agentNameSpinner.getSelectedItem().toString();
+                Log.d("debago","selected agent: "+selectedAgent);
+                SplitString splitString = new SplitString();
+                String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
+                String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
+                propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(getViewLifecycleOwner(), realEstateAgents -> realEstateAgentId = realEstateAgents.getRealEstateAgentId());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         return v;
     }
@@ -207,9 +229,11 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
             }
 
+            //To retrieve real estate agent wich is in the database for this property
             propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
                 String firstname = realEstateAgents.getFirstname();
                 String lastname = realEstateAgents.getLastname();
+                Log.d("debago","set selection in spinner "+firstname+" "+lastname);
                 agentNameSpinner.setSelection(getIndexSpinner(agentNameSpinner, firstname + " " + lastname));
             });
 
@@ -421,13 +445,15 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
             //I fill agent spinner with firstname and lastname of the database programatically
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    MainApplication.getInstance().getApplicationContext(), android.R.layout.simple_spinner_item, spinnerAgentList);
-            agentNameSpinner.setAdapter(adapter);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            agentNameSpinner.setOnItemSelectedListener(this);
-            adapter.notifyDataSetChanged();
+            if(getActivity()!=null){
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        getActivity(), android.R.layout.simple_spinner_item, spinnerAgentList);
 
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                agentNameSpinner.setAdapter(adapter);
+
+                adapter.notifyDataSetChanged();
+            }
 
         }
     }
@@ -445,25 +471,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         return 0;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // if (parent.getRealEstateAgentId() == R.id.create_update_spinner_real_estate_agent_text) {
-        if (parent.getId() == R.id.create_update_spinner_real_estate_agent_text) {
-            selectedAgent = agentNameSpinner.getSelectedItem().toString();
-            SplitString splitString = new SplitString();
-            String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
-            String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
-            this.propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(this, realEstateAgents -> realEstateAgentId = realEstateAgents.getRealEstateAgentId());
-        }
 
-    }
-
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     //DATE PICKER
 

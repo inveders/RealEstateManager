@@ -91,7 +91,7 @@
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
         android:contentDescription="@string/description_image"
-        android:src="@mipmap/ic_logo_appli_round"/>
+        android:src="@mipmap/ic_logo_appli_realestate_round"/>
 
 
 
@@ -114,7 +114,7 @@
         app:layout_constraintTop_toTopOf="@id/activity_create_update_added_photo_one"
         app:layout_constraintLeft_toRightOf="@id/activity_create_update_added_photo_one"
         android:contentDescription="@string/description_image"
-        android:src="@mipmap/ic_logo_appli_round"/>
+        android:src="@mipmap/ic_logo_appli_realestate_round"/>
 
     <ImageView
         android:id="@+id/activity_create_update_added_photo_three"
@@ -127,7 +127,7 @@
         app:layout_constraintTop_toBottomOf="@id/activity_create_update_added_photo_two"
         app:layout_constraintLeft_toRightOf="@id/activity_create_update_added_photo_one"
         android:contentDescription="@string/description_image"
-        android:src="@mipmap/ic_logo_appli_round"/>
+        android:src="@mipmap/ic_logo_appli_realestate_round"/>
 
     <ImageView
         android:id="@+id/activity_create_update_added_photo_four"
@@ -140,7 +140,7 @@
         app:layout_constraintTop_toBottomOf="@id/activity_create_update_added_photo_three"
         app:layout_constraintLeft_toRightOf="@id/activity_create_update_added_photo_one"
         android:contentDescription="@string/description_image"
-        android:src="@mipmap/ic_logo_appli_round"
+        android:src="@mipmap/ic_logo_appli_realestate_round"
          />
 
     <ImageView
@@ -154,7 +154,7 @@
     app:layout_constraintTop_toBottomOf="@id/activity_create_update_added_photo_four"
     app:layout_constraintLeft_toRightOf="@id/activity_create_update_added_photo_one"
     android:contentDescription="@string/description_image"
-    android:src="@mipmap/ic_logo_appli_round"/>
+    android:src="@mipmap/ic_logo_appli_realestate_round"/>
 
     <Button
         android:id="@+id/activity_create_update_add_photo_button"
@@ -176,7 +176,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_create_update_property_added_photo_description"
         android:gravity="center"
-        android:text="@string/create_update_confirm_button"
+        android:text="@string/create_update_confirm_button_create"
         style="@style/ButtonStyle"/>
 
 
