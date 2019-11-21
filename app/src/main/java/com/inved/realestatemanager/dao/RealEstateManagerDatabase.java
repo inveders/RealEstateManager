@@ -27,7 +27,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
 
-        //context.deleteDatabase("MyDatabase.db");
+        context.deleteDatabase("MyDatabase.db");
 
         if (INSTANCE == null) {
             synchronized (RealEstateManagerDatabase.class) {
@@ -57,6 +57,8 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                 contentValues.put("firstname", "Raphaël");
                 contentValues.put("lastname", "Gnimadi");
                 contentValues.put("urlPicture", "file:///storage/emulated/0/Android/data/com.inved.realestatemanager/files/Pictures/JPEG_20191107184447_4348563422494251245.jpg");
+                contentValues.put("agencyName", "GnimDev");
+                contentValues.put("agencyPlaceId", "Skuipdliens8e5s");
 
                 db.insert("RealEstateAgents", OnConflictStrategy.IGNORE, contentValues);
 

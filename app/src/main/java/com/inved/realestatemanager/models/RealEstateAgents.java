@@ -12,13 +12,17 @@ public class RealEstateAgents {
     private String firstname;
     private String lastname;
     private String urlPicture;
+    private String agencyName;
+    private String agencyPlaceId;
 
     public RealEstateAgents(){}
 
-    public RealEstateAgents(String firstname, String lastname, String urlPicture) {
+    public RealEstateAgents(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.urlPicture = urlPicture;
+        this.agencyName =agencyName;
+        this.agencyPlaceId=agencyPlaceId;
     }
 
     public long getRealEstateAgentId() {
@@ -51,5 +55,21 @@ public class RealEstateAgents {
 
     public void setUrlPicture(String urlPicture) {
         this.urlPicture = urlPicture;
+    }
+
+    public String getAgencyName() {
+        return agencyName;
+    }
+
+    public void setAgencyName(String agencyName) {
+        this.agencyName = agencyName;
+    }
+
+    public String getAgencyPlaceId() {
+        return agencyPlaceId;
+    }
+
+    public void setAgencyPlaceId(String agencyPlaceId) {
+        this.agencyPlaceId = agencyPlaceId;
     }
 }
