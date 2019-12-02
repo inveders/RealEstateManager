@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button connexionButton = findViewById(R.id.login_button);
-        coordinatorLayout=findViewById(R.id.coordinatorLayout);
-        Log.d("debago","MA onCreate");
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        Log.d("debago", "MA onCreate");
         connexionButton.setOnClickListener(view -> startSignInActivity());
 
         // Initialize Firebase Auth
@@ -46,17 +46,32 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser!=null){
-            Log.d("debago","MA onStart");
-            if(RealEstateAgentHelper.getAgentWhateverAgency(currentUser.getUid()).get().isSuccessful()){
-                startListPropertyActivity();
-                Log.d("debago","MA onStart successful : "+RealEstateAgentHelper.getAgentWhateverAgency(currentUser.getUid()).get().isSuccessful() );
-            }else{
-                Log.d("debago","MA notSuccessful");
-                startFinishRegisterActivity();
-            }
+        if (currentUser != null) {
+            Log.d("debago", "MA onStart");
+            RealEstateAgentHelper.getAgentWhateverAgency(currentUser.getEmail()).get().addOnCompleteListener(task -> {
+
+                if (task.isSuccessful()) {
+                    if (task.getResult() != null) {
+                        Log.d("debago", "MA onStart task successful");
+                        if (task.getResult().getDocuments().size() != 0) {
+                            startListPropertyActivity();
+                            Log.d("debago", "MA onStart successful, firstname is : " + task.getResult().getDocuments().get(0).getString("firstname"));
+                        } else {
+                            Log.d("debago", "MA notSuccessful, size is: " + task.getResult().getDocuments().size());
+                            startFinishRegisterActivity();
+                        }
+                    }
+
+
+                }
+
+
+            });
+
 
         }
+
+
     }
 
     private void startListPropertyActivity() {
@@ -66,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 2 - Launch Sign-In Activity
-    private void startSignInActivity(){
+    private void startSignInActivity() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -83,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("debago","MA onActivityResult");
+        Log.d("debago", "MA onActivityResult");
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
@@ -96,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
         if (requestCode == RC_SIGN_IN) {
-            Log.d("debago","MA resultCode");
+            Log.d("debago", "MA resultCode");
             if (resultCode == RESULT_OK) { // SUCCESS
                 showSnackBar(this.coordinatorLayout, getString(R.string.connection_succeed));
-                Log.d("debago","MA onsuccess");
+                Log.d("debago", "MA onsuccess");
                 this.startFinishRegisterActivity();
                 finish();
 

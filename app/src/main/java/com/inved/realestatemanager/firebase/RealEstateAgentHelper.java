@@ -22,21 +22,21 @@ public class RealEstateAgentHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createAgent(long realEstateAgentId, String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId) {
+    public static Task<Void> createAgent(long realEstateAgentId, String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email) {
         // 1 - Create Obj
 
-        RealEstateAgents realEstateAgentsToCreate = new RealEstateAgents(firstname, lastname,urlPicture, agencyName,agencyPlaceId);
+        RealEstateAgents realEstateAgentsToCreate = new RealEstateAgents(firstname, lastname,urlPicture, agencyName,agencyPlaceId,email);
 
-        return RealEstateAgentHelper.getUsersCollection().document(String.valueOf(realEstateAgentId)).set(realEstateAgentsToCreate);
+        return RealEstateAgentHelper.getUsersCollection().document(email).set(realEstateAgentsToCreate);
     }
 
     // --- GET ---
 
-    public static Query getAgentWhateverAgency(String uid){
+    public static Query getAgentWhateverAgency(String email){
 
         return FirebaseFirestore.getInstance().collectionGroup(SUB_COLLECTION_NAME)
 
-                .whereEqualTo("uid",uid);
+                .whereEqualTo("email",email);
 
     }
 

@@ -32,6 +32,8 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
@@ -179,6 +181,13 @@ public class AddAgentDialog extends DialogFragment {
         } else {
             String firstname = firstnameEditText.getText().toString();
             String lastname = lastnameEditText.getText().toString();
+            String email;
+            if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+                email=FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            }else{
+                email=null;
+            }
+
             if (getContext() != null) {
                 if (agencyName != null) {
                     ManageAgency.saveAgencyPlaceId(getContext(), agencyName);
@@ -189,9 +198,9 @@ public class AddAgentDialog extends DialogFragment {
 
             }
 
-            RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture, agencyName, agencyPlaceId);
+            RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email);
 
-            RealEstateAgentHelper.createAgent(realEstateAgents.getRealEstateAgentId(), firstname, lastname, urlPicture,agencyName,agencyPlaceId);
+            RealEstateAgentHelper.createAgent(realEstateAgents.getRealEstateAgentId(), firstname, lastname, urlPicture,agencyName,agencyPlaceId,email);
 
             if (bundle != null) {
 
