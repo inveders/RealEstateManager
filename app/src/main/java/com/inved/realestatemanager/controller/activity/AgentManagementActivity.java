@@ -91,6 +91,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
             } else {
                 propertyViewModel.deleteRealEstateAgent(realEstateAgentId);
+              //  RealEstateAgentHelper.deleteAgent(realEstateAgentId);
             }
         });
 

@@ -19,7 +19,7 @@
         />
 
     <Spinner
-        android:id="@+id/create_update_spinner_real_estate_agent_text"
+        android:id="@+id/activity_create_update_spinner_real_estate_agent_text"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"

@@ -3,11 +3,17 @@ package com.inved.realestatemanager.utils;
 import android.app.Application;
 import android.content.res.Resources;
 
+import androidx.multidex.MultiDexApplication;
+
+import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-public class MainApplication extends Application {
+import io.fabric.sdk.android.Fabric;
+
+
+public class MainApplication extends MultiDexApplication {
 
     private static MainApplication mInstance;
     private static Resources res;
@@ -18,6 +24,7 @@ public class MainApplication extends Application {
         mInstance = this;
         JodaTimeAndroid.init(this);
         Stetho.initializeWithDefaults(this);
+        Fabric.with(this, new Crashlytics());
         res=getResources();
 
     }

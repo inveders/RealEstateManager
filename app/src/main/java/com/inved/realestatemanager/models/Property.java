@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -326,4 +327,40 @@ public class Property {
     }
 
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "Property{" +
+                "propertyId=" + propertyId +
+                ", typeProperty='" + typeProperty + '\'' +
+                ", pricePropertyInDollar=" + pricePropertyInDollar +
+                ", surfaceAreaProperty=" + surfaceAreaProperty +
+                ", numberRoomsInProperty='" + numberRoomsInProperty + '\'' +
+                ", numberBathroomsInProperty='" + numberBathroomsInProperty + '\'' +
+                ", numberBedroomsInProperty=" + numberBedroomsInProperty +
+                ", fullDescriptionProperty='" + fullDescriptionProperty + '\'' +
+                ", streetNumber='" + streetNumber + '\'' +
+                ", streetName='" + streetName + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", townProperty='" + townProperty + '\'' +
+                ", country='" + country + '\'' +
+                ", addressCompl='" + addressCompl + '\'' +
+                ", pointOfInterest='" + pointOfInterest + '\'' +
+                ", statusProperty='" + statusProperty + '\'' +
+                ", dateOfEntryOnMarketForProperty='" + dateOfEntryOnMarketForProperty + '\'' +
+                ", dateOfSaleForPorperty='" + dateOfSaleForPorperty + '\'' +
+                ", selected=" + selected +
+                ", photoUri1='" + photoUri1 + '\'' +
+                ", photoUri2='" + photoUri2 + '\'' +
+                ", photoUri3='" + photoUri3 + '\'' +
+                ", photoUri4='" + photoUri4 + '\'' +
+                ", photoUri5='" + photoUri5 + '\'' +
+                ", photoDescription1='" + photoDescription1 + '\'' +
+                ", photoDescription2='" + photoDescription2 + '\'' +
+                ", photoDescription3='" + photoDescription3 + '\'' +
+                ", photoDescription4='" + photoDescription4 + '\'' +
+                ", photoDescription5='" + photoDescription5 + '\'' +
+                ", realEstateAgentId=" + realEstateAgentId +
+                '}';
+    }
 }

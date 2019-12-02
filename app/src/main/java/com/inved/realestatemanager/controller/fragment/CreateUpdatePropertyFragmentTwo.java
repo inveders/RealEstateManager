@@ -122,7 +122,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
         View v = inflater.inflate(R.layout.fragment_create_update_two, container, false);
 
         dateOfEntry = v.findViewById(R.id.activity_create_update_property_date_entry_text);
-        agentNameSpinner = v.findViewById(R.id.create_update_spinner_real_estate_agent_text);
+        agentNameSpinner = v.findViewById(R.id.activity_create_update_spinner_real_estate_agent_text);
       //  agentNameSpinner.setOnItemSelectedListener(this);
         photo1 = v.findViewById(R.id.activity_create_update_added_photo_one);
         photo2 = v.findViewById(R.id.activity_create_update_added_photo_two);
@@ -534,13 +534,16 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
                     null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                     photoDescription3, photoDescription4, photoDescription5, 1);
 
-            if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
-                Log.d("debago","update property : "+typeProperty+" "+pricePropertyInDollar+" "+surfaceAreaProperty+" "+numberRoomsInProperty+" "+
-                        numberBathroomsInProperty+" "+numberBedroomsInProperty+" "+fullDescriptionText+" "+streetNumber+" "+streetName+" "+zipCode+" "+
-                        townProperty+" "+country+" "+addressCompl+" "+pointOfInterest+" "+statusProperty+" "+dateOfEntryOnMarketForProperty+" "+null+" "+
-                        false+" "+photoUri1+" "+photoUri2+" "+photoUri3+" "+photoUri4+" "+photoUri5+" "+photoDescription1+" "+photoDescription2+
-                        " "+photoDescription3+" "+photoDescription4+" "+photoDescription5+" "+1+" "+propertyId);
+         /*   PropertyHelper.createProperty(propertyId,typeProperty, pricePropertyInDollar,
+                    surfaceAreaProperty, numberRoomsInProperty,
+                    numberBathroomsInProperty, numberBedroomsInProperty,
+                    fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                    statusProperty, dateOfEntryOnMarketForProperty,
+                    null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                    photoDescription3, photoDescription4, photoDescription5, 1);*/
 
+            if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
+                Log.d("debago","update property : "+newProperty.toString());
 
                 this.propertyViewModel.updateProperty(typeProperty, pricePropertyInDollar,
                         surfaceAreaProperty, numberRoomsInProperty,

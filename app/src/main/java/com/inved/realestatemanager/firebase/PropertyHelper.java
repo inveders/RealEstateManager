@@ -1,16 +1,9 @@
 package com.inved.realestatemanager.firebase;
 
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.ManageAgencyPlaceId;
-
 public class PropertyHelper {
 
-    private static final String COLLECTION_GENERAL = "agency";
+  /*  private static final String COLLECTION_GENERAL = "agency";
     private static final String SUB_COLLECTION_NAME = "property";
 
 
@@ -18,7 +11,7 @@ public class PropertyHelper {
 
     private static CollectionReference getPropertyCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_GENERAL)
-                .document(ManageAgencyPlaceId.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext()))
+                .document(ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext()))
                 .collection(SUB_COLLECTION_NAME);
 
     }
@@ -51,7 +44,7 @@ public class PropertyHelper {
     public static Query getAllProperties() {
         return PropertyHelper.getPropertyCollection();
     }
-
+*/
 
 
 }

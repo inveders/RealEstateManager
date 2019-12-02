@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -7,6 +9,7 @@ android {
         applicationId "com.inved.realestatemanager"
         minSdkVersion 19
         targetSdkVersion 28
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -42,7 +45,7 @@ dependencies {
 
     //NAVIGATION UI
     def nav_version = "2.1.0"
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-rc01'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     // Java
     implementation "androidx.navigation:navigation-fragment:$nav_version"
@@ -54,6 +57,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
     //TESTS
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-android:2.23.4'
     testImplementation 'org.robolectric:robolectric:4.3'
@@ -90,12 +94,12 @@ dependencies {
     implementation 'io.apptik.widget:multislider:1.3'
 
     //ROOM
-    implementation 'androidx.room:room-runtime:2.2.1'
-    annotationProcessor 'androidx.room:room-compiler:2.2.1'
+    implementation 'androidx.room:room-runtime:2.2.2'
+    annotationProcessor 'androidx.room:room-compiler:2.2.2'
 
     //VIEW MODEL & LIVE DATA
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     //STETHO TO SEE SQL DATABASE FROM PC
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
@@ -104,7 +108,6 @@ dependencies {
     implementation 'androidx.fragment:fragment:1.1.0'
 
     //seekbar
-    // sample: implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
     implementation 'com.github.Jay-Goo:RangeSeekBar:3.0.0'
 
     //GLIDE
@@ -113,11 +116,17 @@ dependencies {
     }
 
     //Crashlytic
-    implementation 'com.google.firebase:firebase-analytics:17.2.1'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+     implementation 'com.google.firebase:firebase-analytics:17.2.1'
+     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     //Firebase
     implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
-    implementation 'com.google.firebase:firebase-firestore:21.2.1'
+    implementation 'com.google.firebase:firebase-firestore:21.3.0'
+
+    //Multidex
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
+    implementation 'com.android.support:multidex:1.0.3'
 }

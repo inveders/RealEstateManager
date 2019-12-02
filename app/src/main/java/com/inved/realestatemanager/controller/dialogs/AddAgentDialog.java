@@ -3,14 +3,10 @@ package com.inved.realestatemanager.controller.dialogs;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +34,7 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.ManageAgency;
 
 import java.io.File;
 import java.io.IOException;
@@ -129,14 +126,24 @@ public class AddAgentDialog extends DialogFragment {
         } else {
             String firstname = firstnameEditText.getText().toString();
             String lastname = lastnameEditText.getText().toString();
-            RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture);
-            if(bundle!=null){
+            String agencyName = null;
+            String agencyPlaceId = null;
+            if (getContext() != null) {
+                agencyPlaceId = ManageAgency.getAgencyPlaceId(getContext());
+                agencyName = ManageAgency.getAgencyName(getContext());
+            }
+
+            RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture,agencyName,agencyPlaceId);
+
+       /*     RealEstateAgentHelper.createAgent(realEstateAgents.getRealEstateAgentId(), firstname, lastname, urlPicture,agencyName,agencyPlaceId);*/
+
+            if (bundle != null) {
 
                 this.propertyViewModel.updateRealEstateAgent(realEstateAgents);
 
                 Toast.makeText(getContext(), getString(R.string.add_agent_dialog_update_confirm_text), Toast.LENGTH_SHORT).show();
 
-            }else{
+            } else {
 
                 this.propertyViewModel.createRealEstateAgent(realEstateAgents);
 
@@ -227,15 +234,15 @@ public class AddAgentDialog extends DialogFragment {
                 case REQUEST_GALLERY_PHOTO:
                     //data.getData returns the content URI for the selected Image
                     Uri uriToConvert = data.getData();
-                    Log.d("debago","uri to convert : "+uriToConvert);
-                    String selectedImage = "file://" +uriToStringConversion.getRealPathFromURI(getContext(),uriToConvert);
+                    Log.d("debago", "uri to convert : " + uriToConvert);
+                    String selectedImage = "file://" + uriToStringConversion.getRealPathFromURI(getContext(), uriToConvert);
 
-                    if(selectedImage.contains("WhatsApp")){
+                    if (selectedImage.contains("WhatsApp")) {
                         Toast.makeText(getContext(), getString(R.string.whatsapp_photo_not_possible), Toast.LENGTH_SHORT).show();
                         agentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
-                    }else{
+                    } else {
                         agentPhoto.setImageURI(Uri.parse(selectedImage));
-                        if (uriToStringConversion.getRealPathFromURI(getContext(),uriToConvert) != null) {
+                        if (uriToStringConversion.getRealPathFromURI(getContext(), uriToConvert) != null) {
                             showImageInCircle(selectedImage);
                             urlPicture = selectedImage;
                         }
@@ -244,7 +251,7 @@ public class AddAgentDialog extends DialogFragment {
                     break;
                 case REQUEST_CAMERA_PHOTO:
 
-                    if(cameraFilePath!=null){
+                    if (cameraFilePath != null) {
                         urlPicture = cameraFilePath;
                         showImageInCircle(cameraFilePath);
 
@@ -278,9 +285,6 @@ public class AddAgentDialog extends DialogFragment {
     }
 
 
-
-
-
     //PERMISSION
 
     @Override
@@ -304,7 +308,7 @@ public class AddAgentDialog extends DialogFragment {
             }
 
             if (realEstateAgents.getUrlPicture() != null) {
-                urlPicture =realEstateAgents.getUrlPicture();
+                urlPicture = realEstateAgents.getUrlPicture();
                 showImageInCircle(realEstateAgents.getUrlPicture());
             }
 

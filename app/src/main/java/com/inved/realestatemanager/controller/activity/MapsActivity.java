@@ -99,6 +99,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(initialPosition));
+
+
     }
 
 
@@ -153,6 +155,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 });
             }
+
+            if (mGoogleMap != null && mMarker!=null) {
+                //Configure action on marker click
+                mGoogleMap.setOnMarkerClickListener(marker -> {
+
+                    if(marker.getSnippet()!=null){
+                        Log.d("debago", "marker property id: " + marker.getSnippet());
+                        startDetailActivity(Long.valueOf(marker.getSnippet()));
+                    }
+
+                    return true;
+                });
+            }
         });
 
     }
@@ -165,25 +180,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions markerOptions = new MarkerOptions();
 
         markerOptions.snippet(String.valueOf(propertyId));
-
+        mMarker.setTag(propertyId);
         markerOptions.position(latLng);
 
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
         mGoogleMap.addMarker(markerOptions);
         Log.d("debago", "marker property getSnippet: " + markerOptions.getSnippet());
 
-        if (mGoogleMap != null) {
-            //Configure action on marker click
-            mGoogleMap.setOnMarkerClickListener(marker -> {
 
-                if(marker.getSnippet()!=null){
-                    Log.d("debago", "marker property id: " + marker.getSnippet());
-                    startDetailActivity(Long.valueOf(marker.getSnippet()));
-                }
-
-                return true;
-            });
-        }
 
     }
 
