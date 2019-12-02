@@ -2,6 +2,7 @@ package com.inved.realestatemanager.controller.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.controller.dialogs.AddAgentDialog;
+import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button connexionButton = findViewById(R.id.login_button);
         coordinatorLayout=findViewById(R.id.coordinatorLayout);
-
+        Log.d("debago","MA onCreate");
         connexionButton.setOnClickListener(view -> startSignInActivity());
 
         // Initialize Firebase Auth
@@ -46,7 +47,15 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser!=null){
-            startListPropertyActivity();
+            Log.d("debago","MA onStart");
+            if(RealEstateAgentHelper.getAgentWhateverAgency(currentUser.getUid()).get().isSuccessful()){
+                startListPropertyActivity();
+                Log.d("debago","MA onStart successful : "+RealEstateAgentHelper.getAgentWhateverAgency(currentUser.getUid()).get().isSuccessful() );
+            }else{
+                Log.d("debago","MA notSuccessful");
+                startFinishRegisterActivity();
+            }
+
         }
     }
 
@@ -74,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d("debago","MA onActivityResult");
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
@@ -87,11 +96,11 @@ public class MainActivity extends AppCompatActivity {
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
         if (requestCode == RC_SIGN_IN) {
-
+            Log.d("debago","MA resultCode");
             if (resultCode == RESULT_OK) { // SUCCESS
                 showSnackBar(this.coordinatorLayout, getString(R.string.connection_succeed));
-
-                this.openDialog();
+                Log.d("debago","MA onsuccess");
+                this.startFinishRegisterActivity();
                 finish();
 
             } else { // ERRORS
@@ -108,10 +117,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void openDialog() {
+    private void startFinishRegisterActivity() {
 
-        AddAgentDialog dialog = new AddAgentDialog();
-        dialog.show(getSupportFragmentManager(), "AddAgentDialog");
+        Intent intent = new Intent(this, FinishRegisterActivity.class);
+
+        startActivity(intent);
     }
+
 
 }

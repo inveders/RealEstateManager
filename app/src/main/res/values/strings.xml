@@ -186,7 +186,7 @@
     <string name="alert_dialog_gps_disabled">Your GPS seems to be disabled, enable it to see properties</string>
 
     <!-- MAIN ACTIVITY-->
-    <string name="button_connexion_email">INSCRIPTION</string>
+    <string name="button_connexion_email">CONNEXION</string>
     <string name="error_authentication_canceled">Authentication cancelled&#8230;</string>
     <string name="error_no_internet">No internet connection!</string>
     <string name="error_unknown_error">An unknown error occurred&#8230;</string>
@@ -206,8 +206,6 @@
     <string name="Minbedroom_Maxbedoorm_control">Min number of bedroom can\'t be greater than Max Number</string>
     <string name="no_more_photo">No more photo</string>
     <string name="first_photo">First photo</string>
-
-
 
 
     <!-- MAP-->

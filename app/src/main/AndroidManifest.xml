@@ -26,8 +26,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
+        <activity android:name=".controller.activity.FinishRegisterActivity"></activity>
         <activity android:name=".controller.activity.MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,9 +44,7 @@
         <activity
             android:name=".controller.activity.ListPropertyActivity"
             android:label="@string/page_name_activity_main"
-            android:theme="@style/AppTheme">
-
-        </activity> <!-- DETAIL ACTIVITY -->
+            android:theme="@style/AppTheme"></activity> <!-- DETAIL ACTIVITY -->
         <activity
             android:name=".controller.activity.DetailActivity"
             android:label="@string/page_name_activity_detail"
