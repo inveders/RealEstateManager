@@ -1,8 +1,16 @@
 package com.inved.realestatemanager.firebase;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.ManageAgency;
+
 public class RealEstateAgentHelper {
 
-  /*  private static final String COLLECTION_GENERAL = "agency";
+    private static final String COLLECTION_GENERAL = "agency";
     private static final String SUB_COLLECTION_NAME = "users";
 
 // --- COLLECTION REFERENCE ---
@@ -43,5 +51,5 @@ public class RealEstateAgentHelper {
 
     public static Task<Void> deleteAgent(long realEstateAgentId) {
         return RealEstateAgentHelper.getUsersCollection().document(String.valueOf(realEstateAgentId)).delete();
-    }*/
+    }
 }

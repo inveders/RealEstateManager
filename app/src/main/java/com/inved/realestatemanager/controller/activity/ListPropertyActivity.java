@@ -32,8 +32,6 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 
-import java.util.Objects;
-
 import butterknife.OnClick;
 
 public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {

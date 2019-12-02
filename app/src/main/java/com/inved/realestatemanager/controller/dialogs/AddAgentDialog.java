@@ -36,6 +36,7 @@ import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.domain.UriToStringConversion;
+import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
@@ -58,7 +59,7 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class AddAgentDialog extends DialogFragment {
 
-    public static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
+    private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
     private static final String TAG = "debago";
@@ -91,8 +92,8 @@ public class AddAgentDialog extends DialogFragment {
     @BindView(R.id.agent_add_dialog_close)
     ImageButton cancelSearchButton;
 
-    String agencyName;
-    String agencyPlaceId;
+    private String agencyName;
+    private String agencyPlaceId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -190,7 +191,7 @@ public class AddAgentDialog extends DialogFragment {
 
             RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
-            /*     RealEstateAgentHelper.createAgent(realEstateAgents.getRealEstateAgentId(), firstname, lastname, urlPicture,agencyName,agencyPlaceId);*/
+            RealEstateAgentHelper.createAgent(realEstateAgents.getRealEstateAgentId(), firstname, lastname, urlPicture,agencyName,agencyPlaceId);
 
             if (bundle != null) {
 
