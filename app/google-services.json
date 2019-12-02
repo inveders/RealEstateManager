@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "104471641618",
+    "firebase_url": "https://realestatemanager-16ae4.firebaseio.com",
+    "project_id": "realestatemanager-16ae4",
+    "storage_bucket": "realestatemanager-16ae4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104471641618:android:174fb8d17eb3d9ef7722cb",
+        "android_client_info": {
+          "package_name": "com.inved.realestatemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104471641618-fb2ku46v4s8mbnv2fq59vb6v2k2g1r6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.inved.realestatemanager",
+            "certificate_hash": "66c25197271f0d6b1a8db63daf78dc6a0307a3b7"
+          }
+        },
+        {
+          "client_id": "104471641618-cs4cunn22e56c4jq0e1pi77ds4qr5op8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXd46AI9GTY2WtFpLsW5k_1oiwGcCE1Ic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104471641618-cs4cunn22e56c4jq0e1pi77ds4qr5op8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
