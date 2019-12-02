@@ -18,6 +18,8 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.mAgentName.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text, realEstateAgentsList.get(position).getFirstname(), realEstateAgentsList.get(position).getLastname()));
-
+        holder.mAgentAgency.setText(realEstateAgentsList.get(position).getAgencyName());
         if (realEstateAgentsList.get(position).getUrlPicture() != null) {
             holder.mAgentPhoto.setImageURI(Uri.parse(realEstateAgentsList.get(position).getUrlPicture()));
             Uri fileUri = Uri.parse(realEstateAgentsList.get(position).getUrlPicture());
@@ -74,6 +76,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
         TextView mAgentName;
         ImageView mAgentPhoto;
+        TextView mAgentAgency;
 
 
 
@@ -82,8 +85,8 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
             super(itemView);
 
             mAgentName = itemView.findViewById(R.id.agent_management_name_agent_text);
-
             mAgentPhoto = itemView.findViewById(R.id.agent_management_item_image);
+            mAgentAgency=itemView.findViewById(R.id.agent_management_agence_name_text);
 
         }
 
