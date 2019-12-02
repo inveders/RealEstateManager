@@ -26,8 +26,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.domain.UriToStringConversion;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
@@ -39,6 +46,7 @@ import com.inved.realestatemanager.utils.ManageAgency;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -50,8 +58,10 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class AddAgentDialog extends DialogFragment {
 
+    public static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
+    private static final String TAG = "debago";
     private String cameraFilePath;
     private Bundle bundle;
     private UriToStringConversion uriToStringConversion = new UriToStringConversion();
@@ -74,11 +84,15 @@ public class AddAgentDialog extends DialogFragment {
     @BindView(R.id.add_agent_edittext_firstname)
     EditText firstnameEditText;
 
+
     @BindView(R.id.add_agent_dialog_add_new_agent)
     TextView addActionButton;
 
     @BindView(R.id.agent_add_dialog_close)
     ImageButton cancelSearchButton;
+
+    String agencyName;
+    String agencyPlaceId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -103,12 +117,48 @@ public class AddAgentDialog extends DialogFragment {
 
         }
 
+        autocompleteAgency();
 
         addPhotoButton.setOnClickListener(v -> selectImage());
         cancelSearchButton.setOnClickListener(v -> getDialog().cancel());
         addActionButton.setOnClickListener(v -> this.createNewRealEstateAgent());
 
         return view;
+    }
+
+    private void autocompleteAgency() {
+
+        if(getActivity()!=null){
+            Places.initialize(getActivity(), MAP_API_KEY);
+            // Initialize the AutocompleteSupportFragment.
+            AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
+
+            // Specify the types of place data to return.
+            if (autocompleteFragment != null) {
+                autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS));
+                autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS);
+                autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
+
+                // Set up a PlaceSelectionListener to handle the response.
+                autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                    @Override
+                    public void onPlaceSelected(@NonNull Place place) {
+                        Log.d(TAG, "Place: " + place.getName() + ", " + place.getId());
+                        agencyName = place.getName();
+                        agencyPlaceId = place.getId();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Status status) {
+                        Log.d(TAG, "An error occurred: " + status);
+                    }
+                });
+            }else{
+                Log.d(TAG, "Null activity");
+            }
+        }
+
+
     }
 
     private void configureViewModel() {
@@ -123,19 +173,24 @@ public class AddAgentDialog extends DialogFragment {
             firstnameEditText.setError(getString(R.string.set_error_add_agent_firstname));
         } else if (lastnameEditText.getText().toString().isEmpty()) {
             lastnameEditText.setError(getString(R.string.set_error_add_agent_lastname));
+        } else if (agencyName.isEmpty()) {
+            Toast.makeText(getContext(), getString(R.string.set_error_add_agent_agency), Toast.LENGTH_SHORT).show();
         } else {
             String firstname = firstnameEditText.getText().toString();
             String lastname = lastnameEditText.getText().toString();
-            String agencyName = null;
-            String agencyPlaceId = null;
             if (getContext() != null) {
-                agencyPlaceId = ManageAgency.getAgencyPlaceId(getContext());
-                agencyName = ManageAgency.getAgencyName(getContext());
+                if (agencyName != null) {
+                    ManageAgency.saveAgencyPlaceId(getContext(), agencyName);
+                }
+                if (agencyPlaceId != null) {
+                    ManageAgency.saveAgencyName(getContext(), agencyPlaceId);
+                }
+
             }
 
-            RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture,agencyName,agencyPlaceId);
+            RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
-       /*     RealEstateAgentHelper.createAgent(realEstateAgents.getRealEstateAgentId(), firstname, lastname, urlPicture,agencyName,agencyPlaceId);*/
+            /*     RealEstateAgentHelper.createAgent(realEstateAgents.getRealEstateAgentId(), firstname, lastname, urlPicture,agencyName,agencyPlaceId);*/
 
             if (bundle != null) {
 
@@ -148,6 +203,7 @@ public class AddAgentDialog extends DialogFragment {
                 this.propertyViewModel.createRealEstateAgent(realEstateAgents);
 
                 Toast.makeText(getContext(), getString(R.string.add_agent_dialog_add_confirm_text), Toast.LENGTH_SHORT).show();
+                startListPropertyActivity();
 
             }
 
@@ -327,6 +383,12 @@ public class AddAgentDialog extends DialogFragment {
                     .apply(RequestOptions.circleCropTransform())
                     .into((agentPhoto));
         }
+    }
+
+    private void startListPropertyActivity() {
+        Intent intent = new Intent(getContext(), ListPropertyActivity.class);
+
+        startActivity(intent);
     }
 
 }

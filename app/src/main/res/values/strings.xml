@@ -23,6 +23,7 @@
     <!-- MENU DRAWER -->
     <string name="menu_drawer_agents_management">Agents management</string>
     <string name="menu_drawer_map">Map</string>
+    <string name="menu_drawer_delete">Delete account</string>
     <string name="menu_drawer_logout">Logout</string>
     <string name="firstname">firstname</string>
     <string name="lastname">lastname</string>
@@ -31,6 +32,7 @@
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
     <string name="title_activity_maps">Map</string>
+    <string name="popup_message_confirmation_delete_account">Are you sure you want to delete your account?</string>
 
 
     <!-- LIST PROPERTY ITEM FRAGMENT -->
@@ -154,6 +156,7 @@
 
     <!-- AGENT_MANAGEMENT-->
     <string name="agent_management_text">Stéphane Plazza</string>
+    <string name="agent_management_agence_text">Plazza Immo</string>
     <string name="agent_management_page_title">Agent Management</string>
     <string name="agent_management_no_agent">No real estate agent</string>
     <string name="agent_management_no_delete_possible">You can\'t delete a agent who have at least one registered property</string>
@@ -170,6 +173,7 @@
     <string name="date_picker_select_date">Select the date</string>
     <string name="set_error_add_agent_firstname">Enter a firstname</string>
     <string name="set_error_add_agent_lastname">Enter a lastname</string>
+    <string name="set_error_add_agent_agency">Enter an agency name</string>
 
     <!-- STATUS PROPERTY CASES-->
     <string name="status_property_in_progress">in progress</string>
@@ -183,20 +187,28 @@
 
     <!-- MAIN ACTIVITY-->
     <string name="button_connexion_email">INSCRIPTION</string>
+    <string name="error_authentication_canceled">Authentication cancelled&#8230;</string>
+    <string name="error_no_internet">No internet connection!</string>
+    <string name="error_unknown_error">An unknown error occurred&#8230;</string>
+    <string name="connection_succeed">Authentication successful!</string>
 
     <!-- ADD AGENT DIALOG-->
     <string name="add_agent_dialog_add_text">ADD</string>
     <string name="add_agent_dialog_edit_text">EDIT</string>
     <string name="add_agent_dialog_firstname">Firstname : </string>
     <string name="add_agent_dialog_lastname">Lastname : </string>
+    <string name="add_agent_dialog_agency">Agency   : </string>
     <string name="add_agent_dialog_photo">Change your photo</string>
-    <string name="add_agent_dialog_title">NEW AGENT</string>
-    <string name="add_agent_dialog_add_confirm_text">New real estate agent added</string>
+    <string name="add_agent_dialog_title">INSCRIPTION</string>
+    <string name="add_agent_dialog_add_confirm_text">Your registration is confirmed</string>
     <string name="add_agent_dialog_update_confirm_text">Real estate agent informations updated</string>
     <string name="whatsapp_photo_not_possible">It\'s not possible to add photo from WhatsApp</string>
     <string name="Minbedroom_Maxbedoorm_control">Min number of bedroom can\'t be greater than Max Number</string>
     <string name="no_more_photo">No more photo</string>
     <string name="first_photo">First photo</string>
+
+
+
 
     <!-- MAP-->
 

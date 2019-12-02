@@ -66,19 +66,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
         }
 
 
-        holder.mButtonDelete.setOnClickListener(v -> {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(R.string.alert_dialog_message)
-                    .setCancelable(false)
-                    .setPositiveButton(MainApplication.getResourses().getString(R.string.alert_dialog_yes), (dialog, id) -> callback.onClickDeleteButton(realEstateAgentsList.get(position).getRealEstateAgentId())
-                    )
-                    .setNegativeButton(MainApplication.getResourses().getString(R.string.alert_dialog_no), (dialog, id) -> dialog.cancel());
-            AlertDialog alert = builder.create();
-            alert.show();
-
-        });
-
         holder.mAgentName.setOnClickListener(v -> callback.onEditAgent(realEstateAgentsList.get(position).getRealEstateAgentId()));
     }
 
@@ -87,7 +74,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
         TextView mAgentName;
         ImageView mAgentPhoto;
-        ImageView mButtonDelete;
 
 
 
@@ -95,10 +81,9 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
             super(itemView);
 
-            mAgentName = itemView.findViewById(R.id.agent_management_item_text);
+            mAgentName = itemView.findViewById(R.id.agent_management_name_agent_text);
 
             mAgentPhoto = itemView.findViewById(R.id.agent_management_item_image);
-            mButtonDelete = itemView.findViewById(R.id.agent_management_item_delete);
 
         }
 
@@ -121,7 +106,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
     }
 
     public interface AgentManagementInterface {
-        void onClickDeleteButton(long realEstateAgentId);
         void onEditAgent(long id);
     }
 

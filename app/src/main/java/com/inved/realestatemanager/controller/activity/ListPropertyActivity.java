@@ -6,17 +6,33 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
+import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
+import com.inved.realestatemanager.injections.Injection;
+import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.PropertyViewModel;
+
+import java.util.Objects;
 
 import butterknife.OnClick;
 
@@ -37,17 +53,20 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     //Declaration for Navigation Drawer
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
+    private PropertyViewModel propertyViewModel;
 
     // Declare fragments
     private ListPropertyFragment listPropertyFragment;
     private DetailPropertyFragment detailPropertyFragment;
     private FragmentRefreshListener fragmentRefreshListener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
+        this.configureViewModel();
         this.configureToolbarAndNavigationDrawer();
         //NavigationDrawer
         this.configureDrawerLayout();
@@ -64,6 +83,13 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         return R.layout.activity_list_property;
     }
 
+    // 2 - Configuring ViewModel
+    private void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
+        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+
+
+    }
 
     @OnClick(R.id.menu_action_add)
     public void onClickAddButton() {
@@ -120,11 +146,17 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.activity_main_drawer_agents_management:
+            case R.id.activity_main_drawer_agent_management:
                 startProfileActivity();
                 break;
             case R.id.activity_main_drawer_map:
                 startMapsActivity();
+                break;
+            case R.id.activity_main_drawer_logout:
+                logout();
+                break;
+            case R.id.activity_main_drawer_delete_account:
+                deleteAccount();
                 break;
             default:
                 break;
@@ -179,6 +211,96 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         startActivity(intent);
     }
 
+    private void logout(){
+        AuthUI.getInstance()
+
+                .signOut(this)
+                .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted());
+
+    }
+
+    // Create OnCompleteListener called after tasks ended
+    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted() {
+        return aVoid -> {
+            startMainActivity();
+            finish();
+        };
+    }
+
+    private void deleteAccount(){
+
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            long realEstateAgentId = Long.valueOf(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
+                if (properties.size() > 0) {
+
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+                    builder.setMessage(R.string.agent_management_no_delete_possible)
+                            .setCancelable(false)
+                            .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, id) -> dialog.dismiss());
+
+                    android.app.AlertDialog alert = builder.create();
+                    alert.show();
+
+
+                } else {
+
+                    new AlertDialog.Builder(this)
+                            .setMessage(R.string.popup_message_confirmation_delete_account)
+                            .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> {
+                                deleteUserFromRommDatabase(realEstateAgentId);
+                                deleteUserFromFirebase(realEstateAgentId);
+                            })
+                            .setNegativeButton(R.string.alert_dialog_no, null)
+                            .show();
+                }
+            });
+        }
+
+
+
+    }
+
+    private void deleteUserFromFirebase(long realEstateAgentId) {
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        // Get auth credentials from the user for re-authentication. The example below shows
+        // email and password credentials but there are multiple possible providers,
+        // such as GoogleAuthProvider or FacebookAuthProvider.
+        if(currentUser!=null){
+            AuthCredential credential = GoogleAuthProvider
+                    .getCredential(currentUser.getEmail(), null);
+
+            // Prompt the user to re-provide their sign-in credentials
+            currentUser.reauthenticate(credential)
+                    .addOnCompleteListener(task -> {
+                        AuthUI.getInstance()
+                                .delete(getApplicationContext())
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        startMainActivity();
+                                        finish();
+                                    }
+                                });
+
+                        RealEstateAgentHelper.deleteAgent(realEstateAgentId).addOnFailureListener(onFailureListener());
+
+                    });
+        }
+
+
+
+    }
+
+    protected OnFailureListener onFailureListener(){
+        return e -> Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
+    }
+
+    private void deleteUserFromRommDatabase(long realEstateAgentId){
+        propertyViewModel.deleteRealEstateAgent(realEstateAgentId);
+    }
+
     // ---------------------------
     // INTENT TO OPEN NEW ACTIVITY
     // ---------------------------
@@ -193,6 +315,16 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
+
+
+
+
+    private void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
 
 
     // --------------

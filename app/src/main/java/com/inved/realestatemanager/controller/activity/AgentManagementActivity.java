@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.controller.activity;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.dialogs.AddAgentDialog;
@@ -22,7 +20,6 @@ import com.inved.realestatemanager.view.RecyclerViewAgentManagement;
 
 public class AgentManagementActivity extends BaseActivity implements RecyclerViewAgentManagement.AgentManagementInterface {
 
-    private PropertyViewModel propertyViewModel;
     private RecyclerViewAgentManagement adapter;
 
     @Override
@@ -41,17 +38,8 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        FloatingActionButton addAgentFloatingButton = findViewById(R.id.agent_management_add_floating_button);
         this.configureViewModel();
 
-        addAgentFloatingButton.setOnClickListener(v -> openDialog());
-
-    }
-
-    private void openDialog() {
-
-        AddAgentDialog dialog = new AddAgentDialog();
-        dialog.show(getSupportFragmentManager(), "AddAgentDialog");
     }
 
 
@@ -70,33 +58,10 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
     // 2 - Configuring ViewModel
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+        PropertyViewModel propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
         propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> adapter.setData(realEstateAgents));
     }
 
-    @Override
-    public void onClickDeleteButton(long realEstateAgentId) {
-
-        propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
-            if (properties.size() > 0) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.agent_management_no_delete_possible)
-                        .setCancelable(false)
-                        .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, id) -> dialog.dismiss());
-
-                AlertDialog alert = builder.create();
-                alert.show();
-
-
-            } else {
-                propertyViewModel.deleteRealEstateAgent(realEstateAgentId);
-              //  RealEstateAgentHelper.deleteAgent(realEstateAgentId);
-            }
-        });
-
-
-    }
 
     @Override
     public void onEditAgent(long id) {
