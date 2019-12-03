@@ -33,12 +33,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.DatePickerFragment;
 import com.inved.realestatemanager.domain.DateOfDay;
 import com.inved.realestatemanager.domain.SplitString;
+import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
@@ -60,7 +62,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class CreateUpdatePropertyFragmentTwo extends Fragment{
+public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
@@ -123,7 +125,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
 
         dateOfEntry = v.findViewById(R.id.activity_create_update_property_date_entry_text);
         agentNameSpinner = v.findViewById(R.id.activity_create_update_spinner_real_estate_agent_text);
-      //  agentNameSpinner.setOnItemSelectedListener(this);
+        //  agentNameSpinner.setOnItemSelectedListener(this);
         photo1 = v.findViewById(R.id.activity_create_update_added_photo_one);
         photo2 = v.findViewById(R.id.activity_create_update_added_photo_two);
         photo3 = v.findViewById(R.id.activity_create_update_added_photo_three);
@@ -138,7 +140,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
         Button addPhotoButton = v.findViewById(R.id.activity_create_update_add_photo_button);
 
         addPhotoButton.setOnClickListener(view -> selectImage());
-
 
 
         this.updateUI();
@@ -165,10 +166,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // An item was selected. You can retrieve the selected item using
                 // if (parent.getRealEstateAgentId() == R.id.create_update_spinner_real_estate_agent_text) {
-                Log.d("debago","in on item selected method: ");
+                Log.d("debago", "in on item selected method: ");
 
                 selectedAgent = agentNameSpinner.getSelectedItem().toString();
-                Log.d("debago","selected agent: "+selectedAgent);
+                Log.d("debago", "selected agent: " + selectedAgent);
                 SplitString splitString = new SplitString();
                 String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
                 String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
@@ -233,7 +234,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
             propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
                 String firstname = realEstateAgents.getFirstname();
                 String lastname = realEstateAgents.getLastname();
-                Log.d("debago","set selection in spinner "+firstname+" "+lastname);
+                Log.d("debago", "set selection in spinner " + firstname + " " + lastname);
                 agentNameSpinner.setSelection(getIndexSpinner(agentNameSpinner, firstname + " " + lastname));
             });
 
@@ -278,7 +279,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
     }
 
 
-    private void editImageName(){
+    private void editImageName() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogCustom))
@@ -287,17 +288,17 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
 
                         EditText etSujet = ((AlertDialog) dialog).findViewById(R.id.sujet);
 
-                        photoDescription=etSujet.getText().toString();
+                        photoDescription = etSujet.getText().toString();
                         if (photoDescription1 == null) {
-                            photoDescription1=photoDescription;
+                            photoDescription1 = photoDescription;
                         } else if (photoDescription2 == null) {
-                            photoDescription2=photoDescription;
+                            photoDescription2 = photoDescription;
                         } else if (photoDescription3 == null) {
-                            photoDescription3=photoDescription;
+                            photoDescription3 = photoDescription;
                         } else if (photoDescription4 == null) {
-                            photoDescription4=photoDescription;
+                            photoDescription4 = photoDescription;
                         } else if (photoDescription5 == null) {
-                            photoDescription5=photoDescription;
+                            photoDescription5 = photoDescription;
                         }
                         updateUI();
 
@@ -445,7 +446,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
 
             //I fill agent spinner with firstname and lastname of the database programatically
 
-            if(getActivity()!=null){
+            if (getActivity() != null) {
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(
                         getActivity(), android.R.layout.simple_spinner_item, spinnerAgentList);
 
@@ -470,7 +471,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
 
         return 0;
     }
-
 
 
     //DATE PICKER
@@ -525,6 +525,11 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
             String statusProperty = getString(R.string.status_property_in_progress);
             String dateOfEntryOnMarketForProperty = dateOfEntry.getText().toString();
             String fullDescriptionText = fullDescriptionEditText.getText().toString();
+            String realEstateAgentEmail = null;
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                realEstateAgentEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            }
+
 
             Property newProperty = new Property(typeProperty, pricePropertyInDollar,
                     surfaceAreaProperty, numberRoomsInProperty,
@@ -532,18 +537,18 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
                     fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                     statusProperty, dateOfEntryOnMarketForProperty,
                     null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                    photoDescription3, photoDescription4, photoDescription5, 1);
+                    photoDescription3, photoDescription4, photoDescription5, realEstateAgentEmail, 1);
 
-         /*   PropertyHelper.createProperty(propertyId,typeProperty, pricePropertyInDollar,
+            PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
                     surfaceAreaProperty, numberRoomsInProperty,
                     numberBathroomsInProperty, numberBedroomsInProperty,
                     fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                     statusProperty, dateOfEntryOnMarketForProperty,
                     null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                    photoDescription3, photoDescription4, photoDescription5, 1);*/
+                    photoDescription3, photoDescription4, photoDescription5,realEstateAgentEmail, 1);
 
             if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
-                Log.d("debago","update property : "+newProperty.toString());
+                Log.d("debago", "update property : " + newProperty.toString());
 
                 this.propertyViewModel.updateProperty(typeProperty, pricePropertyInDollar,
                         surfaceAreaProperty, numberRoomsInProperty,
@@ -551,7 +556,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment{
                         fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                         statusProperty, dateOfEntryOnMarketForProperty,
                         null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                        photoDescription3, photoDescription4, photoDescription5, 1,propertyId);
+                        photoDescription3, photoDescription4, photoDescription5, 1, propertyId);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
             } else {
                 this.propertyViewModel.createProperty(newProperty);

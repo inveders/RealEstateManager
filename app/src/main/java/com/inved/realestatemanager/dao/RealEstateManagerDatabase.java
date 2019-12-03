@@ -57,8 +57,9 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                 contentValues.put("firstname", "Raphaël");
                 contentValues.put("lastname", "Gnimadi");
                 contentValues.put("urlPicture", "file:///storage/emulated/0/Android/data/com.inved.realestatemanager/files/Pictures/JPEG_20191107184447_4348563422494251245.jpg");
-                contentValues.put("agencyName", "GnimDev");
-                contentValues.put("agencyPlaceId", "Skuipdliens8e5s");
+                contentValues.put("agencyName", "S&C BORBICONI IMMOBILIER");
+                contentValues.put("agencyPlaceId", "ChIJ2V5Kw-0zlUcRzwWgILW09pU");
+                contentValues.put("email", "mikoumusiqueservices@gmail.com");
 
                 db.insert("RealEstateAgents", OnConflictStrategy.IGNORE, contentValues);
 
@@ -83,7 +84,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                 contentValuesProperty.put("dateOfEntryOnMarketForProperty", "29/10/2019");
                 contentValuesProperty.put("dateOfSaleForPorperty", "14/12/2019" );
                 contentValuesProperty.put("selected", false);
-
+                contentValuesProperty.put("realEstateAgentEmail", "mikoumusiqueservices@gmail.com");
 
                 db.insert("Property", OnConflictStrategy.IGNORE, contentValuesProperty);
             }
