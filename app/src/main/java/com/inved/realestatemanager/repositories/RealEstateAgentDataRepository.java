@@ -18,6 +18,9 @@ public class RealEstateAgentDataRepository {
 
     public LiveData<RealEstateAgents> getRealEstateAgentById(long realEstateAgentId) { return this.realEstateAgentsDao.getRealEstateAgentById(realEstateAgentId); }
 
+    public LiveData<RealEstateAgents> getRealEstateAgentByEmail(String email) { return this.realEstateAgentsDao.getRealEstateAgentByEmail(email); }
+
+
     // --- GET ALL REAL ESTATE AGENTS ---
     public LiveData<List<RealEstateAgents>> getAllRealEstateAgents() { return this.realEstateAgentsDao.getAllRealEstateAgents(); }
 

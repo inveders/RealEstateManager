@@ -35,6 +35,10 @@ public class PropertyViewModel extends ViewModel {
         return realEstateAgentDataSource.getRealEstateAgentById(realEstateAgentId);
     }
 
+    public LiveData<RealEstateAgents> getRealEstateAgentByEmail(String email) {
+        return realEstateAgentDataSource.getRealEstateAgentByEmail(email);
+    }
+
     public LiveData<List<RealEstateAgents>> getAllRealEstateAgents() {
         return realEstateAgentDataSource.getAllRealEstateAgents();
     }

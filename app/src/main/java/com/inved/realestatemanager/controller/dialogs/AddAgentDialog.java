@@ -90,7 +90,7 @@ public class AddAgentDialog extends DialogFragment {
     @BindView(R.id.textview_agency_name_edit)
     TextView agencyNameTextview;
 
-    AutocompleteSupportFragment autocompleteFragment;
+    private AutocompleteSupportFragment autocompleteFragment;
 
     @BindView(R.id.add_agent_dialog_add_new_agent)
     TextView addActionButton;
@@ -204,7 +204,7 @@ public class AddAgentDialog extends DialogFragment {
 
             RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email);
 
-            RealEstateAgentHelper.createAgent(realEstateAgents.getRealEstateAgentId(), firstname, lastname, urlPicture,agencyName,agencyPlaceId,email);
+            RealEstateAgentHelper.createAgent(firstname, lastname, urlPicture,agencyName,agencyPlaceId,email);
 
             if (bundle != null) {
 

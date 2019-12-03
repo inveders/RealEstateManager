@@ -228,39 +228,47 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private void deleteAccount(){
 
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            long realEstateAgentId = Long.valueOf(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-            propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
-                if (properties.size() > 0) {
+            propertyViewModel.getRealEstateAgentByEmail(email).observe(this,realEstateAgents -> {
+                long realEstateAgentId = realEstateAgents.getRealEstateAgentId();
 
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-                    builder.setMessage(R.string.agent_management_no_delete_possible)
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, id) -> dialog.dismiss());
+                propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
+                    if (properties.size() > 0) {
 
-                    android.app.AlertDialog alert = builder.create();
-                    alert.show();
+                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+                        builder.setMessage(R.string.agent_management_no_delete_possible)
+                                .setCancelable(false)
+                                .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, id) -> dialog.dismiss());
+
+                        android.app.AlertDialog alert = builder.create();
+                        alert.show();
 
 
-                } else {
+                    } else {
 
-                    new AlertDialog.Builder(this)
-                            .setMessage(R.string.popup_message_confirmation_delete_account)
-                            .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> {
-                                deleteUserFromRommDatabase(realEstateAgentId);
-                                deleteUserFromFirebase(realEstateAgentId);
-                            })
-                            .setNegativeButton(R.string.alert_dialog_no, null)
-                            .show();
-                }
+                        new AlertDialog.Builder(this)
+                                .setMessage(R.string.popup_message_confirmation_delete_account)
+                                .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> {
+                                    deleteUserFromRommDatabase(realEstateAgentId);
+                                    deleteUserFromFirebase(email);
+                                })
+                                .setNegativeButton(R.string.alert_dialog_no, null)
+                                .show();
+                    }
+                });
+
             });
+
+
+
         }
 
 
 
     }
 
-    private void deleteUserFromFirebase(long realEstateAgentId) {
+    private void deleteUserFromFirebase(String email) {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         // Get auth credentials from the user for re-authentication. The example below shows
@@ -282,7 +290,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                                     }
                                 });
 
-                        RealEstateAgentHelper.deleteAgent(realEstateAgentId).addOnFailureListener(onFailureListener());
+                        RealEstateAgentHelper.deleteAgent(email).addOnFailureListener(onFailureListener());
 
                     });
         }

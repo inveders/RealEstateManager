@@ -22,7 +22,7 @@ public class RealEstateAgentHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createAgent(long realEstateAgentId, String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email) {
+    public static Task<Void> createAgent(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email) {
         // 1 - Create Obj
 
         RealEstateAgents realEstateAgentsToCreate = new RealEstateAgents(firstname, lastname,urlPicture, agencyName,agencyPlaceId,email);
@@ -49,7 +49,7 @@ public class RealEstateAgentHelper {
 
     // --- DELETE ---
 
-    public static Task<Void> deleteAgent(long realEstateAgentId) {
-        return RealEstateAgentHelper.getUsersCollection().document(String.valueOf(realEstateAgentId)).delete();
+    public static Task<Void> deleteAgent(String email) {
+        return RealEstateAgentHelper.getUsersCollection().document(email).delete();
     }
 }

@@ -24,6 +24,9 @@ public interface RealEstateAgentsDao {
     @Query("SELECT * FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
     LiveData<RealEstateAgents> getRealEstateAgentById(long realEstateAgentId);
 
+    @Query("SELECT * FROM RealEstateAgents WHERE email = :email")
+    LiveData<RealEstateAgents> getRealEstateAgentByEmail(String email);
+
     @Query("SELECT * FROM RealEstateAgents")
     LiveData<List<RealEstateAgents>> getAllRealEstateAgents();
 

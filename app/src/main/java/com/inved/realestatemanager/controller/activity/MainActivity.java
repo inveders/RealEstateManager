@@ -47,28 +47,8 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Log.d("debago", "MA onStart");
-            RealEstateAgentHelper.getAgentWhateverAgency(currentUser.getEmail()).get().addOnCompleteListener(task -> {
-
-                if (task.isSuccessful()) {
-                    if (task.getResult() != null) {
-                        Log.d("debago", "MA onStart task successful");
-                        if (task.getResult().getDocuments().size() != 0) {
-                            startListPropertyActivity();
-                            Log.d("debago", "MA onStart successful, firstname is : " + task.getResult().getDocuments().get(0).getString("firstname"));
-                        } else {
-                            Log.d("debago", "MA notSuccessful, size is: " + task.getResult().getDocuments().size());
-                            startFinishRegisterActivity();
-                        }
-                    }
-
-
-                }else{
-                    Log.d("debago", "MA onStart task IS NOT successful");
-                }
-
-
-            });
+            Log.d("debago", "MA onStart : "+currentUser.getEmail());
+            checkIfUserExist(currentUser.getEmail());
 
 
         }
@@ -100,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("debago", "MA onActivityResult");
+
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
@@ -117,7 +97,12 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) { // SUCCESS
                 showSnackBar(this.coordinatorLayout, getString(R.string.connection_succeed));
                 Log.d("debago", "MA onsuccess");
-                this.startFinishRegisterActivity();
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    checkIfUserExist(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+
+                }
+
                 finish();
 
             } else { // ERRORS
@@ -139,6 +124,32 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, FinishRegisterActivity.class);
 
         startActivity(intent);
+    }
+
+    private void checkIfUserExist(String email){
+        RealEstateAgentHelper.getAgentWhateverAgency(email).get().addOnCompleteListener(task -> {
+
+            Log.d("debago", "MA CHECK TASK : "+ Objects.requireNonNull(task.getResult()));
+
+            if (task.isSuccessful()) {
+                if (task.getResult() != null) {
+                    Log.d("debago", "MA CHECK task successful");
+                    if (task.getResult().getDocuments().size() != 0) {
+                        startListPropertyActivity();
+                        Log.d("debago", "MA CHECK successful, firstname is : " + task.getResult().getDocuments().get(0).getString("firstname"));
+                    } else {
+                        Log.d("debago", "MA CHECK notSuccessful, size is: " + task.getResult().getDocuments().size());
+                        startFinishRegisterActivity();
+                    }
+                }
+
+
+            }else{
+                Log.d("debago", "MA CHECK task IS NOT successful");
+            }
+
+
+        });
     }
 
 
