@@ -87,6 +87,10 @@ public class AddAgentDialog extends DialogFragment {
     @BindView(R.id.add_agent_edittext_firstname)
     EditText firstnameEditText;
 
+    @BindView(R.id.textview_agency_name_edit)
+    TextView agencyNameTextview;
+
+    AutocompleteSupportFragment autocompleteFragment;
 
     @BindView(R.id.add_agent_dialog_add_new_agent)
     TextView addActionButton;
@@ -134,7 +138,7 @@ public class AddAgentDialog extends DialogFragment {
         if(getActivity()!=null){
             Places.initialize(getActivity(), MAP_API_KEY);
             // Initialize the AutocompleteSupportFragment.
-            AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
+            autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
 
             // Specify the types of place data to return.
             if (autocompleteFragment != null) {
@@ -363,6 +367,12 @@ public class AddAgentDialog extends DialogFragment {
     // Get all items for a user
     private void editRealEstateAgent(long realEstateAgendId) {
 
+        if(autocompleteFragment.getView()!=null){
+            autocompleteFragment.getView().setVisibility(View.GONE);
+            agencyNameTextview.setVisibility(View.VISIBLE);
+        }
+
+
         propertyViewModel.getRealEstateAgentById(realEstateAgendId).observe(getViewLifecycleOwner(), realEstateAgents -> {
 
             if (realEstateAgents.getFirstname() != null) {
@@ -371,6 +381,10 @@ public class AddAgentDialog extends DialogFragment {
 
             if (realEstateAgents.getLastname() != null) {
                 lastnameEditText.setText(realEstateAgents.getLastname());
+            }
+
+            if (realEstateAgents.getAgencyName() != null) {
+                agencyNameTextview.setText(realEstateAgents.getAgencyName());
             }
 
             if (realEstateAgents.getUrlPicture() != null) {

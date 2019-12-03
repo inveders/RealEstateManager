@@ -165,6 +165,16 @@
                 app:layout_constraintBottom_toBottomOf="@id/add_agent_agency_text"
                 android:layout_marginTop="25dp" />
 
+            <TextView
+                android:id="@+id/textview_agency_name_edit"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@id/add_agent_edittext_firstname"
+                app:layout_constraintBottom_toBottomOf="@id/add_agent_agency_text"
+                android:layout_marginTop="25dp"
+                android:visibility="invisible"/>
+
+
             <ImageView
                 android:id="@+id/add_agent_photo"
                 android:layout_width="80dp"

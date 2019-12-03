@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
+                }else{
+                    Log.d("debago", "MA onStart task IS NOT successful");
                 }
 
 
