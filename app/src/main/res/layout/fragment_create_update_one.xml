@@ -134,10 +134,10 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_compl_text"
-            android:inputType="number"
+            android:inputType="text"
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
-            android:autofillHints="@string/create_update_by_street_number"
+            android:autofillHints="@string/create_update_by_street_compl"
             tools:targetApi="o"/>
 
         <TextView
