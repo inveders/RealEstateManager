@@ -41,11 +41,12 @@ public class RealEstateAgentHelper {
     }
 
     public static Query getAllAgents(){
-        return RealEstateAgentHelper.getUsersCollection()
-                .orderBy("uid", Query.Direction.ASCENDING);
+        return RealEstateAgentHelper.getUsersCollection();
 
 
     }
+
+
 
     // --- DELETE ---
 

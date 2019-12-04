@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -81,5 +82,19 @@ public class RealEstateAgents {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+
+    @Override
+    public String toString() {
+        return "RealEstateAgents{" +
+                "realEstateAgentId=" + realEstateAgentId +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", urlPicture='" + urlPicture + '\'' +
+                ", agencyName='" + agencyName + '\'' +
+                ", agencyPlaceId='" + agencyPlaceId + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

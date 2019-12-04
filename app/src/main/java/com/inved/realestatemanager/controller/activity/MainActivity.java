@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Log.d("debago", "MA onStart : "+currentUser.getEmail());
-            checkIfUserExist(currentUser.getEmail());
+            checkIfUserExistInFirebase(currentUser.getEmail());
 
 
         }
@@ -93,12 +93,12 @@ public class MainActivity extends AppCompatActivity {
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
         if (requestCode == RC_SIGN_IN) {
-            Log.d("debago", "MA resultCode");
+           // Log.d("debago", "MA resultCode");
             if (resultCode == RESULT_OK) { // SUCCESS
                 showSnackBar(this.coordinatorLayout, getString(R.string.connection_succeed));
-                Log.d("debago", "MA onsuccess");
+               // Log.d("debago", "MA onsuccess");
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    checkIfUserExist(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    checkIfUserExistInFirebase(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
 
                 }
@@ -126,26 +126,26 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void checkIfUserExist(String email){
+    private void checkIfUserExistInFirebase(String email){
         RealEstateAgentHelper.getAgentWhateverAgency(email).get().addOnCompleteListener(task -> {
 
-            Log.d("debago", "MA CHECK TASK : "+ Objects.requireNonNull(task.getResult()));
+        //    Log.d("debago", "MA CHECK TASK : "+ Objects.requireNonNull(task.getResult()));
 
             if (task.isSuccessful()) {
                 if (task.getResult() != null) {
-                    Log.d("debago", "MA CHECK task successful");
+                 //   Log.d("debago", "MA CHECK task successful");
                     if (task.getResult().getDocuments().size() != 0) {
                         startListPropertyActivity();
-                        Log.d("debago", "MA CHECK successful, firstname is : " + task.getResult().getDocuments().get(0).getString("firstname"));
+                     //   Log.d("debago", "MA CHECK successful, firstname is : " + task.getResult().getDocuments().get(0).getString("firstname"));
                     } else {
-                        Log.d("debago", "MA CHECK notSuccessful, size is: " + task.getResult().getDocuments().size());
+                   //     Log.d("debago", "MA CHECK notSuccessful, size is: " + task.getResult().getDocuments().size());
                         startFinishRegisterActivity();
                     }
                 }
 
 
             }else{
-                Log.d("debago", "MA CHECK task IS NOT successful");
+             //   Log.d("debago", "MA CHECK task IS NOT successful");
             }
 
 
