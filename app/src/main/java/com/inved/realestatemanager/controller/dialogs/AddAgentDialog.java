@@ -38,7 +38,9 @@ import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.domain.UriToStringConversion;
+import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
+import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
@@ -205,6 +207,12 @@ public class AddAgentDialog extends DialogFragment {
             RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email);
 
             RealEstateAgentHelper.createAgent(firstname, lastname, urlPicture,agencyName,agencyPlaceId,email);
+
+            if(urlPicture!=null){
+
+                StorageHelper.uploadFile(urlPicture,6,null);
+
+            }
 
             if (bundle != null) {
 

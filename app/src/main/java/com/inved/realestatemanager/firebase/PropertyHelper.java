@@ -52,6 +52,40 @@ public class PropertyHelper {
         return PropertyHelper.getPropertyCollection();
     }
 
+    public static Query getPropertyFirebaseId(String photoUri1){
+        return PropertyHelper.getPropertyCollection()
+                .whereEqualTo("photoUri1",photoUri1);
+    }
 
+    // --- UPDATE ---
 
+    static void updatePhotoUri1(String photoUri1Url, String documentId) {
+        PropertyHelper.getPropertyCollection()
+                .document(documentId)
+                .update("photoUri1", photoUri1Url);
+    }
+
+    static void updatePhotoUri2(String photoUri2Url, String documentId) {
+        PropertyHelper.getPropertyCollection()
+                .document(documentId)
+                .update("photoUri2", photoUri2Url);
+    }
+
+    static void updatePhotoUri3(String photoUri3Url, String documentId) {
+        PropertyHelper.getPropertyCollection()
+                .document(documentId)
+                .update("photoUri3", photoUri3Url);
+    }
+
+    static void updatePhotoUri4(String photoUri4Url, String documentId) {
+        PropertyHelper.getPropertyCollection()
+                .document(documentId)
+                .update("photoUri4", photoUri4Url);
+    }
+
+    static void updatePhotoUri5(String photoUri5Url, String documentId) {
+        PropertyHelper.getPropertyCollection()
+                .document(documentId)
+                .update("photoUri5", photoUri5Url);
+    }
 }

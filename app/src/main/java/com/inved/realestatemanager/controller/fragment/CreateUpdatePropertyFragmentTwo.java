@@ -41,6 +41,7 @@ import com.inved.realestatemanager.controller.dialogs.DatePickerFragment;
 import com.inved.realestatemanager.domain.DateOfDay;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.firebase.PropertyHelper;
+import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
@@ -546,6 +547,38 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     statusProperty, dateOfEntryOnMarketForProperty,
                     null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                     photoDescription3, photoDescription4, photoDescription5,realEstateAgentEmail, 1);
+
+            if(photoUri1!=null){
+
+                PropertyHelper.getPropertyFirebaseId(photoUri1).get().addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+                        if (task.getResult() != null) {
+
+                            if (task.getResult().getDocuments().size() != 0) {
+                                String documentId = task.getResult().getDocuments().get(0).getId();
+                                Log.d("debago", "Create property Fragment Two, getId is : " + documentId);
+
+                                //Update firestore database with good image url and upload image in Firebase Storage
+                                StorageHelper.uploadFile(photoUri1,1,documentId);
+                                StorageHelper.uploadFile(photoUri2,2,documentId);
+                                StorageHelper.uploadFile(photoUri3,3,documentId);
+                                StorageHelper.uploadFile(photoUri4,4,documentId);
+                                StorageHelper.uploadFile(photoUri5,5,documentId);
+                            } else {
+                                Log.d("debago", "Create property Fragment Two no success: ");
+
+                            }
+                        }
+
+
+                    }
+                });
+
+
+
+            }
+
 
             if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
                 Log.d("debago", "update property : " + newProperty.toString());

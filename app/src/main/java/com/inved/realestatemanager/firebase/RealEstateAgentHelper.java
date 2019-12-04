@@ -1,6 +1,7 @@
 package com.inved.realestatemanager.firebase;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -46,7 +47,20 @@ public class RealEstateAgentHelper {
 
     }
 
+// --- UPDATE ---
 
+    static void updateUrlPicture(String urlPicture) {
+
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            if(FirebaseAuth.getInstance().getCurrentUser().getEmail()!=null){
+                RealEstateAgentHelper.getUsersCollection()
+                        .document(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                        .update("urlPicture", urlPicture);
+            }
+        }
+
+
+    }
 
     // --- DELETE ---
 
