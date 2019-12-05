@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
+import com.inved.realestatemanager.utils.ManageAgency;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                finish();
+               // finish();
 
             } else { // ERRORS
                 if (response == null) {
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                      //   Log.d("debago", "MA CHECK successful, firstname is : " + task.getResult().getDocuments().get(0).getString("firstname"));
                     } else {
                    //     Log.d("debago", "MA CHECK notSuccessful, size is: " + task.getResult().getDocuments().size());
+                        ManageAgency.saveAgencyPlaceId(getApplicationContext(),null);
                         startFinishRegisterActivity();
                     }
                 }
