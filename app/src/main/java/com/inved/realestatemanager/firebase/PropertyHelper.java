@@ -1,6 +1,8 @@
 package com.inved.realestatemanager.firebase;
 
 
+import android.util.Log;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -32,7 +34,7 @@ public class PropertyHelper {
                                       String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                                       boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                       String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                                      String photoDescription4, String photoDescription5, String realEstateAgentEmail, long realEstateAgentId) {
+                                      String photoDescription4, String photoDescription5, String realEstateAgentEmail, long realEstateAgentId,int myCase,String id) {
         // 1 - Create Obj
 
         Property propertyToCreate = new Property(typeProperty, pricePropertyInDollar,
@@ -43,7 +45,15 @@ public class PropertyHelper {
                 dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                 photoDescription3, photoDescription4, photoDescription5,realEstateAgentEmail, realEstateAgentId);
 
-        PropertyHelper.getPropertyCollection().document().set(propertyToCreate);
+        if(myCase==1){
+            //to create
+            Log.d("debago", "PropertyHelper : " + myCase);
+            PropertyHelper.getPropertyCollection().document().set(propertyToCreate);
+        }else if(myCase==2){
+            //to update
+            PropertyHelper.getPropertyCollection().document(id).set(propertyToCreate);
+        }
+
     }
 
     // --- GET ---

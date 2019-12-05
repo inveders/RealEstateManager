@@ -521,6 +521,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
         } else if (dateOfEntry.getText().toString().trim().isEmpty()) {
             DateOfDay dateOfDay = new DateOfDay();
             dateOfEntry.setText(dateOfDay.getDateOfDay());
+        } else if(photoUri1==null){
+            Toast.makeText(context, getString(R.string.set_error_agent), Toast.LENGTH_SHORT).show();
+
         } else {
 
             String statusProperty = getString(R.string.status_property_in_progress);
@@ -540,15 +543,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                     photoDescription3, photoDescription4, photoDescription5, realEstateAgentEmail, 1);
 
-            PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
-                    surfaceAreaProperty, numberRoomsInProperty,
-                    numberBathroomsInProperty, numberBedroomsInProperty,
-                    fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
-                    statusProperty, dateOfEntryOnMarketForProperty,
-                    null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                    photoDescription3, photoDescription4, photoDescription5,realEstateAgentEmail, 1);
 
-            if(photoUri1!=null){
+
+
 
                 PropertyHelper.getPropertyFirebaseId(photoUri1).get().addOnCompleteListener(task -> {
 
@@ -560,11 +557,45 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                                 Log.d("debago", "Create property Fragment Two, getId is : " + documentId);
 
                                 //Update firestore database with good image url and upload image in Firebase Storage
+                             /*   if(photoUri1!=null)
                                 StorageHelper.uploadFile(photoUri1,1,documentId);
+                                if(photoUri2!=null)
                                 StorageHelper.uploadFile(photoUri2,2,documentId);
+                                if(photoUri3!=null)
                                 StorageHelper.uploadFile(photoUri3,3,documentId);
+                                if(photoUri4!=null)
                                 StorageHelper.uploadFile(photoUri4,4,documentId);
-                                StorageHelper.uploadFile(photoUri5,5,documentId);
+                                if(photoUri5!=null)
+                                StorageHelper.uploadFile(photoUri5,5,documentId);*/
+
+                                String realEstateAgentEmailBis = null;
+                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                    realEstateAgentEmailBis = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                                }
+
+                                //The choice is to update property
+                                if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
+                                    PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
+                                            surfaceAreaProperty, numberRoomsInProperty,
+                                            numberBathroomsInProperty, numberBedroomsInProperty,
+                                            fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                                            statusProperty, dateOfEntryOnMarketForProperty,
+                                            null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                                            photoDescription3, photoDescription4, photoDescription5,realEstateAgentEmailBis, 1,2,documentId);
+                                } else
+                                //The choice is to create property
+                                {
+                                    PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
+                                            surfaceAreaProperty, numberRoomsInProperty,
+                                            numberBathroomsInProperty, numberBedroomsInProperty,
+                                            fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                                            statusProperty, dateOfEntryOnMarketForProperty,
+                                            null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                                            photoDescription3, photoDescription4, photoDescription5,realEstateAgentEmailBis, 1,1,null);
+
+                                }
+
+
                             } else {
                                 Log.d("debago", "Create property Fragment Two no success: ");
 
@@ -575,11 +606,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     }
                 });
 
-
-
-            }
-
-
+                //The choice is to update property
             if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
                 Log.d("debago", "update property : " + newProperty.toString());
 
@@ -591,7 +618,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                         null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                         photoDescription3, photoDescription4, photoDescription5, 1, propertyId);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
-            } else {
+            } else
+            //The choice is to create property
+                {
                 this.propertyViewModel.createProperty(newProperty);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
                 if (getContext() != null) {

@@ -34,12 +34,10 @@ public interface PropertyDao {
     long insertProperty(Property property);
 
     @RawQuery(observedEntities = Property.class)
-    LiveData<List<Property>> updateProperty(SupportSQLiteQuery query);
+    int updateProperty(SupportSQLiteQuery query);
 
     @Query("DELETE FROM Property WHERE propertyId = :propertyId")
     int deleteProperty(long propertyId);
 
-    @Update
-    int updatePropertyGood(Property property);
 }
 

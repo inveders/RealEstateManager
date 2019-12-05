@@ -49,9 +49,9 @@ public class PropertyViewModel extends ViewModel {
 
     }
 
-    public void updateRealEstateAgent(RealEstateAgents realEstateAgent) {
+    public void updateRealEstateAgent(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email,long realEstateAgentId) {
 
-        executor.execute(() -> realEstateAgentDataSource.updateAgent(realEstateAgent));
+        executor.execute(() -> realEstateAgentDataSource.updateAgent(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email,realEstateAgentId));
 
     }
 
@@ -79,12 +79,7 @@ public class PropertyViewModel extends ViewModel {
         executor.execute(() -> propertyDataSource.createItem(property));
     }
 
-    public void updateItem(Property property) {
-        executor.execute(() -> propertyDataSource.updateItem(property));
-
-    }
-
-    public LiveData<List<Property>> updateProperty(String typeProperty, double pricePropertyInDollar,
+    public void updateProperty(String typeProperty, double pricePropertyInDollar,
                                                    double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                                    int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
                                                    String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
@@ -92,11 +87,11 @@ public class PropertyViewModel extends ViewModel {
                                                    boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                                    String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
                                                    String photoDescription4, String photoDescription5, long realEstateAgentId,long propertyId) {
-        return propertyDataSource.updateProperty(typeProperty, pricePropertyInDollar,
+        executor.execute(() -> propertyDataSource.updateProperty(typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty, dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId,propertyId);
+                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId,propertyId));
     }
 
     // -------------

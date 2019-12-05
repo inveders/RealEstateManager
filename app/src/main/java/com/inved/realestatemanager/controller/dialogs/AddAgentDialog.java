@@ -182,9 +182,9 @@ public class AddAgentDialog extends DialogFragment {
             firstnameEditText.setError(getString(R.string.set_error_add_agent_firstname));
         } else if (lastnameEditText.getText().toString().isEmpty()) {
             lastnameEditText.setError(getString(R.string.set_error_add_agent_lastname));
-        } else if (agencyName.isEmpty()) {
+      /*  } else if (agencyName.isEmpty()) {
             Toast.makeText(getContext(), getString(R.string.set_error_add_agent_agency), Toast.LENGTH_SHORT).show();
-        } else {
+        */} else {
             String firstname = firstnameEditText.getText().toString();
             String lastname = lastnameEditText.getText().toString();
             String email;
@@ -196,10 +196,14 @@ public class AddAgentDialog extends DialogFragment {
 
             if (getContext() != null) {
                 if (agencyName != null) {
-                    ManageAgency.saveAgencyPlaceId(getContext(), agencyName);
+                    ManageAgency.saveAgencyName(getContext(), agencyName);
+                }else{
+                    agencyName=ManageAgency.getAgencyName(getContext());
                 }
                 if (agencyPlaceId != null) {
-                    ManageAgency.saveAgencyName(getContext(), agencyPlaceId);
+                    ManageAgency.saveAgencyPlaceId(getContext(), agencyPlaceId);
+                }else{
+                    agencyPlaceId=ManageAgency.getAgencyPlaceId(getContext());
                 }
 
             }
@@ -210,15 +214,20 @@ public class AddAgentDialog extends DialogFragment {
 
             if(urlPicture!=null){
 
-                StorageHelper.uploadFile(urlPicture,6,null);
+              //  StorageHelper.uploadFile(urlPicture,6,null);
 
             }
 
             if (bundle != null) {
 
-                this.propertyViewModel.updateRealEstateAgent(realEstateAgents);
+                long realEstateAgentId = bundle.getLong("myLong", 0);
+                Log.d("debago","agencyName :"+agencyName+" real estate agent string : "+realEstateAgents.toString());
+                if(realEstateAgentId!=0){
+                    this.propertyViewModel.updateRealEstateAgent(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email,realEstateAgentId);
 
-                Toast.makeText(getContext(), getString(R.string.add_agent_dialog_update_confirm_text), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.add_agent_dialog_update_confirm_text), Toast.LENGTH_SHORT).show();
+                }
+
 
             } else {
 
@@ -375,10 +384,10 @@ public class AddAgentDialog extends DialogFragment {
     // Get all items for a user
     private void editRealEstateAgent(long realEstateAgendId) {
 
-        if(autocompleteFragment.getView()!=null){
-            autocompleteFragment.getView().setVisibility(View.GONE);
+     /*   if(autocompleteFragment.getView()==null){
+       //     autocompleteFragment.getView().setVisibility(View.GONE);
             agencyNameTextview.setVisibility(View.VISIBLE);
-        }
+        }*/
 
 
         propertyViewModel.getRealEstateAgentById(realEstateAgendId).observe(getViewLifecycleOwner(), realEstateAgents -> {

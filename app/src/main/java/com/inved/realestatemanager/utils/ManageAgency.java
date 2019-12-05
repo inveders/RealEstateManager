@@ -7,7 +7,7 @@ public class ManageAgency {
 
     private static final String KEY_AGENCY_PLACE_ID_CHOICE = "KEY_AGENCY_CHOICE";
     private static final String KEY_AGENCY_PLACE_ID_DATA = "KEY_AGENCY_PLACE_ID_DATA";
-    private static final String KEY_AGENCY_NAME_DATA = "KEY_AGENCY_PLACE_ID_DATA";
+    private static final String KEY_AGENCY_NAME_DATA = "KEY_AGENCY_NAME_DATA";
 
     public static void saveAgencyPlaceId(Context context, String agencyPlaceId) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(KEY_AGENCY_PLACE_ID_CHOICE, Context.MODE_PRIVATE);

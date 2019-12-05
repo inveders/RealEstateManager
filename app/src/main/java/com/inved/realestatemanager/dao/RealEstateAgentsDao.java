@@ -33,6 +33,6 @@ public interface RealEstateAgentsDao {
     @Query("DELETE FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
     int deleteRealEstateAgent(long realEstateAgentId);
 
-    @Update
-    int updateAgent(RealEstateAgents realEstateAgents);
+    @Query("UPDATE RealEstateAgents SET firstname = :firstname, lastname = :lastname,urlPicture = :urlPicture,agencyName = :agencyName,agencyPlaceId = :agencyPlaceId,email = :email WHERE realEstateAgentId = :realEstateAgentId")
+    int updateAgent(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email,long realEstateAgentId);
 }

@@ -41,9 +41,8 @@ public class PropertyDataRepository {
     public void deleteItem(long propertyId){ propertyDao.deleteProperty(propertyId); }
 
     // --- UPDATE ---
-    public void updateItem(Property property){ propertyDao.updatePropertyGood(property); }
 
-    public LiveData<List<Property>> updateProperty(String typeProperty, double pricePropertyInDollar,
+    public int updateProperty(String typeProperty, double pricePropertyInDollar,
                                                    double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                                    int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
                                                    String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
