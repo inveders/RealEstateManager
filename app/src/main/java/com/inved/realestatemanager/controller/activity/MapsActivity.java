@@ -9,13 +9,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,17 +35,22 @@ import com.inved.realestatemanager.models.GeocodingViewModel;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
 @RuntimePermissions
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerClickListener {
 
     //GOOGLE GEOCODING
     private GoogleMap mGoogleMap;
-    private Marker mMarker;
+    //  private Marker mMarker;
+    List<Double> latitudeList = new ArrayList<>();
+    List<Double> longitudeList = new ArrayList<>();
 
     //FOR LOCATION
 
@@ -91,13 +96,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
-        mGoogleMap.setOnMarkerClickListener(marker -> false);
+        mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mGoogleMap.setMyLocationEnabled(true);
 
         LatLng initialPosition = new LatLng(0, 0);
 
-        mMarker = mGoogleMap.addMarker(new MarkerOptions()
+        mGoogleMap.addMarker(new MarkerOptions()
                 .position(initialPosition));
 
 
@@ -133,8 +138,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             String country;
             String addressToConvert;
             SplitString splitString = new SplitString();
+            List<String> addressList = new ArrayList<>();
+            List<String> propertyList = new ArrayList<>();
 
             for (Property p : properties) {
+
                 streetNumber = p.getStreetNumber();
                 streetName = p.getStreetName();
                 zipCode = p.getZipCode();
@@ -144,51 +152,76 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
                 long propertyId = p.getPropertyId();
 
-                geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
-                    if (results.size() != 0) {
-                        double latitude = results.get(0).getGeometry().getLocation().getLat();
-                        double longitude = results.get(0).getGeometry().getLocation().getLng();
-                        customizeMarker(propertyId, latitude, longitude);
-                    } else {
-                        Log.d("debago", "Geocoding no result ");
-                    }
 
-                });
+                addressList.add(addressFormatted);
+                propertyList.add(String.valueOf(propertyId));
+
             }
 
-            if (mGoogleMap != null && mMarker!=null) {
-                //Configure action on marker click
-                mGoogleMap.setOnMarkerClickListener(marker -> {
+            geocodingSearch(addressList);
 
-                    if(marker.getSnippet()!=null){
-                        Log.d("debago", "marker property id: " + marker.getSnippet());
-                        startDetailActivity(Long.valueOf(marker.getSnippet()));
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                if(latitudeList!=null){
+                    for (int i = 0; i <latitudeList.size() ; i++) {
+                        customizeMarker(propertyList.get(i),latitudeList.get(i),longitudeList.get(i));
                     }
+                }
+            }, 4000);
 
-                    return true;
-                });
-            }
+
         });
+
 
     }
 
-    private void customizeMarker(long propertyId, double lat, double longi) {
 
-        Log.d("debago", "marker property id customize marker: " + propertyId);
+    private void geocodingSearch(List<String> addressFormatted) {
+
+        for (int i = 0; i <addressFormatted.size() ; i++) {
+            geocodingViewModel.getLatLngWithAddress(addressFormatted.get(i)).observe(this, results -> {
+                if (results.size() != 0) {
+
+                    double latitude = results.get(0).getGeometry().getLocation().getLat();
+                    double longitude = results.get(0).getGeometry().getLocation().getLng();
+
+                    if(!latitudeList.contains(latitude)){
+                        latitudeList.add(latitude);
+                        longitudeList.add(longitude);
+                    }
+
+                } else {
+                    Log.d("debago", "Geocoding no result ");
+                }
+
+            });
+        }
+
+    }
+
+    private void customizeMarker(String propertyId, double lat, double longi) {
+
         LatLng latLng = new LatLng(lat, longi);
 
         MarkerOptions markerOptions = new MarkerOptions();
 
         markerOptions.snippet(String.valueOf(propertyId));
-        mMarker.setTag(propertyId);
         markerOptions.position(latLng);
 
+
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-        mGoogleMap.addMarker(markerOptions);
-        Log.d("debago", "marker property getSnippet: " + markerOptions.getSnippet());
+        mGoogleMap.addMarker(markerOptions).setTag(propertyId);
 
+    }
 
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
 
+        if (marker.getSnippet()!=null){
+
+            startDetailActivity(Long.valueOf(marker.getSnippet()));
+        }
+        return true;
     }
 
     // Launch View Place Activity
@@ -285,4 +318,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // NOTE: delegate the permission handling to generated method
         MapsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
+
+
 }
