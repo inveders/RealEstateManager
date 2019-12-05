@@ -221,6 +221,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted() {
         return aVoid -> {
             startMainActivity();
+            getApplicationContext().deleteDatabase("MyDatabase.db");
             finish();
         };
     }
@@ -252,6 +253,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                                 .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> {
                                     deleteUserFromRommDatabase(realEstateAgentId);
                                     deleteUserFromFirebase(email);
+                                    getApplicationContext().deleteDatabase("MyDatabase.db");
                                 })
                                 .setNegativeButton(R.string.alert_dialog_no, null)
                                 .show();
