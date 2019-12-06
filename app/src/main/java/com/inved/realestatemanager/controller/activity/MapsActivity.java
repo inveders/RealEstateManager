@@ -40,12 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
-
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
-@RuntimePermissions
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerClickListener {
 
     //GOOGLE GEOCODING
@@ -70,7 +66,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        MapsActivityPermissionsDispatcher.checkLocationWithPermissionCheck(this);
+        checkLocation();
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -251,7 +248,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //LOCATION
 
     @SuppressLint("MissingPermission")
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+
     public void checkLocation() {
 
         //Subscribe to providers
@@ -314,12 +311,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         alert.show();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // NOTE: delegate the permission handling to generated method
-        MapsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
+
 
 
 }
