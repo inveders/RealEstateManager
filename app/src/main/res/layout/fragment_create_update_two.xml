@@ -25,7 +25,8 @@
         android:layout_marginStart="@dimen/default_margin"
         app:layout_constraintLeft_toRightOf="@id/activity_create_update_property_date_entry_title"
         app:layout_constraintTop_toTopOf="@id/activity_create_update_real_estate_agent_title"
-        style="@style/EditTextStylewithoutText"
+
+
         />
 
     <TextView
