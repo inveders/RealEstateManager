@@ -3,6 +3,7 @@ package com.inved.realestatemanager.controller.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CreateUpdatePropertyFragmentOne extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -126,6 +128,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             context = MainApplication.getInstance().getApplicationContext();
         }
 
+        Log.d("debagp","Manage choice is :" +ManageCreateUpdateChoice.getCreateUpdateChoice(context));
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != 0) {
             long propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
             this.updateUIwithDataFromDatabase(propertyId);
@@ -200,8 +203,9 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private void splitPoiInCheckbox(String propertyPointOfInterest) {
 
         ArrayList<String> poiList = new ArrayList<>(Arrays.asList(propertyPointOfInterest.split(",")));
-
+        Log.d("debago","in splitPOI inCheckbox "+poiList);
         if (poiList.contains(getString(R.string.fullscreen_dialog__poi_school))) {
+            Log.d("debago","school checkbox is ok");
             schoolCheckBox.setChecked(true);
         }
         if (poiList.contains(getString(R.string.fullscreen_dialog__poi_restaurants))) {
@@ -268,7 +272,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
         }
 
-
     }
 
 
@@ -326,7 +329,35 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         if (oilStationCheckBox.isChecked())
             pointsOfInterestList.add(getString(R.string.fullscreen_dialog_poi_oil_station));
 
-        return pointsOfInterestList.toString();
+        String myList;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            myList = String.join(",", pointsOfInterestList);
+        }else{
+            myList=joinMethod(pointsOfInterestList);
+        }
+
+        return myList;
+    }
+
+    private static String joinMethod(List<String> input) {
+
+        if (input == null || input.size() <= 0) return "";
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < input.size(); i++) {
+
+            sb.append(input.get(i));
+
+            // if not the last item
+            if (i != input.size() - 1) {
+                sb.append(",");
+            }
+
+        }
+
+        return sb.toString();
+
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
@@ -338,8 +369,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(context);
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
 
-
     }
-
 
 }
