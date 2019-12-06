@@ -41,7 +41,8 @@
     <string name="list_property_unit_price">$</string>
     <string name="list_property_price">150000</string>
     <string name="list_property_no_price_indicated">No price indicated</string>
-    <string name="none">No one</string>
+    <string name="none"> </string>
+    <string name="date_of_sale_to_define">CLIQUEZ ICI POUR DEFINIR </string>
     <string name="price_in_meter">%1$s m2</string>
     <string name="list_property_no_property_found">No property found</string>
     <string name="list_property_image_name">Image 1 : Le salon</string>

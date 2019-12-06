@@ -107,7 +107,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
     private void configureToolbar() {
 
         Toolbar toolbar = findViewById(R.id.toolbar_map);

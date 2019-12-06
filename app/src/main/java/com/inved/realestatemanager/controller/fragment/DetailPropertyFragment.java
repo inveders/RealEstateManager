@@ -338,7 +338,7 @@ public class DetailPropertyFragment extends Fragment {
         if (property.getDateOfSaleForPorperty() != null) {
             this.dateOfSaleForPorperty.setText(property.getDateOfSaleForPorperty());
         } else {
-            this.dateOfSaleForPorperty.setText(MainApplication.getResourses().getString(R.string.none));
+            this.dateOfSaleForPorperty.setText(MainApplication.getResourses().getString(R.string.date_of_sale_to_define));
         }
 
     }
