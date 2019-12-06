@@ -170,6 +170,7 @@
     <string name="set_error_surface_area">Enter a surface</string>
     <string name="set_error_price">Enter a price</string>
     <string name="set_error_agent">Please select an agent</string>
+    <string name="set_error_photo">Please add at least 1 photo</string>
     <string name="date_picker_select_date">Select the date</string>
     <string name="set_error_add_agent_firstname">Enter a firstname</string>
     <string name="set_error_add_agent_lastname">Enter a lastname</string>
