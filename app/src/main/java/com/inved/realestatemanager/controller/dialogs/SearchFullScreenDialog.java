@@ -85,7 +85,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     private int mMinBedroom = 0;
     private int mMaxBedroom = 7;
     private String mStatus = null;
-    private long mRealEstateAgentName = 0;
+    private String mRealEstateAgentName = null;
     private double minSurface = 0;
     private double maxSurface = 99999;
     private double minPrice = 0;
@@ -219,7 +219,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
-            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItemId() + 1;
+           /** mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItemId() + 1;*/
         }
 
     }
