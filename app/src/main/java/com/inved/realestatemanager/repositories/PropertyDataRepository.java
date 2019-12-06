@@ -19,7 +19,7 @@ public class PropertyDataRepository {
 
     // --- GET ---
 
-    public LiveData<List<Property>> getItems(long realEstateAgentId){ return this.propertyDao.getProperty(realEstateAgentId); }
+    public LiveData<List<Property>> getItems(String realEstateAgentId){ return this.propertyDao.getProperty(realEstateAgentId); }
 
     public LiveData<List<Property>> getAllItems(){ return this.propertyDao.getAllProperties(); }
 
@@ -28,7 +28,7 @@ public class PropertyDataRepository {
     // --- SEARCH ---
 
     public LiveData<List<Property>> searchProperty(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
-                                                     int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
+                                                     int minBedRoom, int maxBedRoom, String country, String status, String realEstateAgentId) {
         return this.propertyDao.searchProperty(roomSearchQuery.queryRoomDatabase(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId));
 
     }
@@ -49,7 +49,7 @@ public class PropertyDataRepository {
                                                    String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                                                    boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                                    String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                                                   String photoDescription4, String photoDescription5, long realEstateAgentId,long propertyId) {
+                                                   String photoDescription4, String photoDescription5, String realEstateAgentId,long propertyId) {
         return this.propertyDao.updateProperty(roomUpdateQuery.queryRoomUpdateDatabase(typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,

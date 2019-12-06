@@ -22,17 +22,14 @@ public interface RealEstateAgentsDao {
 
 
     @Query("SELECT * FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
-    LiveData<RealEstateAgents> getRealEstateAgentById(long realEstateAgentId);
-
-    @Query("SELECT * FROM RealEstateAgents WHERE email = :email")
-    LiveData<RealEstateAgents> getRealEstateAgentByEmail(String email);
+    LiveData<RealEstateAgents> getRealEstateAgentById(String realEstateAgentId);
 
     @Query("SELECT * FROM RealEstateAgents")
     LiveData<List<RealEstateAgents>> getAllRealEstateAgents();
 
     @Query("DELETE FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
-    int deleteRealEstateAgent(long realEstateAgentId);
+    int deleteRealEstateAgent(String realEstateAgentId);
 
-    @Query("UPDATE RealEstateAgents SET firstname = :firstname, lastname = :lastname,urlPicture = :urlPicture,agencyName = :agencyName,agencyPlaceId = :agencyPlaceId,email = :email WHERE realEstateAgentId = :realEstateAgentId")
-    int updateAgent(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email,long realEstateAgentId);
+    @Query("UPDATE RealEstateAgents SET firstname = :firstname, lastname = :lastname,urlPicture = :urlPicture,agencyName = :agencyName,agencyPlaceId = :agencyPlaceId WHERE realEstateAgentId = :realEstateAgentId")
+    int updateAgent(String realEstateAgentId, String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId);
 }

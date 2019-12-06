@@ -64,11 +64,11 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
 
     @Override
-    public void onEditAgent(long id) {
+    public void onEditAgent(String id) {
 
         AddAgentDialog dialog = new AddAgentDialog();
         Bundle bundle = new Bundle();
-        bundle.putLong("myLong", id);
+        bundle.putString("myRealEstateAgentId", id);
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "AddAgentDialog");
 

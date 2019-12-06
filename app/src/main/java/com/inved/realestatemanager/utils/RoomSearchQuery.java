@@ -9,7 +9,7 @@ public class RoomSearchQuery {
 
 
     public SimpleSQLiteQuery queryRoomDatabase(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
-                                               int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
+                                               int minBedRoom, int maxBedRoom, String country, String status, String realEstateAgentId) {
 
         // RoomSearchQuery string
         String queryString = "";
@@ -24,7 +24,7 @@ public class RoomSearchQuery {
 
         // Optional parts are added to query string and to args upon here
 
-        if (realEstateAgentId != 0) {
+        if (realEstateAgentId != null) {
             queryString += " WHERE";
             queryString += " realEstateAgentId = :realEstateAgentId";
             args.add(realEstateAgentId);

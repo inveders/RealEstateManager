@@ -16,7 +16,7 @@ public class RoomUpdateQuery {
                                                      String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                                                      boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                                      String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                                                     String photoDescription4, String photoDescription5, long realEstateAgentId,long propertyId) {
+                                                     String photoDescription4, String photoDescription5, String realEstateAgentId,long propertyId) {
 
         // RoomSearchQuery string
         String queryString = "";
@@ -237,7 +237,7 @@ public class RoomUpdateQuery {
         }
 
 
-        if (realEstateAgentId != 0) {
+        if (realEstateAgentId != null) {
 
             queryString += " realEstateAgentId = :realEstateAgentId";
             args.add(realEstateAgentId);

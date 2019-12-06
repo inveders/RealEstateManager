@@ -33,14 +33,11 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.domain.UriToStringConversion;
-import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
-import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
@@ -119,9 +116,9 @@ public class AddAgentDialog extends DialogFragment {
         bundle = getArguments();
         if (bundle != null) {
             addActionButton.setText(getString(R.string.add_agent_dialog_edit_text));
-            long realEstateAgentId = bundle.getLong("myLong", 0);
-            if (realEstateAgentId != 0) {
-                editRealEstateAgent(realEstateAgentId);
+            String realEstateAgentIdBundle = bundle.getString("myRealEstateAgentId", null);
+            if (realEstateAgentIdBundle != null) {
+                editRealEstateAgent(realEstateAgentIdBundle);
             }
 
         }
@@ -187,11 +184,11 @@ public class AddAgentDialog extends DialogFragment {
         */} else {
             String firstname = firstnameEditText.getText().toString();
             String lastname = lastnameEditText.getText().toString();
-            String email;
+            String realEstateAgentId;
             if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-                email=FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                realEstateAgentId=FirebaseAuth.getInstance().getCurrentUser().getEmail();
             }else{
-                email=null;
+                realEstateAgentId=null;
             }
 
             if (getContext() != null) {
@@ -208,9 +205,10 @@ public class AddAgentDialog extends DialogFragment {
 
             }
 
-            RealEstateAgents realEstateAgents = new RealEstateAgents(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email);
+            assert realEstateAgentId != null;
+            RealEstateAgents realEstateAgents = new RealEstateAgents(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
-            RealEstateAgentHelper.createAgent(firstname, lastname, urlPicture,agencyName,agencyPlaceId,email);
+            RealEstateAgentHelper.createAgent(realEstateAgentId,firstname, lastname, urlPicture,agencyName,agencyPlaceId);
 
             if(urlPicture!=null){
 
@@ -220,10 +218,10 @@ public class AddAgentDialog extends DialogFragment {
 
             if (bundle != null) {
 
-                long realEstateAgentId = bundle.getLong("myLong", 0);
+                String realEstateAgentIdBundle = bundle.getString("myRealEstateAgentId", null);
                 Log.d("debago","agencyName :"+agencyName+" real estate agent string : "+realEstateAgents.toString());
-                if(realEstateAgentId!=0){
-                    this.propertyViewModel.updateRealEstateAgent(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email,realEstateAgentId);
+                if(realEstateAgentIdBundle!=null){
+                    this.propertyViewModel.updateRealEstateAgent(realEstateAgentIdBundle,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
                     Toast.makeText(getContext(), getString(R.string.add_agent_dialog_update_confirm_text), Toast.LENGTH_SHORT).show();
                 }
@@ -382,7 +380,7 @@ public class AddAgentDialog extends DialogFragment {
     }
 
     // Get all items for a user
-    private void editRealEstateAgent(long realEstateAgendId) {
+    private void editRealEstateAgent(String realEstateAgendId) {
 
      /*   if(autocompleteFragment.getView()==null){
        //     autocompleteFragment.getView().setVisibility(View.GONE);

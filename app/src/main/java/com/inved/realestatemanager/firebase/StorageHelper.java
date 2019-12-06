@@ -46,7 +46,7 @@ public class StorageHelper {
     //UPLOAD A FILE
     public static void uploadFile(String imagePath, int number, String documentId) {
 
-        Log.d("debago", "In upload file");
+        Log.d("debago", "In upload file: "+imagePath);
         Uri file = Uri.fromFile(new File(imagePath));
         riversRef = Objects.requireNonNull(getStorageReference()).child("images/" + file.getLastPathSegment());
         UploadTask uploadTask = riversRef.putFile(file);

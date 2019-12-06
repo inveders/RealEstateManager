@@ -23,21 +23,21 @@ public class RealEstateAgentHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createAgent(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email) {
+    public static Task<Void> createAgent(String realEstateAgendId,String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId) {
         // 1 - Create Obj
 
-        RealEstateAgents realEstateAgentsToCreate = new RealEstateAgents(firstname, lastname,urlPicture, agencyName,agencyPlaceId,email);
+        RealEstateAgents realEstateAgentsToCreate = new RealEstateAgents(realEstateAgendId, firstname, lastname,urlPicture, agencyName,agencyPlaceId);
 
-        return RealEstateAgentHelper.getUsersCollection().document(email).set(realEstateAgentsToCreate);
+        return RealEstateAgentHelper.getUsersCollection().document(realEstateAgendId).set(realEstateAgentsToCreate);
     }
 
     // --- GET ---
 
-    public static Query getAgentWhateverAgency(String email){
+    public static Query getAgentWhateverAgency(String realEstateAgentId){
 
         return FirebaseFirestore.getInstance().collectionGroup(SUB_COLLECTION_NAME)
 
-                .whereEqualTo("email",email);
+                .whereEqualTo("realEstateAgentId",realEstateAgentId);
 
     }
 
@@ -64,7 +64,7 @@ public class RealEstateAgentHelper {
 
     // --- DELETE ---
 
-    public static Task<Void> deleteAgent(String email) {
-        return RealEstateAgentHelper.getUsersCollection().document(email).delete();
+    public static Task<Void> deleteAgent(String realEstateAgentId) {
+        return RealEstateAgentHelper.getUsersCollection().document(realEstateAgentId).delete();
     }
 }

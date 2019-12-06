@@ -16,15 +16,13 @@ public class RealEstateAgentDataRepository {
     // --- GET REAL ESTATE AGENT ---
     public LiveData<RealEstateAgents> getRealEstateAgentByName(String firstname, String lastname) { return this.realEstateAgentsDao.getRealEstateAgentByName(firstname,lastname); }
 
-    public LiveData<RealEstateAgents> getRealEstateAgentById(long realEstateAgentId) { return this.realEstateAgentsDao.getRealEstateAgentById(realEstateAgentId); }
-
-    public LiveData<RealEstateAgents> getRealEstateAgentByEmail(String email) { return this.realEstateAgentsDao.getRealEstateAgentByEmail(email); }
+    public LiveData<RealEstateAgents> getRealEstateAgentById(String realEstateAgentId) { return this.realEstateAgentsDao.getRealEstateAgentById(realEstateAgentId); }
 
 
     // --- GET ALL REAL ESTATE AGENTS ---
     public LiveData<List<RealEstateAgents>> getAllRealEstateAgents() { return this.realEstateAgentsDao.getAllRealEstateAgents(); }
 
-    public void deleteRealEstateAgent(long realEstateAgentId) { this.realEstateAgentsDao.deleteRealEstateAgent(realEstateAgentId); }
+    public void deleteRealEstateAgent(String realEstateAgentId) { this.realEstateAgentsDao.deleteRealEstateAgent(realEstateAgentId); }
 
 // --- CREATE ---
 
@@ -32,6 +30,6 @@ public class RealEstateAgentDataRepository {
 
     // --- UPDATE ---
 
-    public int updateAgent(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email,long realEstateAgentId){ return this.realEstateAgentsDao.updateAgent(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email,realEstateAgentId); }
+    public int updateAgent(String realEstateAgentId,String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId){ return this.realEstateAgentsDao.updateAgent(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId); }
 
 }

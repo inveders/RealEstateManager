@@ -42,8 +42,7 @@ public class Property {
     private String photoDescription3;
     private String photoDescription4;
     private String photoDescription5;
-    private String realEstateAgentEmail;
-    private long realEstateAgentId;
+    private String realEstateAgentId;
 
     public Property(){}
 
@@ -54,7 +53,7 @@ public class Property {
                     String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                     boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                     String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                    String photoDescription4, String photoDescription5,String realEstateAgentEmail, long realEstateAgentId) {
+                    String photoDescription4, String photoDescription5, String realEstateAgentId) {
 
         this.typeProperty = typeProperty;
         this.pricePropertyInDollar = pricePropertyInDollar;
@@ -84,7 +83,6 @@ public class Property {
         this.photoDescription3 = photoDescription3;
         this.photoDescription4 = photoDescription4;
         this.photoDescription5 = photoDescription5;
-        this.realEstateAgentEmail=realEstateAgentEmail;
         this.realEstateAgentId = realEstateAgentId;
     }
 
@@ -320,21 +318,14 @@ public class Property {
         this.photoDescription5 = photoDescription5;
     }
 
-    public long getRealEstateAgentId() {
+    public String getRealEstateAgentId() {
         return realEstateAgentId;
     }
 
-    public void setRealEstateAgentId(long realEstateAgentId) {
+    public void setRealEstateAgentId(String realEstateAgentId) {
         this.realEstateAgentId = realEstateAgentId;
     }
 
-    public String getRealEstateAgentEmail() {
-        return realEstateAgentEmail;
-    }
-
-    public void setRealEstateAgentEmail(String realEstateAgentEmail) {
-        this.realEstateAgentEmail = realEstateAgentEmail;
-    }
 
     @NonNull
     @Override

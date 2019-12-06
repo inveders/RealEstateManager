@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.injections.Injection;
@@ -37,6 +38,7 @@ import com.inved.realestatemanager.models.PropertyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -129,7 +131,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void initializeMap() {
 
-        propertyViewModel.getAllPropertiesForOneAgent(1).observe(this, properties -> {
+        propertyViewModel.getAllPropertiesForOneAgent(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail()).observe(this, properties -> {
 
             String streetNumber;
             String streetName;

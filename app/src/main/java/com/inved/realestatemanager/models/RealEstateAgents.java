@@ -7,32 +7,33 @@ import androidx.room.PrimaryKey;
 @Entity
 public class RealEstateAgents {
 
-    @PrimaryKey(autoGenerate = true)
-    private long realEstateAgentId;
+    @NonNull
+    @PrimaryKey
+    private String realEstateAgentId;
 
     private String firstname;
     private String lastname;
     private String urlPicture;
     private String agencyName;
     private String agencyPlaceId;
-    private String email;
+
 
     public RealEstateAgents(){}
 
-    public RealEstateAgents(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email) {
+    public RealEstateAgents(@NonNull String realEstateAgentId, String firstname, String lastname, String urlPicture, String agencyName, String agencyPlaceId) {
+        this.realEstateAgentId=realEstateAgentId;
         this.firstname = firstname;
         this.lastname = lastname;
         this.urlPicture = urlPicture;
         this.agencyName =agencyName;
         this.agencyPlaceId=agencyPlaceId;
-        this.email=email;
     }
 
-    public long getRealEstateAgentId() {
+    public String getRealEstateAgentId() {
         return realEstateAgentId;
     }
 
-    public void setRealEstateAgentId(long realEstateAgentId) {
+    public void setRealEstateAgentId(@NonNull String realEstateAgentId) {
         this.realEstateAgentId = realEstateAgentId;
     }
 
@@ -76,15 +77,8 @@ public class RealEstateAgents {
         this.agencyPlaceId = agencyPlaceId;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
+    @NonNull
     @Override
     public String toString() {
         return "RealEstateAgents{" +
@@ -94,7 +88,6 @@ public class RealEstateAgents {
                 ", urlPicture='" + urlPicture + '\'' +
                 ", agencyName='" + agencyName + '\'' +
                 ", agencyPlaceId='" + agencyPlaceId + '\'' +
-                ", email='" + email + '\'' +
                 '}';
     }
 }

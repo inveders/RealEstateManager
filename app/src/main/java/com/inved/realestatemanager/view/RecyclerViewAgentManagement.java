@@ -109,7 +109,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
     }
 
     public interface AgentManagementInterface {
-        void onEditAgent(long id);
+        void onEditAgent(String id);
     }
 
 }

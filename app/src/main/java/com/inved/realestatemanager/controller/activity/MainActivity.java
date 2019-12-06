@@ -130,16 +130,16 @@ public class MainActivity extends AppCompatActivity {
     private void checkIfUserExistInFirebase(String email){
         RealEstateAgentHelper.getAgentWhateverAgency(email).get().addOnCompleteListener(task -> {
 
-        //    Log.d("debago", "MA CHECK TASK : "+ Objects.requireNonNull(task.getResult()));
+          //  Log.d("debago", "MA CHECK TASK : "+ Objects.requireNonNull(task.getResult()));
 
             if (task.isSuccessful()) {
                 if (task.getResult() != null) {
                  //   Log.d("debago", "MA CHECK task successful");
                     if (task.getResult().getDocuments().size() != 0) {
                         startListPropertyActivity();
-                     //   Log.d("debago", "MA CHECK successful, firstname is : " + task.getResult().getDocuments().get(0).getString("firstname"));
+                   //     Log.d("debago", "MA CHECK successful, firstname is : " + task.getResult().getDocuments().get(0).getString("firstname"));
                     } else {
-                   //     Log.d("debago", "MA CHECK notSuccessful, size is: " + task.getResult().getDocuments().size());
+                      //  Log.d("debago", "MA CHECK notSuccessful, size is: " + task.getResult().getDocuments().size());
                         ManageAgency.saveAgencyPlaceId(getApplicationContext(),null);
                         startFinishRegisterActivity();
                     }
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             }else{
-             //   Log.d("debago", "MA CHECK task IS NOT successful");
+            //    Log.d("debago", "MA CHECK task IS NOT successful");
             }
 
 

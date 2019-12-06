@@ -31,12 +31,8 @@ public class PropertyViewModel extends ViewModel {
         return realEstateAgentDataSource.getRealEstateAgentByName(firstname,lastname);
     }
 
-    public LiveData<RealEstateAgents> getRealEstateAgentById(long realEstateAgentId) {
+    public LiveData<RealEstateAgents> getRealEstateAgentById(String realEstateAgentId) {
         return realEstateAgentDataSource.getRealEstateAgentById(realEstateAgentId);
-    }
-
-    public LiveData<RealEstateAgents> getRealEstateAgentByEmail(String email) {
-        return realEstateAgentDataSource.getRealEstateAgentByEmail(email);
     }
 
     public LiveData<List<RealEstateAgents>> getAllRealEstateAgents() {
@@ -49,13 +45,13 @@ public class PropertyViewModel extends ViewModel {
 
     }
 
-    public void updateRealEstateAgent(String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId,String email,long realEstateAgentId) {
+    public void updateRealEstateAgent(String realEstateAgentId, String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId) {
 
-        executor.execute(() -> realEstateAgentDataSource.updateAgent(firstname, lastname, urlPicture, agencyName, agencyPlaceId,email,realEstateAgentId));
+        executor.execute(() -> realEstateAgentDataSource.updateAgent(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId));
 
     }
 
-    public void deleteRealEstateAgent(long realEstateAgentId) {
+    public void deleteRealEstateAgent(String realEstateAgentId) {
         executor.execute(() -> realEstateAgentDataSource.deleteRealEstateAgent(realEstateAgentId));
     }
 
@@ -63,7 +59,7 @@ public class PropertyViewModel extends ViewModel {
     // FOR ITEM
     // -------------
 
-    public LiveData<List<Property>> getAllPropertiesForOneAgent(long realEstateAgentId) {
+    public LiveData<List<Property>> getAllPropertiesForOneAgent(String realEstateAgentId) {
         return propertyDataSource.getItems(realEstateAgentId);
     }
 
@@ -86,7 +82,7 @@ public class PropertyViewModel extends ViewModel {
                                                    String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                                                    boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                                    String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                                                   String photoDescription4, String photoDescription5, long realEstateAgentId,long propertyId) {
+                                                   String photoDescription4, String photoDescription5, String realEstateAgentId,long propertyId) {
         executor.execute(() -> propertyDataSource.updateProperty(typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
@@ -99,7 +95,7 @@ public class PropertyViewModel extends ViewModel {
     // -------------
 
     public LiveData<List<Property>> searchProperty(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
-                                                   int minBedRoom, int maxBedRoom, String country, String status, long realEstateAgentId) {
+                                                   int minBedRoom, int maxBedRoom, String country, String status, String realEstateAgentId) {
         return propertyDataSource.searchProperty(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId);
     }
 

@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.controller.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,8 +36,12 @@ import com.inved.realestatemanager.utils.MainApplication;
 
 import java.util.ArrayList;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
+@RuntimePermissions
 public class DetailPropertyFragment extends Fragment {
 
     private TextView typeProperty;
@@ -114,7 +119,7 @@ public class DetailPropertyFragment extends Fragment {
             long myPropertyId = intent.getLongExtra(PROPERTY_ID, 0);
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
-                updateWithProperty(property);
+                DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this,property);
                 getRealEstateAgent(property.getRealEstateAgentId());
             });
 
@@ -145,7 +150,8 @@ public class DetailPropertyFragment extends Fragment {
         this.geocodingViewModel = ViewModelProviders.of(this).get(GeocodingViewModel.class);
     }
 
-    private void updateWithProperty(Property property) {
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    public void updateWithProperty(Property property) {
 
         UnitConversion unitConversion = new UnitConversion();
 
@@ -337,7 +343,7 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
-    private void getRealEstateAgent(long realEstateAgentId) {
+    private void getRealEstateAgent(String realEstateAgentId) {
 
         propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this, realEstateAgents -> {
 
@@ -393,5 +399,11 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        DetailPropertyFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
 
 }
