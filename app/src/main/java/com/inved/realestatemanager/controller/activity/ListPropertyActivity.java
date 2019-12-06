@@ -31,6 +31,7 @@ import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
 import butterknife.OnClick;
 
@@ -93,6 +94,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     public void onClickAddButton() {
         // 7 - Create item after user clicked on button
         //  this.createProperty(); GO ON THE CREATE PROPERTY ACTIVITY
+
         Intent intent = new Intent(ListPropertyActivity.this, CreatePropertyActivity.class);
 
         startActivity(intent);
@@ -184,6 +186,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
         final MenuItem addProperty = menu.findItem(R.id.menu_action_add);
         addProperty.setOnMenuItemClickListener(menuItem -> {
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, 0);
             startCreateUpdatePropertyActivity();
             return true;
         });
@@ -229,10 +232,10 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private void deleteAccount(){
 
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            String realEstateAgentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-            propertyViewModel.getRealEstateAgentByEmail(email).observe(this,realEstateAgents -> {
-                long realEstateAgentId = realEstateAgents.getRealEstateAgentId();
+            propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this,realEstateAgents -> {
+
 
                 propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
                     if (properties.size() > 0) {
@@ -252,7 +255,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                                 .setMessage(R.string.popup_message_confirmation_delete_account)
                                 .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> {
                                     deleteUserFromRommDatabase(realEstateAgentId);
-                                    deleteUserFromFirebase(email);
+                                    deleteUserFromFirebase(realEstateAgentId);
                                     getApplicationContext().deleteDatabase("MyDatabase.db");
                                 })
                                 .setNegativeButton(R.string.alert_dialog_no, null)
@@ -270,7 +273,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
-    private void deleteUserFromFirebase(String email) {
+    private void deleteUserFromFirebase(String realEstateAgentId) {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         // Get auth credentials from the user for re-authentication. The example below shows
@@ -292,7 +295,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                                     }
                                 });
 
-                        RealEstateAgentHelper.deleteAgent(email).addOnFailureListener(onFailureListener());
+                        RealEstateAgentHelper.deleteAgent(realEstateAgentId).addOnFailureListener(onFailureListener());
 
                     });
         }
@@ -305,7 +308,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         return e -> Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
     }
 
-    private void deleteUserFromRommDatabase(long realEstateAgentId){
+    private void deleteUserFromRommDatabase(String realEstateAgentId){
         propertyViewModel.deleteRealEstateAgent(realEstateAgentId);
     }
 

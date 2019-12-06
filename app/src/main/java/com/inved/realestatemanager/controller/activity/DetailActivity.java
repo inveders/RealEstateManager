@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
+import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
 import butterknife.OnClick;
 
@@ -94,6 +95,7 @@ public class DetailActivity extends BaseActivity  {
 
         final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
         updateProperty.setOnMenuItemClickListener(menuItem -> {
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, 1);
             startCreatePropertyActivity();
 
             return true;
