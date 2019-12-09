@@ -8,7 +8,12 @@ import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.inved.realestatemanager.utils.MainApplication;
+
+import java.io.File;
+import java.io.IOException;
 
 public class StorageHelper {
 
@@ -37,7 +42,6 @@ public class StorageHelper {
 
         // Register receiver for uploads and downloads
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(ctx);
-        manager.registerReceiver(mBroadcastReceiver, MyDownloadService.getIntentFilter());
         manager.registerReceiver(mBroadcastReceiver, MyUploadService.getIntentFilter());
 
         // Local broadcast receiver
@@ -46,13 +50,9 @@ public class StorageHelper {
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG, "onReceive:" + intent);
 
-
                 if(intent.getAction()!=null){
                     switch (intent.getAction()) {
-                        case MyDownloadService.DOWNLOAD_COMPLETED:
-                        case MyDownloadService.DOWNLOAD_ERROR:
 
-                            break;
                         case MyUploadService.UPLOAD_COMPLETED:
                         case MyUploadService.UPLOAD_ERROR:
                             onUploadResultIntent(intent);
@@ -65,7 +65,7 @@ public class StorageHelper {
         };
     }
 
-    public void uploadFromUri(Uri fileUri,String documentId) {
+    public void uploadFromUri(Uri fileUri,String documentId,int number) {
         setmBroadcastReceiver();
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
 
@@ -81,24 +81,42 @@ public class StorageHelper {
         ctx.startService(new Intent(ctx, MyUploadService.class)
                 .putExtra(MyUploadService.EXTRA_FILE_URI, fileUri)
                 .putExtra(MyUploadService.EXTRA_DOCUMENT_ID, documentId)
+                .putExtra(MyUploadService.EXTRA_PHOTO_NUMBER, number)
                 .setAction(MyUploadService.ACTION_UPLOAD));
 
 
     }
 
-    public void beginDownload(String documentId) {
-        setmBroadcastReceiver();
-        // Get path
-        String path = "Pictures/" + mFileUri.getLastPathSegment();
+    public void beginDownload(String getLastPathFromFirebase,String documentId) throws IOException {
+        Log.d("debago", "beginDownload:");
+        StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
+                .child(getLastPathFromFirebase);
 
-        // Kick off MyDownloadService to download the file
-        Intent intent = new Intent(ctx, MyDownloadService.class)
-                .putExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH, path)
-                .putExtra(MyDownloadService.EXTRA_DOWNLOAD_DOCUMENT_ID, documentId)
-                .setAction(MyDownloadService.ACTION_DOWNLOAD);
-        ctx.startService(intent);
+        File localFile = File.createTempFile("Pictures", "jpg");
+
+        fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+            Log.d("debago", "beginDownload the file is :"+localFile.getAbsolutePath());
+            // Local temp file has been created
+        }).addOnFailureListener(exception -> {
+            // Handle any errors
+        });
 
     }
+/*
+    private File createImageFile() throws IOException {
+        // Create an image file name
+
+            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
+            String mFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
+            // Save a file: path for using again
+           // filePath = "file://" + mFile.getAbsolutePath();
+            return mFile;
+
+
+        return null;
+    }*/
 
     private void onUploadResultIntent(Intent intent) {
         // Got a new intent from MyUploadService with a success or failure

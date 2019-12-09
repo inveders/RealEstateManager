@@ -25,6 +25,7 @@ public class MyUploadService extends MyBaseTaskService {
     /** Intent Extras **/
     public static final String EXTRA_FILE_URI = "extra_file_uri";
     public static final String EXTRA_DOCUMENT_ID = "extra_document_id";
+    public static final String EXTRA_PHOTO_NUMBER = "extra_photo_number";
     public static final String EXTRA_DOWNLOAD_URL = "extra_download_url";
 
     // [START declare_ref]
@@ -43,9 +44,9 @@ public class MyUploadService extends MyBaseTaskService {
         if (ACTION_UPLOAD.equals(intent.getAction())) {
             Uri fileUri = intent.getParcelableExtra(EXTRA_FILE_URI);
             String documentId = intent.getStringExtra(EXTRA_DOCUMENT_ID);
-
+            int numberPhoto = intent.getIntExtra(EXTRA_PHOTO_NUMBER,0);
             mStorageRef = FirebaseStorage.getInstance().getReference(documentId);
-
+            Log.d(TAG, "onStartCommand in in documentId:" + documentId + " and number photo is " + numberPhoto);
             // Make sure we have permission to read the data
            /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 getContentResolver().takePersistableUriPermission(
@@ -53,14 +54,14 @@ public class MyUploadService extends MyBaseTaskService {
                         Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }*/
 
-            uploadFromUri(fileUri);
+            uploadFromUri(fileUri,documentId,numberPhoto);
         }
 
         return START_REDELIVER_INTENT;
     }
 
     // [START upload_from_uri]
-    private void uploadFromUri(final Uri fileUri) {
+    private void uploadFromUri(final Uri fileUri,String documentId, int numberPhoto) {
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
 
         // [START_EXCLUDE]
@@ -73,6 +74,33 @@ public class MyUploadService extends MyBaseTaskService {
         if(fileUri.getLastPathSegment()!=null){
             final StorageReference photoRef = mStorageRef.child("Pictures")
                     .child(fileUri.getLastPathSegment());
+
+
+            String downloadURL = fileUri.getLastPathSegment();
+            //We have to pure here the url in firestore
+            switch (numberPhoto) {
+                case 1:
+                    PropertyHelper.updatePhotoUri1(downloadURL, documentId);
+                    break;
+                case 2:
+                    PropertyHelper.updatePhotoUri2(downloadURL, documentId);
+                    break;
+                case 3:
+                    PropertyHelper.updatePhotoUri3(downloadURL, documentId);
+                    break;
+                case 4:
+                    PropertyHelper.updatePhotoUri4(downloadURL, documentId);
+                    break;
+                case 5:
+                    PropertyHelper.updatePhotoUri5(downloadURL, documentId);
+                    break;
+                case 6:
+                    RealEstateAgentHelper.updateUrlPicture(downloadURL);
+                    break;
+                default:
+                    // code block
+            }
+
 
             // [END get_child_ref]
 

@@ -568,15 +568,15 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
                             //Update firestore database with good image url and upload image in Firebase Storage
                             if (photoUri1 != null)
-                                storageHelper.uploadFromUri(Uri.parse(photoUri1), documentId);
+                                storageHelper.uploadFromUri(Uri.parse(photoUri1), documentId,1);
                             if (photoUri2 != null)
-                                storageHelper.uploadFromUri(Uri.parse(photoUri2), documentId);
+                                storageHelper.uploadFromUri(Uri.parse(photoUri2), documentId,2);
                             if (photoUri3 != null)
-                                storageHelper.uploadFromUri(Uri.parse(photoUri3), documentId);
+                                storageHelper.uploadFromUri(Uri.parse(photoUri3), documentId,3);
                             if (photoUri4 != null)
-                                storageHelper.uploadFromUri(Uri.parse(photoUri4), documentId);
+                                storageHelper.uploadFromUri(Uri.parse(photoUri4), documentId,4);
                             if (photoUri5 != null)
-                                storageHelper.uploadFromUri(Uri.parse(photoUri5), documentId);
+                                storageHelper.uploadFromUri(Uri.parse(photoUri5), documentId,5);
 
                             String realEstateAgentIdBis = null;
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {

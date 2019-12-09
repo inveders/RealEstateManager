@@ -66,10 +66,6 @@
             android:parentActivityName=".controller.activity.ListPropertyActivity" />
 
         <service
-            android:name=".firebase.MyDownloadService"
-            android:exported="false"/>
-
-        <service
             android:name=".firebase.MyUploadService"
             android:exported="false" />
 

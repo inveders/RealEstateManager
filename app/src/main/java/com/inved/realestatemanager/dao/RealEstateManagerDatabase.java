@@ -13,11 +13,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
+import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Property.class, RealEstateAgents.class}, version = 1, exportSchema = false)
@@ -188,6 +190,13 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     Log.d("debago", "create property list: " + property.toString());
 
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
+
+                    StorageHelper storageHelper = new StorageHelper();
+                    try {
+                        storageHelper.beginDownload(photoUri1,propertyId);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                 }
 
