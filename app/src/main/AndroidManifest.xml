@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -44,7 +46,7 @@
         <activity
             android:name=".controller.activity.ListPropertyActivity"
             android:label="@string/page_name_activity_main"
-            android:theme="@style/AppTheme"></activity> <!-- DETAIL ACTIVITY -->
+            android:theme="@style/AppTheme"/> <!-- DETAIL ACTIVITY -->
         <activity
             android:name=".controller.activity.DetailActivity"
             android:label="@string/page_name_activity_detail"
@@ -62,6 +64,18 @@
             android:name=".controller.activity.MapsActivity"
             android:label="@string/page_name_activity_create_property"
             android:parentActivityName=".controller.activity.ListPropertyActivity" />
+
+        <service
+            android:name=".firebase.MyDownloadService"
+            android:exported="false"/>
+
+        <service
+            android:name=".firebase.MyUploadService"
+            android:exported="false" />
+
+        <service
+            android:name=".firebase.MyBaseTaskService"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
