@@ -69,6 +69,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
 
+    private StorageHelper storageHelper = new StorageHelper();
+
     private String cameraFilePath;
 
     private PropertyViewModel propertyViewModel;
@@ -374,13 +376,15 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     photo1.setImageURI(selectedImage);
                     if (selectedImage != null) {
                         photoUri = selectedImage.toString();
+                        editImageName();
                     }
+
                     break;
                 case REQUEST_CAMERA_PHOTO:
 
                     if (cameraFilePath != null) {
                         photoUri = cameraFilePath;
-
+                        editImageName();
                     }
 
 
@@ -393,7 +397,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     break;
             }
 
-            editImageName();
 
             if (photoUri1 == null) {
                 photoUri1 = photoUri;
@@ -519,22 +522,28 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
         }
         if (fullDescriptionEditText.getText().toString().trim().isEmpty()) {
             fullDescriptionEditText.setError(getString(R.string.set_error_street_number));
-        } else if (dateOfEntry.getText().toString().trim().isEmpty()) {
-            DateOfDay dateOfDay = new DateOfDay();
-            dateOfEntry.setText(dateOfDay.getDateOfDay());
-        } else if(photoUri1==null){
+        } else if (photoUri1 == null) {
             Toast.makeText(context, getString(R.string.set_error_photo), Toast.LENGTH_SHORT).show();
 
         } else {
 
             String statusProperty = getString(R.string.status_property_in_progress);
-            String dateOfEntryOnMarketForProperty = dateOfEntry.getText().toString();
+
             String fullDescriptionText = fullDescriptionEditText.getText().toString();
             String realEstateAgentId = null;
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 realEstateAgentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
             }
 
+            String dateOfEntryOnMarketForProperty;
+            if (dateOfEntry.getText().toString().trim().equals(getString(R.string.create_update_choose_date))) {
+                DateOfDay dateOfDay = new DateOfDay();
+
+                dateOfEntry.setText(dateOfDay.getDateOfDay());
+                dateOfEntryOnMarketForProperty = dateOfDay.getDateOfDay();
+            } else {
+                dateOfEntryOnMarketForProperty = dateOfEntry.getText().toString();
+            }
 
             Property newProperty = new Property(typeProperty, pricePropertyInDollar,
                     surfaceAreaProperty, numberRoomsInProperty,
@@ -545,71 +554,68 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
 
+            PropertyHelper.getPropertyFirebaseId(photoUri1).get().addOnCompleteListener(task -> {
 
+                if (task.isSuccessful()) {
+                    if (task.getResult() != null) {
 
+                        if (task.getResult().getDocuments().size() != 0) {
+                            String documentId = task.getResult().getDocuments().get(0).getId();
+                            Log.d("debago", "Create property Fragment Two, getId is : " + documentId);
 
-                PropertyHelper.getPropertyFirebaseId(photoUri1).get().addOnCompleteListener(task -> {
+                            //Update firestore database with good image url and upload image in Firebase Storage
+                            if (photoUri1 != null)
+                                storageHelper.uploadFromUri(Uri.parse(photoUri1), documentId);
+                            if (photoUri2 != null)
+                                storageHelper.uploadFromUri(Uri.parse(photoUri2), documentId);
+                            if (photoUri3 != null)
+                                storageHelper.uploadFromUri(Uri.parse(photoUri3), documentId);
+                            if (photoUri4 != null)
+                                storageHelper.uploadFromUri(Uri.parse(photoUri4), documentId);
+                            if (photoUri5 != null)
+                                storageHelper.uploadFromUri(Uri.parse(photoUri5), documentId);
 
-                    if (task.isSuccessful()) {
-                        if (task.getResult() != null) {
+                            String realEstateAgentIdBis = null;
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                realEstateAgentIdBis = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                            }
 
-                            if (task.getResult().getDocuments().size() != 0) {
-                                String documentId = task.getResult().getDocuments().get(0).getId();
-                                Log.d("debago", "Create property Fragment Two, getId is : " + documentId);
-
-                                //Update firestore database with good image url and upload image in Firebase Storage
-                             /*   if(photoUri1!=null)
-                                StorageHelper.uploadFile(photoUri1,1,documentId);
-                                if(photoUri2!=null)
-                                StorageHelper.uploadFile(photoUri2,2,documentId);
-                                if(photoUri3!=null)
-                                StorageHelper.uploadFile(photoUri3,3,documentId);
-                                if(photoUri4!=null)
-                                StorageHelper.uploadFile(photoUri4,4,documentId);
-                                if(photoUri5!=null)
-                                StorageHelper.uploadFile(photoUri5,5,documentId);*/
-
-                                String realEstateAgentIdBis = null;
-                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                    realEstateAgentIdBis = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                                }
-
-                                //The choice is to update property
-                                if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
-                                    PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
-                                            surfaceAreaProperty, numberRoomsInProperty,
-                                            numberBathroomsInProperty, numberBedroomsInProperty,
-                                            fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
-                                            statusProperty, dateOfEntryOnMarketForProperty,
-                                            null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                                            photoDescription3, photoDescription4, photoDescription5,realEstateAgentIdBis, 2,documentId);
-                                }
-
-
-                            } else {
-                                Log.d("debago", "Create property Fragment Two no success: ");
-                                //The choice is to create property
-
-                                String realEstateAgentIdTer = null;
-                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                    realEstateAgentIdTer = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                                }
+                            //The choice is to update property
+                            if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
                                 PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
                                         surfaceAreaProperty, numberRoomsInProperty,
                                         numberBathroomsInProperty, numberBedroomsInProperty,
                                         fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                                         statusProperty, dateOfEntryOnMarketForProperty,
                                         null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                                        photoDescription3, photoDescription4, photoDescription5,realEstateAgentIdTer, 1,null);
-
+                                        photoDescription3, photoDescription4, photoDescription5, realEstateAgentIdBis, 2, documentId);
                             }
+
+
+                        } else {
+                            Log.d("debago", "Create property Fragment Two no success: ");
+                            //The choice is to create property
+
+                            String realEstateAgentIdTer = null;
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                realEstateAgentIdTer = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                            }
+                            PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
+                                    surfaceAreaProperty, numberRoomsInProperty,
+                                    numberBathroomsInProperty, numberBedroomsInProperty,
+                                    fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                                    statusProperty, dateOfEntryOnMarketForProperty,
+                                    null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                                    photoDescription3, photoDescription4, photoDescription5, realEstateAgentIdTer, 1, null);
+
                         }
-
-
                     }
-                });
 
-                //The choice is to update property
+
+                }
+            });
+
+            //The choice is to update property
             if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
                 Log.d("debago", "update property : " + newProperty.toString());
 
@@ -623,7 +629,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
             } else
             //The choice is to create property
-                {
+            {
                 this.propertyViewModel.createProperty(newProperty);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
                 if (getContext() != null) {
