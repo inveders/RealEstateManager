@@ -95,7 +95,6 @@ public class DetailActivity extends BaseActivity  {
 
         final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
         updateProperty.setOnMenuItemClickListener(menuItem -> {
-            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, 1);
             startCreatePropertyActivity();
 
             return true;

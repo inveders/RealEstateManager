@@ -48,6 +48,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
         if (getIntent().getLongExtra(PROPERTY_ID_INTENT, 0) != 0) {
 
+            //If different of zero, we retrieve the property Id to update the item
             long propertyId = getIntent().getLongExtra(PROPERTY_ID_INTENT, 0);
             //We send values in fragment one for create update activity
             ManageCreateUpdateChoice.saveCreateUpdateChoice(this, propertyId);

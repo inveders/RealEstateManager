@@ -75,6 +75,19 @@
     <string name="detail_property_date_of_sale_text">03/09/2019</string>
 
 
+    <!-- SERVICE UPLOAD DOWNLOAD IMAGE-->
+    <string name="success">Success</string>
+
+    <string name="progress_downloading">Downloading…</string>
+    <string name="progress_uploading">Uploading…</string>
+    <string name="progress_auth">Signing In…</string>
+
+    <string name="upload_success">Upload finished</string>
+    <string name="upload_failure">Upload failed</string>\
+
+    <string name="download_success">Download finished</string>
+    <string name="download_failure">Download failure</string>
+
     <!-- SEARCH FULLSCREEN DIALOG-->
     <string name="fullscreen_dialog_search_text">SEARCH</string>
     <string name="fullscreen_dialog_page_title">Find properties</string>
