@@ -137,7 +137,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
         });
     }
 
-    public static void preopopulateProperties(){
+    private static void preopopulateProperties(){
         PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
             Log.d("debago", "check if getAllProperty not null: " + queryDocumentSnapshots.size());
             if (queryDocumentSnapshots.size() > 0) {
@@ -145,6 +145,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
                     Property property = documentSnapshot.toObject(Property.class);
 
+                    String propertyId = property.getPropertyId();
                     String typeProperty = property.getTypeProperty();
                     double pricePropertyInDollar = property.getPricePropertyInDollar();
                     double surfaceAreaProperty = property.getSurfaceAreaProperty();
@@ -176,7 +177,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     String photoDescription5 = property.getPhotoDescription5();
                     String realEstateAgentId = property.getRealEstateAgentId();
 
-                    Property newProperty = new Property(typeProperty, pricePropertyInDollar,
+                    Property newProperty = new Property(propertyId,typeProperty, pricePropertyInDollar,
                             surfaceAreaProperty, numberRoomsInProperty,
                             numberBathroomsInProperty, numberBedroomsInProperty,
                             fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,

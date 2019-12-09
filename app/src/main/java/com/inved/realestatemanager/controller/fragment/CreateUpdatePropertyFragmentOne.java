@@ -128,8 +128,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         }
 
         Log.d("debagp","Manage choice is :" +ManageCreateUpdateChoice.getCreateUpdateChoice(context));
-        if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != 0) {
-            long propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
+        if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
+            String propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
             this.updateUIwithDataFromDatabase(propertyId);
         }
 
@@ -151,12 +151,12 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     public void onDetach() {
         super.onDetach();
 
-        ManageCreateUpdateChoice.saveCreateUpdateChoice(context, 0);
+        ManageCreateUpdateChoice.saveCreateUpdateChoice(context, null);
 
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateUIwithDataFromDatabase(long propertyId) {
+    private void updateUIwithDataFromDatabase(String propertyId) {
         propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
 
             priceEditText.setText(Double.toString(property.getPricePropertyInDollar()));

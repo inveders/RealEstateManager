@@ -46,15 +46,14 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         viewPager2.setAdapter(myAdapter);
 
 
-        if (getIntent().getLongExtra(PROPERTY_ID_INTENT, 0) != 0) {
+        if (getIntent().getStringExtra(PROPERTY_ID_INTENT) != null) {
 
-            //If different of zero, we retrieve the property Id to update the item
-            long propertyId = getIntent().getLongExtra(PROPERTY_ID_INTENT, 0);
+            //If different of null, we retrieve the property Id to update the item
+            String propertyId = getIntent().getStringExtra(PROPERTY_ID_INTENT);
             //We send values in fragment one for create update activity
             ManageCreateUpdateChoice.saveCreateUpdateChoice(this, propertyId);
 
         }
-
 
     }
 

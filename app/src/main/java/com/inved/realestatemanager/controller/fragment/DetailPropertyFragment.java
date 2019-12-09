@@ -116,7 +116,7 @@ public class DetailPropertyFragment extends Fragment {
 
         if (getActivity() != null) {
             Intent intent = getActivity().getIntent();
-            long myPropertyId = intent.getLongExtra(PROPERTY_ID, 0);
+            String myPropertyId = intent.getStringExtra(PROPERTY_ID);
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
                 DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this,property);
@@ -129,7 +129,7 @@ public class DetailPropertyFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            long myPropertyId = bundle.getLong(PROPERTY_ID, 0);
+            String myPropertyId = bundle.getString(PROPERTY_ID);
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
                 updateWithProperty(property);
@@ -359,7 +359,7 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
-    private void setMapStatic(long propertyId) {
+    private void setMapStatic(String propertyId) {
 
 
         propertyViewModel.getOneProperty(propertyId).observe(this, properties -> {

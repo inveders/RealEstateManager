@@ -148,11 +148,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 country = p.getCountry();
                 addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
                 String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
-                long propertyId = p.getPropertyId();
+                String propertyId = p.getPropertyId();
 
 
                 addressList.add(addressFormatted);
-                propertyList.add(String.valueOf(propertyId));
+                propertyList.add(propertyId);
 
             }
 
@@ -217,13 +217,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (marker.getSnippet()!=null){
 
-            startDetailActivity(Long.valueOf(marker.getSnippet()));
+            startDetailActivity(marker.getSnippet());
         }
         return true;
     }
 
     // Launch View Place Activity
-    private void startDetailActivity(long propertyId) {
+    private void startDetailActivity(String propertyId) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(PROPERTY_ID, propertyId);
         startActivity(intent);

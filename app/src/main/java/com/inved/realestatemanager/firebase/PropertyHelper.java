@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
+import com.inved.realestatemanager.utils.RandomString;
 
 public class PropertyHelper {
 
@@ -27,7 +28,7 @@ public class PropertyHelper {
 
     // --- CREATE ---
 
-    public static void createProperty(String typeProperty, double pricePropertyInDollar,
+    public static void createProperty(String propertyId, String typeProperty, double pricePropertyInDollar,
                                       double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                       int numberBedroomsInProperty, String fullDescriptionProperty, String streetNumber,
                                       String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
@@ -37,7 +38,9 @@ public class PropertyHelper {
                                       String photoDescription4, String photoDescription5, String realEstateAgentId,int myCase,String id) {
         // 1 - Create Obj
 
-        Property propertyToCreate = new Property(typeProperty, pricePropertyInDollar,
+
+
+        Property propertyToCreate = new Property(propertyId,typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
@@ -48,7 +51,7 @@ public class PropertyHelper {
         if(myCase==1){
             //to create
             Log.d("debago", "PropertyHelper : " + myCase);
-            PropertyHelper.getPropertyCollection().document().set(propertyToCreate);
+            PropertyHelper.getPropertyCollection().document(propertyId).set(propertyToCreate);
         }else if(myCase==2){
             //to update
             PropertyHelper.getPropertyCollection().document(id).set(propertyToCreate);

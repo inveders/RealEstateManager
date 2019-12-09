@@ -50,6 +50,7 @@ import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.utils.RandomString;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,10 +114,13 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     private String pointOfInterest;
     private String addressCompl;
     private String realEstateAgentId;
-    private long propertyId;
+    private String propertyId;
+    private String propertyIdCreate;
 
     private Context context;
     private String selectedAgent;
+
+    private RandomString randomString = new RandomString();
 
     private List<String> spinnerAgentList = new ArrayList<>();
 
@@ -158,7 +162,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
             context = MainApplication.getInstance().getApplicationContext();
         }
 
-        if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != 0) {
+        if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
             propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
 
             this.updateUIwithDataFromDatabase(propertyId);
@@ -217,7 +221,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     this.addressCompl = null;
                 }
 
-                this.propertyId = (long) objects.get(13);
+                if(objects.get(13)!=null){
+                    this.propertyId = objects.get(13).toString();
+                }
+
 
             });
         }
@@ -225,7 +232,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     }
 
 
-    private void updateUIwithDataFromDatabase(long propertyId) {
+    private void updateUIwithDataFromDatabase(String propertyId) {
         propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
 
             if (property.getDateOfEntryOnMarketForProperty().isEmpty() || property.getDateOfEntryOnMarketForProperty() == null) {
@@ -504,7 +511,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), 0);
+        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), null);
     }
 
     public interface OnFragmentInteractionListener {
@@ -545,13 +552,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                 dateOfEntryOnMarketForProperty = dateOfEntry.getText().toString();
             }
 
-            Property newProperty = new Property(typeProperty, pricePropertyInDollar,
-                    surfaceAreaProperty, numberRoomsInProperty,
-                    numberBathroomsInProperty, numberBedroomsInProperty,
-                    fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
-                    statusProperty, dateOfEntryOnMarketForProperty,
-                    null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                    photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
+
+            propertyIdCreate=randomString.generateRandomString();
+
 
 
             PropertyHelper.getPropertyFirebaseId(photoUri1).get().addOnCompleteListener(task -> {
@@ -581,8 +584,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                             }
 
                             //The choice is to update property
-                            if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
-                                PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
+                            if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != null) {
+
+                                PropertyHelper.createProperty(propertyId,typeProperty, pricePropertyInDollar,
                                         surfaceAreaProperty, numberRoomsInProperty,
                                         numberBathroomsInProperty, numberBedroomsInProperty,
                                         fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
@@ -596,11 +600,13 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                             Log.d("debago", "Create property Fragment Two no success: ");
                             //The choice is to create property
 
+
+
                             String realEstateAgentIdTer = null;
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 realEstateAgentIdTer = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                             }
-                            PropertyHelper.createProperty(typeProperty, pricePropertyInDollar,
+                            PropertyHelper.createProperty(propertyIdCreate,typeProperty, pricePropertyInDollar,
                                     surfaceAreaProperty, numberRoomsInProperty,
                                     numberBathroomsInProperty, numberBedroomsInProperty,
                                     fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
@@ -616,8 +622,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
             });
 
             //The choice is to update property
-            if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != 0) {
-                Log.d("debago", "update property : " + newProperty.toString());
+            if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != null) {
 
                 this.propertyViewModel.updateProperty(typeProperty, pricePropertyInDollar,
                         surfaceAreaProperty, numberRoomsInProperty,
@@ -630,10 +635,21 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
             } else
             //The choice is to create property
             {
+
+
+
+                Property newProperty = new Property(propertyIdCreate,typeProperty, pricePropertyInDollar,
+                        surfaceAreaProperty, numberRoomsInProperty,
+                        numberBathroomsInProperty, numberBedroomsInProperty,
+                        fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                        statusProperty, dateOfEntryOnMarketForProperty,
+                        null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                        photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
+
                 this.propertyViewModel.createProperty(newProperty);
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
                 if (getContext() != null) {
-                    ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(), 0);
+                    ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(), null);
                 }
 
             }

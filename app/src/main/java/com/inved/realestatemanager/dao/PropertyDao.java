@@ -25,7 +25,7 @@ public interface PropertyDao {
 
 
     @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
-    LiveData<Property> getOneProperty(long propertyId);
+    LiveData<Property> getOneProperty(String propertyId);
 
     @RawQuery(observedEntities = Property.class)
     LiveData<List<Property>> searchProperty(SupportSQLiteQuery query);
@@ -37,7 +37,7 @@ public interface PropertyDao {
     int updateProperty(SupportSQLiteQuery query);
 
     @Query("DELETE FROM Property WHERE propertyId = :propertyId")
-    int deleteProperty(long propertyId);
+    int deleteProperty(String propertyId);
 
 }
 

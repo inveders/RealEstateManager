@@ -21,7 +21,7 @@ import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_I
 public class DetailActivity extends BaseActivity  {
 
     public static final String PROPERTY_ID_INTENT = "PROPERTY_ID_INTENT";
-    private long propertyId;
+    private String propertyId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class DetailActivity extends BaseActivity  {
         this.configureToolbar();
         this.configureAndShowDetailFragment();
 
-        propertyId=getIntent().getLongExtra(PROPERTY_ID,0);
+        propertyId=getIntent().getStringExtra(PROPERTY_ID);
 
     }
 

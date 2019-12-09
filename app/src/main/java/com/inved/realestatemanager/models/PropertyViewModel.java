@@ -67,7 +67,7 @@ public class PropertyViewModel extends ViewModel {
         return propertyDataSource.getAllItems();
     }
 
-    public LiveData<Property> getOneProperty(long propertyId) {
+    public LiveData<Property> getOneProperty(String propertyId) {
         return propertyDataSource.getOneItem(propertyId);
     }
 
@@ -82,7 +82,7 @@ public class PropertyViewModel extends ViewModel {
                                                    String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                                                    boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                                    String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                                                   String photoDescription4, String photoDescription5, String realEstateAgentId,long propertyId) {
+                                                   String photoDescription4, String photoDescription5, String realEstateAgentId,String propertyId) {
         executor.execute(() -> propertyDataSource.updateProperty(typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,

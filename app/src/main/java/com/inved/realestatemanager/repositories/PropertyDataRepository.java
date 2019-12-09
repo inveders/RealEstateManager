@@ -23,7 +23,7 @@ public class PropertyDataRepository {
 
     public LiveData<List<Property>> getAllItems(){ return this.propertyDao.getAllProperties(); }
 
-    public LiveData<Property> getOneItem(long propertyId){ return this.propertyDao.getOneProperty(propertyId); }
+    public LiveData<Property> getOneItem(String propertyId){ return this.propertyDao.getOneProperty(propertyId); }
 
     // --- SEARCH ---
 
@@ -38,7 +38,7 @@ public class PropertyDataRepository {
     public void createItem(Property property){ propertyDao.insertProperty(property); }
 
     // --- DELETE ---
-    public void deleteItem(long propertyId){ propertyDao.deleteProperty(propertyId); }
+    public void deleteItem(String propertyId){ propertyDao.deleteProperty(propertyId); }
 
     // --- UPDATE ---
 
@@ -49,7 +49,7 @@ public class PropertyDataRepository {
                                                    String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
                                                    boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                                    String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                                                   String photoDescription4, String photoDescription5, String realEstateAgentId,long propertyId) {
+                                                   String photoDescription4, String photoDescription5, String realEstateAgentId,String propertyId) {
         return this.propertyDao.updateProperty(roomUpdateQuery.queryRoomUpdateDatabase(typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,

@@ -146,7 +146,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     }
 
     @Override
-    public void clickOnCardView(long propertyId) {
+    public void clickOnCardView(String propertyId) {
 
         if (getActivity() != null) {
 
@@ -158,7 +158,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             //Here we open fragment in landscape mode
             Fragment detailFragment = new DetailPropertyFragment();
             Bundle bundle = new Bundle();
-            bundle.putLong(PROPERTY_ID, propertyId);
+            bundle.putString(PROPERTY_ID, propertyId);
             detailFragment.setArguments(bundle);
 
         }

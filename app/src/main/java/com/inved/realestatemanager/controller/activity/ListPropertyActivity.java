@@ -191,7 +191,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
         final MenuItem addProperty = menu.findItem(R.id.menu_action_add);
         addProperty.setOnMenuItemClickListener(menuItem -> {
-            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, 0);
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
             startCreateUpdatePropertyActivity();
             return true;
         });
@@ -239,36 +239,31 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
             String realEstateAgentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-            propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this,realEstateAgents -> {
+            propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this,realEstateAgents -> propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
+                if (properties.size() > 0) {
+
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+                    builder.setMessage(R.string.agent_management_no_delete_possible)
+                            .setCancelable(false)
+                            .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, id) -> dialog.dismiss());
+
+                    android.app.AlertDialog alert = builder.create();
+                    alert.show();
 
 
-                propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
-                    if (properties.size() > 0) {
+                } else {
 
-                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-                        builder.setMessage(R.string.agent_management_no_delete_possible)
-                                .setCancelable(false)
-                                .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, id) -> dialog.dismiss());
-
-                        android.app.AlertDialog alert = builder.create();
-                        alert.show();
-
-
-                    } else {
-
-                        new AlertDialog.Builder(this)
-                                .setMessage(R.string.popup_message_confirmation_delete_account)
-                                .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> {
-                                    deleteUserFromRommDatabase(realEstateAgentId);
-                                    deleteUserFromFirebase(realEstateAgentId);
-                                    getApplicationContext().deleteDatabase("MyDatabase.db");
-                                })
-                                .setNegativeButton(R.string.alert_dialog_no, null)
-                                .show();
-                    }
-                });
-
-            });
+                    new AlertDialog.Builder(this)
+                            .setMessage(R.string.popup_message_confirmation_delete_account)
+                            .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> {
+                                deleteUserFromRommDatabase(realEstateAgentId);
+                                deleteUserFromFirebase(realEstateAgentId);
+                                getApplicationContext().deleteDatabase("MyDatabase.db");
+                            })
+                            .setNegativeButton(R.string.alert_dialog_no, null)
+                            .show();
+                }
+            }));
 
 
 

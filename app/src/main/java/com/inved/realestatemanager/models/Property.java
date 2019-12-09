@@ -11,8 +11,9 @@ import androidx.room.PrimaryKey;
 
 public class Property {
 
-    @PrimaryKey(autoGenerate = true)
-    private long propertyId;
+    @NonNull
+    @PrimaryKey
+    private String propertyId;
     private String typeProperty;
     private double pricePropertyInDollar;
     private double surfaceAreaProperty;
@@ -46,7 +47,7 @@ public class Property {
 
     public Property(){}
 
-    public Property(String typeProperty, double pricePropertyInDollar,
+    public Property(@NonNull String propertyId, String typeProperty, double pricePropertyInDollar,
                     double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                     int numberBedroomsInProperty, String fullDescriptionProperty, String streetNumber,
                     String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
@@ -55,6 +56,7 @@ public class Property {
                     String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
                     String photoDescription4, String photoDescription5, String realEstateAgentId) {
 
+        this.propertyId=propertyId;
         this.typeProperty = typeProperty;
         this.pricePropertyInDollar = pricePropertyInDollar;
         this.surfaceAreaProperty = surfaceAreaProperty;
@@ -86,11 +88,12 @@ public class Property {
         this.realEstateAgentId = realEstateAgentId;
     }
 
-    public void setPropertyId(long propertyId) {
+    public void setPropertyId(@NonNull String propertyId) {
         this.propertyId = propertyId;
     }
 
-    public long getPropertyId() {
+    @NonNull
+    public String getPropertyId() {
         return propertyId;
     }
 
