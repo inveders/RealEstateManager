@@ -3,14 +3,11 @@ package com.inved.realestatemanager.dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
-import androidx.room.Update;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.models.RealEstateAgents;
 
 import java.util.List;
 

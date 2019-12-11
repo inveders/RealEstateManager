@@ -13,6 +13,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.WatermarkTransformation;
 
 import java.io.File;
 
@@ -76,17 +77,25 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
         //PHOTO URI 1
 
-
-
         if (property.getPhotoUri1() != null) {
 
-
-            Uri fileUri = Uri.parse(property.getPhotoUri1());
-            if (fileUri.getPath() != null) {
-                Glide.with(MainApplication.getInstance().getApplicationContext())
-                        .load(new File(fileUri.getPath()))
-                        .into((photo));
+            if(property.getDateOfSaleForProperty()==null || property.getDateOfSaleForProperty().isEmpty()){
+                Uri fileUri = Uri.parse(property.getPhotoUri1());
+                if (fileUri.getPath() != null) {
+                    Glide.with(MainApplication.getInstance().getApplicationContext())
+                            .load(new File(fileUri.getPath()))
+                            .into((photo));
+                }
+            }else{
+                Uri fileUri = Uri.parse(property.getPhotoUri1());
+                if (fileUri.getPath() != null) {
+                    Glide.with(MainApplication.getInstance().getApplicationContext())
+                            .load(new File(fileUri.getPath()))
+                            .transform(new WatermarkTransformation(MainApplication.getInstance().getApplicationContext()))
+                            .into((photo));
+                }
             }
+
 
 
 

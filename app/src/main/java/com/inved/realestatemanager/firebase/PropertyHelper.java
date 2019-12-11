@@ -103,9 +103,9 @@ public class PropertyHelper {
                 .update("photoUri5", photoUri5Url);
     }
 
-    static void updateDateOfSale(String dateOfSale, String documentId) {
+    public static void updateDateOfSale(String dateOfSale, String documentId) {
         PropertyHelper.getPropertyCollection()
                 .document(documentId)
-                .update("dateOfSalForProperty", dateOfSale);
+                .update("dateOfSaleForProperty", dateOfSale);
     }
 }

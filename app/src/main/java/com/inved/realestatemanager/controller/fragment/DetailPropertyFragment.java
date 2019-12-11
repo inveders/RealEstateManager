@@ -1,6 +1,7 @@
 package com.inved.realestatemanager.controller.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,14 +20,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.controller.dialogs.DatePickerFragment;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.domain.UnitConversion;
+import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.GeocodingViewModel;
@@ -76,8 +81,11 @@ public class DetailPropertyFragment extends Fragment {
 
     private int imageCount;
     private int imagePosition=0;
-
+    private String myPropertyId;
+    private int imageSwitcherNumber=0;
     private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
+
+    private static final int REQUEST_CODE_DATE_PICKER_DETAIL = 12; // Used to identify the result of date picker
 
     public DetailPropertyFragment() {
 
@@ -116,11 +124,16 @@ public class DetailPropertyFragment extends Fragment {
 
         if (getActivity() != null) {
             Intent intent = getActivity().getIntent();
-            String myPropertyId = intent.getStringExtra(PROPERTY_ID);
+            myPropertyId = intent.getStringExtra(PROPERTY_ID);
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
-                DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this,property);
-                getRealEstateAgent(property.getRealEstateAgentId());
+                Log.d("debago","updateUI getActivity: "+imageSwitcherNumber);
+                if(imageSwitcherNumber==0){
+                    DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this,property);
+                    getRealEstateAgent(property.getRealEstateAgentId());
+
+                }
+
             });
 
             setMapStatic(myPropertyId);
@@ -129,19 +142,61 @@ public class DetailPropertyFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            String myPropertyId = bundle.getString(PROPERTY_ID);
+            myPropertyId = bundle.getString(PROPERTY_ID);
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
-                updateWithProperty(property);
-                getRealEstateAgent(property.getRealEstateAgentId());
+                Log.d("debago","updateUI bundle");
+                        if(imageSwitcherNumber==0){
+                            updateWithProperty(property);
+                            getRealEstateAgent(property.getRealEstateAgentId());
+                            imageSwitcherNumber++;
+                        }
+
             });
             setMapStatic(myPropertyId);
 
         }
 
+        dateOfSaleForPorperty.setOnClickListener(view -> showDatePickerDialog());
+
         return mView;
     }
 
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Result code is RESULT_OK only if the user selects an Image
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_DATE_PICKER_DETAIL) {// get date from string
+                String selectedDate = data.getStringExtra("selectedDate");
+                // set the value of the editText
+                dateOfSaleForPorperty.setText(selectedDate);
+
+                // set the value in the database
+                propertyViewModel.updateDateOfSaleForProperty(selectedDate,myPropertyId);
+
+                //set the value in firebase
+                PropertyHelper.updateDateOfSale(selectedDate,myPropertyId);
+            }
+
+        }
+
+
+    }
+
+    private void showDatePickerDialog() {
+
+        if (getActivity() != null) {
+            // get fragment manager so we can launch from fragment
+            final FragmentManager fm = getActivity().getSupportFragmentManager();
+            AppCompatDialogFragment newFragment = new DatePickerFragment();
+            // set the targetFragment to receive the results, specifying the request code
+
+            newFragment.setTargetFragment(DetailPropertyFragment.this, REQUEST_CODE_DATE_PICKER_DETAIL);
+            // show the datePicker
+            newFragment.show(fm, "datePickerDetail");
+        }
+
+    }
 
     // 2 - Configuring ViewModel
     private void configureViewModel() {
