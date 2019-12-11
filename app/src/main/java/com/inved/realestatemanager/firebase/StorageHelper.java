@@ -4,20 +4,28 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class StorageHelper {
 
-    private Context ctx=MainApplication.getInstance().getApplicationContext();
+    private Context ctx = MainApplication.getInstance().getApplicationContext();
 
     private final String TAG = "debago";
 
@@ -27,18 +35,16 @@ public class StorageHelper {
     private Uri mFileUri = null;
 
 
+    /***Find where we stop the service
+     @Override public void onStop() {
+     super.onStop();
 
-   /***Find where we stop the service
-    @Override
-    public void onStop() {
-        super.onStop();
+     // Unregister download receiver
+     LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+     }
+     */
 
-        // Unregister download receiver
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
-    }
-*/
-
-    private void setmBroadcastReceiver(){
+    private void setmBroadcastReceiver() {
 
         // Register receiver for uploads and downloads
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(ctx);
@@ -50,7 +56,7 @@ public class StorageHelper {
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG, "onReceive:" + intent);
 
-                if(intent.getAction()!=null){
+                if (intent.getAction() != null) {
                     switch (intent.getAction()) {
 
                         case MyUploadService.UPLOAD_COMPLETED:
@@ -65,7 +71,7 @@ public class StorageHelper {
         };
     }
 
-    public void uploadFromUri(Uri fileUri,String documentId,int number) {
+    public void uploadFromUri(Uri fileUri, String documentId, int number) {
         setmBroadcastReceiver();
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
 
@@ -87,23 +93,28 @@ public class StorageHelper {
 
     }
 
-    public void beginDownload(String getLastPathFromFirebase,String documentId) throws IOException {
-        Log.d("debago", "beginDownload:");
+    public String beginDownload(String getLastPathFromFirebase, String documentId) throws IOException {
+
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
                 .child(getLastPathFromFirebase);
 
-        File localFile = File.createTempFile("Pictures", "jpg");
+        String mFileName = "JPEG_";
+        File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File localFile = File.createTempFile(mFileName, ".jpg", storageDir);
+        // Save a file: path for using again
+        String filePath = "file://" + localFile.getAbsolutePath();
 
         fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-            Log.d("debago", "beginDownload the file is :"+localFile.getAbsolutePath());
-            // Local temp file has been created
-        }).addOnFailureListener(exception -> {
-            // Handle any errors
-        });
+            Log.d("debago", ";local tem file created  created " + localFile.toString());
+            //  updateDb(timestamp,localFile.toString(),position);
+        }).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
+
+        return filePath;
+
 
     }
-/*
-    private File createImageFile() throws IOException {
+
+   /* private File createImageFile() throws IOException {
         // Create an image file name
 
             String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
@@ -111,7 +122,7 @@ public class StorageHelper {
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
             // Save a file: path for using again
-           // filePath = "file://" + mFile.getAbsolutePath();
+            filePath = "file://" + mFile.getAbsolutePath();
             return mFile;
 
 
@@ -122,7 +133,7 @@ public class StorageHelper {
         // Got a new intent from MyUploadService with a success or failure
         mDownloadUrl = intent.getParcelableExtra(MyUploadService.EXTRA_DOWNLOAD_URL);
         mFileUri = intent.getParcelableExtra(MyUploadService.EXTRA_FILE_URI);
-        Log.d(TAG, "onUploadResultIntent, mDonwloadUrl is:" + mDownloadUrl+" mFileUri is : "+mFileUri);
+        Log.d(TAG, "onUploadResultIntent, mDonwloadUrl is:" + mDownloadUrl + " mFileUri is : " + mFileUri);
 
     }
 

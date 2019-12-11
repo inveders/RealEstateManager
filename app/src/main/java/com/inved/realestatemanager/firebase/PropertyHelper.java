@@ -9,7 +9,6 @@ import com.google.firebase.firestore.Query;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
-import com.inved.realestatemanager.utils.RandomString;
 
 public class PropertyHelper {
 

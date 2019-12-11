@@ -15,7 +15,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class MyUploadService extends MyBaseTaskService {
 
-    private static final String TAG = "MyUploadService";
+    private static final String TAG = "debago";
 
     /** Intent Actions **/
     public static final String ACTION_UPLOAD = "action_upload";
@@ -62,7 +62,7 @@ public class MyUploadService extends MyBaseTaskService {
 
     // [START upload_from_uri]
     private void uploadFromUri(final Uri fileUri,String documentId, int numberPhoto) {
-        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
+        Log.d(TAG, "uploadFromUri:src: upload" + fileUri.toString());
 
         // [START_EXCLUDE]
         taskStarted();

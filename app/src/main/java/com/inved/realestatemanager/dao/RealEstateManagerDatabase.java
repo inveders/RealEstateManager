@@ -179,6 +179,47 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     String photoDescription5 = property.getPhotoDescription5();
                     String realEstateAgentId = property.getRealEstateAgentId();
 
+                    StorageHelper storageHelper = new StorageHelper();
+                    try {
+                        if(photoUri1!=null){
+                            String uri1 = storageHelper.beginDownload(photoUri1,propertyId);
+                            if(uri1!=null){
+                                photoUri1=uri1;
+                            }
+                        }
+
+                        if(photoUri2!=null){
+                            String uri2= storageHelper.beginDownload(photoUri2,propertyId);
+                            if(uri2!=null){
+                                photoUri2=uri2;
+                            }
+                        }
+
+                        if(photoUri3!=null){
+                            String uri3 = storageHelper.beginDownload(photoUri3,propertyId);
+                            if(uri3!=null){
+                                photoUri3=uri3;
+                            }
+                        }
+
+                        if(photoUri4!=null){
+                            String uri4 = storageHelper.beginDownload(photoUri4,propertyId);
+                            if(uri4!=null){
+                                photoUri4=uri4;
+                            }
+                        }
+
+                        if(photoUri5!=null){
+                            String uri5 = storageHelper.beginDownload(photoUri5,propertyId);
+                            if(uri5!=null){
+                                photoUri1=uri5;
+                            }
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     Property newProperty = new Property(propertyId,typeProperty, pricePropertyInDollar,
                             surfaceAreaProperty, numberRoomsInProperty,
                             numberBathroomsInProperty, numberBedroomsInProperty,
@@ -191,12 +232,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
 
-                    StorageHelper storageHelper = new StorageHelper();
-                    try {
-                        storageHelper.beginDownload(photoUri1,propertyId);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
 
                 }
 
