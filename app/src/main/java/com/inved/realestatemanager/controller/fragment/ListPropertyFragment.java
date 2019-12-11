@@ -3,9 +3,8 @@ package com.inved.realestatemanager.controller.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.activity.DetailActivity;
+import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
@@ -43,12 +42,16 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
     private FloatingActionButton openSearchButton;
+    private MenuChangementsInterface callback;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         adapter = new PropertyListAdapter(context, this);
+        this.createCallbackToParentActivity();
     }
+
+
 
     public ListPropertyFragment() {
     }
@@ -58,6 +61,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         super.onCreate(savedInstanceState);
         // Configure ViewModel
         this.configureViewModel();
+
 
     }
 
@@ -74,6 +78,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         if (getActivity() != null) {
 
             ((ListPropertyActivity) getActivity()).setFragmentRefreshListener(this::getAllProperties);
+
         }
 
         startSearchProperty();
@@ -83,41 +88,22 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     private void startSearchProperty() {
 
-        openSearchButton.setOnClickListener(v -> {
 
-            setHasOptionsMenu(true);
+        openSearchButton.setOnClickListener(v -> {
+            Log.d("debago","mOptions startSearchproperty:");
+            callback.onMenuChanged(1);
+            //setHasOptionsMenu(true);
             // Create an instance of the dialog fragment and show it
             SearchFullScreenDialog dialog = new SearchFullScreenDialog();
+            dialog.setTargetFragment(this,1);
 
-            dialog.setCallback(this::updatePropertyList);
+          //  dialog.setCallback(this::updatePropertyList);
 
             if (getFragmentManager() != null) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 dialog.show(ft, "FullscreenDialogFragment");
             }
         });
-
-    }
-
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem addItem = menu.findItem(R.id.menu_action_add);
-        MenuItem clearItem = menu.findItem(R.id.menu_action_clear);
-        if (addItem != null) {
-            addItem.setVisible(false);
-        }
-        if (clearItem != null) {
-            clearItem.setVisible(true);
-            clearItem.setOnMenuItemClickListener(menuItem -> {
-
-                menu.findItem(R.id.menu_action_add).setVisible(true);
-                menu.findItem(R.id.menu_action_clear).setVisible(false);
-                getAllProperties();
-
-                return true;
-            });
-        }
 
     }
 
@@ -134,6 +120,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     // 3 - Get all properties for a real estate agent
     private void getAllProperties() {
+        Log.d("debago","mOptions getAllproperties:");
+        callback.onMenuChanged(0);
         this.propertyViewModel.getAllProperties().observe(this, this::updatePropertyList);
     }
 
@@ -154,7 +142,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             Intent intent = new Intent(getContext(), DetailActivity.class);
             intent.putExtra(PROPERTY_ID, propertyId);
             startActivity(intent);
-
             //Here we open fragment in landscape mode
             Fragment detailFragment = new DetailPropertyFragment();
             Bundle bundle = new Bundle();
@@ -167,6 +154,30 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     @Override
     public void searchButton(List<Property> properties) {
+
+        Log.d("debago","Search Button: "+properties);
         updatePropertyList(properties);
     }
+
+    @Override
+    public void cancelButton() {
+        callback.onMenuChanged(0);
+    }
+
+    //INTERFACE BETWEEN LISTPROPERTYFRAGMENT AND LISTPROPERTYACTIVITY
+
+    public interface MenuChangementsInterface {
+        void onMenuChanged(int number);
+    }
+
+    // 3 - Create callback to parent activity
+    private void createCallbackToParentActivity(){
+        try {
+            //Parent activity will automatically subscribe to callback
+            callback = (MenuChangementsInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(e.toString()+ " must implement MenuChamgementsInterface");
+        }
+    }
+
 }

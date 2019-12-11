@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -35,12 +36,11 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 
-import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ListPropertyFragment.MenuChangementsInterface {
 
 
     /**
@@ -63,6 +63,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private ListPropertyFragment listPropertyFragment;
     private DetailPropertyFragment detailPropertyFragment;
     private FragmentRefreshListener fragmentRefreshListener;
+
+    private Menu mOptionsMenu;
 
 
     @Override
@@ -95,21 +97,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
-    @OnClick(R.id.menu_action_add)
-    public void onClickAddButton() {
-        // 7 - Create item after user clicked on button
-        //  this.createProperty(); GO ON THE CREATE PROPERTY ACTIVITY
-
-        Intent intent = new Intent(ListPropertyActivity.this, CreatePropertyActivity.class);
-
-        startActivity(intent);
-    }
-
-    @OnClick(R.id.menu_action_update)
-    public void onClickUpdateButton() {
-        // 7 - Create item after user clicked on button
-        // GO ON THE UPDATE PROPERTY ACTIVITY
-    }
 
     // ---------------------------
     // NAVIGATION DRAWER & TOOLBAR
@@ -189,28 +176,51 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        final MenuItem addProperty = menu.findItem(R.id.menu_action_add);
-        addProperty.setOnMenuItemClickListener(menuItem -> {
-            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
-            startCreateUpdatePropertyActivity();
-            return true;
-        });
+        // Save the menu reference
+        mOptionsMenu = menu;
+        Log.d("debago","mOptions onCreateOptions:");
+        onMenuChanged(0);
+        return super.onCreateOptionsMenu(menu);
 
-        final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
-        updateProperty.setVisible(false);
-
-        final MenuItem clearSearch = menu.findItem(R.id.menu_action_clear);
-        clearSearch.setVisible(false);
-        clearSearch.setOnMenuItemClickListener(menuItem -> {
-            menu.findItem(R.id.menu_action_clear).setVisible(false);
-            refreshFragment();
-            return true;
-        });
-
-
-
-        return true;
     }
+
+    @Override
+    public void onMenuChanged(int number) {
+
+        Log.d("debago","mOptions is: "+mOptionsMenu+" and number is: "+number);
+        if(mOptionsMenu != null){
+
+            MenuItem item = mOptionsMenu.findItem(R.id.menu);
+
+            switch (number){
+                case 0:
+                    // code block for add
+                    item.setIcon(R.drawable.ic_menu_add_white_24dp);
+                    item.setOnMenuItemClickListener(menuItem -> {
+                        ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
+                        startCreateUpdatePropertyActivity();
+                        return true;
+                    });
+                    break;
+                case 1:
+                    // code block clear
+                    item.setIcon(R.drawable.ic_menu_clear_white_24dp);
+                    item.setOnMenuItemClickListener(menuItem -> {
+                        refreshFragment();
+                        return true;
+                    });
+                    break;
+                case 2:
+                    // code block edit
+                    item.setIcon(R.drawable.ic_menu_update_white_24dp);
+                    break;
+                default:
+                    // code block
+            }
+
+        }
+    }
+
 
     private void startCreateUpdatePropertyActivity() {
         Intent intent = new Intent(this, CreatePropertyActivity.class);
@@ -390,6 +400,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             getFragmentRefreshListener().onRefresh();
         }
     }
+
+
 
     public interface FragmentRefreshListener {
         void onRefresh();

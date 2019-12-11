@@ -11,9 +11,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
-import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
-
-import butterknife.OnClick;
 
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
@@ -73,32 +70,19 @@ public class DetailActivity extends BaseActivity  {
     // MENU
     // --------------
 
-    @OnClick(R.id.menu_action_update)
-    public void onClickUpdateButton() {
-        // 7 - Create item after user clicked on button
-        // GO ON THE UPDATE PROPERTY ACTIVITY
-        startCreatePropertyActivity();
-    }
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        final MenuItem addProperty = menu.findItem(R.id.menu_action_add);
-        addProperty.setVisible(false);
-
-        final MenuItem clearSearch = menu.findItem(R.id.menu_action_clear);
-        clearSearch.setVisible(false);
-
-        final MenuItem updateProperty = menu.findItem(R.id.menu_action_update);
-        updateProperty.setOnMenuItemClickListener(menuItem -> {
+        MenuItem item = menu.findItem(R.id.menu);
+        item.setIcon(R.drawable.ic_menu_update_white_24dp);
+        item.setOnMenuItemClickListener(menuItem -> {
             startCreatePropertyActivity();
 
             return true;
         });
+
 
         return true;
     }

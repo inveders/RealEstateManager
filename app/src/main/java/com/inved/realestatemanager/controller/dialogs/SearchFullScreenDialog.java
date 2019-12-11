@@ -1,6 +1,8 @@
 package com.inved.realestatemanager.controller.dialogs;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +18,18 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.view.PropertyListAdapter;
 
 import java.util.List;
+
+import javax.security.auth.callback.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,13 +112,18 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         View view = inflater.inflate(R.layout.layout_search_full_screen_dialog, container, false);
         ButterKnife.bind(this, view);
 
+        callback = (OnClickSearchInterface) getTargetFragment();
+
         this.configureViewModel();
         this.seekbarChangements();
         if (getDialog() != null) {
             getDialog().setTitle(getString(R.string.page_name_search_dialog));
         }
 
-        cancelSearchButton.setOnClickListener(v -> getDialog().cancel());
+        cancelSearchButton.setOnClickListener(v -> {
+            getDialog().cancel();
+            callback.cancelButton();
+        });
         searchActionButton.setOnClickListener(v -> this.startSearchProperty());
         return view;
     }
@@ -161,7 +172,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     }
 
     // Update the list of Real Estate item
-    private void updateRealEstateItemsList(List<com.inved.realestatemanager.models.Property> properties) {
+    private void updateRealEstateItemsList(List<Property> properties) {
 
         callback.searchButton(properties);
 
@@ -229,13 +240,14 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     }
 
-    public void setCallback(OnClickSearchInterface callback) {
+  /*  public void setCallback(OnClickSearchInterface callback) {
         this.callback = callback;
-    }
+    }*/
 
     public interface OnClickSearchInterface {
 
         void searchButton(List<Property> properties);
+        void cancelButton();
     }
 
 

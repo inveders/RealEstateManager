@@ -12,9 +12,8 @@
     <string name="page_name_activity_maps">Maps</string>
 
     <!-- MENU -->
-    <string name="menu_add">Add</string>
-    <string name="menu_update">Update</string>
-    <string name="menu_search">Search</string>
+    <string name="menu">Menu</string>
+
 
     <!-- MENU -->
     <string name="create_button">Create</string>
