@@ -1,5 +1,7 @@
 package com.inved.realestatemanager.utils;
 
+import android.util.Log;
+
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.ArrayList;
@@ -141,6 +143,7 @@ public class RoomSearchQuery {
             args.add(status);
         }
 
+        Log.d("debago","query search: "+queryString);
         return new SimpleSQLiteQuery(queryString, args.toArray());
 
     }

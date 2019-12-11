@@ -127,10 +127,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     // 6 - Update the list of properties
     private void updatePropertyList(List<Property> properties) {
-        if (!properties.isEmpty()) {
-
-            this.adapter.updateData(properties);
-        }
+        this.adapter.updateData(properties);
     }
 
     @Override
