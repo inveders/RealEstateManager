@@ -555,7 +555,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                 updatePropertyInRoom();
                 updatePropertyInFirebase();
 
-
+                /**Think to put a delete method to delete last picture from storage*/
 
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
                 uploadFileChoice(propertyId);

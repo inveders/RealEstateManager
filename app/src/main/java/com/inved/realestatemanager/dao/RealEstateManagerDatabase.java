@@ -127,6 +127,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
                     RealEstateAgents newAgent = new RealEstateAgents(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
+                    //Create real estate agent in room with data from firebase
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).realEstateAgentsDao().createRealEstateAgent(newAgent));
 
                 }
@@ -165,7 +166,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     String pointOfInterest = property.getPointOfInterest();
                     String statusProperty = property.getStatusProperty();
                     String dateOfEntryOnMarketForProperty = property.getDateOfEntryOnMarketForProperty();
-                    String dateOfSaleForPorperty = property.getDateOfSaleForPorperty();
+                    String dateOfSaleForProperty = property.getDateOfSaleForProperty();
                     boolean selected = property.isSelected();
                     String photoUri1 = property.getPhotoUri1();
                     String photoUri2 = property.getPhotoUri2();
@@ -181,35 +182,35 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
                     StorageHelper storageHelper = new StorageHelper();
                     try {
-                        if(photoUri1!=null){
+                        if(photoUri1!=null && photoUri1.length()<30){
                             String uri1 = storageHelper.beginDownload(photoUri1,propertyId);
                             if(uri1!=null){
                                 photoUri1=uri1;
                             }
                         }
 
-                        if(photoUri2!=null){
+                        if(photoUri2!=null&& photoUri2.length()<30){
                             String uri2= storageHelper.beginDownload(photoUri2,propertyId);
                             if(uri2!=null){
                                 photoUri2=uri2;
                             }
                         }
 
-                        if(photoUri3!=null){
+                        if(photoUri3!=null && photoUri3.length()<30){
                             String uri3 = storageHelper.beginDownload(photoUri3,propertyId);
                             if(uri3!=null){
                                 photoUri3=uri3;
                             }
                         }
 
-                        if(photoUri4!=null){
+                        if(photoUri4!=null && photoUri4.length()<30){
                             String uri4 = storageHelper.beginDownload(photoUri4,propertyId);
                             if(uri4!=null){
                                 photoUri4=uri4;
                             }
                         }
 
-                        if(photoUri5!=null){
+                        if(photoUri5!=null && photoUri5.length()<30){
                             String uri5 = storageHelper.beginDownload(photoUri5,propertyId);
                             if(uri5!=null){
                                 photoUri1=uri5;
@@ -225,11 +226,12 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                             numberBathroomsInProperty, numberBedroomsInProperty,
                             fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                             statusProperty, dateOfEntryOnMarketForProperty,
-                            dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                            dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                             photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
                     Log.d("debago", "create property list: " + property.toString());
 
+                    //Create property in room with data from firebase
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
 
 
