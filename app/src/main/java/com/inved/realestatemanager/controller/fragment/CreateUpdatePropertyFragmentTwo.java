@@ -552,8 +552,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
                 //The choice is to update property
 
-                updatePropertyInFirebase();
                 updatePropertyInRoom();
+                updatePropertyInFirebase();
+
 
 
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
@@ -622,7 +623,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty,
                 null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                photoDescription3, photoDescription4, photoDescription5, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail(), propertyId);
+                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId, propertyId);
 
     }
 

@@ -31,7 +31,7 @@ public class Property {
     private String pointOfInterest;
     private String statusProperty;
     private String dateOfEntryOnMarketForProperty;
-    private String dateOfSaleForPorperty;
+    private String dateOfSaleForProperty;
     private boolean selected;
     private String photoUri1;
     private String photoUri2;
@@ -51,7 +51,7 @@ public class Property {
                     double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                     int numberBedroomsInProperty, String fullDescriptionProperty, String streetNumber,
                     String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
-                    String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
+                    String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForProperty,
                     boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                     String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
                     String photoDescription4, String photoDescription5, String realEstateAgentId) {
@@ -73,7 +73,7 @@ public class Property {
         this.pointOfInterest = pointOfInterest;
         this.statusProperty = statusProperty;
         this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
-        this.dateOfSaleForPorperty = dateOfSaleForPorperty;
+        this.dateOfSaleForProperty = dateOfSaleForProperty;
         this.selected = selected;
         this.photoUri1 = photoUri1;
         this.photoUri2 = photoUri2;
@@ -225,12 +225,12 @@ public class Property {
         this.dateOfEntryOnMarketForProperty = dateOfEntryOnMarketForProperty;
     }
 
-    public String getDateOfSaleForPorperty() {
-        return dateOfSaleForPorperty;
+    public String getDateOfSaleForProperty() {
+        return dateOfSaleForProperty;
     }
 
-    public void setDateOfSaleForPorperty(String dateOfSaleForPorperty) {
-        this.dateOfSaleForPorperty = dateOfSaleForPorperty;
+    public void setDateOfSaleForProperty(String dateOfSaleForProperty) {
+        this.dateOfSaleForProperty = dateOfSaleForProperty;
     }
 
     public boolean isSelected() {
@@ -351,7 +351,7 @@ public class Property {
                 ", pointOfInterest='" + pointOfInterest + '\'' +
                 ", statusProperty='" + statusProperty + '\'' +
                 ", dateOfEntryOnMarketForProperty='" + dateOfEntryOnMarketForProperty + '\'' +
-                ", dateOfSaleForPorperty='" + dateOfSaleForPorperty + '\'' +
+                ", dateOfSaleForProperty='" + dateOfSaleForProperty + '\'' +
                 ", selected=" + selected +
                 ", photoUri1='" + photoUri1 + '\'' +
                 ", photoUri2='" + photoUri2 + '\'' +

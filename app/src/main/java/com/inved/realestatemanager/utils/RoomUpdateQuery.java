@@ -148,7 +148,7 @@ public class RoomUpdateQuery {
 
         if (dateOfSaleForPorperty != null) {
 
-            queryString += " dateOfSaleForPorperty = :dateOfSaleForPorperty";
+            queryString += " dateOfSaleForProperty = :dateOfSaleForProperty";
             queryString += ",";
             args.add(dateOfSaleForPorperty);
         }

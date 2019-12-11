@@ -90,6 +90,12 @@ public class PropertyViewModel extends ViewModel {
                 photoDescription3, photoDescription4, photoDescription5, realEstateAgentId,propertyId));
     }
 
+
+
+    public void updateDateOfSaleForProperty(String dateOfSaleForProperty,String propertyId) {
+        executor.execute(() -> propertyDataSource.updateDateOfSaleForProperty(dateOfSaleForProperty,propertyId));
+    }
+
     // -------------
     // FOR SEARCH
     // -------------

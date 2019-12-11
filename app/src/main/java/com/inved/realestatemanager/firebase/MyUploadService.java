@@ -62,7 +62,7 @@ public class MyUploadService extends MyBaseTaskService {
 
     // [START upload_from_uri]
     private void uploadFromUri(final Uri fileUri,String documentId, int numberPhoto) {
-        Log.d(TAG, "uploadFromUri:src: upload" + fileUri.toString());
+        Log.d(TAG, "uploadFromUri:src: upload" + fileUri.toString()+" Photo number is: "+numberPhoto);
 
         // [START_EXCLUDE]
         taskStarted();

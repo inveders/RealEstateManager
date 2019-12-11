@@ -36,6 +36,10 @@ public interface PropertyDao {
     @RawQuery(observedEntities = Property.class)
     int updateProperty(SupportSQLiteQuery query);
 
+
+    @Query("UPDATE Property SET dateOfSaleForProperty = :dateOfSaleForProperty WHERE propertyId = :propertyId")
+    int updateDateOfSaleForProperty(String dateOfSaleForProperty,String propertyId);
+
     @Query("DELETE FROM Property WHERE propertyId = :propertyId")
     int deleteProperty(String propertyId);
 

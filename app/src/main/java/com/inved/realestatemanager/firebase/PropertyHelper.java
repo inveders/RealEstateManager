@@ -31,7 +31,7 @@ public class PropertyHelper {
                                       double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                       int numberBedroomsInProperty, String fullDescriptionProperty, String streetNumber,
                                       String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
-                                      String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
+                                      String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForProperty,
                                       boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                       String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
                                       String photoDescription4, String photoDescription5, String realEstateAgentId,int myCase,String id) {
@@ -44,7 +44,7 @@ public class PropertyHelper {
                 numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty,
-                dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                 photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
         if(myCase==1){
@@ -72,6 +72,8 @@ public class PropertyHelper {
     // --- UPDATE ---
 
     static void updatePhotoUri1(String photoUri1Url, String documentId) {
+
+        Log.d("debago","in updatePhotoUri, propertyHelper");
         PropertyHelper.getPropertyCollection()
                 .document(documentId)
                 .update("photoUri1", photoUri1Url);
@@ -99,5 +101,11 @@ public class PropertyHelper {
         PropertyHelper.getPropertyCollection()
                 .document(documentId)
                 .update("photoUri5", photoUri5Url);
+    }
+
+    static void updateDateOfSale(String dateOfSale, String documentId) {
+        PropertyHelper.getPropertyCollection()
+                .document(documentId)
+                .update("dateOfSalForProperty", dateOfSale);
     }
 }
