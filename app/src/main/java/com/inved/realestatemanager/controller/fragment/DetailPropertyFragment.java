@@ -171,11 +171,13 @@ public class DetailPropertyFragment extends Fragment {
                 // set the value of the editText
                 dateOfSaleForPorperty.setText(selectedDate);
 
+                String status = "sold";
                 // set the value in the database
-                propertyViewModel.updateDateOfSaleForProperty(selectedDate,myPropertyId);
+                propertyViewModel.updateDateOfSaleForProperty(selectedDate,status,myPropertyId);
 
                 //set the value in firebase
                 PropertyHelper.updateDateOfSale(selectedDate,myPropertyId);
+                PropertyHelper.updateStatusProperty(status,myPropertyId);
             }
 
         }

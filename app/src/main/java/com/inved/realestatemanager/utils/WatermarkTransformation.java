@@ -36,7 +36,6 @@ public class WatermarkTransformation extends BitmapTransformation {
         int startY=(canvas.getHeight()-waterMark.getHeight())/2;//for vertical position
         canvas.drawBitmap(waterMark,startX,startY,null);
 
-        Log.d("debago","what is reuslt ? : "+result);
         return result;
     }
 

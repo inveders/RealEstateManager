@@ -108,4 +108,10 @@ public class PropertyHelper {
                 .document(documentId)
                 .update("dateOfSaleForProperty", dateOfSale);
     }
+
+    public static void updateStatusProperty(String status, String documentId) {
+        PropertyHelper.getPropertyCollection()
+                .document(documentId)
+                .update("statusProperty", status);
+    }
 }

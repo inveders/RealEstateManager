@@ -10,11 +10,8 @@
 
     <string-array name="status">
         <item>@string/select_status</item>
-        <item>For sale</item>
-        <item>Sold</item>
-        <item>For rent</item>
-        <item>Rented</item>
-        <item>Draft</item>
+        <item>sold</item>
+        <item>in progress</item>
     </string-array>
 
     <string-array name="numberRooms">

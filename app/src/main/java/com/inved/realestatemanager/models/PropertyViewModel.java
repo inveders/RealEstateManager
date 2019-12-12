@@ -92,8 +92,8 @@ public class PropertyViewModel extends ViewModel {
 
 
 
-    public void updateDateOfSaleForProperty(String dateOfSaleForProperty,String propertyId) {
-        executor.execute(() -> propertyDataSource.updateDateOfSaleForProperty(dateOfSaleForProperty,propertyId));
+    public void updateDateOfSaleForProperty(String dateOfSaleForProperty,String status,String propertyId) {
+        executor.execute(() -> propertyDataSource.updateDateOfSaleForProperty(dateOfSaleForProperty,status,propertyId));
     }
 
     // -------------

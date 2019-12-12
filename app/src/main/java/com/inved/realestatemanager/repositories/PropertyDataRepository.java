@@ -42,7 +42,7 @@ public class PropertyDataRepository {
 
     // --- UPDATE ---
 
-    public int updateDateOfSaleForProperty(String dateOfSale,String propertyId){ return propertyDao.updateDateOfSaleForProperty(dateOfSale, propertyId); }
+    public int updateDateOfSaleForProperty(String dateOfSale,String status,String propertyId){ return propertyDao.updateDateOfSaleForProperty(dateOfSale,status, propertyId); }
 
     public int updateProperty(String typeProperty, double pricePropertyInDollar,
                                                    double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,

@@ -219,6 +219,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
             mTypeProperty = typePropertySpinner.getSelectedItem().toString();
         } else if (parent.getId() == R.id.dialog_spinner_status) {
             mStatus = statusSpinner.getSelectedItem().toString();
+            Log.d("debago","status after spinner selection: "+mStatus);
         } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_min) {
 
             if (minBedroomSpinner.getSelectedItem().toString().equals("7+")) {
