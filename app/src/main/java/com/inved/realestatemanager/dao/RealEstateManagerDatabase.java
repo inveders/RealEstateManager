@@ -34,10 +34,11 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     public abstract PropertyDao propertyDao();
 
 
+
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
 
-        //   context.deleteDatabase("MyDatabase.db");
+        ///   context.deleteDatabase("MyDatabase.db");
 
         if (INSTANCE == null) {
             synchronized (RealEstateManagerDatabase.class) {
@@ -48,11 +49,12 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                             .addCallback(fillDatabaseWithFirebaseValues())
                             .build();
 
-
                 }
 
             }
         }
+
+        Log.d("debago","In database");
         return INSTANCE;
     }
 
@@ -136,7 +138,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
 
         }).addOnFailureListener(e -> {
-
+            Log.d("debago","NO CONNECTION");
         });
     }
 

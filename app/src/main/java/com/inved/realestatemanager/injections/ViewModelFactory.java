@@ -24,9 +24,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         this.executor = executor;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
     @NonNull
-    public <T extends ViewModel> T create(Class<T> modelClass) {
+    @Override
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(PropertyViewModel.class)) {
             return (T) new PropertyViewModel(propertyDataSource, realEstateAgentDataSource, executor);
         }

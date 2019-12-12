@@ -3,6 +3,7 @@ package com.inved.realestatemanager.controller.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,7 +91,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
 
         openSearchButton.setOnClickListener(v -> {
-            Log.d("debago","mOptions startSearchproperty:");
+
             callback.onMenuChanged(1);
             //setHasOptionsMenu(true);
             // Create an instance of the dialog fragment and show it
@@ -120,9 +121,16 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     // 3 - Get all properties for a real estate agent
     private void getAllProperties() {
-        Log.d("debago","mOptions getAllproperties:");
-        callback.onMenuChanged(0);
-        this.propertyViewModel.getAllProperties().observe(this, this::updatePropertyList);
+        Log.d("debago"," getAllproperties:");
+
+        this.propertyViewModel.getAllProperties().observe(this,properties -> {
+
+            Log.d("debago"," changement here");
+            callback.onMenuChanged(0);
+            updatePropertyList(properties);
+
+
+        } );
     }
 
     // 6 - Update the list of properties

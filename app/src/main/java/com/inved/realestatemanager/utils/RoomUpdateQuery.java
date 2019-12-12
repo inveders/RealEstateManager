@@ -22,7 +22,7 @@ public class RoomUpdateQuery {
         String queryString = "";
 
         // List of bind parameters
-        List<Object> args = new ArrayList();
+        List<Object> args = new ArrayList<>();
 
         // Beginning of query string
         queryString += "UPDATE Property SET";

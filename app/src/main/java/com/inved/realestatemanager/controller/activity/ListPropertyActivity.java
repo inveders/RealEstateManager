@@ -178,7 +178,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
         // Save the menu reference
         mOptionsMenu = menu;
-        Log.d("debago","mOptions onCreateOptions:");
         onMenuChanged(0);
         return super.onCreateOptionsMenu(menu);
 
@@ -187,7 +186,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     @Override
     public void onMenuChanged(int number) {
 
-        Log.d("debago","mOptions is: "+mOptionsMenu+" and number is: "+number);
         if(mOptionsMenu != null){
 
             MenuItem item = mOptionsMenu.findItem(R.id.menu);
