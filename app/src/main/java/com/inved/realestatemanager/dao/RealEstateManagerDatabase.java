@@ -21,6 +21,8 @@ import com.inved.realestatemanager.utils.ManageAgency;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 @Database(entities = {Property.class, RealEstateAgents.class}, version = 1, exportSchema = false)
 public abstract class RealEstateManagerDatabase extends RoomDatabase {
@@ -32,8 +34,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     public abstract RealEstateAgentsDao realEstateAgentsDao();
 
     public abstract PropertyDao propertyDao();
-
-
 
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
@@ -54,7 +54,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
             }
         }
 
-        Log.d("debago","In database");
+        Log.d("debago","In database 1");
         return INSTANCE;
     }
 
@@ -88,7 +88,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
                                     prepopulateRealEstateAgents();
 
-                                    preopopulateProperties();
+
 
 
                                 }
@@ -133,6 +133,8 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).realEstateAgentsDao().createRealEstateAgent(newAgent));
 
                 }
+                Log.d("debago","In database 2");
+                preopopulateProperties();
 
             }
 
@@ -184,10 +186,12 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
                     StorageHelper storageHelper = new StorageHelper();
                     try {
+
                         if(photoUri1!=null && photoUri1.length()<30){
                             String uri1 = storageHelper.beginDownload(photoUri1,propertyId);
                             if(uri1!=null){
                                 photoUri1=uri1;
+                                Log.d("debago","uri 1 is: "+photoUri1);
                             }
                         }
 
@@ -219,27 +223,29 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                             }
                         }
 
+                        Property newProperty = new Property(propertyId,typeProperty, pricePropertyInDollar,
+                                surfaceAreaProperty, numberRoomsInProperty,
+                                numberBathroomsInProperty, numberBedroomsInProperty,
+                                fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                                statusProperty, dateOfEntryOnMarketForProperty,
+                                dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
+
+                        Log.d("debago", "create property list: " + property.toString());
+
+                        //Create property in room with data from firebase
+                        Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
+
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    Property newProperty = new Property(propertyId,typeProperty, pricePropertyInDollar,
-                            surfaceAreaProperty, numberRoomsInProperty,
-                            numberBathroomsInProperty, numberBedroomsInProperty,
-                            fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
-                            statusProperty, dateOfEntryOnMarketForProperty,
-                            dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                            photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
-
-                    Log.d("debago", "create property list: " + property.toString());
-
-                    //Create property in room with data from firebase
-                    Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
-
 
 
                 }
-
+                Log.d("debago","In database 3");
             }
 
         }).addOnFailureListener(e -> {

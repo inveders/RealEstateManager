@@ -118,14 +118,16 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         numberBedroomSpinner.setOnItemSelectedListener(this);
         numberBathroomSpinner.setOnItemSelectedListener(this);
 
-        this.configureViewModel();
-
         //We check if it's a new add property or just a modification
         if (getActivity() != null) {
             context = getActivity();
         } else {
             context = MainApplication.getInstance().getApplicationContext();
         }
+
+        this.configureViewModel();
+
+
 
         Log.d("debagp","Manage choice is :" +ManageCreateUpdateChoice.getCreateUpdateChoice(context));
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {

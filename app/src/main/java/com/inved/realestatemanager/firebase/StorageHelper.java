@@ -7,21 +7,14 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class StorageHelper {
 
@@ -33,7 +26,6 @@ public class StorageHelper {
 
     private Uri mDownloadUrl = null;
     private Uri mFileUri = null;
-
 
     /***Find where we stop the service
      @Override public void onStop() {
@@ -98,12 +90,12 @@ public class StorageHelper {
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
                 .child(getLastPathFromFirebase);
 
-        String mFileName = "JPEG_";
+        String mFileName = "/"+getLastPathFromFirebase;
         File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File localFile = File.createTempFile(mFileName, ".jpg", storageDir);
+        //File localFile = File.createTempFile(mFileName, ".jpg", storageDir);
+        File localFile =new File(storageDir+mFileName);
         // Save a file: path for using again
-        String filePath = "file://" + localFile.getAbsolutePath();
-
+        String filePath = "file://" + storageDir+mFileName;
         fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
             Log.d("debago", ";local tem file created  created " + localFile.toString());
             //  updateDb(timestamp,localFile.toString(),position);
@@ -111,23 +103,8 @@ public class StorageHelper {
 
         return filePath;
 
-
     }
 
-   /* private File createImageFile() throws IOException {
-        // Create an image file name
-
-            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
-            String mFileName = "JPEG_" + timeStamp + "_";
-            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
-            // Save a file: path for using again
-            filePath = "file://" + mFile.getAbsolutePath();
-            return mFile;
-
-
-        return null;
-    }*/
 
     private void onUploadResultIntent(Intent intent) {
         // Got a new intent from MyUploadService with a success or failure
@@ -136,6 +113,7 @@ public class StorageHelper {
         Log.d(TAG, "onUploadResultIntent, mDonwloadUrl is:" + mDownloadUrl + " mFileUri is : " + mFileUri);
 
     }
+
 
 
 }

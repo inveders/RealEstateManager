@@ -17,7 +17,7 @@ import java.security.MessageDigest;
 public class WatermarkTransformation extends BitmapTransformation {
 
 
-    public WatermarkTransformation(Context context) {
+    public WatermarkTransformation() {
     super();
     }
 

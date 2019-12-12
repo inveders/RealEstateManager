@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.firebase;
 
+import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -13,7 +14,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class MyUploadService extends MyBaseTaskService {
+public class MyUploadService extends Service {
 
     private static final String TAG = "debago";
 
@@ -64,10 +65,6 @@ public class MyUploadService extends MyBaseTaskService {
     private void uploadFromUri(final Uri fileUri,String documentId, int numberPhoto) {
         Log.d(TAG, "uploadFromUri:src: upload" + fileUri.toString()+" Photo number is: "+numberPhoto);
 
-        // [START_EXCLUDE]
-        taskStarted();
-
-        // [END_EXCLUDE]
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
@@ -102,8 +99,6 @@ public class MyUploadService extends MyBaseTaskService {
             }
 
 
-            // [END get_child_ref]
-
             // Upload file to Firebase Storage
             Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());
             photoRef.putFile(fileUri)
@@ -125,19 +120,11 @@ public class MyUploadService extends MyBaseTaskService {
                         // Upload succeeded
                         Log.d(TAG, "uploadFromUri: getDownloadUri success");
 
-                        // [START_EXCLUDE]
-                        broadcastUploadFinished(downloadUri, fileUri);
-                        taskCompleted();
-                        // [END_EXCLUDE]
                     })
                     .addOnFailureListener(exception -> {
                         // Upload failed
                         Log.w(TAG, "uploadFromUri:onFailure", exception);
 
-                        // [START_EXCLUDE]
-                        broadcastUploadFinished(null, fileUri);
-                        taskCompleted();
-                        // [END_EXCLUDE]
                     });
         }
 
@@ -146,23 +133,6 @@ public class MyUploadService extends MyBaseTaskService {
 
     }
     // [END upload_from_uri]
-
-    /**
-     * Broadcast finished upload (success or failure).
-     * @return true if a running receiver received the broadcast.
-     */
-    private boolean broadcastUploadFinished(@Nullable Uri downloadUrl, @Nullable Uri fileUri) {
-        boolean success = downloadUrl != null;
-
-        String action = success ? UPLOAD_COMPLETED : UPLOAD_ERROR;
-
-        Intent broadcast = new Intent(action)
-                .putExtra(EXTRA_DOWNLOAD_URL, downloadUrl)
-                .putExtra(EXTRA_FILE_URI, fileUri);
-        return LocalBroadcastManager.getInstance(getApplicationContext())
-                .sendBroadcast(broadcast);
-    }
-
 
     public static IntentFilter getIntentFilter() {
         IntentFilter filter = new IntentFilter();

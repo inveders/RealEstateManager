@@ -22,6 +22,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
+import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;

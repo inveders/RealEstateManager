@@ -91,7 +91,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                 if (fileUri.getPath() != null) {
                     Glide.with(MainApplication.getInstance().getApplicationContext())
                             .load(new File(fileUri.getPath()))
-                            .transform(new WatermarkTransformation(MainApplication.getInstance().getApplicationContext()))
+                            .transform(new WatermarkTransformation())
                             .into((photo));
                 }
             }

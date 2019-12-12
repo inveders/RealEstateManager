@@ -69,10 +69,6 @@
             android:name=".firebase.MyUploadService"
             android:exported="false" />
 
-        <service
-            android:name=".firebase.MyBaseTaskService"
-            android:exported="false" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
