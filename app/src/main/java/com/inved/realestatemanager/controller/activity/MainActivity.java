@@ -16,7 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
+import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
+import com.inved.realestatemanager.utils.Utils;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -34,7 +36,16 @@ public class MainActivity extends AppCompatActivity {
         Button connexionButton = findViewById(R.id.login_button);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
         Log.d("debago", "MA onCreate");
-        connexionButton.setOnClickListener(view -> startSignInActivity());
+
+        connexionButton.setOnClickListener(view -> {
+            if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
+                startSignInActivity();
+            }else{
+                Log.d("debago","Pas de connexion internet, merci de réitérer");
+            }
+
+
+        });
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -147,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             }else{
-            //    Log.d("debago", "MA CHECK task IS NOT successful");
+                Log.d("debago", "MA CHECK task IS NOT successful");
             }
 
 

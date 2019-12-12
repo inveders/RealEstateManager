@@ -1,12 +1,14 @@
 package com.inved.realestatemanager.controller.dialogs;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -25,8 +27,10 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.view.PropertyListAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.security.auth.callback.Callback;
@@ -96,7 +100,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     private double maxSurface = 99999;
     private double minPrice = 0;
     private double maxPrice = 3000000;
-
+    private List<String> spinnerAgentList = new ArrayList<>();
     //Interface
     private OnClickSearchInterface callback;
     private UnitConversion unitConversion = new UnitConversion();
@@ -113,8 +117,10 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         ButterKnife.bind(this, view);
 
         callback = (OnClickSearchInterface) getTargetFragment();
-
+        spinnerAgentList.add("Choose one");
+        realEstateAgentNameSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
         this.configureViewModel();
+        this.retriveRealEstateAgents();
         this.seekbarChangements();
         if (getDialog() != null) {
             getDialog().setTitle(getString(R.string.page_name_search_dialog));
@@ -215,6 +221,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
+        Log.d("debago","parent.getId is "+parent.getId());
         if (parent.getId() == R.id.dialog_spinner_type_property) {
             mTypeProperty = typePropertySpinner.getSelectedItem().toString();
         } else if (parent.getId() == R.id.dialog_spinner_status) {
@@ -237,7 +244,8 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
-           /** mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItemId() + 1;*/
+
+            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItem().toString();
         }
 
     }
@@ -257,5 +265,34 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         void cancelButton();
     }
 
+    //REAL ESTATE AGENT MANAGEMENT AND SPINNER
+
+    private void retriveRealEstateAgents() {
+        if (propertyViewModel.getAllRealEstateAgents() != null) {
+            propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> {
+                for (RealEstateAgents list : realEstateAgents) {
+                    String firstname = list.getFirstname();
+                    String lastname = list.getLastname();
+                    String agentFirstnameLastname = firstname + " " + lastname;
+                    spinnerAgentList.add(agentFirstnameLastname);
+                }
+
+
+            });
+
+            //I fill agent spinner with firstname and lastname of the database programatically
+
+            if (getActivity() != null) {
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        getActivity(), android.R.layout.simple_spinner_item, spinnerAgentList);
+
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                realEstateAgentNameSpinner.setAdapter(adapter);
+
+                adapter.notifyDataSetChanged();
+            }
+
+        }
+    }
 
 }

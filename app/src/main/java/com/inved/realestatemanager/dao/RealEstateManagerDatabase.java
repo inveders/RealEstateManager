@@ -18,11 +18,10 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
+import com.inved.realestatemanager.utils.Utils;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 @Database(entities = {Property.class, RealEstateAgents.class}, version = 1, exportSchema = false)
 public abstract class RealEstateManagerDatabase extends RoomDatabase {
@@ -40,21 +39,26 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
         ///   context.deleteDatabase("MyDatabase.db");
 
-        if (INSTANCE == null) {
-            synchronized (RealEstateManagerDatabase.class) {
-                if (INSTANCE == null) {
+        if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
+            if (INSTANCE == null) {
+                synchronized (RealEstateManagerDatabase.class) {
+                    if (INSTANCE == null) {
 
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            RealEstateManagerDatabase.class, "MyDatabase.db")
-                            .addCallback(fillDatabaseWithFirebaseValues())
-                            .build();
+                        INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                                RealEstateManagerDatabase.class, "MyDatabase.db")
+                                .addCallback(fillDatabaseWithFirebaseValues())
+                                .build();
+
+                    }
 
                 }
-
             }
+        }else{
+            Log.d("debago","Pas de connexion internet, merci de réitérer");
         }
 
-        Log.d("debago","In database 1");
+
+
         return INSTANCE;
     }
 
@@ -70,11 +74,11 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-
+                    Log.d("debago", "auth not null");
                     RealEstateAgentHelper.getAgentWhateverAgency(FirebaseAuth.getInstance().getCurrentUser().getEmail()).get().addOnCompleteListener(task -> {
 
                         if (task.isSuccessful()) {
-
+                            Log.d("debago", "task successfill");
                             if (task.getResult() != null) {
                                 if (task.getResult().getDocuments().size() != 0) {
                                     //We have this agency in firebase and we have to put these items in a new Room database
@@ -139,9 +143,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
             }
 
 
-        }).addOnFailureListener(e -> {
-            Log.d("debago","NO CONNECTION");
-        });
+        }).addOnFailureListener(e -> Log.d("debago","NO CONNECTION"));
     }
 
     private static void preopopulateProperties(){

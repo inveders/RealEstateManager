@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,12 +56,8 @@ import com.inved.realestatemanager.utils.RandomString;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -139,7 +136,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
         dateOfEntry = v.findViewById(R.id.activity_create_update_property_date_entry_text);
         agentNameSpinner = v.findViewById(R.id.activity_create_update_spinner_real_estate_agent_text);
-        //agentNameSpinner.setOnItemSelectedListener(this);
+        spinnerAgentList.add("Choose one");
+        agentNameSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
         photo1 = v.findViewById(R.id.activity_create_update_added_photo_one);
         photo2 = v.findViewById(R.id.activity_create_update_added_photo_two);
         photo3 = v.findViewById(R.id.activity_create_update_added_photo_three);
@@ -388,6 +386,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                     Uri selectedImage = data.getData();
                     photo1.setImageURI(selectedImage);
                     if (selectedImage != null) {
+
+
+
                         photoUri = selectedImage.toString();
                         editImageName();
                     }
@@ -479,7 +480,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     //private method of your class
 
 
-
     //DATE PICKER
 
     private void datePickerInit() {
@@ -554,8 +554,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
                 updatePropertyInRoom();
                 updatePropertyInFirebase();
-
-                /**Think to put a delete method to delete last picture from storage*/
 
                 Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
                 uploadFileChoice(propertyId);

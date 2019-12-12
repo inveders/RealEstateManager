@@ -2,6 +2,7 @@ package com.inved.realestatemanager.controller.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -171,6 +172,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             splitPoiInCheckbox(property.getPointOfInterest());
 
             typePropertySpinner.setSelection(getIndexSpinner(typePropertySpinner, property.getTypeProperty()));
+            typePropertySpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
             numberRoomSpinner.setSelection(getIndexSpinner(numberRoomSpinner, property.getNumberRoomsInProperty()));
             numberBedroomSpinner.setSelection(getIndexSpinnerInt(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
             numberBathroomSpinner.setSelection(getIndexSpinner(numberBathroomSpinner, property.getNumberBathroomsInProperty()));

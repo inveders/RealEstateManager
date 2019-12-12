@@ -122,11 +122,9 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     // 3 - Get all properties for a real estate agent
     private void getAllProperties() {
-        Log.d("debago"," getAllproperties:");
-
         this.propertyViewModel.getAllProperties().observe(this,properties -> {
 
-            Log.d("debago"," changement here");
+            Log.d("debago"," changement here getAllProperties");
             callback.onMenuChanged(0);
             updatePropertyList(properties);
 
