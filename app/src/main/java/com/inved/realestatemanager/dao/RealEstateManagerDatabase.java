@@ -49,6 +49,8 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                                 .addCallback(fillDatabaseWithFirebaseValues())
                                 .build();
 
+                        Log.d("debago","Build database");
+
                     }
 
                 }
@@ -105,6 +107,8 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                         }
 
                     }).addOnFailureListener(e -> Log.d("debago", "DATABASE ON FAILURE"));
+                }else{
+                    Log.d("debago","Nothing");
                 }
 
 

@@ -63,7 +63,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class CreateUpdatePropertyFragmentTwo extends Fragment {
+public class CreateUpdatePropertyFragmentTwo extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
@@ -136,8 +136,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
         dateOfEntry = v.findViewById(R.id.activity_create_update_property_date_entry_text);
         agentNameSpinner = v.findViewById(R.id.activity_create_update_spinner_real_estate_agent_text);
-        spinnerAgentList.add("Choose one");
+        //Spinner step 1/4 Initialize spinner to be selected
+        agentNameSpinner.setOnItemSelectedListener(this);
         agentNameSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+        spinnerAgentList.add(getString(R.string.select_agent));
         photo1 = v.findViewById(R.id.activity_create_update_added_photo_one);
         photo2 = v.findViewById(R.id.activity_create_update_added_photo_two);
         photo3 = v.findViewById(R.id.activity_create_update_added_photo_three);
@@ -173,30 +175,15 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
             confirmButton.setText(getString(R.string.create_update_confirm_button_update));
         }
 
-        agentNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // An item was selected. You can retrieve the selected item using
-                // if (parent.getRealEstateAgentId() == R.id.create_update_spinner_real_estate_agent_text) {
-                Log.d("debago", "in on item selected method: ");
 
-                selectedAgent = agentNameSpinner.getSelectedItem().toString();
-                Log.d("debago", "selected agent: " + selectedAgent);
-                SplitString splitString = new SplitString();
-                String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
-                String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
-                propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(getViewLifecycleOwner(), realEstateAgents -> realEstateAgentId = realEstateAgents.getRealEstateAgentId());
 
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         return v;
     }
+
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -245,12 +232,16 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
                 dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
             }
 
-            //To retrieve real estate agent wich is in the database for this property
+            //Spinner step 3/4 : retrieve the agents who are already in database and show him in the spinner (pre-fill spinner)
             propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
-                String firstname = realEstateAgents.getFirstname();
-                String lastname = realEstateAgents.getLastname();
-                Log.d("debago", "set selection in spinner " + firstname + " " + lastname);
-                agentNameSpinner.setSelection(getSpinner.getIndexSpinner(agentNameSpinner, firstname + " " + lastname));
+                if(realEstateAgents.getFirstname()!=null){
+                    String firstname = realEstateAgents.getFirstname();
+                    String lastname = realEstateAgents.getLastname();
+                    int indexSpinner = getSpinner.getIndexSpinner(agentNameSpinner, firstname + " " + lastname);
+                    Log.d("debago", "set selection in spinner " + firstname + " " + lastname+" and index spinner is: "+agentNameSpinner.getCount());
+                    agentNameSpinner.setSelection(indexSpinner);
+                }
+
             });
 
 
@@ -449,6 +440,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
     //REAL ESTATE AGENT MANAGEMENT AND SPINNER
 
+    //Spinner step 4/4 : retrieve all agents in database and fill spinner with them
     private void retriveRealEstateAgents() {
         if (propertyViewModel.getAllRealEstateAgents() != null) {
             propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> {
@@ -470,7 +462,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 agentNameSpinner.setAdapter(adapter);
-
+                Log.d("debago","spinner filled");
                 adapter.notifyDataSetChanged();
             }
 
@@ -509,6 +501,24 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
         ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), null);
     }
 
+    //Spinner step 2/4 : implement methods onItemSelected and onNothingSelected
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        // An item was selected. You can retrieve the selected item using
+        Log.d("debago", "in on item selected method: ");
+        if (adapterView.getId() == R.id.activity_create_update_spinner_real_estate_agent_text) {
+
+            selectedAgent = agentNameSpinner.getSelectedItem().toString();
+            Log.d("debago", "selected agent: " + selectedAgent);
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -517,12 +527,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
     private void finishToCreateProperty() {
 
-        if (selectedAgent == null) {
+        if (selectedAgent == null || selectedAgent.equals(getString(R.string.select_agent))) {
             Toast.makeText(context, getString(R.string.set_error_agent), Toast.LENGTH_SHORT).show();
-        } else {
-            selectedAgent = "Alexandra Gnimadi"; /**LE TEMPS DE TROUVER POURQUOI ON ARRIVE PAS A SELECTIONNER LE SPINENR*/
-        }
-        if (fullDescriptionEditText.getText().toString().trim().isEmpty()) {
+        } else if (fullDescriptionEditText.getText().toString().trim().isEmpty()) {
             fullDescriptionEditText.setError(getString(R.string.set_error_street_number));
         } else if (photoUri1 == null) {
             Toast.makeText(context, getString(R.string.set_error_photo), Toast.LENGTH_SHORT).show();
@@ -531,10 +538,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
 
             statusProperty = getString(R.string.status_property_in_progress);
             fullDescriptionText = fullDescriptionEditText.getText().toString();
-
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                realEstateAgentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-            }
 
             if (dateOfEntry.getText().toString().trim().equals(getString(R.string.create_update_choose_date))) {
                 DateOfDay dateOfDay = new DateOfDay();
@@ -548,32 +551,59 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
             propertyIdCreate = randomString.generateRandomString();
 
 
-            if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != null) {
+            if(selectedAgent!=null){
+                SplitString splitString = new SplitString();
+                String firstname = splitString.splitStringWithSpace(selectedAgent, 0);
+                String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
+                propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(getViewLifecycleOwner(), realEstateAgents -> {
+                    realEstateAgentId = realEstateAgents.getRealEstateAgentId();
+                    Log.d("debago","selected agent is : "+selectedAgent+" and id is : "+realEstateAgentId);
+                    actionsAccordingToCreateOrUpdate();
+                });
 
-                //The choice is to update property
-
-                updatePropertyInRoom();
-                updatePropertyInFirebase();
-
-                Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
-                uploadFileChoice(propertyId);
-            } else {
-
-                //The choice is to create property
-
-                createPropertyInRoom();
-                createPropertyInFirebase();
-
-                Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
-                uploadFileChoice(propertyIdCreate);
+            }else{
+                if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+                    realEstateAgentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                }else{
+                    realEstateAgentId=null;
+                }
+                Log.d("debago","selected agent is : "+selectedAgent+" and id is : "+realEstateAgentId);
+                actionsAccordingToCreateOrUpdate();
 
             }
 
-            reinitializeManageChoice();
-            startMainActivity();
+
+
         }
 
 
+    }
+
+    private void actionsAccordingToCreateOrUpdate(){
+        if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != null) {
+
+            //The choice is to update property
+
+            updatePropertyInRoom();
+            updatePropertyInFirebase();
+
+            Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
+            uploadFileChoice(propertyId);
+        } else {
+
+            //The choice is to create property
+
+            createPropertyInRoom();
+            createPropertyInFirebase();
+
+            Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
+            uploadFileChoice(propertyIdCreate);
+
+        }
+
+
+        reinitializeManageChoice();
+        startMainActivity();
     }
 
     private void reinitializeManageChoice() {
@@ -615,6 +645,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment {
     }
 
     private void updatePropertyInRoom() {
+        Log.d("debago","propertyId is "+propertyId);
         this.propertyViewModel.updateProperty(typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,

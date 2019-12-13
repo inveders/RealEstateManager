@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
+import com.inved.realestatemanager.domain.GetSpinner;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
@@ -67,6 +68,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private String numberRoomsInProperty = "0";
     private String numberBathroomsInProperty = "0";
     private int numberBedroomsInProperty = 0;
+    private GetSpinner getSpinner=new GetSpinner();
 
     private String addressCompl = null;
 
@@ -171,37 +173,18 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             countryEditText.setText(property.getCountry());
             splitPoiInCheckbox(property.getPointOfInterest());
 
-            typePropertySpinner.setSelection(getIndexSpinner(typePropertySpinner, property.getTypeProperty()));
+            typePropertySpinner.setSelection(getSpinner.getIndexSpinner(typePropertySpinner, property.getTypeProperty()));
             typePropertySpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
-            numberRoomSpinner.setSelection(getIndexSpinner(numberRoomSpinner, property.getNumberRoomsInProperty()));
-            numberBedroomSpinner.setSelection(getIndexSpinnerInt(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
-            numberBathroomSpinner.setSelection(getIndexSpinner(numberBathroomSpinner, property.getNumberBathroomsInProperty()));
+            numberRoomSpinner.setSelection(getSpinner.getIndexSpinner(numberRoomSpinner, property.getNumberRoomsInProperty()));
+            numberBedroomSpinner.setSelection(getSpinner.getIndexSpinnerInt(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
+            numberBathroomSpinner.setSelection(getSpinner.getIndexSpinner(numberBathroomSpinner, property.getNumberBathroomsInProperty()));
 
 
         });
     }
 
-    //private method of your class
-    private int getIndexSpinner(Spinner spinner, String myString) {
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)) {
-                return i;
-            }
-        }
 
-        return 0;
-    }
 
-    //private method of your class
-    private int getIndexSpinnerInt(Spinner spinner, int myInt) {
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (Integer.valueOf(spinner.getItemAtPosition(i).toString()) == myInt) {
-                return i;
-            }
-        }
-
-        return 0;
-    }
 
     private void splitPoiInCheckbox(String propertyPointOfInterest) {
 

@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.controller.dialogs;
 
-import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +19,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
-import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.injections.Injection;
@@ -28,12 +26,9 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
-import com.inved.realestatemanager.view.PropertyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.security.auth.callback.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,6 +96,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     private double minPrice = 0;
     private double maxPrice = 3000000;
     private List<String> spinnerAgentList = new ArrayList<>();
+    private String realEstateAgentId=null;
     //Interface
     private OnClickSearchInterface callback;
     private UnitConversion unitConversion = new UnitConversion();
@@ -117,10 +113,18 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         ButterKnife.bind(this, view);
 
         callback = (OnClickSearchInterface) getTargetFragment();
-        spinnerAgentList.add("Choose one");
+        spinnerAgentList.add(getString(R.string.select_agent));
         realEstateAgentNameSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+
+        //Spinner step 1/3 Initialize all spinner to be selected
+        realEstateAgentNameSpinner.setOnItemSelectedListener(this);
+        statusSpinner.setOnItemSelectedListener(this);
+        typePropertySpinner.setOnItemSelectedListener(this);
+        minBedroomSpinner.setOnItemSelectedListener(this);
+        maxBedroomSpinner.setOnItemSelectedListener(this);
+
         this.configureViewModel();
-        this.retriveRealEstateAgents();
+        this.retriveRealEstateAgentsForSpinner();
         this.seekbarChangements();
         if (getDialog() != null) {
             getDialog().setTitle(getString(R.string.page_name_search_dialog));
@@ -202,13 +206,34 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
                 Log.d("debago","search property elements are : "+mTypeProperty+" "+ town+" "+ minSurface+" "+ maxSurface+" "+ minPrice+" "+ maxPrice+" "+
                         mMinBedroom+" "+ mMaxBedroom+" "+ country+" "+ mStatus+" "+ mRealEstateAgentName);
 
-                this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
-                        mMinBedroom, mMaxBedroom, country, mStatus, mRealEstateAgentName)
-                        .observe(this, properties -> {
-                            Log.d("debago","properties size is " +properties.size());
-                            updateRealEstateItemsList(properties);
 
-                        }) ;
+                if(mRealEstateAgentName!=null){
+                    SplitString splitString = new SplitString();
+                    String firstname = splitString.splitStringWithSpace(mRealEstateAgentName, 0);
+                    String lastname = splitString.splitStringWithSpace(mRealEstateAgentName, 1);
+                    propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(getViewLifecycleOwner(), realEstateAgents -> {
+                        realEstateAgentId = realEstateAgents.getRealEstateAgentId();
+
+                        this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
+                                mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
+                                .observe(this, properties -> {
+                                    Log.d("debago","properties size is " +properties.size()+ "1. realestateagentId is "+realEstateAgentId);
+                                    updateRealEstateItemsList(properties);
+
+                                }) ;
+                    });
+
+
+                }else{
+                    this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
+                            mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
+                            .observe(this, properties -> {
+                                Log.d("debago","properties size is " +properties.size()+ "2. realestateagentId is "+realEstateAgentId);
+                                updateRealEstateItemsList(properties);
+                            }) ;
+                }
+
+
 
                 getDialog().dismiss();
             }
@@ -218,21 +243,31 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     }
 
+    //Spinner step 2/3 : implement methods onItemSelected and onNothingSelected
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
-        Log.d("debago","parent.getId is "+parent.getId());
+
         if (parent.getId() == R.id.dialog_spinner_type_property) {
             mTypeProperty = typePropertySpinner.getSelectedItem().toString();
+
+            if(mTypeProperty.equals(getString(R.string.select_type_property))){
+                mTypeProperty=null;
+            }
         } else if (parent.getId() == R.id.dialog_spinner_status) {
             mStatus = statusSpinner.getSelectedItem().toString();
-            Log.d("debago","status after spinner selection: "+mStatus);
+
+            if(mStatus.equals(getString(R.string.select_status))){
+                mStatus=null;
+            }
+
         } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_min) {
 
             if (minBedroomSpinner.getSelectedItem().toString().equals("7+")) {
                 mMinBedroom = 7;
             } else {
-                mMinBedroom = (int) minBedroomSpinner.getSelectedItem();
+                mMinBedroom = Integer.valueOf(minBedroomSpinner.getSelectedItem().toString());
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_max) {
@@ -240,12 +275,16 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
             if (maxBedroomSpinner.getSelectedItem().toString().equals("7+")) {
                 mMaxBedroom = 7;
             } else {
-                mMaxBedroom = (int) maxBedroomSpinner.getSelectedItem();
+                mMaxBedroom = Integer.valueOf(maxBedroomSpinner.getSelectedItem().toString());
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
 
             mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItem().toString();
+            if(mRealEstateAgentName.equals(getString(R.string.select_agent))){
+                mRealEstateAgentName=null;
+            }
+
         }
 
     }
@@ -267,7 +306,8 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     //REAL ESTATE AGENT MANAGEMENT AND SPINNER
 
-    private void retriveRealEstateAgents() {
+    //Spinner step 3/3 : retrieve all agents in database and fill spinner with them
+    private void retriveRealEstateAgentsForSpinner() {
         if (propertyViewModel.getAllRealEstateAgents() != null) {
             propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> {
                 for (RealEstateAgents list : realEstateAgents) {
