@@ -20,7 +20,6 @@ import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
 import com.inved.realestatemanager.utils.Utils;
 
-import java.io.IOException;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Property.class, RealEstateAgents.class}, version = 1, exportSchema = false)
@@ -191,63 +190,55 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     String realEstateAgentId = property.getRealEstateAgentId();
 
                     StorageHelper storageHelper = new StorageHelper();
-                    try {
 
-                        if(photoUri1!=null && photoUri1.length()<30){
-                            String uri1 = storageHelper.beginDownload(photoUri1,propertyId);
-                            if(uri1!=null){
-                                photoUri1=uri1;
-                                Log.d("debago","uri 1 is: "+photoUri1);
-                            }
+                    if(photoUri1!=null && photoUri1.length()<30){
+                        String uri1 = storageHelper.beginDownload(photoUri1,propertyId);
+                        if(uri1!=null){
+                            photoUri1=uri1;
+                            Log.d("debago","uri 1 is: "+photoUri1);
                         }
-
-                        if(photoUri2!=null&& photoUri2.length()<30){
-                            String uri2= storageHelper.beginDownload(photoUri2,propertyId);
-                            if(uri2!=null){
-                                photoUri2=uri2;
-                            }
-                        }
-
-                        if(photoUri3!=null && photoUri3.length()<30){
-                            String uri3 = storageHelper.beginDownload(photoUri3,propertyId);
-                            if(uri3!=null){
-                                photoUri3=uri3;
-                            }
-                        }
-
-                        if(photoUri4!=null && photoUri4.length()<30){
-                            String uri4 = storageHelper.beginDownload(photoUri4,propertyId);
-                            if(uri4!=null){
-                                photoUri4=uri4;
-                            }
-                        }
-
-                        if(photoUri5!=null && photoUri5.length()<30){
-                            String uri5 = storageHelper.beginDownload(photoUri5,propertyId);
-                            if(uri5!=null){
-                                photoUri1=uri5;
-                            }
-                        }
-
-                        Property newProperty = new Property(propertyId,typeProperty, pricePropertyInDollar,
-                                surfaceAreaProperty, numberRoomsInProperty,
-                                numberBathroomsInProperty, numberBedroomsInProperty,
-                                fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
-                                statusProperty, dateOfEntryOnMarketForProperty,
-                                dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
-
-                        Log.d("debago", "create property list: " + property.toString());
-
-                        //Create property in room with data from firebase
-                        Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
-
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
 
+                    if(photoUri2!=null&& photoUri2.length()<30){
+                        String uri2= storageHelper.beginDownload(photoUri2,propertyId);
+                        if(uri2!=null){
+                            photoUri2=uri2;
+                        }
+                    }
+
+                    if(photoUri3!=null && photoUri3.length()<30){
+                        String uri3 = storageHelper.beginDownload(photoUri3,propertyId);
+                        if(uri3!=null){
+                            photoUri3=uri3;
+                        }
+                    }
+
+                    if(photoUri4!=null && photoUri4.length()<30){
+                        String uri4 = storageHelper.beginDownload(photoUri4,propertyId);
+                        if(uri4!=null){
+                            photoUri4=uri4;
+                        }
+                    }
+
+                    if(photoUri5!=null && photoUri5.length()<30){
+                        String uri5 = storageHelper.beginDownload(photoUri5,propertyId);
+                        if(uri5!=null){
+                            photoUri1=uri5;
+                        }
+                    }
+
+                    Property newProperty = new Property(propertyId,typeProperty, pricePropertyInDollar,
+                            surfaceAreaProperty, numberRoomsInProperty,
+                            numberBathroomsInProperty, numberBedroomsInProperty,
+                            fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                            statusProperty, dateOfEntryOnMarketForProperty,
+                            dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                            photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
+
+                    Log.d("debago", "create property list: " + property.toString());
+
+                    //Create property in room with data from firebase
+                    Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
 
 
                 }

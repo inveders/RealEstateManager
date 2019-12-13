@@ -238,6 +238,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         return aVoid -> {
             startMainActivity();
             getApplicationContext().deleteDatabase("MyDatabase.db");
+            Log.d("debago","we delete database");
             finish();
         };
     }

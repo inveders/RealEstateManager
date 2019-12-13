@@ -87,9 +87,8 @@ public class StorageHelper {
         // Save a file: path for using again
         String filePath = "file://" + storageDir + mFileName;
 
-        File fileCheck = new File(filePath);
-        if (!fileCheck.exists()) {
-            Log.d("debago", "file doesn't exist we download it");
+        if (!localFile.exists()) {
+            Log.d("debago", "file doesn't exist we download it "+localFile.exists());
             fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
                 Log.d("debago", ";local tem file created  created " + localFile.toString());
 
