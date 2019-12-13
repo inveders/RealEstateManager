@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -26,15 +27,6 @@ public class StorageHelper {
 
     private Uri mDownloadUrl = null;
     private Uri mFileUri = null;
-
-    /***Find where we stop the service
-     @Override public void onStop() {
-     super.onStop();
-
-     // Unregister download receiver
-     LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
-     }
-     */
 
     private void setmBroadcastReceiver() {
 
@@ -98,6 +90,7 @@ public class StorageHelper {
         String filePath = "file://" + storageDir+mFileName;
         fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
             Log.d("debago", ";local tem file created  created " + localFile.toString());
+
             //  updateDb(timestamp,localFile.toString(),position);
         }).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
 
