@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -15,7 +14,6 @@ import com.google.firebase.storage.StorageReference;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
-import java.io.IOException;
 
 public class StorageHelper {
 
@@ -77,22 +75,33 @@ public class StorageHelper {
 
     }
 
-    public String beginDownload(String getLastPathFromFirebase, String documentId) throws IOException {
+    public String beginDownload(String getLastPathFromFirebase, String documentId) {
 
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
                 .child(getLastPathFromFirebase);
 
-        String mFileName = "/"+getLastPathFromFirebase;
+        String mFileName = "/" + getLastPathFromFirebase;
         File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         //File localFile = File.createTempFile(mFileName, ".jpg", storageDir);
-        File localFile =new File(storageDir+mFileName);
+        File localFile = new File(storageDir + mFileName);
         // Save a file: path for using again
-        String filePath = "file://" + storageDir+mFileName;
-        fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-            Log.d("debago", ";local tem file created  created " + localFile.toString());
+        String filePath = "file://" + storageDir + mFileName;
 
-            //  updateDb(timestamp,localFile.toString(),position);
-        }).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
+        File fileCheck = new File(filePath);
+        if (!fileCheck.exists()) {
+            Log.d("debago", "file doesn't exist we download it");
+            fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                Log.d("debago", ";local tem file created  created " + localFile.toString());
+
+                //  updateDb(timestamp,localFile.toString(),position);
+            }).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
+        }
+
+        else {
+            Log.d("debago", "file already exist");
+        }
+
+
 
         return filePath;
 
@@ -106,7 +115,6 @@ public class StorageHelper {
         Log.d(TAG, "onUploadResultIntent, mDonwloadUrl is:" + mDownloadUrl + " mFileUri is : " + mFileUri);
 
     }
-
 
 
 }
