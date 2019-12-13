@@ -11,95 +11,99 @@
     app:cardElevation="3dp"
     app:cardUseCompatPadding="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp">
+        app:shimmer_auto_start="true">
 
-        <ImageView
-            android:id="@+id/fragment_list_property_item_image"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/description_image"
-            android:scaleType="fitXY"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="?attr/actionModeSplitBackground" />
-
-
-
-
-        <TextView
-            android:id="@+id/fragment_list_property_item_type"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="@string/list_property_type"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/default_margin"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_image" />
+            android:paddingBottom="10dp">
 
 
-        <ImageView
-            android:id="@+id/fragment_detail_property_surface_area_image"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="@dimen/default_margin"
-            app:layout_constraintLeft_toLeftOf="@id/fragment_list_property_item_type"
-            app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_type"
-            android:contentDescription="@string/description_image"
-            app:srcCompat="@drawable/detail_icon_surface_24dp"
-            />
-
-        <TextView
-            android:id="@+id/fragment_detail_property_surface_area_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_property_surface_area_text"
-            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_image"
-            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_surface_area_image"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="20dp"
-            />
-
-        <TextView
-            android:id="@+id/fragment_list_property_item_city"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-
-            android:text="@string/list_property_city"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/fragment_list_property_item_type" />
+            <ImageView
+                android:id="@+id/fragment_list_property_item_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/description_image"
+                android:scaleType="fitXY"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="?attr/actionModeSplitBackground" />
 
 
-        <TextView
-            android:id="@+id/fragment_list_property_item_unit_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/list_property_unit_price"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:layout_constraintRight_toLeftOf="@id/fragment_list_property_item_price"
-            app:layout_constraintTop_toTopOf="@id/fragment_list_property_item_price" />
-
-        <TextView
-            android:id="@+id/fragment_list_property_item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginEnd="15dp"
-            android:text="@string/list_property_price"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_city"
-
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/fragment_list_property_item_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/list_property_type"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_image" />
 
 
+            <ImageView
+                android:id="@+id/fragment_detail_property_surface_area_image"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="@dimen/default_margin"
+                android:contentDescription="@string/description_image"
+                app:layout_constraintLeft_toLeftOf="@id/fragment_list_property_item_type"
+                app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_type"
+                app:srcCompat="@drawable/detail_icon_surface_24dp" />
 
+            <TextView
+                android:id="@+id/fragment_detail_property_surface_area_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/detail_property_surface_area_text"
+                app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_surface_area_image"
+                app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_image" />
+
+            <TextView
+                android:id="@+id/fragment_list_property_item_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+
+                android:text="@string/list_property_city"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/fragment_list_property_item_type" />
+
+
+            <TextView
+                android:id="@+id/fragment_list_property_item_unit_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:text="@string/list_property_unit_price"
+                app:layout_constraintRight_toLeftOf="@id/fragment_list_property_item_price"
+                app:layout_constraintTop_toTopOf="@id/fragment_list_property_item_price" />
+
+            <TextView
+                android:id="@+id/fragment_list_property_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="15dp"
+                android:text="@string/list_property_price"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_list_property_item_city"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
 </androidx.cardview.widget.CardView>
