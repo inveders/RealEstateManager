@@ -1,14 +1,21 @@
 package com.inved.realestatemanager.view;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.models.Property;
@@ -84,6 +91,18 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                 if (fileUri.getPath() != null) {
                     Glide.with(MainApplication.getInstance().getApplicationContext())
                             .load(new File(fileUri.getPath()))
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    Log.d("debago","Exception is : "+e);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+                            })
                             .into((photo));
                 }
             }else{
