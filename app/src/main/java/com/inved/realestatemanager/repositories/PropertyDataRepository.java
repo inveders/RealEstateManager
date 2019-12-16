@@ -1,6 +1,7 @@
 package com.inved.realestatemanager.repositories;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.inved.realestatemanager.dao.PropertyDao;
 import com.inved.realestatemanager.models.Property;
@@ -14,6 +15,7 @@ public class PropertyDataRepository {
     private final PropertyDao propertyDao;
     private RoomSearchQuery roomSearchQuery = new RoomSearchQuery();
     private RoomUpdateQuery roomUpdateQuery = new RoomUpdateQuery();
+    private MutableLiveData<Integer> mutableLiveData = new MutableLiveData<>();
 
     public PropertyDataRepository(PropertyDao propertyDao) { this.propertyDao = propertyDao; }
 
@@ -44,6 +46,9 @@ public class PropertyDataRepository {
 
     public int updateDateOfSaleForProperty(String dateOfSale,String status,String propertyId){ return propertyDao.updateDateOfSaleForProperty(dateOfSale,status, propertyId); }
 
+    public int updateSelected(Boolean selected,String propertyId){ return propertyDao.updateSelected(selected,propertyId); }
+
+
     public int updateProperty(String typeProperty, double pricePropertyInDollar,
                                                    double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                                    int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
@@ -58,6 +63,16 @@ public class PropertyDataRepository {
                 statusProperty, dateOfEntryOnMarketForProperty, dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                 photoDescription3, photoDescription4, photoDescription5, realEstateAgentId,propertyId));
 
+    }
+
+    // --- SET ---
+    public MutableLiveData<Integer> setEndOfDownloadLiveData(){
+
+        mutableLiveData.setValue(1);
+        //If we send 1, so download is finish
+
+
+        return mutableLiveData;
     }
 
 }

@@ -7,18 +7,22 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.inved.realestatemanager.injections.Injection;
+import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
 
-public class StorageHelper {
+public class StorageHelper extends Fragment {
 
     private Context ctx = MainApplication.getInstance().getApplicationContext();
-
     private final String TAG = "debago";
 
     private BroadcastReceiver mBroadcastReceiver;
@@ -91,7 +95,7 @@ public class StorageHelper {
             Log.d("debago", "file doesn't exist we download it "+localFile.exists());
             fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
                 Log.d("debago", ";local tem file created  created " + localFile.toString());
-
+                viewModelActions(documentId);
                 //  updateDb(timestamp,localFile.toString(),position);
             }).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
         }
@@ -104,6 +108,12 @@ public class StorageHelper {
 
         return filePath;
 
+    }
+
+    private void viewModelActions(String documentId){
+        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
+        PropertyViewModel propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
+        propertyViewModel.updateSelected(true,documentId);
     }
 
 

@@ -37,6 +37,9 @@ public interface PropertyDao {
     @Query("UPDATE Property SET dateOfSaleForProperty = :dateOfSaleForProperty,statusProperty = :status WHERE propertyId = :propertyId")
     int updateDateOfSaleForProperty(String dateOfSaleForProperty,String status,String propertyId);
 
+    @Query("UPDATE Property SET selected = :selected WHERE propertyId = :propertyId")
+    int updateSelected(Boolean selected,String propertyId);
+
     @Query("DELETE FROM Property WHERE propertyId = :propertyId")
     int deleteProperty(String propertyId);
 

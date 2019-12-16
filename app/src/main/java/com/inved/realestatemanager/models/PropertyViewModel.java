@@ -1,6 +1,7 @@
 package com.inved.realestatemanager.models;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.inved.realestatemanager.repositories.PropertyDataRepository;
@@ -96,6 +97,10 @@ public class PropertyViewModel extends ViewModel {
         executor.execute(() -> propertyDataSource.updateDateOfSaleForProperty(dateOfSaleForProperty,status,propertyId));
     }
 
+    public void updateSelected(Boolean selected,String propertyId) {
+        executor.execute(() -> propertyDataSource.updateSelected(selected,propertyId));
+    }
+
     // -------------
     // FOR SEARCH
     // -------------
@@ -105,6 +110,19 @@ public class PropertyViewModel extends ViewModel {
         return propertyDataSource.searchProperty(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId);
     }
 
+    // -------------
+    // FOR END DOWNLOAD TRIGGER
+    // -------------
 
+    public void setEndOfDownload() {
+
+        getEndOfDownload(propertyDataSource.setEndOfDownloadLiveData());
+
+    }
+
+    public LiveData<Integer> getEndOfDownload(LiveData<Integer> myData) {
+
+        return myData;
+    }
 
 }
