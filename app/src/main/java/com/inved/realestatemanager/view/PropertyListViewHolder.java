@@ -2,6 +2,7 @@ package com.inved.realestatemanager.view;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -89,7 +90,11 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         if (property.getPhotoUri1() != null) {
 
-            if (new File(property.getPhotoUri1()).exists()) {
+            File localFile = new File(property.getPhotoUri1());
+            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            String mFileName = "/" + localFile.getName();
+            File goodFile = new File(storageDir,mFileName);
+            if (goodFile.exists()) {
                 shimmerFrameLayout.stopShimmer();
                 shimmerFrameLayout.hideShimmer();
             }else{
