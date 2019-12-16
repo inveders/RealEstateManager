@@ -92,9 +92,9 @@ public class StorageHelper extends Fragment {
         String filePath = "file://" + storageDir + mFileName;
 
         if (!localFile.exists()) {
-            Log.d("debago", "file doesn't exist we download it "+localFile.exists());
+           // Log.d("debago", "file doesn't exist we download it "+localFile.exists());
             fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-                Log.d("debago", ";local tem file created  created " + localFile.toString());
+             //   Log.d("debago", ";local tem file created  created " + localFile.toString());
                 viewModelActions(documentId);
                 //  updateDb(timestamp,localFile.toString(),position);
             }).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
@@ -111,6 +111,8 @@ public class StorageHelper extends Fragment {
     }
 
     private void viewModelActions(String documentId){
+
+        Log.d("debago", "storage helper view Model Actions");
         ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
         PropertyViewModel propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
         propertyViewModel.updateSelected(true,documentId);
