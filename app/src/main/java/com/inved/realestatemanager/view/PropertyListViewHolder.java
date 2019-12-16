@@ -16,6 +16,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.models.Property;
@@ -34,6 +35,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     private TextView townProperty;
     private CardView mCardview;
     private ImageView photo;
+    private ShimmerFrameLayout shimmerFrameLayout ;
 
     PropertyListViewHolder(View propertyItemView) {
         super(propertyItemView);
@@ -44,6 +46,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         mCardview = propertyItemView.findViewById(R.id.fragment_list_property_item);
         surfaceAreaProperty = propertyItemView.findViewById(R.id.fragment_detail_property_surface_area_text);
         photo = propertyItemView.findViewById(R.id.fragment_list_property_item_image);
+        shimmerFrameLayout=propertyItemView.findViewById(R.id.shimmer_view_container);
 
     }
 
@@ -85,6 +88,13 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         //PHOTO URI 1
 
         if (property.getPhotoUri1() != null) {
+
+            if (new File(property.getPhotoUri1()).exists()) {
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.hideShimmer();
+            }else{
+                shimmerFrameLayout.showShimmer(true);
+            }
 
             if(property.getDateOfSaleForProperty()==null || property.getDateOfSaleForProperty().isEmpty()){
                 Uri fileUri = Uri.parse(property.getPhotoUri1());
