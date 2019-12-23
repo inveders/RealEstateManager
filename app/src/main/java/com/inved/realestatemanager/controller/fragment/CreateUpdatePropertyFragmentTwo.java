@@ -1,10 +1,10 @@
 package com.inved.realestatemanager.controller.fragment;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
@@ -50,6 +50,7 @@ import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.utils.FileCompressor;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.utils.RandomString;
@@ -59,10 +60,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
 
-@RuntimePermissions
 public class CreateUpdatePropertyFragmentTwo extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_CAMERA_PHOTO = 456;
@@ -122,6 +120,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private Context context;
     private String selectedAgent;
+    private FileCompressor mCompressor;
+    private File mPhotoFile;
 
     private RandomString randomString = new RandomString();
 
@@ -167,6 +167,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         } else {
             context = MainApplication.getInstance().getApplicationContext();
         }
+
+        mCompressor = new FileCompressor(context);
 
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
             propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
@@ -273,7 +275,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setItems(items, (dialog, item) -> {
             if (items[item].equals(MainApplication.getInstance().getResources().getString(R.string.dialog_select_image_take_photo))) {
-                CreateUpdatePropertyFragmentTwoPermissionsDispatcher.dispatchTakePictureIntentWithPermissionCheck(this);
+                dispatchTakePictureIntent();
 
             } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_choose_from_library))) {
                 dispatchGalleryIntent();
@@ -321,9 +323,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
      * Capture image from camera
      */
 
-    @NeedsPermission(Manifest.permission.CAMERA)
-    void dispatchTakePictureIntent() {
 
+    void dispatchTakePictureIntent() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (getActivity() != null) {
@@ -342,6 +343,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                             BuildConfig.APPLICATION_ID + ".provider",
                             photoFile);
 
+                    mPhotoFile = photoFile;
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
 
@@ -375,17 +377,25 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 case REQUEST_GALLERY_PHOTO:
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
+                    try {
+                        mPhotoFile = mCompressor.compressToFile1(new File(getRealPathFromUri(selectedImage)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     photo1.setImageURI(selectedImage);
                     if (selectedImage != null) {
-
-
-
                         photoUri = selectedImage.toString();
                         editImageName();
                     }
 
                     break;
                 case REQUEST_CAMERA_PHOTO:
+                    try {
+                        Log.d("debago","mPhotoFile is: "+mPhotoFile+" and camerafilepath is: "+cameraFilePath);
+                        mPhotoFile = mCompressor.compressToFile1(mPhotoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     if (cameraFilePath != null) {
                         photoUri = cameraFilePath;
@@ -436,6 +446,25 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         }
 
         return null;
+    }
+
+    /**
+     * Get real file path from URI
+     */
+    public String getRealPathFromUri(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);
+            assert cursor != null;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     //REAL ESTATE AGENT MANAGEMENT AND SPINNER

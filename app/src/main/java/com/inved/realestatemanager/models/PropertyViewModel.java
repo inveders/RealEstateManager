@@ -2,6 +2,7 @@ package com.inved.realestatemanager.models;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.inved.realestatemanager.repositories.PropertyDataRepository;
@@ -23,6 +24,8 @@ public class PropertyViewModel extends ViewModel {
         this.realEstateAgentDataSource = realEstateAgentDataSource;
         this.executor = executor;
     }
+
+
 
     // -------------
     // FOR USER

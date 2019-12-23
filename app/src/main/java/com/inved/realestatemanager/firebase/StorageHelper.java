@@ -8,6 +8,9 @@ import android.os.Environment;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -17,15 +20,17 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.RandomString;
 
 import java.io.File;
 
-public class StorageHelper extends Fragment {
+public class StorageHelper extends BroadcastReceiver {
 
     private Context ctx = MainApplication.getInstance().getApplicationContext();
     private final String TAG = "debago";
 
     private BroadcastReceiver mBroadcastReceiver;
+    private int valueToSend = 0;
 
     private Uri mDownloadUrl = null;
     private Uri mFileUri = null;
@@ -80,7 +85,7 @@ public class StorageHelper extends Fragment {
     }
 
     public String beginDownload(String getLastPathFromFirebase, String documentId) {
-
+        Log.d("debago", "BEGIN DOWNLOAD");
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
                 .child(getLastPathFromFirebase);
 
@@ -94,8 +99,8 @@ public class StorageHelper extends Fragment {
         if (!localFile.exists()) {
            // Log.d("debago", "file doesn't exist we download it "+localFile.exists());
             fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-             //   Log.d("debago", ";local tem file created  created " + localFile.toString());
-                viewModelActions(documentId);
+                Log.d("debago", ";local tem file created  created " + localFile.toString());
+                getEndOfDownload();
                 //  updateDb(timestamp,localFile.toString(),position);
             }).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
         }
@@ -110,14 +115,14 @@ public class StorageHelper extends Fragment {
 
     }
 
-    private void viewModelActions(String documentId){
+    public MutableLiveData<String> getEndOfDownload(){
+        MutableLiveData<String> result=new MutableLiveData<>();
+        RandomString randomString = new RandomString();
+        result.setValue(randomString.generateRandomString());
+        Log.d("debago", "in get end of downlaod in storage helper, value to send is : "+result.hasActiveObservers());
 
-        Log.d("debago", "storage helper view Model Actions");
-        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
-        PropertyViewModel propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
-        propertyViewModel.updateSelected(true,documentId);
+        return result;
     }
-
 
     private void onUploadResultIntent(Intent intent) {
         // Got a new intent from MyUploadService with a success or failure
@@ -128,4 +133,8 @@ public class StorageHelper extends Fragment {
     }
 
 
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+    }
 }

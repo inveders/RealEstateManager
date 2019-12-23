@@ -3,7 +3,6 @@ package com.inved.realestatemanager.controller.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +21,9 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
-import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.DownloadTriggerViewModel;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
@@ -43,6 +42,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private PropertyListAdapter adapter;
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
+    private DownloadTriggerViewModel downloadTriggerViewModel;
     private FloatingActionButton openSearchButton;
     private MenuChangementsInterface callback;
 
@@ -117,7 +117,17 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+        downloadTriggerViewModel = ViewModelProviders.of(this).get(DownloadTriggerViewModel.class);
+        getDownloadFinished();
         getAllProperties();
+
+    }
+
+    private void getDownloadFinished(){
+        Log.d("debago","in getDownloadFinished");
+        this.downloadTriggerViewModel.getDownloadFinished().observe(this,s -> {
+            Log.d("debago","we receive the trigger for complete download");
+        });
     }
 
     // 3 - Get all properties for a real estate agent

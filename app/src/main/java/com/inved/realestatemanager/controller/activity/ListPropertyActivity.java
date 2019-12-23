@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +35,10 @@ import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+
+import java.io.File;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -196,7 +200,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     item.setIcon(R.drawable.ic_menu_add_white_24dp);
                     item.setOnMenuItemClickListener(menuItem -> {
                         ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
-                        startCreateUpdatePropertyActivity();
+                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this);
                         return true;
                     });
                     break;
@@ -219,8 +223,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
-
-    private void startCreateUpdatePropertyActivity() {
+    @NeedsPermission(Manifest.permission.CAMERA)
+    public void startCreateUpdatePropertyActivity() {
         Intent intent = new Intent(this, CreatePropertyActivity.class);
         startActivity(intent);
     }
@@ -238,6 +242,17 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         return aVoid -> {
             startMainActivity();
             getApplicationContext().deleteDatabase("MyDatabase.db");
+            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+            assert storageDir != null;
+            if (storageDir.isDirectory())
+            {
+                String[] children = storageDir.list();
+                for (int i = 0; i < children.length; i++)
+                {
+                    new File(storageDir, children[i]).delete();
+                }
+            }
             Log.d("debago","we delete database");
             finish();
         };

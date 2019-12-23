@@ -36,7 +36,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
 
-        ///   context.deleteDatabase("MyDatabase.db");
+        //  context.deleteDatabase("MyDatabase.db");
 
         if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
             if (INSTANCE == null) {
@@ -72,7 +72,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
 
-
+                Log.d("debago", "in fill dqtqbqse yith firebqse vqlue");
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
                     Log.d("debago", "auth not null");
@@ -117,7 +117,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
     private static void prepopulateRealEstateAgents() {
         RealEstateAgentHelper.getAllAgents().get().addOnSuccessListener(queryDocumentSnapshots -> {
-            Log.d("debago", "check if getAllAgent not null: " + queryDocumentSnapshots.size());
+           // Log.d("debago", "check if getAllAgent not null: " + queryDocumentSnapshots.size());
 
             if (queryDocumentSnapshots.size() > 0) {
 
@@ -132,7 +132,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     String agencyPlaceId = realEstateAgents.getAgencyPlaceId();
                     String realEstateAgentId = realEstateAgents.getRealEstateAgentId();
 
-                    Log.d("debago", "create agent list: " + realEstateAgents.toString());
+                   // Log.d("debago", "create agent list: " + realEstateAgents.toString());
 
                     RealEstateAgents newAgent = new RealEstateAgents(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
@@ -151,7 +151,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
     private static void preopopulateProperties(){
         PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
-            Log.d("debago", "check if getAllProperty not null: " + queryDocumentSnapshots.size());
+            //Log.d("debago", "check if getAllProperty not null: " + queryDocumentSnapshots.size());
             if (queryDocumentSnapshots.size() > 0) {
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
@@ -195,7 +195,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                         String uri1 = storageHelper.beginDownload(photoUri1,propertyId);
                         if(uri1!=null){
                             photoUri1=uri1;
-                            Log.d("debago","uri 1 is: "+photoUri1);
                         }
                     }
 
@@ -235,14 +234,14 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                             dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                             photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
-                    Log.d("debago", "create property list: " + property.toString());
+                   // Log.d("debago", "create property list: " + property.toString());
 
                     //Create property in room with data from firebase
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
 
 
                 }
-                Log.d("debago","In database 3");
+               // Log.d("debago","In database 3");
             }
 
         }).addOnFailureListener(e -> {
