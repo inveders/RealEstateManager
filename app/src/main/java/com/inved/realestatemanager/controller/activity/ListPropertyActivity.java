@@ -149,10 +149,10 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 ListPropertyActivityPermissionsDispatcher.startMapsActivityWithPermissionCheck(this);
                 break;
             case R.id.activity_main_drawer_logout:
-                logout();
+                logoutAlertDialog();
                 break;
             case R.id.activity_main_drawer_delete_account:
-                deleteAccount();
+                deleteAccountAlertDialog();
                 break;
             default:
                 break;
@@ -174,6 +174,21 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
+    private void logoutAlertDialog(){
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.alert_dialog_logout)
+                .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> logout())
+                .setNegativeButton(R.string.alert_dialog_no, null)
+                .show();
+    }
+
+    private void deleteAccountAlertDialog(){
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.alert_dialog_delete_account)
+                .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> deleteAccount())
+                .setNegativeButton(R.string.alert_dialog_no, null)
+                .show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
