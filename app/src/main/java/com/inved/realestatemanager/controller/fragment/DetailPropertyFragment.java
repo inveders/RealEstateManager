@@ -273,7 +273,7 @@ public class DetailPropertyFragment extends Fragment {
         }
 
         //IMAGE SWITCHER
-
+        imageSwitcher.removeAllViews();
         imageSwitcher.setFactory(() -> {
             // TODO Auto-generated method stub
 
@@ -432,13 +432,14 @@ public class DetailPropertyFragment extends Fragment {
             String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
 
             geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
+                Log.d("debago", "Address formatting is "+results);
                 if (results.size() != 0) {
 
                     double latitude = results.get(0).getGeometry().getLocation().getLat();
                     double longitude = results.get(0).getGeometry().getLocation().getLng();
 
                     String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + addressFormatted + "&zoom=16&size=170x100&maptype=roadmap&markers=color:blue%7C" + latitude + "," + longitude + "&key=" + MAP_API_KEY;
-
+                    Log.d("debago", "Address formatting is "+addressFormatted);
                     //IMAGE LOCATION
                     Glide.with(MainApplication.getInstance().getApplicationContext())
                             .load(url)
@@ -446,6 +447,7 @@ public class DetailPropertyFragment extends Fragment {
                             .into((propertyLocalisationImage));
                 } else {
                     Log.d("debago", "Geocoding no result ");
+
                 }
 
 
