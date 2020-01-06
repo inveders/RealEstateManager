@@ -4,25 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.inved.realestatemanager.injections.Injection;
-import com.inved.realestatemanager.injections.ViewModelFactory;
-import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.RandomString;
-
-import java.io.File;
 
 public class StorageHelper extends BroadcastReceiver {
 
@@ -31,9 +17,10 @@ public class StorageHelper extends BroadcastReceiver {
 
     private BroadcastReceiver mBroadcastReceiver;
     private int valueToSend = 0;
-
     private Uri mDownloadUrl = null;
     private Uri mFileUri = null;
+
+
 
     private void setmBroadcastReceiver() {
 
@@ -84,45 +71,11 @@ public class StorageHelper extends BroadcastReceiver {
 
     }
 
-    public String beginDownload(String getLastPathFromFirebase, String documentId) {
-        Log.d("debago", "BEGIN DOWNLOAD");
-        StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
-                .child(getLastPathFromFirebase);
-
-        String mFileName = "/" + getLastPathFromFirebase;
-        File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        //File localFile = File.createTempFile(mFileName, ".jpg", storageDir);
-        File localFile = new File(storageDir + mFileName);
-        // Save a file: path for using again
-        String filePath = "file://" + storageDir + mFileName;
-
-        if (!localFile.exists()) {
-           // Log.d("debago", "file doesn't exist we download it "+localFile.exists());
-            fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-                Log.d("debago", ";local tem file created  created " + localFile.toString());
-                getEndOfDownload();
-                //  updateDb(timestamp,localFile.toString(),position);
-            }).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
-        }
-
-        else {
-            Log.d("debago", "file already exist");
-        }
 
 
 
-        return filePath;
 
-    }
 
-    public MutableLiveData<String> getEndOfDownload(){
-        MutableLiveData<String> result=new MutableLiveData<>();
-        RandomString randomString = new RandomString();
-        result.setValue(randomString.generateRandomString());
-        Log.d("debago", "in get end of downlaod in storage helper, value to send is : "+result.hasActiveObservers());
-
-        return result;
-    }
 
     private void onUploadResultIntent(Intent intent) {
         // Got a new intent from MyUploadService with a success or failure

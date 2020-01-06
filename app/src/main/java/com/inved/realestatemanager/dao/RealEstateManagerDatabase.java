@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
-import com.inved.realestatemanager.firebase.StorageHelper;
+import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
@@ -23,7 +23,7 @@ import com.inved.realestatemanager.utils.Utils;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Property.class, RealEstateAgents.class}, version = 1, exportSchema = false)
-public abstract class RealEstateManagerDatabase extends RoomDatabase {
+public abstract class RealEstateManagerDatabase extends RoomDatabase{
 
     // --- SINGLETON ---
     private static volatile RealEstateManagerDatabase INSTANCE;
@@ -37,6 +37,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     public static RealEstateManagerDatabase getInstance(Context context) {
 
         //  context.deleteDatabase("MyDatabase.db");
+
 
         if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
             if (INSTANCE == null) {
@@ -189,38 +190,38 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     String photoDescription5 = property.getPhotoDescription5();
                     String realEstateAgentId = property.getRealEstateAgentId();
 
-                    StorageHelper storageHelper = new StorageHelper();
+                    StorageDownload storageDownload = new StorageDownload();
 
                     if(photoUri1!=null && photoUri1.length()<30){
-                        String uri1 = storageHelper.beginDownload(photoUri1,propertyId);
+                        String uri1 = storageDownload.beginDownload(photoUri1,propertyId);
                         if(uri1!=null){
                             photoUri1=uri1;
                         }
                     }
 
                     if(photoUri2!=null&& photoUri2.length()<30){
-                        String uri2= storageHelper.beginDownload(photoUri2,propertyId);
+                        String uri2= storageDownload.beginDownload(photoUri2,propertyId);
                         if(uri2!=null){
                             photoUri2=uri2;
                         }
                     }
 
                     if(photoUri3!=null && photoUri3.length()<30){
-                        String uri3 = storageHelper.beginDownload(photoUri3,propertyId);
+                        String uri3 = storageDownload.beginDownload(photoUri3,propertyId);
                         if(uri3!=null){
                             photoUri3=uri3;
                         }
                     }
 
                     if(photoUri4!=null && photoUri4.length()<30){
-                        String uri4 = storageHelper.beginDownload(photoUri4,propertyId);
+                        String uri4 = storageDownload.beginDownload(photoUri4,propertyId);
                         if(uri4!=null){
                             photoUri4=uri4;
                         }
                     }
 
                     if(photoUri5!=null && photoUri5.length()<30){
-                        String uri5 = storageHelper.beginDownload(photoUri5,propertyId);
+                        String uri5 = storageDownload.beginDownload(photoUri5,propertyId);
                         if(uri5!=null){
                             photoUri1=uri5;
                         }

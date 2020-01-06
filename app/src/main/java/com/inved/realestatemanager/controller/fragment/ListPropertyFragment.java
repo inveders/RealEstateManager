@@ -46,10 +46,12 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private FloatingActionButton openSearchButton;
     private MenuChangementsInterface callback;
 
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         adapter = new PropertyListAdapter(context, this);
+
         this.createCallbackToParentActivity();
     }
 
@@ -61,8 +63,14 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Configure ViewModel
-        this.configureViewModel();
+
+
+       /* StorageDownload storageDownload = new StorageDownload();
+        storageDownload.setCallback(() -> {
+            Log.d("debago","ListProeprtyFragment in the CALLBACK in on create");
+            getAllProperties();
+        });*/
+
 
 
     }
@@ -77,6 +85,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         recyclerView.setAdapter(this.adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+
+        // Configure ViewModel
+        this.configureViewModel();
+
         if (getActivity() != null) {
 
             ((ListPropertyActivity) getActivity()).setFragmentRefreshListener(this::getAllProperties);
@@ -125,7 +137,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     private void getDownloadFinished(){
         Log.d("debago","in getDownloadFinished");
-        this.downloadTriggerViewModel.getDownloadFinished().observe(this,s -> {
+        this.downloadTriggerViewModel.getDownloadFinished().observe(getViewLifecycleOwner(),s -> {
             Log.d("debago","we receive the trigger for complete download");
         });
     }
@@ -177,6 +189,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public void cancelButton() {
         callback.onMenuChanged(0);
     }
+
 
     //INTERFACE BETWEEN LISTPROPERTYFRAGMENT AND LISTPROPERTYACTIVITY
 
