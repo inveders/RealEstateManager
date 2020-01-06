@@ -51,9 +51,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -74,27 +71,13 @@ public class AddAgentDialog extends DialogFragment {
     private String urlPicture;
 
     //Widget
-    @BindView(R.id.add_agent_photo)
     ImageView agentPhoto;
-
-    @BindView(R.id.add_agent_add_photo_button)
     Button addPhotoButton;
-
-    @BindView(R.id.add_agent_edittext_lastname)
     EditText lastnameEditText;
-
-    @BindView(R.id.add_agent_edittext_firstname)
     EditText firstnameEditText;
-
-    @BindView(R.id.textview_agency_name_edit)
     TextView agencyNameTextview;
 
-    private AutocompleteSupportFragment autocompleteFragment;
-
-    @BindView(R.id.add_agent_dialog_add_new_agent)
     TextView addActionButton;
-
-    @BindView(R.id.agent_add_dialog_close)
     ImageButton cancelSearchButton;
 
     private String agencyName;
@@ -105,7 +88,14 @@ public class AddAgentDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.layout_add_agent_dialog, container, false);
-        ButterKnife.bind(this, view);
+
+        agentPhoto=view.findViewById(R.id.add_agent_photo);
+        addPhotoButton=view.findViewById(R.id.add_agent_add_photo_button);
+        lastnameEditText=view.findViewById(R.id.add_agent_edittext_lastname);
+        firstnameEditText=view.findViewById(R.id.add_agent_edittext_firstname);
+        agencyNameTextview=view.findViewById(R.id.textview_agency_name_edit);
+        addActionButton=view.findViewById(R.id.add_agent_dialog_add_new_agent);
+        cancelSearchButton=view.findViewById(R.id.agent_add_dialog_close);
 
         this.configureViewModel();
 
@@ -137,7 +127,7 @@ public class AddAgentDialog extends DialogFragment {
         if(getActivity()!=null){
             Places.initialize(getActivity(), MAP_API_KEY);
             // Initialize the AutocompleteSupportFragment.
-            autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
+            AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
 
             // Specify the types of place data to return.
             if (autocompleteFragment != null) {

@@ -29,58 +29,25 @@ import com.inved.realestatemanager.models.RealEstateAgents;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.apptik.widget.MultiSlider;
 
 public class SearchFullScreenDialog extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
     //Widget
-    @BindView(R.id.dialog_spinner_type_property)
-    Spinner typePropertySpinner;
 
-    @BindView(R.id.dialog_town_autocompleteText)
-    AutoCompleteTextView townPropertyAutocomplete;
-
-    @BindView(R.id.dialog_seekbar_surface)
-    MultiSlider surfaceSeekbar;
-
-    @BindView(R.id.dialog_surface_left_value)
-    TextView surfaceMinValue;
-
-    @BindView(R.id.dialog_surface_right_value)
-    TextView surfaceMaxValue;
-
-    @BindView(R.id.dialog_seekbar_price)
-    MultiSlider priceSeekbar;
-
-    @BindView(R.id.dialog_price_left_value)
-    TextView priceMinValue;
-
-    @BindView(R.id.dialog_price_right_value)
-    TextView priceMaxValue;
-
-    @BindView(R.id.dialog_spinner_number_bedroom_min)
-    Spinner minBedroomSpinner;
-
-    @BindView(R.id.dialog_spinner_number_bedroom_max)
-    Spinner maxBedroomSpinner;
-
-    @BindView(R.id.dialog_country_autocompleteText)
-    AutoCompleteTextView countryAutocomplete;
-
-    @BindView(R.id.dialog_spinner_status)
-    Spinner statusSpinner;
-
-    @BindView(R.id.dialog_spinner_agent_name)
-    Spinner realEstateAgentNameSpinner;
-
-    @BindView(R.id.fullscreen_dialog_launch_search)
-    TextView searchActionButton;
-
-    @BindView(R.id.fullscreen_dialog_close)
-    ImageButton cancelSearchButton;
+    private Spinner typePropertySpinner;
+    private AutoCompleteTextView townPropertyAutocomplete;
+    private MultiSlider surfaceSeekbar;
+    private TextView surfaceMinValue;
+    private TextView surfaceMaxValue;
+    private MultiSlider priceSeekbar;
+    private TextView priceMinValue;
+    private TextView priceMaxValue;
+    private Spinner minBedroomSpinner;
+    private Spinner maxBedroomSpinner;
+    private AutoCompleteTextView countryAutocomplete;
+    private Spinner statusSpinner;
+    private Spinner realEstateAgentNameSpinner;
 
     //String for Data
     private static final int MAX_PRICE_PROPERTY = 2000000;
@@ -110,7 +77,23 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.layout_search_full_screen_dialog, container, false);
-        ButterKnife.bind(this, view);
+
+        //declarations
+        typePropertySpinner = view.findViewById(R.id.dialog_spinner_type_property);
+        townPropertyAutocomplete = view.findViewById(R.id.dialog_town_autocompleteText);
+        surfaceSeekbar =view.findViewById(R.id.dialog_seekbar_surface);
+        surfaceMinValue=view.findViewById(R.id.dialog_surface_left_value);
+        surfaceMaxValue=view.findViewById(R.id.dialog_surface_right_value);
+        priceSeekbar=view.findViewById(R.id.dialog_seekbar_price);
+        priceMinValue=view.findViewById(R.id.dialog_price_left_value);
+        priceMaxValue=view.findViewById(R.id.dialog_price_right_value);
+        minBedroomSpinner=view.findViewById(R.id.dialog_spinner_number_bedroom_min);
+        maxBedroomSpinner=view.findViewById(R.id.dialog_spinner_number_bedroom_max);
+        countryAutocomplete=view.findViewById(R.id.dialog_country_autocompleteText);
+        statusSpinner=view.findViewById(R.id.dialog_spinner_status);
+        realEstateAgentNameSpinner=view.findViewById(R.id.dialog_spinner_agent_name);
+        TextView searchActionButton = view.findViewById(R.id.fullscreen_dialog_launch_search);
+        ImageButton cancelSearchButton = view.findViewById(R.id.fullscreen_dialog_close);
 
         callback = (OnClickSearchInterface) getTargetFragment();
         spinnerAgentList.add(getString(R.string.select_agent));
