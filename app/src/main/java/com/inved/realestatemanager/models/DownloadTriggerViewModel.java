@@ -26,7 +26,7 @@ public class DownloadTriggerViewModel extends AndroidViewModel {
 
         /*downloadFinished = Transformations.switchMap(
                 stringToSend, input -> storageDownload.getEndOfDownload());*/
-        mediatorLiveData.addSource(storageDownload.getEndOfDownload(),value-> mediatorLiveData.setValue(value));
+      //  mediatorLiveData.addSource(storageDownload.getEndOfDownload(),value-> mediatorLiveData.setValue(value));
 
     }
 
@@ -34,10 +34,10 @@ public class DownloadTriggerViewModel extends AndroidViewModel {
     // FOR BEGGINING - RESULT DOWNLOAD
     // ------------
 
-    public LiveData<String> getDownloadFinished() {
+   /* public LiveData<String> getDownloadFinished() {
         Log.d("debago","download finished called in view model : "+mediatorLiveData.getValue()+" and storage download? "+storageDownload.getEndOfDownload().getValue());
         return mediatorLiveData;
-    }
+    }*/
 
 
 }

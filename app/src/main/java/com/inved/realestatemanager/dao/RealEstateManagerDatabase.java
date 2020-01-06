@@ -11,6 +11,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
+import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.firebase.StorageDownload;
@@ -191,6 +193,10 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                     String realEstateAgentId = property.getRealEstateAgentId();
 
                     StorageDownload storageDownload = new StorageDownload();
+
+                    StorageDownload.OnDownloadFinishedInterface callback= new ListPropertyActivity();
+                    storageDownload.setCallback(callback);
+
 
                     if(photoUri1!=null && photoUri1.length()<30){
                         String uri1 = storageDownload.beginDownload(photoUri1,propertyId);
