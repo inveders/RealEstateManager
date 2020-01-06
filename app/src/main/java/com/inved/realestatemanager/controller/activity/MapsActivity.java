@@ -300,7 +300,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void buildAlertMessageNoGps() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.MyDialogTheme);
         builder.setMessage(R.string.alert_dialog_gps_disabled)
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.alert_dialog_yes), (dialog, id) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))

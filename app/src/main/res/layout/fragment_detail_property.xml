@@ -335,7 +335,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_bathroom_image"
                 app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
                 app:layout_constraintTop_toTopOf="@id/fragment_detail_property_street_name_text"
-                app:srcCompat="@color/colorPrimaryDark" />
+                android:src="@drawable/no_image" />
 
 
             <!-- BLOC CARACTERISTIQUE POINT OF INTEREST -->

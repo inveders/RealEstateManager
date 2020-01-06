@@ -10,6 +10,7 @@
     tools:context=".controller.activity.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,44 +19,48 @@
             android:id="@+id/textview_appname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_extra_large_margin"
             android:text="@string/app_name_realestate"
-            android:textSize="@dimen/default_title_size"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_margin="@dimen/default_margin"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="@dimen/default_little_title_size"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_logo_appli"
-            app:layout_constraintBottom_toTopOf="@id/login_button"
-            app:layout_constraintTop_toBottomOf="@id/textview_appname"
-            android:layout_margin="@dimen/default_large_margin"
-            android:contentDescription="@string/description_image" />
+            android:layout_margin="@dimen/default_extra_large_margin"
+            android:cropToPadding="true"
+            android:contentDescription="@string/description_image"
+            android:src="@drawable/real_estate_manager_image"
+            app:layout_constraintLeft_toLeftOf="@id/login_button"
+            app:layout_constraintRight_toRightOf="@id/login_button"
+            app:layout_anchor="@+id/constraintLayout"
+            app:layout_anchorGravity="center" />
 
         <!-- BUTTON LOGIN -->
         <Button
             android:id="@+id/login_button"
-            android:text="@string/button_connexion_email"
-            android:textColor="#fff"
-            android:textSize="@dimen/default_text_size"
-            android:background="@drawable/border_button_connexion"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_margin="@dimen/default_large_margin"
-            android:padding="@dimen/default_large_margin"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/default_extra_large_margin"
+            android:background="@drawable/border_button_connexion"
+            android:padding="@dimen/default_large_margin"
+
+            android:text="@string/button_connexion_email"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size"
 
             app:layout_constraintBottom_toBottomOf="parent"
 
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

@@ -180,7 +180,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     }
 
     private void logoutAlertDialog(){
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this,R.style.MyDialogTheme)
                 .setMessage(R.string.alert_dialog_logout)
                 .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> logout())
                 .setNegativeButton(R.string.alert_dialog_no, null)
@@ -188,7 +188,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     }
 
     private void deleteAccountAlertDialog(){
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this,R.style.MyDialogTheme)
                 .setMessage(R.string.alert_dialog_delete_account)
                 .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> deleteAccount())
                 .setNegativeButton(R.string.alert_dialog_no, null)
