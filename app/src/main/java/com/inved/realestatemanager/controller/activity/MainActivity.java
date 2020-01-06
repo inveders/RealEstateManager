@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
             if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
                 startSignInActivity();
             }else{
-                Log.d("debago","Pas de connexion internet, merci de réitérer"); /**METTRE UN TOAST ou un snackbar ici*/
+                showSnackBar(this.coordinatorLayout, getString(R.string.error_no_internet));
+                Log.d("debago","Pas de connexion internet, merci de réitérer");
             }
 
         });
