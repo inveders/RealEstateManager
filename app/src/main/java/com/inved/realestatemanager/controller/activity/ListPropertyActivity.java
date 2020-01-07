@@ -21,7 +21,6 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
-import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
@@ -31,7 +30,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ListPropertyFragment.MenuChangementsInterface, StorageDownload.OnDownloadFinishedInterface {
+public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ListPropertyFragment.MenuChangementsInterface {
 
 
     /**
@@ -282,18 +281,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             getFragmentRefreshListener().onRefresh();
         }
     }
-
-    @Override
-    public void onDownloadFinished() {
-        Log.d("debago","in onDownloadFinished interface in ListPropertyActivity");
-        configureAndShowListFragment();
-
-        if (getFragmentRefreshListener() != null) {
-            Log.d("debago","in refresh fragment on ListPropertyActivity");
-            getFragmentRefreshListener().onRefresh();
-        }
-    }
-
 
     public interface FragmentRefreshListener {
         void onRefresh();
