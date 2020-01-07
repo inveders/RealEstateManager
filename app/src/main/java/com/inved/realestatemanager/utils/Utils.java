@@ -2,15 +2,8 @@ package com.inved.realestatemanager.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
-import android.net.NetworkRequest;
-import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -18,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
-
 
 
 public class Utils {
