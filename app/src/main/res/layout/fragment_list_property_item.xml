@@ -34,7 +34,7 @@
                 android:scaleType="fitXY"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="?attr/actionModeSplitBackground" />
+                android:src="@drawable/no_image" />
 
 
             <TextView
