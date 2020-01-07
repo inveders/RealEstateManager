@@ -5,40 +5,27 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
-import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
-import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
-import com.inved.realestatemanager.utils.Utils;
-
-import java.io.File;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -61,7 +48,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     //Declaration for Navigation Drawer
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    private PropertyViewModel propertyViewModel;
 
     // Declare fragments
     private ListPropertyFragment listPropertyFragment;
@@ -70,7 +56,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
 
     private Menu mOptionsMenu;
-
+    private PropertyViewModel propertyViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +74,11 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
+    protected void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
+        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+
+    }
 
 
     @Override
@@ -95,13 +86,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         return R.layout.activity_list_property;
     }
 
-    // 2 - Configuring ViewModel
-    private void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
 
-
-    }
 
 
     // ---------------------------
@@ -151,10 +136,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 ListPropertyActivityPermissionsDispatcher.startMapsActivityWithPermissionCheck(this);
                 break;
             case R.id.activity_main_drawer_logout:
-                logoutAlertDialog();
-                break;
-            case R.id.activity_main_drawer_delete_account:
-                deleteAccountAlertDialog();
+                this.logoutAlertDialog();
                 break;
             default:
                 break;
@@ -176,21 +158,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
-    private void logoutAlertDialog(){
-        new AlertDialog.Builder(this,R.style.MyDialogTheme)
-                .setMessage(R.string.alert_dialog_logout)
-                .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> logout())
-                .setNegativeButton(R.string.alert_dialog_no, null)
-                .show();
-    }
 
-    private void deleteAccountAlertDialog(){
-        new AlertDialog.Builder(this,R.style.MyDialogTheme)
-                .setMessage(R.string.alert_dialog_delete_account)
-                .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> deleteAccount())
-                .setNegativeButton(R.string.alert_dialog_no, null)
-                .show();
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -240,121 +209,18 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
+
+
+
+    // ---------------------------
+    // INTENT TO OPEN NEW ACTIVITY
+    // ---------------------------
+
     @NeedsPermission(Manifest.permission.CAMERA)
     public void startCreateUpdatePropertyActivity() {
         Intent intent = new Intent(this, CreatePropertyActivity.class);
         startActivity(intent);
     }
-
-    private void logout(){
-        AuthUI.getInstance()
-
-                .signOut(this)
-                .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted());
-
-    }
-
-    // Create OnCompleteListener called after tasks ended
-    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted() {
-        return aVoid -> {
-            startMainActivity();
-            getApplicationContext().deleteDatabase("MyDatabase.db");
-            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-            assert storageDir != null;
-            if (storageDir.isDirectory())
-            {
-                String[] children = storageDir.list();
-                for (int i = 0; i < children.length; i++)
-                {
-                    new File(storageDir, children[i]).delete();
-                }
-            }
-            Log.d("debago","we delete database");
-            finish();
-        };
-    }
-
-    private void deleteAccount(){
-
-        if(this.getCurrentUser()!=null){
-            String realEstateAgentId = this.getUserEmail();
-
-            propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this,realEstateAgents -> propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
-                if (properties.size() > 0) {
-
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-                    builder.setMessage(R.string.agent_management_no_delete_possible)
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.agent_management_ok_choice), (dialog, id) -> dialog.dismiss());
-
-                    android.app.AlertDialog alert = builder.create();
-                    alert.show();
-
-
-                } else {
-
-                    new AlertDialog.Builder(this)
-                            .setMessage(R.string.popup_message_confirmation_delete_account)
-                            .setPositiveButton(R.string.alert_dialog_yes, (dialogInterface, i) -> {
-                                deleteUserFromRommDatabase(realEstateAgentId);
-                                deleteUserFromFirebase(realEstateAgentId);
-                                getApplicationContext().deleteDatabase("MyDatabase.db");
-                            })
-                            .setNegativeButton(R.string.alert_dialog_no, null)
-                            .show();
-                }
-            }));
-
-
-
-        }
-
-
-
-    }
-
-    private void deleteUserFromFirebase(String realEstateAgentId) {
-
-        // Get auth credentials from the user for re-authentication. The example below shows
-        // email and password credentials but there are multiple possible providers,
-        // such as GoogleAuthProvider or FacebookAuthProvider.
-        if(this.getCurrentUser()!=null){
-            AuthCredential credential = GoogleAuthProvider
-                    .getCredential(this.getUserEmail(), null);
-
-            // Prompt the user to re-provide their sign-in credentials
-            this.getCurrentUser().reauthenticate(credential)
-                    .addOnCompleteListener(task -> {
-                        AuthUI.getInstance()
-                                .delete(getApplicationContext())
-                                .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        startMainActivity();
-                                        finish();
-                                    }
-                                });
-
-                        RealEstateAgentHelper.deleteAgent(realEstateAgentId).addOnFailureListener(onFailureListener());
-
-                    });
-        }
-
-
-
-    }
-
-    protected OnFailureListener onFailureListener(){
-        return e -> Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
-    }
-
-    private void deleteUserFromRommDatabase(String realEstateAgentId){
-        propertyViewModel.deleteRealEstateAgent(realEstateAgentId);
-    }
-
-    // ---------------------------
-    // INTENT TO OPEN NEW ACTIVITY
-    // ---------------------------
 
     // Launch Profile Activity
     private void startProfileActivity() {
@@ -376,14 +242,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     }
 
 
-    private void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-
-
-
     // --------------
     // FRAGMENTS
     // --------------
@@ -401,11 +259,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     .commit();
         }
     }
-
-
-    // -------------------
-    // SEARCH IN DATABASE
-    // -------------------
 
 
    /* private void configureAndShowDetailFragment() {

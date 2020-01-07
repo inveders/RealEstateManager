@@ -103,8 +103,7 @@ public class MainActivity extends BaseActivity {
                // Log.d("debago", "MA onsuccess");
                 if (this.getCurrentUser() != null) {
 
-                    checkIfUserExistInFirebase();
-
+                    startListPropertyActivity();
 
                 }
 
