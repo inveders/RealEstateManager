@@ -24,8 +24,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
@@ -38,6 +36,7 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.utils.Utils;
 
 import java.io.File;
 
@@ -69,12 +68,14 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private DetailPropertyFragment detailPropertyFragment;
     private FragmentRefreshListener fragmentRefreshListener;
 
+
     private Menu mOptionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        checkIfUserExistInFirebase();
         Log.d("debago","ON CREATE ListPropertyActivity");
         this.configureViewModel();
         this.configureToolbarAndNavigationDrawer();
@@ -87,11 +88,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d("debago","ON START ListPropertyActivity");
-    }
+
 
     @Override
     protected int getLayoutContentViewID() {
@@ -280,8 +277,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private void deleteAccount(){
 
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            String realEstateAgentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if(this.getCurrentUser()!=null){
+            String realEstateAgentId = this.getUserEmail();
 
             propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this,realEstateAgents -> propertyViewModel.getAllPropertiesForOneAgent(realEstateAgentId).observe(this, properties -> {
                 if (properties.size() > 0) {
@@ -319,16 +316,15 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private void deleteUserFromFirebase(String realEstateAgentId) {
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         // Get auth credentials from the user for re-authentication. The example below shows
         // email and password credentials but there are multiple possible providers,
         // such as GoogleAuthProvider or FacebookAuthProvider.
-        if(currentUser!=null){
+        if(this.getCurrentUser()!=null){
             AuthCredential credential = GoogleAuthProvider
-                    .getCredential(currentUser.getEmail(), null);
+                    .getCredential(this.getUserEmail(), null);
 
             // Prompt the user to re-provide their sign-in credentials
-            currentUser.reauthenticate(credential)
+            this.getCurrentUser().reauthenticate(credential)
                     .addOnCompleteListener(task -> {
                         AuthUI.getInstance()
                                 .delete(getApplicationContext())
@@ -428,7 +424,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 */
 
     private void refreshFragment() {
-
 
         if (getFragmentRefreshListener() != null) {
             getFragmentRefreshListener().onRefresh();
