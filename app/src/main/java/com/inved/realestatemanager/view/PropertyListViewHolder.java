@@ -93,13 +93,14 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         if (property.getPhotoUri1() != null) {
             showShimmer();
+            File localFile = new File(property.getPhotoUri1());
+            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            String mFileName = "/" + localFile.getName();
+            File goodFile = new File(storageDir,mFileName);
             if(property.getDateOfSaleForProperty()==null || property.getDateOfSaleForProperty().isEmpty()){
-                File localFile = new File(property.getPhotoUri1());
-                File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                String mFileName = "/" + localFile.getName();
-                File goodFile = new File(storageDir,mFileName);
+
                 if (goodFile.exists()) {
-                    Log.d("debago","good file exist");
+                    Log.d("debago","good file exist "+goodFile);
                     photoUriInGlide(property.getPhotoUri1());
 
                 }else{
@@ -107,8 +108,14 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                     photoFirebaseStorageInGlide(property.getPropertyId(),property.getPhotoUri1());
                 }
             }else{
-                Log.d("debago","good file sold");
-                photoSoldUriInGlide(property.getPhotoUri1());
+                if (goodFile.exists()) {
+                    Log.d("debago","good file sold exist "+goodFile);
+                    photoSoldUriInGlide(property.getPhotoUri1());
+
+                }else{
+                    Log.d("debago","good file sold NOT exist "+goodFile);
+                    photoSoldFirebaseStorageInGlide(property.getPropertyId(),property.getPhotoUri1());
+                }
             }
 
         }
