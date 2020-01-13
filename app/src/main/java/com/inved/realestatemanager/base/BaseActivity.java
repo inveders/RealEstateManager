@@ -113,7 +113,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted() {
         return aVoid -> {
             startMainActivity();
-            getApplicationContext().deleteDatabase("MyDatabase.db");
+
+          /*Here we delete all files in the smartphone
+
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
             assert storageDir != null;
@@ -124,8 +126,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 {
                     new File(storageDir, children[i]).delete();
                 }
-            }
-            Log.d("debago","we delete database");
+            }*/
+
             finish();
         };
     }
