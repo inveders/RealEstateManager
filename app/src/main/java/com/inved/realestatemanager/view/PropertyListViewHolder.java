@@ -246,10 +246,10 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     private String last27characters(String chaine)
     {
-        if (chaine.length() <= 27)
+        if (chaine.length() <= 28)
             return(chaine);
         else
-            return(chaine.substring(chaine.length() - 27));
+            return(chaine.substring(chaine.length() - 28));
     }
 
     private void stopShimmer(){
