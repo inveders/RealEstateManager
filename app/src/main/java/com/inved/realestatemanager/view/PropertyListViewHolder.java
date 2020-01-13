@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -182,6 +181,9 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
                 .child(last27characters(photoUri));
 
+        downloadFileFromStorage(last27characters(photoUri),fileReference);
+
+        Log.d("debago","file reference is "+fileReference);
         GlideApp.with(MainApplication.getInstance().getApplicationContext())
                 .load(fileReference)
                 .listener(new RequestListener<Drawable>() {
@@ -206,6 +208,9 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
                 .child(last27characters(photoUri));
 
+        downloadFileFromStorage(last27characters(photoUri),fileReference);
+
+
         GlideApp.with(MainApplication.getInstance().getApplicationContext())
                 .load(fileReference)
                 .transform(new WatermarkTransformation())
@@ -225,12 +230,21 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                 .into(photo);
     }
 
+    private void downloadFileFromStorage(String lastPathFromFirebase,StorageReference fileReference) {
+
+        String mFileName = "/" + lastPathFromFirebase;
+        File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File localFile = new File(storageDir + mFileName);
+        fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local item file created from ViewHolder")).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
+
+    }
+
     public interface PropertyListInterface{
         void clickOnCardView(String propertyId);
 
     }
 
-    public String last27characters(String chaine)
+    private String last27characters(String chaine)
     {
         if (chaine.length() <= 27)
             return(chaine);

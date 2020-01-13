@@ -21,10 +21,15 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
+import com.inved.realestatemanager.firebase.PropertyHelper;
+import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+
+import java.util.Objects;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -56,13 +61,14 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private Menu mOptionsMenu;
     private PropertyViewModel propertyViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         checkIfUserExistInFirebase();
-        Log.d("debago","ON CREATE ListPropertyActivity");
         this.configureViewModel();
+        this.checkIfSyncWithFirebaseIsNecessary();
         this.configureToolbarAndNavigationDrawer();
         //NavigationDrawer
         this.configureDrawerLayout();
@@ -71,6 +77,132 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         this.configureAndShowListFragment();
         // this.configureAndShowDetailFragment();
 
+    }
+
+    private void checkIfSyncWithFirebaseIsNecessary() {
+
+        PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
+            //Log.d("debago", "check if getAllProperty not null: " + queryDocumentSnapshots.size());
+            if (queryDocumentSnapshots.size() > 0) {
+
+                propertyViewModel.getAllProperties().observe(this, properties -> {
+                    Log.d("debago", "properties in firebase " + queryDocumentSnapshots.size() + " and properties in room is " + properties.size());
+
+                    if (queryDocumentSnapshots.size() != properties.size()) {
+                        for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
+
+                            int isPropertyExist = 0;
+                            for (int j = 0; j < properties.size(); j++) {
+                                if (properties.get(j).getPropertyId().equals(queryDocumentSnapshots.getDocuments().get(i).get("propertyId"))) {
+
+                                    isPropertyExist++;
+                                    Log.d("debago", "isPopertyExist "+isPropertyExist);
+                                }
+                            }
+
+                            if (isPropertyExist == 0) {
+                                Log.d("debago", "property don't exist, we create it in room ");
+
+                                String propertyId = queryDocumentSnapshots.getDocuments().get(i).getString("propertyId");
+                                String typeProperty = queryDocumentSnapshots.getDocuments().get(i).getString("typeProperty");
+                                double pricePropertyInDollar = queryDocumentSnapshots.getDocuments().get(i).getDouble("pricePropertyInDollar");
+                                double surfaceAreaProperty = queryDocumentSnapshots.getDocuments().get(i).getDouble("surfaceAreaProperty");
+                                String numberRoomsInProperty = queryDocumentSnapshots.getDocuments().get(i).getString("numberRoomsInProperty");
+                                String numberBathroomsInProperty = queryDocumentSnapshots.getDocuments().get(i).getString("numberBathroomsInProperty");
+                                int numberBedroomsInProperty = Objects.requireNonNull(queryDocumentSnapshots.getDocuments().get(i).getDouble("numberBedroomsInProperty")).intValue();
+                                String fullDescriptionProperty = queryDocumentSnapshots.getDocuments().get(i).getString("fullDescriptionProperty");
+
+                                String streetNumber = queryDocumentSnapshots.getDocuments().get(i).getString("streetNumber");
+                                String streetName = queryDocumentSnapshots.getDocuments().get(i).getString("streetName");
+                                String zipCode =queryDocumentSnapshots.getDocuments().get(i).getString("zipCode");
+                                String townProperty = queryDocumentSnapshots.getDocuments().get(i).getString("townProperty");
+                                String country = queryDocumentSnapshots.getDocuments().get(i).getString("country");
+                                String addressCompl = queryDocumentSnapshots.getDocuments().get(i).getString("addressCompl");
+                                String pointOfInterest = queryDocumentSnapshots.getDocuments().get(i).getString("pointOfInterest");
+                                String statusProperty = queryDocumentSnapshots.getDocuments().get(i).getString("statusProperty");
+                                String dateOfEntryOnMarketForProperty = queryDocumentSnapshots.getDocuments().get(i).getString("dateOfEntryOnMarketForProperty");
+                                String dateOfSaleForProperty = queryDocumentSnapshots.getDocuments().get(i).getString("dateOfSaleForProperty");
+                                boolean selected = false;
+                                String photoUri1 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri1");
+                                String photoUri2 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri2");
+                                String photoUri3 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri3");
+                                String photoUri4 =queryDocumentSnapshots.getDocuments().get(i).getString("photoUri4");
+                                String photoUri5 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri5");
+                                String photoDescription1 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription1");
+                                String photoDescription2 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription2");
+                                String photoDescription3 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription3");
+                                String photoDescription4 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription4");
+                                String photoDescription5 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription5");
+                                String realEstateAgentId = queryDocumentSnapshots.getDocuments().get(i).getString("realEstateAgentId");
+
+                                StorageDownload storageDownload = new StorageDownload();
+
+                                if (photoUri1 != null && photoUri1.length() < 30) {
+                                    String uri1 = storageDownload.beginDownload(photoUri1, propertyId);
+                                    if (uri1 != null) {
+                                        photoUri1 = uri1;
+                                    }
+                                }
+
+                                if (photoUri2 != null && photoUri2.length() < 30) {
+                                    String uri2 = storageDownload.beginDownload(photoUri2, propertyId);
+                                    if (uri2 != null) {
+                                        photoUri2 = uri2;
+                                    }
+                                }
+
+                                if (photoUri3 != null && photoUri3.length() < 30) {
+                                    String uri3 = storageDownload.beginDownload(photoUri3, propertyId);
+                                    if (uri3 != null) {
+                                        photoUri3 = uri3;
+                                    }
+                                }
+
+                                if (photoUri4 != null && photoUri4.length() < 30) {
+                                    String uri4 = storageDownload.beginDownload(photoUri4, propertyId);
+                                    if (uri4 != null) {
+                                        photoUri4 = uri4;
+                                    }
+                                }
+
+                                if (photoUri5 != null && photoUri5.length() < 30) {
+                                    String uri5 = storageDownload.beginDownload(photoUri5, propertyId);
+                                    if (uri5 != null) {
+                                        photoUri1 = uri5;
+                                    }
+                                }
+
+                                Property newProperty = null;
+                                if (propertyId != null) {
+                                    newProperty = new Property(propertyId, typeProperty, pricePropertyInDollar,
+                                            surfaceAreaProperty, numberRoomsInProperty,
+                                            numberBathroomsInProperty, numberBedroomsInProperty,
+                                            fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                                            statusProperty, dateOfEntryOnMarketForProperty,
+                                            dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                                            photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
+                                }
+
+                                //Create property in room with data from firebase
+
+                                propertyViewModel.createProperty(newProperty);
+                            }
+
+                        }
+                    }
+
+                });
+
+
+            }
+
+        }).
+
+                addOnFailureListener(e ->
+
+                {
+
+                });
     }
 
     protected void configureViewModel() {
@@ -84,8 +216,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     protected int getLayoutContentViewID() {
         return R.layout.activity_list_property;
     }
-
-
 
 
     // ---------------------------
@@ -158,8 +288,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -175,11 +303,11 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     @Override
     public void onMenuChanged(int number) {
 
-        if(mOptionsMenu != null){
+        if (mOptionsMenu != null) {
 
             MenuItem item = mOptionsMenu.findItem(R.id.menu);
 
-            switch (number){
+            switch (number) {
                 case 0:
                     // code block for add
                     item.setIcon(R.drawable.ic_menu_add_white_24dp);
@@ -207,8 +335,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
         }
     }
-
-
 
 
     // ---------------------------
@@ -284,6 +410,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     public interface FragmentRefreshListener {
         void onRefresh();
+
     }
 
     public FragmentRefreshListener getFragmentRefreshListener() {

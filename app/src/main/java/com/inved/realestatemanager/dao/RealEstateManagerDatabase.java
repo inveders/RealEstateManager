@@ -76,26 +76,21 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                 Log.d("debago", "in fill dqtqbqse yith firebqse vqlue");
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-                    Log.d("debago", "auth not null");
                     RealEstateAgentHelper.getAgentWhateverAgency(FirebaseAuth.getInstance().getCurrentUser().getEmail()).get().addOnCompleteListener(task -> {
 
                         if (task.isSuccessful()) {
-                            Log.d("debago", "task successfill");
+
                             if (task.getResult() != null) {
                                 if (task.getResult().getDocuments().size() != 0) {
                                     //We have this agency in firebase and we have to put these items in a new Room database
 
                                     String agencyPlaceIdToSave = task.getResult().getDocuments().get(0).getString("agencyPlaceId");
 
-
                                     Log.d("debago", "DATABASE We have an agency, we create database and fill it: " + agencyPlaceIdToSave);
 
                                     ManageAgency.saveAgencyPlaceId(MainApplication.getInstance().getApplicationContext(), agencyPlaceIdToSave);
 
                                     prepopulateRealEstateAgents();
-
-
-
 
                                 }
 
@@ -191,7 +186,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                     String realEstateAgentId = property.getRealEstateAgentId();
 
                     StorageDownload storageDownload = new StorageDownload();
-
 
                     if(photoUri1!=null && photoUri1.length()<30){
                         String uri1 = storageDownload.beginDownload(photoUri1,propertyId);
