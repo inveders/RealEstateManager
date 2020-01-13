@@ -6,7 +6,7 @@
     android:id="@+id/create_update_fragment_one"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/default_margin"
+
     android:fillViewport="true"
     >
 
@@ -29,8 +29,8 @@
             android:id="@+id/create_update_type_property_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="16dp"
+
+            android:layout_marginTop="25dp"
             android:text="@string/fullscreen_dialog__by_type_of_property"
             style="@style/TextviewStyle"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -40,9 +40,10 @@
             android:id="@+id/create_update_spinner_type_property"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
             android:entries="@array/typeProperty"
-            app:layout_constraintLeft_toRightOf="@id/create_update_type_property_text"
+            app:layout_constraintRight_toRightOf="parent"
+            style="@style/EditTextStylewithoutText"
             app:layout_constraintTop_toTopOf="@id/create_update_type_property_text" />
 
         <!-- PRICE LEVEL -->
@@ -58,15 +59,18 @@
 
         <EditText
             android:id="@+id/create_updtate_price_edittext"
-            android:layout_width="100sp"
+            android:layout_width="200sp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/create_update_surface_text"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_price_text"
             style="@style/EditTextStyleText"
             android:inputType="numberDecimal"
+            android:hint="@string/create_update_by_price"
             tools:ignore="LabelFor"
-            android:autofillHints="@string/create_update_by_price"
-            tools:targetApi="o" />
+            android:autofillHints="no"
+            tools:targetApi="o"
+            />
 
         <!-- SURFACE -->
         <TextView
@@ -82,16 +86,17 @@
 
         <EditText
             android:id="@+id/create_update_surface_edittext"
-            android:layout_width="100sp"
+            android:layout_width="200sp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/create_update_surface_text"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="@dimen/default_margin"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_surface_text"
             android:inputType="numberDecimal"
             style="@style/EditTextStyleText"
             android:importantForAutofill="no"
-            tools:ignore="LabelFor" />
-
-
+            tools:ignore="LabelFor"
+            android:hint="@string/create_update_by_surface"
+            />
         <!--LOCALISATION-->
 
         <TextView
@@ -115,6 +120,7 @@
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
             android:autofillHints="@string/create_update_by_street_number"
+            android:hint="@string/create_update_by_street_number"
             tools:targetApi="o"/>
 
         <TextView
@@ -138,6 +144,7 @@
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
             android:autofillHints="@string/create_update_by_street_compl"
+            android:hint="@string/create_update_by_street_compl"
             tools:targetApi="o"/>
 
         <TextView
@@ -161,6 +168,7 @@
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
             android:autofillHints="@string/create_update_by_street_name"
+            android:hint="@string/create_update_by_street_name"
             tools:targetApi="o"/>
 
 
@@ -185,8 +193,10 @@
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
             android:autofillHints="@string/create_update_by_zip_code"
+            android:hint="@string/create_update_by_zip_code"
             tools:targetApi="o"
-            android:inputType="number" />
+            android:inputType="number"
+            />
 
 
         <TextView
@@ -209,6 +219,7 @@
             android:inputType="text"
             style="@style/EditTextStyleText"
             android:autofillHints="@string/create_update_by_town_name"
+            android:hint="@string/create_update_by_town_name"
             tools:targetApi="o"
             tools:ignore="LabelFor" />
 
@@ -231,6 +242,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_country_name_text"
             tools:ignore="LabelFor"
+            android:hint="@string/create_update_by_country_name"
             style="@style/EditTextStyleText"/>
 
         <!--POINTS OF INTERESTS-->
@@ -254,7 +266,7 @@
             android:text="@string/fullscreen_dialog__poi_school"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_poi_text"
-            style="@style/EditTextStylewithoutText"
+
             android:buttonTint="@color/colorPrimaryDark"
 
             tools:targetApi="lollipop" />
@@ -268,7 +280,6 @@
             android:text="@string/fullscreen_dialog__poi_restaurants"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_schools"
-            style="@style/EditTextStylewithoutText"
             android:buttonTint="@color/colorPrimaryDark"
 
             tools:targetApi="lollipop"
@@ -283,7 +294,6 @@
             android:text="@string/fullscreen_dialog_poi_car_parks"
             app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_restaurants"
-            style="@style/EditTextStylewithoutText"
             android:buttonTint="@color/colorPrimaryDark"
 
             tools:targetApi="lollipop"
@@ -298,7 +308,6 @@
             android:text="@string/fullscreen_dialog__poi_shops"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/create_update_checkbox_poi_schools"
-            style="@style/EditTextStylewithoutText"
             android:buttonTint="@color/colorPrimaryDark"
 
             tools:targetApi="lollipop"/>
@@ -312,9 +321,7 @@
             android:text="@string/fullscreen_dialog_poi_tourist_attraction"
             app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_shops"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_shops"
-            style="@style/EditTextStylewithoutText"
             android:buttonTint="@color/colorPrimaryDark"
-
             tools:targetApi="lollipop"/>
 
         <CheckBox
@@ -326,11 +333,8 @@
             android:text="@string/fullscreen_dialog_poi_oil_station"
             app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_shops"
             app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_tourist_attraction"
-            style="@style/EditTextStylewithoutText"
             android:buttonTint="@color/colorPrimaryDark"
-
             tools:targetApi="lollipop"/>
-
 
         <!-- NUMBER ROOMS -->
 
@@ -361,7 +365,7 @@
             android:id="@+id/create_update_number_bedroom_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
+
             android:layout_marginTop="16dp"
             android:text="@string/create_update_by_number_of_bedroom"
             style="@style/TextviewStyle"

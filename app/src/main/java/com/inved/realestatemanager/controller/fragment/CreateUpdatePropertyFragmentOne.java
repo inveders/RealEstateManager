@@ -2,8 +2,12 @@ package com.inved.realestatemanager.controller.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CreateUpdatePropertyFragmentOne extends Fragment implements AdapterView.OnItemSelectedListener {
+public class CreateUpdatePropertyFragmentOne extends Fragment implements AdapterView.OnItemSelectedListener,TextWatcher {
 
     private CreateUpdateChangePageInterface callbackChangePage;
 
@@ -73,6 +77,51 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private String addressCompl = null;
 
     private Context context;
+    private GradientDrawable drawable;
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        int color = i2 == 0 ? R.color.colorGrey : R.color.colorAccent;
+
+        Log.d("debago","drawable is "+drawable);
+       // drawable.setStroke(3,getResources().getColor(R.color.colorPrimary)); // set stroke width and stroke color
+        priceEditText.setBackgroundColor(getResources().getColor(color));
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (editable != null && !editable.toString().equalsIgnoreCase("")){
+            // Checking editable.hashCode() to understand which edittext is using right now
+            if (priceEditText.getText().hashCode() == editable.hashCode()){
+                // This is just an example, your magic will be here!
+                Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                 priceEditText.removeTextChangedListener(this);
+                // priceEditText.setText(value);
+                if (value.length() == 0) {
+                    // for empty text color
+                    priceEditText.setBackgroundColor(getResources().getColor(R.color.colorGrey));
+                } else {
+                    // for non empty field color
+                    priceEditText.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                }
+                 priceEditText.addTextChangedListener(this);
+            }
+        } /*else if (editText2.getText().hashCode() == editable.hashCode()){
+                    // This is just an example, your magic will be here!
+                    String value = editable.toString();
+                    editText2.removeTextChangedListener(textWatcher);
+                    editText2.setText(value);
+                    editText2.addTextChangedListener(textWatcher);
+                }*/
+    }
+
 
 
     public interface CreateUpdateChangePageInterface {
@@ -86,6 +135,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
         View v = inflater.inflate(R.layout.fragment_create_update_one, container, false);
         Button nextButton = v.findViewById(R.id.create_update_next_button);
+
+      //   drawable = (GradientDrawable).getBackground();
 
         typePropertySpinner = v.findViewById(R.id.create_update_spinner_type_property);
         numberRoomSpinner = v.findViewById(R.id.create_update_spinner_number_rooms);
@@ -120,6 +171,11 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         numberRoomSpinner.setOnItemSelectedListener(this);
         numberBedroomSpinner.setOnItemSelectedListener(this);
         numberBathroomSpinner.setOnItemSelectedListener(this);
+
+
+        //Texwatcher
+        priceEditText.addTextChangedListener(this);
+
 
         //We check if it's a new add property or just a modification
         if (getActivity() != null) {
@@ -294,6 +350,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             numberBathroomsInProperty = numberBathroomSpinner.getSelectedItem().toString();
         }
     }
+
+
 
     private String fillPoiCheckboxList() {
 

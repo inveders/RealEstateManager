@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -25,7 +25,7 @@
         <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
     </style>
 
-    <!-- EditText Title-->
+    <!-- Textview Title-->
     <style name="TextviewStyle" parent="AppTheme">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
@@ -37,9 +37,15 @@
     <style name="EditTextStyleText" parent="AppTheme">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:background">@drawable/edit_text_design</item>
+        <item name="android:background">@drawable/edit_text</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textCursorDrawable">@drawable/edittext_cursor</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:importantForAutofill" tools:targetApi="o">no</item>
+
     </style>
 
     <!-- EditText text-->
@@ -47,6 +53,7 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@drawable/edit_text</item>
 
     </style>
 

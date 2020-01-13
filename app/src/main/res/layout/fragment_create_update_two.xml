@@ -49,7 +49,7 @@
         android:layout_marginStart="@dimen/default_margin"
         app:layout_constraintLeft_toRightOf="@id/activity_create_update_property_date_entry_title"
         app:layout_constraintTop_toTopOf="@id/activity_create_update_property_date_entry_title"
-        style="@style/EditTextStylewithoutText"
+
         />
 
 
@@ -67,7 +67,6 @@
         app:layout_constraintTop_toBottomOf="@id/activity_create_update_property_date_entry_title"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        android:background="@drawable/edit_text_design_rectangle"
         style="@style/EditTextStyleText"/>
 
     <TextView
