@@ -223,6 +223,9 @@
     <string name="Minbedroom_Maxbedoorm_control">Min number of bedroom can\'t be greater than Max Number</string>
     <string name="no_more_photo">No more photo</string>
     <string name="first_photo">First photo</string>
+    <string name="your_image_name">Your image name</string>
+    <string name="button_save">Save</string>
+    <string name="button_close">Close</string>
 
 
     <!-- MAP-->

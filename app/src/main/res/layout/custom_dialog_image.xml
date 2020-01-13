@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/custom_dialog_photo"
+        android:layout_width="240sp"
+        android:layout_height="240sp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/default_large_margin"
+
+        android:contentDescription="@string/description_image"
+        android:src="@mipmap/ic_logo_appli_realestate_round"/>
+
+    <EditText
+        android:id="@+id/custom_dialog_edittext"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_margin"
+        android:text="@string/your_image_name"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_gravity="center"
+        style="@style/EditTextStyleText"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/default_large_margin"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center|start"
+            android:text="@string/button_save"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            style="@style/ButtonStyle"/>
+
+        <Button
+            android:id="@+id/button_close"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center|end"
+            android:text="@string/button_close"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            style="@style/ButtonStyle"/>
+
+        </LinearLayout>
+
+</LinearLayout>

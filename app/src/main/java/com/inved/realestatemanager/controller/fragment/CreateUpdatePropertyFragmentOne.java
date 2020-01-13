@@ -2,7 +2,6 @@ package com.inved.realestatemanager.controller.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -88,7 +87,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         int color = i2 == 0 ? R.color.colorGrey : R.color.colorAccent;
 
-        Log.d("debago","drawable is "+drawable);
+       // Log.d("debago","drawable is "+drawable);
        // drawable.setStroke(3,getResources().getColor(R.color.colorPrimary)); // set stroke width and stroke color
         priceEditText.setBackgroundColor(getResources().getColor(color));
 
