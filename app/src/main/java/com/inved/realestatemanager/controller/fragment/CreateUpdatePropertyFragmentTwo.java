@@ -12,6 +12,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -36,6 +38,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
@@ -75,6 +78,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private GetSpinner getSpinner = new GetSpinner();
 
+    private TextWatcher textWatcher;
     private PropertyViewModel propertyViewModel;
     private TextView dateOfEntry;
     private Spinner agentNameSpinner;
@@ -143,6 +147,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         View v = inflater.inflate(R.layout.fragment_create_update_two, container, false);
 
+
         dateOfEntry = v.findViewById(R.id.activity_create_update_property_date_entry_text);
         agentNameSpinner = v.findViewById(R.id.activity_create_update_spinner_real_estate_agent_text);
         //Spinner step 1/4 Initialize spinner to be selected
@@ -156,27 +161,90 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         photo5 = v.findViewById(R.id.activity_create_update_added_photo_five);
         fullDescriptionEditText = v.findViewById(R.id.activity_create_update_property_full_description_text);
 
+        textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (i2 == 0) {
+                    //put backgroung grey when we remove all text
+
+                    if (fullDescriptionEditText.getText().hashCode() == charSequence.hashCode()) {
+                        fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (editable != null && !editable.toString().equalsIgnoreCase("")) {
+                    if (fullDescriptionEditText.getText().hashCode() == editable.hashCode()) {
+                        String value = editable.toString();
+                        fullDescriptionEditText.removeTextChangedListener(this);
+
+                        if (value.length() == 0) {
+
+                            fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design);
+                        } else {
+
+                            fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                        }
+                        fullDescriptionEditText.addTextChangedListener(this);
+                    }
+                }
+
+
+            }
+        }
+
+        ;
+
+        fullDescriptionEditText.addTextChangedListener(textWatcher);
+
+
         Button confirmButton = v.findViewById(R.id.create_update_confirm_button);
-        confirmButton.setOnClickListener(view -> finishToCreateProperty());
+        confirmButton.setOnClickListener(view ->
 
-        Button addPhotoButton = v.findViewById(R.id.activity_create_update_add_photo_button);
+                finishToCreateProperty());
 
-        addPhotoButton.setOnClickListener(view -> selectImage());
+        FloatingActionButton addPhotoButton = v.findViewById(R.id.activity_create_update_add_photo_button);
 
+        addPhotoButton.setOnClickListener(view ->
 
-        this.updateUI();
-        this.configureViewModel();
-        this.retriveRealEstateAgents();
-        this.datePickerInit();
+                selectImage());
 
 
-        if (getActivity() != null) {
+        this.
+
+                updateUI();
+        this.
+
+                configureViewModel();
+        this.
+
+                retriveRealEstateAgents();
+        this.
+
+                datePickerInit();
+
+
+        if (
+
+                getActivity() != null) {
             context = getActivity();
         } else {
             context = MainApplication.getInstance().getApplicationContext();
         }
 
-        mCompressor = new FileCompressor(context);
+        mCompressor = new
+
+                FileCompressor(context);
 
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
             propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
@@ -358,6 +426,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 datePickerInit();
             } else {
                 dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
+                dateOfEntry.setBackgroundResource(R.drawable.edit_text_design_focused);
             }
 
             //Spinner step 3/4 : retrieve the agents who are already in database and show him in the spinner (pre-fill spinner)
@@ -677,11 +746,16 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         // An item was selected. You can retrieve the selected item using
-        Log.d("debago", "in on item selected method: ");
+        //Log.d("debago", "in on item selected method: ");
         if (adapterView.getId() == R.id.activity_create_update_spinner_real_estate_agent_text) {
 
             selectedAgent = agentNameSpinner.getSelectedItem().toString();
             Log.d("debago", "selected agent: " + selectedAgent);
+            if (agentNameSpinner.getSelectedItem().toString().equals(getString(R.string.select_agent))) {
+                agentNameSpinner.setBackgroundResource(R.drawable.edit_text_design);
+            } else {
+                agentNameSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
 
         }
     }
@@ -694,6 +768,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+
     }
 
 

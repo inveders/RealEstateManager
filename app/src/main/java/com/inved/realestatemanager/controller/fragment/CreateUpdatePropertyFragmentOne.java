@@ -452,19 +452,43 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         // An item was selected. You can retrieve the selected item using
         if (parent.getId() == R.id.create_update_spinner_type_property) {
             typeProperty = typePropertySpinner.getSelectedItem().toString();
+            if(typePropertySpinner.getSelectedItem().toString().equals(getString(R.string.select_type_property))){
+                typePropertySpinner.setBackgroundResource(R.drawable.edit_text_design);
+            }else{
+                typePropertySpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
         } else if (parent.getId() == R.id.create_update_spinner_number_rooms) {
+
+
             numberRoomsInProperty = numberRoomSpinner.getSelectedItem().toString();
+
+            if(numberRoomSpinner.getSelectedItem().toString().equals("0")){
+                numberRoomSpinner.setBackgroundResource(R.drawable.edit_text_design);
+            }else{
+                numberRoomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+
         } else if (parent.getId() == R.id.create_update_spinner_number_bedroom) {
 
             if (numberBedroomSpinner.getSelectedItem().toString().equals("7+")) {
                 numberBedroomsInProperty = 7;
-            } else {
+                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            } else if(numberBedroomSpinner.getSelectedItem().toString().equals("0")){
+                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design);
+            }else {
                 numberBedroomsInProperty = Integer.valueOf(numberBedroomSpinner.getSelectedItem().toString());
+                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
             }
 
-
         } else if (parent.getId() == R.id.create_update_spinner_number_bathrooms) {
+
             numberBathroomsInProperty = numberBathroomSpinner.getSelectedItem().toString();
+            if(numberBathroomSpinner.getSelectedItem().toString().equals("0")){
+                numberBathroomSpinner.setBackgroundResource(R.drawable.edit_text_design);
+            }else{
+                numberBathroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+
         }
     }
 
