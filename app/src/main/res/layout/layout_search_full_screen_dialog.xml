@@ -48,7 +48,7 @@
                 android:layout_toEndOf="@id/fullscreen_dialog_close"
                 android:text="@string/fullscreen_dialog_page_title"
                 android:textColor="@android:color/white"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/fullscreen_dialog_launch_search"
@@ -60,7 +60,8 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="8dp"
                 android:text="@string/fullscreen_dialog_search_text"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
 
         </RelativeLayout>
 
@@ -92,20 +93,20 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/fullscreen_dialog__by_type_of_property"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 style="@style/TextviewStyle"/>
 
             <Spinner
                 android:id="@+id/dialog_spinner_type_property"
-                android:layout_width="200dp"
+                android:layout_width="200sp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/dialog_type_property_text"
                 app:layout_constraintLeft_toRightOf="@id/dialog_type_property_text"
                 android:layout_marginStart="@dimen/default_margin"
                 android:entries="@array/typeProperty"
-                style="@style/EditTextStylewithoutText"
+                style="@style/SearchTextStyle"
                 />
 
             <!-- PRICE LEVEL -->
@@ -113,10 +114,10 @@
                 android:id="@+id/dialog_price_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/default_large_margin"
                 android:text="@string/fullscreen_dialog__by_price"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dialog_type_property_text"
@@ -133,7 +134,7 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/dialog_price_text"
                 app:layout_constraintLeft_toLeftOf="parent"
-                style="@style/EditTextStylewithoutText"/>
+                />
 
             <TextView
                 android:id="@+id/dialog_price_right_value"
@@ -144,8 +145,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/dialog_price_text"
-                app:layout_constraintRight_toRightOf="parent"
-                style="@style/EditTextStylewithoutText"/>
+                app:layout_constraintRight_toRightOf="parent" />
 
 
             <!-- SURFACE -->
@@ -172,10 +172,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/fullscreen_dialog__by_surface"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dialog_seekbar_price"
+                android:layout_marginTop="@dimen/default_large_margin"
                 style="@style/TextviewStyle"/>
 
             <TextView
@@ -189,7 +190,7 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/dialog_surface_text"
                 app:layout_constraintLeft_toLeftOf="parent"
-                style="@style/EditTextStylewithoutText"/>
+                />
 
             <TextView
                 android:id="@+id/dialog_surface_right_value"
@@ -201,7 +202,7 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/dialog_surface_text"
                 app:layout_constraintRight_toRightOf="parent"
-                style="@style/EditTextStylewithoutText"/>
+                />
 
             <io.apptik.widget.MultiSlider
                 android:id="@+id/dialog_seekbar_surface"
@@ -227,10 +228,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_large_margin"
                 android:text="@string/fullscreen_dialog__by_localisation"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dialog_seekbar_surface"
                 style="@style/TextviewStyle"/>
@@ -241,9 +242,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
                 app:layout_constraintTop_toTopOf="@id/add_agent_firstname_text"
-                app:layout_constraintLeft_toRightOf="@id/add_agent_firstname_text"
+                app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_type_property"
                 tools:ignore="LabelFor"
-                style="@style/EditTextStyleText"/>
+                style="@style/SearchTextStyle"/>
 
 
             <!--COUNTRY-->
@@ -255,7 +256,7 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:text="@string/fullscreen_dialog__by_country"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/add_agent_firstname_text"
                 style="@style/TextviewStyle"/>
@@ -265,10 +266,10 @@
                 android:layout_width="200sp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
-                app:layout_constraintLeft_toRightOf="@id/add_agent_lastname_text"
+                app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_type_property"
                 app:layout_constraintBaseline_toBaselineOf="@id/add_agent_lastname_text"
                 tools:ignore="LabelFor"
-                style="@style/EditTextStyleText"/>
+                style="@style/SearchTextStyle"/>
 
 
             <!-- BEDROOM MIN/MAX -->
@@ -281,21 +282,21 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/fullscreen_dialog_by_min_bedroom_min"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/add_agent_lastname_text"
                 style="@style/TextviewStyle"/>
 
             <Spinner
                 android:id="@+id/dialog_spinner_number_bedroom_min"
-                android:layout_width="150dp"
+                android:layout_width="150sp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/dialog_number_min_bedroom_text"
                 android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="@dimen/default_margin"
                 android:entries="@array/numberBedrooms"
-                style="@style/EditTextStylewithoutText"/>
+                style="@style/SearchTextStyle"/>
 
 
             <TextView
@@ -304,20 +305,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/fullscreen_dialog_by_number_of_bedroom_max"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_number_bedroom_max"
                 app:layout_constraintTop_toTopOf="@id/dialog_number_min_bedroom_text"
                 style="@style/TextviewStyle"/>
 
             <Spinner
                 android:id="@+id/dialog_spinner_number_bedroom_max"
-                android:layout_width="150dp"
+                android:layout_width="150sp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/dialog_spinner_number_bedroom_min"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginEnd="40sp"
                 android:entries="@array/numberBedrooms"
-                style="@style/EditTextStylewithoutText"/>
+                style="@style/SearchTextStyle"/>
 
 
 
@@ -331,21 +331,20 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/fullscreen_dialog_by_status"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dialog_spinner_number_bedroom_min"
                 style="@style/TextviewStyle"/>
 
             <Spinner
                 android:id="@+id/dialog_spinner_status"
-                android:layout_width="150dp"
+                android:layout_width="150sp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/dialog_status_text"
                 android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="@dimen/default_margin"
                 android:entries="@array/status"
-                style="@style/EditTextStylewithoutText"/>
+                style="@style/SearchTextStyle"/>
 
 
 
@@ -358,19 +357,18 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/fullscreen_dialog_by_agent"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="@id/dialog_spinner_number_bedroom_max"
                 app:layout_constraintTop_toBottomOf="@id/dialog_spinner_number_bedroom_min"
                 style="@style/TextviewStyle"/>
 
             <Spinner
                 android:id="@+id/dialog_spinner_agent_name"
-                android:layout_width="150dp"
+                android:layout_width="150sp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/dialog_spinner_status"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginEnd="40sp"
-                style="@style/EditTextStylewithoutText"
+                style="@style/SearchTextStyle"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
