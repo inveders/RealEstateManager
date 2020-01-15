@@ -56,6 +56,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private EditText streetNameEditText;
     private EditText zipCodeEditText;
     private EditText townNameEditText;
+    private EditText additionnalEditText;
     private AutoCompleteTextView countryEditText;
 
 
@@ -89,7 +90,32 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
        // Log.d("debago","drawable is "+drawable);
        // drawable.setStroke(3,getResources().getColor(R.color.colorPrimary)); // set stroke width and stroke color
-        priceEditText.setBackgroundColor(getResources().getColor(color));
+
+        if(i2==0){
+            //put backgroung grey when we remove all text
+
+            if (priceEditText.getText().hashCode() == charSequence.hashCode()){
+                Log.d("debago","priceedittex charsequence is "+charSequence.hashCode());
+                priceEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (surfaceEditText.getText().hashCode() == charSequence.hashCode()){
+                Log.d("debago","surfaceedittext charsequence is "+charSequence.hashCode());
+                surfaceEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (streetNumberEditText.getText().hashCode() == charSequence.hashCode()){
+                streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (additionnalEditText.getText().hashCode() == charSequence.hashCode()){
+                additionnalEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (streetNameEditText.getText().hashCode() == charSequence.hashCode()){
+                streetNameEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (zipCodeEditText.getText().hashCode() == charSequence.hashCode()){
+                zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (townNameEditText.getText().hashCode() == charSequence.hashCode()){
+                townNameEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }
+            else if (countryEditText.getText().hashCode() == charSequence.hashCode()){
+                countryEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }
+        }
+
 
     }
 
@@ -97,20 +123,112 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     public void afterTextChanged(Editable editable) {
         if (editable != null && !editable.toString().equalsIgnoreCase("")){
             // Checking editable.hashCode() to understand which edittext is using right now
+
             if (priceEditText.getText().hashCode() == editable.hashCode()){
-                // This is just an example, your magic will be here!
-                Log.d("debago","value is "+editable.toString());
+
                 String value = editable.toString();
                  priceEditText.removeTextChangedListener(this);
                 // priceEditText.setText(value);
                 if (value.length() == 0) {
-                    // for empty text color
-                    priceEditText.setBackgroundColor(getResources().getColor(R.color.colorGrey));
+                    // put backgroung grey when there is no action
+                    priceEditText.setBackgroundResource(R.drawable.edit_text_design);
                 } else {
-                    // for non empty field color
-                    priceEditText.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    // put backgroung white when there write
+                    priceEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
                 }
                  priceEditText.addTextChangedListener(this);
+            }else if (surfaceEditText.getText().hashCode() == editable.hashCode()){
+                Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                surfaceEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    surfaceEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    surfaceEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                surfaceEditText.addTextChangedListener(this);
+            }else if (streetNumberEditText.getText().hashCode() == editable.hashCode()){
+                Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                streetNumberEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                streetNumberEditText.addTextChangedListener(this);
+            }else if (additionnalEditText.getText().hashCode() == editable.hashCode()){
+                Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                additionnalEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    additionnalEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    additionnalEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                additionnalEditText.addTextChangedListener(this);
+            }else if (streetNameEditText.getText().hashCode() == editable.hashCode()){
+                Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                streetNameEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    streetNameEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    streetNameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                streetNameEditText.addTextChangedListener(this);
+            }else if (zipCodeEditText.getText().hashCode() == editable.hashCode()){
+                Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                zipCodeEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                zipCodeEditText.addTextChangedListener(this);
+            }else if (townNameEditText.getText().hashCode() == editable.hashCode()){
+                Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                townNameEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    townNameEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    townNameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                townNameEditText.addTextChangedListener(this);
+            }
+            else if (countryEditText.getText().hashCode() == editable.hashCode()){
+                Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                countryEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    countryEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    countryEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                countryEditText.addTextChangedListener(this);
             }
         } /*else if (editText2.getText().hashCode() == editable.hashCode()){
                     // This is just an example, your magic will be here!
@@ -145,6 +263,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         priceEditText = v.findViewById(R.id.create_updtate_price_edittext);
         surfaceEditText = v.findViewById(R.id.create_update_surface_edittext);
         streetNumberEditText = v.findViewById(R.id.create_update_street_number_edittext);
+        additionnalEditText = v.findViewById(R.id.create_update_street_compl_edittext);
         streetNameEditText = v.findViewById(R.id.create_update_street_name_edittext);
         zipCodeEditText = v.findViewById(R.id.create_update_zip_code_edittext);
         townNameEditText = v.findViewById(R.id.create_update_town_name_edittext);
@@ -174,7 +293,13 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
         //Texwatcher
         priceEditText.addTextChangedListener(this);
-
+        surfaceEditText.addTextChangedListener(this);
+        streetNumberEditText.addTextChangedListener(this);
+        additionnalEditText.addTextChangedListener(this);
+        streetNameEditText.addTextChangedListener(this);
+        zipCodeEditText.addTextChangedListener(this);
+        townNameEditText.addTextChangedListener(this);
+        countryEditText.addTextChangedListener(this);
 
         //We check if it's a new add property or just a modification
         if (getActivity() != null) {
@@ -290,6 +415,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             String townProperty = townNameEditText.getText().toString();
             String country = countryEditText.getText().toString();
             String pointOfInterest = fillPoiCheckboxList();
+            String additionnal = additionnalEditText.getText().toString();
 
             List<Object> myList = new ArrayList<>();
             myList.add(typeProperty);
@@ -304,7 +430,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             myList.add(townProperty);
             myList.add(country);
             myList.add(pointOfInterest);
-            myList.add(addressCompl);
+            myList.add(additionnal);
             myList.add(ManageCreateUpdateChoice.getCreateUpdateChoice(context));
 
             createUpdatePropertyViewModel.setMyData(myList);
