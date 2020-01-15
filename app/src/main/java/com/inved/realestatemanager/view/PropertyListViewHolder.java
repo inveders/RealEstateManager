@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,16 +18,24 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.domain.UnitConversion;
+import com.inved.realestatemanager.firebase.PropertyHelper;
+import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.GlideApp;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.WatermarkTransformation;
 
 import java.io.File;
+import java.util.concurrent.Executors;
 
 
 public class PropertyListViewHolder extends RecyclerView.ViewHolder {
@@ -39,6 +48,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     private CardView mCardview;
     private ImageView photo;
     private ShimmerFrameLayout shimmerFrameLayout ;
+    private SplitString splitString = new SplitString();
 
     PropertyListViewHolder(View propertyItemView) {
         super(propertyItemView);
@@ -178,56 +188,88 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     private void photoFirebaseStorageInGlide(String propertyId,String photoUri){
 
-        StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
-                .child(last27characters(photoUri));
+        PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
 
-        downloadFileFromStorage(last27characters(photoUri),fileReference);
+                if (task.getResult() != null) {
+                    if (task.getResult().getDocuments().size() != 0) {
+                        String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
+                        if(photoUriFromFirebase!=null){
+                            int numberCharacter = photoUriFromFirebase.length();
 
-        Log.d("debago","file reference is "+fileReference);
-        GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                .load(fileReference)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        Log.e("debago","Exception is : "+e);
-                        return false;
+                            StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
+                                    .child(splitString.lastCharacters(photoUri,numberCharacter));
+
+                            downloadFileFromStorage(splitString.lastCharacters(photoUri,numberCharacter),fileReference);
+
+                            GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                                    .load(fileReference)
+                                    .listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            Log.e("debago","Exception is : "+e);
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            Log.d("debago","onResourceReady");
+                                            stopShimmer();
+                                            return false;
+                                        }
+                                    })
+                                    .into(photo);
+                        }
+
                     }
+                }
+            }
+        });
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        Log.d("debago","onResourceReady");
-                        stopShimmer();
-                        return false;
-                    }
-                })
-                .into(photo);
+
     }
 
     private void photoSoldFirebaseStorageInGlide(String propertyId,String photoUri){
 
-        StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
-                .child(last27characters(photoUri));
+        PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
 
-        downloadFileFromStorage(last27characters(photoUri),fileReference);
+                if (task.getResult() != null) {
+                    if (task.getResult().getDocuments().size() != 0) {
+                        String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
+                        if(photoUriFromFirebase!=null){
+                            int numberCharacter = photoUriFromFirebase.length();
 
+                            StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
+                                    .child(splitString.lastCharacters(photoUri,numberCharacter));
 
-        GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                .load(fileReference)
-                .transform(new WatermarkTransformation())
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        Log.e("debago","Exception is : "+e);
-                        return false;
+                            downloadFileFromStorage(splitString.lastCharacters(photoUri,numberCharacter),fileReference);
+
+                            GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                                    .load(fileReference)
+                                    .transform(new WatermarkTransformation())
+                                    .listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            Log.e("debago","Exception is : "+e);
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            Log.d("debago","onResourceReady");
+                                            stopShimmer();
+                                            return false;
+                                        }
+                                    })
+                                    .into(photo);
+                        }
+
                     }
+                }
+            }
+        });
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        stopShimmer();
-                        return false;
-                    }
-                })
-                .into(photo);
     }
 
     private void downloadFileFromStorage(String lastPathFromFirebase,StorageReference fileReference) {
@@ -242,14 +284,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     public interface PropertyListInterface{
         void clickOnCardView(String propertyId);
 
-    }
-
-    private String last27characters(String chaine)
-    {
-        if (chaine.length() <= 28)
-            return(chaine);
-        else
-            return(chaine.substring(chaine.length() - 28));
     }
 
     private void stopShimmer(){

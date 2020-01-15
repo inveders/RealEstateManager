@@ -25,4 +25,12 @@ public class SplitString {
     public String replaceAllSpacesOrCommaByAddition(String stringToConvert){
         return stringToConvert.replaceAll("\\s", "+");
     }
+
+    public String lastCharacters(String chaine, int numberCharacters)
+    {
+        if (chaine.length() <= numberCharacters)
+            return(chaine);
+        else
+            return(chaine.substring(chaine.length() - numberCharacters));
+    }
 }

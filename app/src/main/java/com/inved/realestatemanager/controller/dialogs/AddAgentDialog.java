@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,10 +39,12 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.domain.UriToStringConversion;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
+import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.utils.FileCompressor;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
 
@@ -51,6 +54,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -71,14 +76,17 @@ public class AddAgentDialog extends DialogFragment {
     private String urlPicture;
 
     //Widget
-    ImageView agentPhoto;
-    Button addPhotoButton;
-    EditText lastnameEditText;
-    EditText firstnameEditText;
-    TextView agencyNameTextview;
+    private ImageView agentPhoto;
+    private Button addPhotoButton;
+    private EditText lastnameEditText;
+    private EditText firstnameEditText;
+    private TextView agencyNameTextview;
 
-    TextView addActionButton;
-    ImageButton cancelSearchButton;
+    private TextView addActionButton;
+    private ImageButton cancelSearchButton;
+
+    private FileCompressor mCompressor;
+    private File mPhotoFile;
 
     private String agencyName;
     private String agencyPlaceId;
@@ -118,7 +126,7 @@ public class AddAgentDialog extends DialogFragment {
         addPhotoButton.setOnClickListener(v -> selectImage());
         cancelSearchButton.setOnClickListener(v -> getDialog().cancel());
         addActionButton.setOnClickListener(v -> this.createNewRealEstateAgent());
-
+        mCompressor = new FileCompressor(getContext());
         return view;
     }
 
@@ -198,13 +206,10 @@ public class AddAgentDialog extends DialogFragment {
             assert realEstateAgentId != null;
             RealEstateAgents realEstateAgents = new RealEstateAgents(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
+            //create agent in firebase
             RealEstateAgentHelper.createAgent(realEstateAgentId,firstname, lastname, urlPicture,agencyName,agencyPlaceId);
 
-            if(urlPicture!=null){
 
-              //  StorageHelper.uploadFile(urlPicture,6,null);
-
-            }
 
             if (bundle != null) {
 
@@ -223,6 +228,12 @@ public class AddAgentDialog extends DialogFragment {
 
                 Toast.makeText(getContext(), getString(R.string.add_agent_dialog_add_confirm_text), Toast.LENGTH_SHORT).show();
                 startListPropertyActivity();
+
+            }
+
+            if(urlPicture!=null){
+                StorageHelper storageHelper = new StorageHelper();
+                storageHelper.uploadFromUri(Uri.parse(urlPicture), FirebaseAuth.getInstance().getCurrentUser().getEmail(), 6);
 
             }
 
@@ -308,9 +319,23 @@ public class AddAgentDialog extends DialogFragment {
             switch (requestCode) {
                 case REQUEST_GALLERY_PHOTO:
                     //data.getData returns the content URI for the selected Image
-                    Uri uriToConvert = data.getData();
-                    Log.d("debago", "uri to convert : " + uriToConvert);
-                    String selectedImage = "file://" + uriToStringConversion.getRealPathFromURI(getContext(), uriToConvert);
+                    Uri selectedImage = data.getData();
+
+                    try {
+                        mPhotoFile = mCompressor.compressToFile1(new File(getRealPathFromUri(selectedImage)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    agentPhoto.setImageURI(selectedImage);
+
+                    if (selectedImage != null) {
+                        urlPicture = selectedImage.toString();
+                        showImageInCircle(urlPicture);
+                    }
+
+
+                    //Log.d("debago", "uri to convert : " + uriToConvert);
+                   /* String selectedImage = "file://" + uriToStringConversion.getRealPathFromURI(getContext(), uriToConvert);
 
                     if (selectedImage.contains("WhatsApp")) {
                         Toast.makeText(getContext(), getString(R.string.whatsapp_photo_not_possible), Toast.LENGTH_SHORT).show();
@@ -321,16 +346,23 @@ public class AddAgentDialog extends DialogFragment {
                             showImageInCircle(selectedImage);
                             urlPicture = selectedImage;
                         }
-                    }
+                    }*/
 
                     break;
                 case REQUEST_CAMERA_PHOTO:
 
+                    try {
+                        Log.d("debago", "mPhotoFile is: " + mPhotoFile + " and camerafilepath is: " + cameraFilePath);
+                        mPhotoFile = mCompressor.compressToFile1(mPhotoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     if (cameraFilePath != null) {
                         urlPicture = cameraFilePath;
                         showImageInCircle(cameraFilePath);
-
                     }
+
 
                     break;
 
@@ -359,6 +391,24 @@ public class AddAgentDialog extends DialogFragment {
         return null;
     }
 
+    /**
+     * Get real file path from URI
+     */
+    private String getRealPathFromUri(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = Objects.requireNonNull(getContext()).getContentResolver().query(contentUri, proj, null, null, null);
+            assert cursor != null;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
 
     //PERMISSION
 

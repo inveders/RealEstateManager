@@ -64,9 +64,9 @@ public class PropertyHelper {
         return PropertyHelper.getPropertyCollection();
     }
 
-    public static Query getPropertyFirebaseId(String photoUri1){
+    public static Query getPropertyWithId(String propertyId){
         return PropertyHelper.getPropertyCollection()
-                .whereEqualTo("photoUri1",photoUri1);
+                .whereEqualTo("propertyId",propertyId);
     }
 
     // --- UPDATE ---

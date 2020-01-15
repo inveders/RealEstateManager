@@ -65,6 +65,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class CreateUpdatePropertyFragmentTwo extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -242,9 +243,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             context = MainApplication.getInstance().getApplicationContext();
         }
 
-        mCompressor = new
-
-                FileCompressor(context);
+        mCompressor = new FileCompressor(context);
 
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
             propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
@@ -258,7 +257,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     }
 
 
-    public void myCustomDialog(String imageViewLink, int photoNumber) {
+    private void myCustomDialog(String imageViewLink, int photoNumber) {
         if (getActivity() != null) {
             DialogImage = new Dialog(getActivity());
             DialogImage.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -519,7 +518,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
      */
 
 
-    void dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (getActivity() != null) {
@@ -664,11 +663,11 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     /**
      * Get real file path from URI
      */
-    public String getRealPathFromUri(Uri contentUri) {
+    private String getRealPathFromUri(Uri contentUri) {
         Cursor cursor = null;
         try {
             String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);
+            cursor = Objects.requireNonNull(getContext()).getContentResolver().query(contentUri, proj, null, null, null);
             assert cursor != null;
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();

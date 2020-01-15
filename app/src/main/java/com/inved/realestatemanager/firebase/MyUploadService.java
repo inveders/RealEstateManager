@@ -74,7 +74,7 @@ public class MyUploadService extends Service {
 
 
             String downloadURL = fileUri.getLastPathSegment();
-            //We have to pure here the url in firestore
+            //We have to put here the url in firestore
             switch (numberPhoto) {
                 case 1:
                     PropertyHelper.updatePhotoUri1(downloadURL, documentId);
