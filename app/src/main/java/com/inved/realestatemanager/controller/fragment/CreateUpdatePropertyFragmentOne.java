@@ -3,7 +3,6 @@ package com.inved.realestatemanager.controller.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -74,10 +73,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private int numberBedroomsInProperty = 0;
     private GetSpinner getSpinner=new GetSpinner();
 
-    private String addressCompl = null;
-
     private Context context;
-    private GradientDrawable drawable;
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -86,10 +82,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        int color = i2 == 0 ? R.color.colorGrey : R.color.colorAccent;
-
-       // Log.d("debago","drawable is "+drawable);
-       // drawable.setStroke(3,getResources().getColor(R.color.colorPrimary)); // set stroke width and stroke color
 
         if(i2==0){
             //put backgroung grey when we remove all text
