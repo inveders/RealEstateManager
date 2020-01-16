@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -169,9 +170,35 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
             holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
         }
 
-        holder.mAgentName.setOnClickListener(v -> callback.onEditAgent(realEstateAgentsList.get(position).getRealEstateAgentId()));
-        holder.mAgentPhoto.setOnClickListener(v -> callback.onEditAgent(realEstateAgentsList.get(position).getRealEstateAgentId()));
-        holder.mAgentAgency.setOnClickListener(v -> callback.onEditAgent(realEstateAgentsList.get(position).getRealEstateAgentId()));
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            if(FirebaseAuth.getInstance().getCurrentUser().getEmail()!=null){
+
+                holder.mAgentName.setOnClickListener(v -> {
+                    if(FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(realEstateAgentsList.get(position).getRealEstateAgentId())){
+                        callback.onEditAgent(realEstateAgentsList.get(position).getRealEstateAgentId());
+                    }else{
+                        Toast.makeText(context, MainApplication.getResourses().getString(R.string.no_good_agent), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                holder.mAgentPhoto.setOnClickListener(v -> {
+                    if(FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(realEstateAgentsList.get(position).getRealEstateAgentId())){
+                        callback.onEditAgent(realEstateAgentsList.get(position).getRealEstateAgentId());
+                    }else{
+                        Toast.makeText(context, MainApplication.getResourses().getString(R.string.no_good_agent), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                holder.mAgentAgency.setOnClickListener(v -> {
+                    if(FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(realEstateAgentsList.get(position).getRealEstateAgentId())){
+                        callback.onEditAgent(realEstateAgentsList.get(position).getRealEstateAgentId());
+                    }else{
+                        Toast.makeText(context, MainApplication.getResourses().getString(R.string.no_good_agent), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        }
+
+
     }
 
 
