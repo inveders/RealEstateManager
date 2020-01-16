@@ -216,7 +216,7 @@
     <string name="add_agent_dialog_lastname">Lastname : </string>
     <string name="add_agent_dialog_agency">Agency   : </string>
     <string name="add_agent_dialog_photo">Change your photo</string>
-    <string name="add_agent_dialog_title">INSCRIPTION</string>
+    <string name="add_agent_dialog_title">Inscription</string>
     <string name="add_agent_dialog_add_confirm_text">Your registration is confirmed</string>
     <string name="add_agent_dialog_update_confirm_text">Real estate agent informations updated</string>
     <string name="whatsapp_photo_not_possible">It\'s not possible to add photo from WhatsApp</string>

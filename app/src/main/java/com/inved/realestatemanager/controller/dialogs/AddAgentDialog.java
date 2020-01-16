@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -60,7 +63,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class AddAgentDialog extends DialogFragment {
+public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
     private static final int REQUEST_CAMERA_PHOTO = 456;
@@ -91,20 +94,24 @@ public class AddAgentDialog extends DialogFragment {
     private String agencyName;
     private String agencyPlaceId;
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.layout_add_agent_dialog, container, false);
 
-        agentPhoto=view.findViewById(R.id.add_agent_photo);
-        addPhotoButton=view.findViewById(R.id.add_agent_add_photo_button);
-        lastnameEditText=view.findViewById(R.id.add_agent_edittext_lastname);
-        firstnameEditText=view.findViewById(R.id.add_agent_edittext_firstname);
-        agencyNameTextview=view.findViewById(R.id.textview_agency_name_edit);
-        addActionButton=view.findViewById(R.id.add_agent_dialog_add_new_agent);
-        cancelSearchButton=view.findViewById(R.id.agent_add_dialog_close);
+        agentPhoto = view.findViewById(R.id.add_agent_photo);
+        addPhotoButton = view.findViewById(R.id.add_agent_add_photo_button);
+        lastnameEditText = view.findViewById(R.id.add_agent_edittext_lastname);
+        firstnameEditText = view.findViewById(R.id.add_agent_edittext_firstname);
+        agencyNameTextview = view.findViewById(R.id.textview_agency_name_edit);
+        addActionButton = view.findViewById(R.id.add_agent_dialog_add_new_agent);
+        cancelSearchButton = view.findViewById(R.id.agent_add_dialog_close);
 
+
+        firstnameEditText.addTextChangedListener(this);
+        lastnameEditText.addTextChangedListener(this);
         this.configureViewModel();
 
         if (getDialog() != null) {
@@ -114,6 +121,7 @@ public class AddAgentDialog extends DialogFragment {
         bundle = getArguments();
         if (bundle != null) {
             addActionButton.setText(getString(R.string.add_agent_dialog_edit_text));
+
             String realEstateAgentIdBundle = bundle.getString("myRealEstateAgentId", null);
             if (realEstateAgentIdBundle != null) {
                 editRealEstateAgent(realEstateAgentIdBundle);
@@ -132,10 +140,12 @@ public class AddAgentDialog extends DialogFragment {
 
     private void autocompleteAgency() {
 
-        if(getActivity()!=null){
+        if (getActivity() != null) {
             Places.initialize(getActivity(), MAP_API_KEY);
+
             // Initialize the AutocompleteSupportFragment.
             AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
+
 
             // Specify the types of place data to return.
             if (autocompleteFragment != null) {
@@ -157,7 +167,7 @@ public class AddAgentDialog extends DialogFragment {
                         Log.d(TAG, "An error occurred: " + status);
                     }
                 });
-            }else{
+            } else {
                 Log.d(TAG, "Null activity");
             }
         }
@@ -179,44 +189,44 @@ public class AddAgentDialog extends DialogFragment {
             lastnameEditText.setError(getString(R.string.set_error_add_agent_lastname));
       /*  } else if (agencyName.isEmpty()) {
             Toast.makeText(getContext(), getString(R.string.set_error_add_agent_agency), Toast.LENGTH_SHORT).show();
-        */} else {
+        */
+        } else {
             String firstname = firstnameEditText.getText().toString();
             String lastname = lastnameEditText.getText().toString();
             String realEstateAgentId;
-            if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-                realEstateAgentId=FirebaseAuth.getInstance().getCurrentUser().getEmail();
-            }else{
-                realEstateAgentId=null;
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                realEstateAgentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            } else {
+                realEstateAgentId = null;
             }
 
             if (getContext() != null) {
                 if (agencyName != null) {
                     ManageAgency.saveAgencyName(getContext(), agencyName);
-                }else{
-                    agencyName=ManageAgency.getAgencyName(getContext());
+                } else {
+                    agencyName = ManageAgency.getAgencyName(getContext());
                 }
                 if (agencyPlaceId != null) {
                     ManageAgency.saveAgencyPlaceId(getContext(), agencyPlaceId);
-                }else{
-                    agencyPlaceId=ManageAgency.getAgencyPlaceId(getContext());
+                } else {
+                    agencyPlaceId = ManageAgency.getAgencyPlaceId(getContext());
                 }
 
             }
 
             assert realEstateAgentId != null;
-            RealEstateAgents realEstateAgents = new RealEstateAgents(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
+            RealEstateAgents realEstateAgents = new RealEstateAgents(realEstateAgentId, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
             //create agent in firebase
-            RealEstateAgentHelper.createAgent(realEstateAgentId,firstname, lastname, urlPicture,agencyName,agencyPlaceId);
-
+            RealEstateAgentHelper.createAgent(realEstateAgentId, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
 
             if (bundle != null) {
 
                 String realEstateAgentIdBundle = bundle.getString("myRealEstateAgentId", null);
-                Log.d("debago","agencyName :"+agencyName+" real estate agent string : "+realEstateAgents.toString());
-                if(realEstateAgentIdBundle!=null){
-                    this.propertyViewModel.updateRealEstateAgent(realEstateAgentIdBundle,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
+                Log.d("debago", "agencyName :" + agencyName + " real estate agent string : " + realEstateAgents.toString());
+                if (realEstateAgentIdBundle != null) {
+                    this.propertyViewModel.updateRealEstateAgent(realEstateAgentIdBundle, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
                     Toast.makeText(getContext(), getString(R.string.add_agent_dialog_update_confirm_text), Toast.LENGTH_SHORT).show();
                 }
@@ -231,7 +241,7 @@ public class AddAgentDialog extends DialogFragment {
 
             }
 
-            if(urlPicture!=null){
+            if (urlPicture != null) {
                 StorageHelper storageHelper = new StorageHelper();
                 storageHelper.uploadFromUri(Uri.parse(urlPicture), FirebaseAuth.getInstance().getCurrentUser().getEmail(), 6);
 
@@ -422,12 +432,6 @@ public class AddAgentDialog extends DialogFragment {
     // Get all items for a user
     private void editRealEstateAgent(String realEstateAgendId) {
 
-     /*   if(autocompleteFragment.getView()==null){
-       //     autocompleteFragment.getView().setVisibility(View.GONE);
-            agencyNameTextview.setVisibility(View.VISIBLE);
-        }*/
-
-
         propertyViewModel.getRealEstateAgentById(realEstateAgendId).observe(getViewLifecycleOwner(), realEstateAgents -> {
 
             if (realEstateAgents.getFirstname() != null) {
@@ -439,12 +443,17 @@ public class AddAgentDialog extends DialogFragment {
             }
 
             if (realEstateAgents.getAgencyName() != null) {
-                agencyNameTextview.setText(realEstateAgents.getAgencyName());
+            //    agencyNameTextview.setVisibility(View.VISIBLE);
+               // agencyNameTextview.setText(realEstateAgents.getAgencyName());
+              //  autocompleteFragment.setText(realEstateAgents.getAgencyName());
             }
 
             if (realEstateAgents.getUrlPicture() != null) {
+                Log.d("debago","getUrlPicture is "+realEstateAgents.getUrlPicture());
                 urlPicture = realEstateAgents.getUrlPicture();
                 showImageInCircle(realEstateAgents.getUrlPicture());
+            }else{
+                Log.d("debago","getUrlPicture is null ");
             }
 
 
@@ -460,7 +469,9 @@ public class AddAgentDialog extends DialogFragment {
             Glide.with(MainApplication.getInstance().getApplicationContext())
                     .load(new File(fileUri.getPath()))
                     .apply(RequestOptions.circleCropTransform())
+                    .placeholder(R.drawable.ic_anon_user_48dp)
                     .into((agentPhoto));
+
         }
     }
 
@@ -470,4 +481,58 @@ public class AddAgentDialog extends DialogFragment {
         startActivity(intent);
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (i2 == 0) {
+            //put backgroung grey when we remove all text
+
+            if (firstnameEditText.getText().hashCode() == charSequence.hashCode()) {
+                Log.d("debago", "priceedittex charsequence is " + charSequence.hashCode());
+                firstnameEditText.setBackgroundResource(R.drawable.edit_text_design);
+            } else if (lastnameEditText.getText().hashCode() == charSequence.hashCode()) {
+                Log.d("debago", "surfaceedittext charsequence is " + charSequence.hashCode());
+                lastnameEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (editable != null && !editable.toString().equalsIgnoreCase("")) {
+            // Checking editable.hashCode() to understand which edittext is using right now
+
+            if (firstnameEditText.getText().hashCode() == editable.hashCode()) {
+
+                String value = editable.toString();
+                firstnameEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+                    // put backgroung grey when there is no action
+                    firstnameEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+                    // put backgroung white when there write
+                    firstnameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                firstnameEditText.addTextChangedListener(this);
+            } else if (lastnameEditText.getText().hashCode() == editable.hashCode()) {
+                Log.d("debago", "value is " + editable.toString());
+                String value = editable.toString();
+                lastnameEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    lastnameEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    lastnameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                lastnameEditText.addTextChangedListener(this);
+            }
+        }
+    }
 }

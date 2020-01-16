@@ -48,7 +48,7 @@
                 android:layout_toEndOf="@id/agent_add_dialog_close"
                 android:text="@string/add_agent_dialog_title"
                 android:textColor="@android:color/white"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/add_agent_dialog_add_new_agent"
@@ -61,7 +61,8 @@
                 android:padding="8dp"
                 android:text="@string/add_agent_dialog_add_text"
                 android:textColor="@android:color/white"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"
+                android:textSize="20sp"/>
 
         </RelativeLayout>
 
@@ -93,7 +94,6 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:text="@string/add_agent_dialog_firstname"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 style="@style/TextviewStyle"/>
@@ -122,7 +122,6 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:text="@string/add_agent_dialog_lastname"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/add_agent_firstname_text"
                 style="@style/TextviewStyle"/>
@@ -150,7 +149,6 @@
                 android:layout_marginTop="@dimen/default_large_margin"
                 android:text="@string/add_agent_dialog_agency"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/add_agent_lastname_text"
                 style="@style/TextviewStyle"/>
@@ -163,7 +161,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="@id/add_agent_edittext_firstname"
                 app:layout_constraintBottom_toBottomOf="@id/add_agent_agency_text"
-                android:layout_marginTop="25dp" />
+                app:layout_constraintTop_toTopOf="@id/add_agent_agency_text"
+                />
 
             <TextView
                 android:id="@+id/textview_agency_name_edit"
@@ -171,7 +170,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="@id/add_agent_edittext_firstname"
                 app:layout_constraintBottom_toBottomOf="@id/add_agent_agency_text"
-                android:layout_marginTop="25dp"
+                app:layout_constraintTop_toTopOf="@id/add_agent_agency_text"
                 android:visibility="invisible"/>
 
 

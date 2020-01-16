@@ -46,20 +46,28 @@
         <activity
             android:name=".controller.activity.ListPropertyActivity"
             android:label="@string/page_name_activity_main"
-            android:theme="@style/AppTheme"/> <!-- DETAIL ACTIVITY -->
+            android:theme="@style/AppTheme"/>
+
+        <!-- DETAIL ACTIVITY -->
         <activity
             android:name=".controller.activity.DetailActivity"
             android:label="@string/page_name_activity_detail"
-            android:parentActivityName=".controller.activity.ListPropertyActivity" /> <!-- CREATE PROPERTY ACTIVITY -->
+            android:parentActivityName=".controller.activity.ListPropertyActivity" />
+
+        <!-- CREATE PROPERTY ACTIVITY -->
         <activity
             android:name=".controller.activity.CreatePropertyActivity"
             android:label="@string/page_name_activity_create_property"
             android:parentActivityName=".controller.activity.ListPropertyActivity"
-            android:windowSoftInputMode="adjustPan" /> <!-- PROFILE ACTIVITY -->
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- PROFILE ACTIVITY -->
         <activity
             android:name=".controller.activity.AgentManagementActivity"
             android:label="@string/page_name_activity_create_property"
-            android:parentActivityName=".controller.activity.ListPropertyActivity" /> <!-- MAPS ACTIVITY -->
+            android:parentActivityName=".controller.activity.ListPropertyActivity" />
+
+        <!-- MAPS ACTIVITY -->
         <activity
             android:name=".controller.activity.MapsActivity"
             android:label="@string/page_name_activity_create_property"
