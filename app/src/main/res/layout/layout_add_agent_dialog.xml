@@ -164,15 +164,6 @@
                 app:layout_constraintTop_toTopOf="@id/add_agent_agency_text"
                 />
 
-            <TextView
-                android:id="@+id/textview_agency_name_edit"
-                android:layout_width="200sp"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="@id/add_agent_edittext_firstname"
-                app:layout_constraintBottom_toBottomOf="@id/add_agent_agency_text"
-                app:layout_constraintTop_toTopOf="@id/add_agent_agency_text"
-                android:visibility="invisible"/>
-
 
             <ImageView
                 android:id="@+id/add_agent_photo"

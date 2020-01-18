@@ -56,6 +56,7 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.FileCompressor;
+import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.utils.ManagePhotoNumberCreateUpdate;
@@ -136,7 +137,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private Button saveButton, closeButton;
     private ImageView dialogPhotoImageView;
     private EditText dialogEditText;
-
+    private ImageCameraOrGallery imageCameraOrGallery;
     private RandomString randomString = new RandomString();
 
     private List<String> spinnerAgentList = new ArrayList<>();
@@ -148,7 +149,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         View v = inflater.inflate(R.layout.fragment_create_update_two, container, false);
 
-
+imageCameraOrGallery=new ImageCameraOrGallery();
         dateOfEntry = v.findViewById(R.id.activity_create_update_property_date_entry_text);
         agentNameSpinner = v.findViewById(R.id.activity_create_update_spinner_real_estate_agent_text);
         //Spinner step 1/4 Initialize spinner to be selected
@@ -526,7 +527,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 // Create the File where the photo should go
                 File photoFile = null;
                 try {
-                    photoFile = createImageFile();
+                    photoFile = imageCameraOrGallery.createImageFile();
+                    cameraFilePath = imageCameraOrGallery.getCameraFilePath(photoFile); /**Pas sûr que cela serve ici*/
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     // Error occurred while creating the File
@@ -572,28 +574,31 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
                     try {
-                        mPhotoFile = mCompressor.compressToFile1(new File(getRealPathFromUri(selectedImage)));
+                        mPhotoFile = mCompressor.compressToFile1(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     photo1.setImageURI(selectedImage);
                     if (selectedImage != null) {
                         photoUri = selectedImage.toString();
+
                         editImageName();
                     }
 
                     break;
                 case REQUEST_CAMERA_PHOTO:
                     try {
-                        Log.d("debago", "mPhotoFile is: " + mPhotoFile + " and camerafilepath is: " + cameraFilePath);
+
                         mPhotoFile = mCompressor.compressToFile1(mPhotoFile);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
                     if (cameraFilePath != null) {
+                        Log.d("debago","camerafilepath is "+cameraFilePath);
                         photoUri = cameraFilePath;
                         editImageName();
+
                     }
 
 
@@ -607,6 +612,19 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             }
 
 
+            if(photoUri!=null){
+                managePhotoUri(photoUri);
+            }
+
+
+        }
+
+
+    }
+
+
+    private void managePhotoUri(String photoUri){
+        if(getActivity()!=null){
             if (ManagePhotoNumberCreateUpdate.getUpdateStatus(getActivity()).equals("create")) {
                 //When we add a new photo
                 if (photoUri1 == null) {
@@ -635,49 +653,11 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     photoUri5 = photoUri;
                 }
             }
-
-
         }
-
 
     }
 
 
-    /**
-     * Create file with current timestamp name
-     */
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        if (getActivity() != null) {
-            String mFileName = "JPEG_";
-            File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
-            // Save a file: path for using again
-            cameraFilePath = "file://" + mFile.getAbsolutePath();
-            return mFile;
-        }
-
-        return null;
-    }
-
-    /**
-     * Get real file path from URI
-     */
-    private String getRealPathFromUri(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = Objects.requireNonNull(getContext()).getContentResolver().query(contentUri, proj, null, null, null);
-            assert cursor != null;
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
 
     //REAL ESTATE AGENT MANAGEMENT AND SPINNER
 

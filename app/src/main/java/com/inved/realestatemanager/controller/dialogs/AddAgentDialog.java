@@ -4,10 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,7 +37,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
-import com.inved.realestatemanager.domain.UriToStringConversion;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.injections.Injection;
@@ -47,16 +44,13 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.FileCompressor;
+import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -70,7 +64,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
     private static final String TAG = "debago";
     private String cameraFilePath;
     private Bundle bundle;
-    private UriToStringConversion uriToStringConversion = new UriToStringConversion();
     //View Model
     private PropertyViewModel propertyViewModel;
 
@@ -79,13 +72,9 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     //Widget
     private ImageView agentPhoto;
-    private Button addPhotoButton;
     private EditText lastnameEditText;
     private EditText firstnameEditText;
-    private TextView agencyNameTextview;
 
-    private TextView addActionButton;
-    private ImageButton cancelSearchButton;
     private AutocompleteSupportFragment autocompleteFragment;
 
     private FileCompressor mCompressor;
@@ -93,6 +82,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private String agencyName;
     private String agencyPlaceId;
+    private ImageCameraOrGallery imageCameraOrGallery;
 
 
     @Override
@@ -101,13 +91,13 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.layout_add_agent_dialog, container, false);
 
+        imageCameraOrGallery=new ImageCameraOrGallery();
         agentPhoto = view.findViewById(R.id.add_agent_photo);
-        addPhotoButton = view.findViewById(R.id.add_agent_add_photo_button);
+        Button addPhotoButton = view.findViewById(R.id.add_agent_add_photo_button);
         lastnameEditText = view.findViewById(R.id.add_agent_edittext_lastname);
         firstnameEditText = view.findViewById(R.id.add_agent_edittext_firstname);
-        agencyNameTextview = view.findViewById(R.id.textview_agency_name_edit);
-        addActionButton = view.findViewById(R.id.add_agent_dialog_add_new_agent);
-        cancelSearchButton = view.findViewById(R.id.agent_add_dialog_close);
+        TextView addActionButton = view.findViewById(R.id.add_agent_dialog_add_new_agent);
+        ImageButton cancelSearchButton = view.findViewById(R.id.agent_add_dialog_close);
 
 
         firstnameEditText.addTextChangedListener(this);
@@ -295,7 +285,8 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                 // Create the File where the photo should go
                 File photoFile = null;
                 try {
-                    photoFile = createImageFile();
+                    photoFile = imageCameraOrGallery.createImageFile();
+                    cameraFilePath = imageCameraOrGallery.getCameraFilePath(photoFile);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     // Error occurred while creating the File
@@ -333,7 +324,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                     Uri selectedImage = data.getData();
 
                     try {
-                        mPhotoFile = mCompressor.compressToFile1(new File(getRealPathFromUri(selectedImage)));
+                        mPhotoFile = mCompressor.compressToFile1(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -381,44 +372,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
         }
 
-    }
-
-
-    /**
-     * Create file with current timestamp name
-     */
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        if (getContext() != null) {
-            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
-            String mFileName = "JPEG_" + timeStamp + "_";
-            File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
-            // Save a file: path for using again
-            cameraFilePath = "file://" + mFile.getAbsolutePath();
-            return mFile;
-        }
-
-        return null;
-    }
-
-    /**
-     * Get real file path from URI
-     */
-    private String getRealPathFromUri(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = Objects.requireNonNull(getContext()).getContentResolver().query(contentUri, proj, null, null, null);
-            assert cursor != null;
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
     }
 
     //PERMISSION
