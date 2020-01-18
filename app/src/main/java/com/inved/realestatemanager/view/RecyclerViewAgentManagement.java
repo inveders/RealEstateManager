@@ -68,15 +68,16 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
             File localFile = new File(realEstateAgentsList.get(position).getUrlPicture());
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             String mFileName = "/" + localFile.getName();
-            File goodFile = new File(storageDir, mFileName);
+            File goodFileInternal = new File(storageDir, mFileName);
+            File goodFileExternal = new File(Environment.getExternalStorageDirectory() + File.separator + mFileName);
 
-            if (goodFile.exists()) {
-                Log.d("debago", "good file exist for agent " + goodFile);
+            if (goodFileInternal.exists()) {
+                Log.d("debago", "good file internal exist for agent " + goodFileInternal);
 
-                Uri fileUri = Uri.parse(realEstateAgentsList.get(position).getUrlPicture());
+                Uri fileUri = Uri.fromFile(goodFileInternal);
                 if (fileUri.getPath() != null) {
                     GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                            .load(new File(fileUri.getPath()))
+                            .load(fileUri)
                             .apply(RequestOptions.circleCropTransform())
                             .listener(new RequestListener<Drawable>() {
                                 @Override
@@ -95,16 +96,36 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                             .into(holder.mAgentPhoto);
                 }
 
-            } else {
+            } else if (goodFileExternal.exists()){
+                Log.d("debago", "good file exist for agent " + goodFileExternal);
+
+                Uri fileUri = Uri.fromFile(goodFileExternal);
+                if (fileUri.getPath() != null) {
+                    GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                            .load(fileUri)
+                            .apply(RequestOptions.circleCropTransform())
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    Log.d("debago", "Exception is : " + e);
+                                    holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                                    return false;
+                                }
+                            })
+                            .into(holder.mAgentPhoto);
+                }
+            }
+            else {
 
 
-                Log.d("debago", "good file NOT exist for agent " + goodFile);
+                Log.d("debago", "good file NOT exist for agent ");
                 SplitString splitString = new SplitString();
-
-
-
-
-
 
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                     String agentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();

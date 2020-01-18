@@ -86,6 +86,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private TextView addActionButton;
     private ImageButton cancelSearchButton;
+    private AutocompleteSupportFragment autocompleteFragment;
 
     private FileCompressor mCompressor;
     private File mPhotoFile;
@@ -131,7 +132,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         autocompleteAgency();
 
         addPhotoButton.setOnClickListener(v -> selectImage());
-        cancelSearchButton.setOnClickListener(v -> getDialog().cancel());
+        cancelSearchButton.setOnClickListener(v -> getDialog().dismiss());
         addActionButton.setOnClickListener(v -> this.createNewRealEstateAgent());
         mCompressor = new FileCompressor(getContext());
         return view;
@@ -139,11 +140,12 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private void autocompleteAgency() {
 
+        Log.d("debago","getactivity is "+getActivity());
         if (getActivity() != null) {
             Places.initialize(getActivity(), MAP_API_KEY);
 
             // Initialize the AutocompleteSupportFragment.
-            AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
+            autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
 
 
             // Specify the types of place data to return.
@@ -444,7 +446,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             if (realEstateAgents.getAgencyName() != null) {
             //    agencyNameTextview.setVisibility(View.VISIBLE);
                // agencyNameTextview.setText(realEstateAgents.getAgencyName());
-              //  autocompleteFragment.setText(realEstateAgents.getAgencyName());
+                autocompleteFragment.setText(realEstateAgents.getAgencyName());
             }
 
             if (realEstateAgents.getUrlPicture() != null) {

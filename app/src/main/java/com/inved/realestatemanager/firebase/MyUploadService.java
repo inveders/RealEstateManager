@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -49,11 +48,11 @@ public class MyUploadService extends Service {
             mStorageRef = FirebaseStorage.getInstance().getReference(documentId);
             Log.d(TAG, "onStartCommand in in documentId:" + documentId + " and number photo is " + numberPhoto);
             // Make sure we have permission to read the data
-           /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 getContentResolver().takePersistableUriPermission(
                         fileUri,
                         Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }*/
+            }
 
             uploadFromUri(fileUri,documentId,numberPhoto);
         }

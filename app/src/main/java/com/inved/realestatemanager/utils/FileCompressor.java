@@ -23,8 +23,7 @@ public class FileCompressor {
 
         String mFileName = "/";
         File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        //File localFile = File.createTempFile(mFileName, ".jpg", storageDir);
-       // File localFile = new File(storageDir + mFileName);
+      
         // Save a file: path for using again
 
         destinationDirectoryPath = "file://" + storageDir + mFileName;
