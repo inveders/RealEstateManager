@@ -236,7 +236,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int mTilt = 35;
 
         LatLng latLngCurrent = new LatLng(myCurrentLat, myCurrentLongi);
-
+        Log.d("debago","mycurrent lat is "+myCurrentLat);
         CameraPosition Liberty = CameraPosition.builder().target(latLngCurrent).zoom(mZoom).bearing(mBearing).tilt(mTilt).build();
         mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngCurrent));

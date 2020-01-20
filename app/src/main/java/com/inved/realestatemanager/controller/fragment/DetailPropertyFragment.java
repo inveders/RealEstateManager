@@ -320,24 +320,27 @@ public class DetailPropertyFragment extends Fragment {
 
         }
 
-        if (myImages.size() != 0) {
-            imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
-            imageNameSwitcher.setText(myDescriptionImage.get(0));
-            imageCount=myImages.size();
-        } else if(myImages.size()==1){
+        if(myImages.size()==1){
+            Log.d("debago","in myImagesize equal to 1 "+myImages.size());
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
             imageNameSwitcher.setText(myDescriptionImage.get(0));
             imageCount=myImages.size();
             nextImage.setVisibility(View.INVISIBLE);
             prevImage.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else if (myImages.size() != 0) {
+            Log.d("debago","in myImagesize equal different to zero "+myImages.size());
+            imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
+            imageNameSwitcher.setText(myDescriptionImage.get(0));
+            imageCount=myImages.size();
+        }else {
             imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_realestate_round);
             nextImage.setVisibility(View.INVISIBLE);
             prevImage.setVisibility(View.INVISIBLE);
             imageNameSwitcher.setVisibility(View.INVISIBLE);
             imageCount=0;
         }
+
+
 
 
         nextImage.setOnClickListener(view -> {
