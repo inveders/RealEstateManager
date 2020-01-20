@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private PropertyViewModel propertyViewModel;
     private FloatingActionButton openSearchButton;
     private MenuChangementsInterface callback;
+    private TextView noPropertyFoundTextview;
 
 
     @Override
@@ -74,6 +76,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_list_property, container, false);
 
+        noPropertyFoundTextview = mView.findViewById(R.id.fragment_list_property_no_property_found_text);
         openSearchButton = mView.findViewById(R.id.list_property_search_open_floating_button);
         RecyclerView recyclerView = mView.findViewById(R.id.fragment_list_property_recycler_view);
         recyclerView.setAdapter(this.adapter);
@@ -144,6 +147,13 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     public void updatePropertyList(List<Property> properties) {
         this.adapter.updateData(properties);
+        noPropertyFoundTextview.setVisibility(this.adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        if(this.adapter.getItemCount()==0){
+            openSearchButton.hide();
+        }else{
+            openSearchButton.show();
+        }
+
     }
 
     @Override
