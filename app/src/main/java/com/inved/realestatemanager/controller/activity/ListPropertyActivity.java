@@ -82,7 +82,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private void checkIfSyncWithFirebaseIsNecessary() {
 
         PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
-            //Log.d("debago", "check if getAllProperty not null: " + queryDocumentSnapshots.size());
+
             if (queryDocumentSnapshots.size() > 0) {
 
                 propertyViewModel.getAllProperties().observe(this, properties -> {
