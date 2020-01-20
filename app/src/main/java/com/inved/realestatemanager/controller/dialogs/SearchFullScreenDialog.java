@@ -97,7 +97,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
         callback = (OnClickSearchInterface) getTargetFragment();
         spinnerAgentList.add(getString(R.string.select_agent));
-        realEstateAgentNameSpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+
 
         //Spinner step 1/3 Initialize all spinner to be selected
         realEstateAgentNameSpinner.setOnItemSelectedListener(this);
