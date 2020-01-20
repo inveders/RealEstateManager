@@ -96,7 +96,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                                 if (properties.get(j).getPropertyId().equals(queryDocumentSnapshots.getDocuments().get(i).get("propertyId"))) {
 
                                     isPropertyExist++;
-                                    Log.d("debago", "isPopertyExist "+isPropertyExist);
+                                    Log.d("debago", "isPopertyExist " + isPropertyExist);
                                 }
                             }
 
@@ -114,7 +114,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
                                 String streetNumber = queryDocumentSnapshots.getDocuments().get(i).getString("streetNumber");
                                 String streetName = queryDocumentSnapshots.getDocuments().get(i).getString("streetName");
-                                String zipCode =queryDocumentSnapshots.getDocuments().get(i).getString("zipCode");
+                                String zipCode = queryDocumentSnapshots.getDocuments().get(i).getString("zipCode");
                                 String townProperty = queryDocumentSnapshots.getDocuments().get(i).getString("townProperty");
                                 String country = queryDocumentSnapshots.getDocuments().get(i).getString("country");
                                 String addressCompl = queryDocumentSnapshots.getDocuments().get(i).getString("addressCompl");
@@ -126,7 +126,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                                 String photoUri1 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri1");
                                 String photoUri2 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri2");
                                 String photoUri3 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri3");
-                                String photoUri4 =queryDocumentSnapshots.getDocuments().get(i).getString("photoUri4");
+                                String photoUri4 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri4");
                                 String photoUri5 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri5");
                                 String photoDescription1 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription1");
                                 String photoDescription2 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription2");
@@ -194,15 +194,21 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 });
 
 
+            } else {
+
+                propertyViewModel.getAllProperties().observe(this, properties -> {
+                    Log.d("debago", "NULL properties in firebase " + queryDocumentSnapshots.size() + " and properties in room is " + properties.size());
+                    if (properties.size() != 0) {
+                        //We delete all properties in Room if there is no property in firebase
+                        for (int i = 0; i < properties.size(); i++) {
+                            propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
+                        }
+                    }
+                });
             }
 
-        }).
 
-                addOnFailureListener(e ->
-
-                {
-
-                });
+        }).addOnFailureListener(e -> { });
     }
 
     protected void configureViewModel() {

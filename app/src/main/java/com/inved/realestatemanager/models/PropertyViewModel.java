@@ -79,6 +79,10 @@ public class PropertyViewModel extends ViewModel {
         executor.execute(() -> propertyDataSource.createItem(property));
     }
 
+    public void deleteProperty(String propertyId) {
+        executor.execute(() -> propertyDataSource.deleteItem(propertyId));
+    }
+
     public void updateProperty(String typeProperty, double pricePropertyInDollar,
                                                    double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                                    int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
