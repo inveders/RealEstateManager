@@ -107,6 +107,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .signOut(this)
                 .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted());
 
+        deleteDatabase("MyDatabase.db");
     }
 
     // Create OnCompleteListener called after tasks ended
