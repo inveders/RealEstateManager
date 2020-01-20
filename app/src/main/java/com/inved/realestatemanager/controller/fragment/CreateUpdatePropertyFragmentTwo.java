@@ -5,12 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -66,7 +64,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class CreateUpdatePropertyFragmentTwo extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -133,7 +130,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     //Dialog stuff
     private Dialog DialogImage;
-    private Button saveButton, closeButton;
+    private Button saveButton, clearButton;
+    private ImageView closeButton;
     private ImageView dialogPhotoImageView;
     private EditText dialogEditText;
     private ImageCameraOrGallery imageCameraOrGallery;
@@ -216,23 +214,23 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         FloatingActionButton addPhotoButton = v.findViewById(R.id.activity_create_update_add_photo_button);
 
-        addPhotoButton.setOnClickListener(view ->
+        addPhotoButton.setOnClickListener(view -> {
+                    if (photoUri5 != null) {
+                        Toast.makeText(context, getString(R.string.already_five_photo), Toast.LENGTH_SHORT).show();
 
-                selectImage());
+                    } else {
+                        selectImage();
+                    }
+
+                }
+
+        );
 
 
-        this.
-
-                updateUI();
-        this.
-
-                configureViewModel();
-        this.
-
-                retriveRealEstateAgents();
-        this.
-
-                datePickerInit();
+        this.updateUI();
+        this.configureViewModel();
+        this.retriveRealEstateAgents();
+        this.datePickerInit();
 
 
         if (
@@ -259,13 +257,15 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void myCustomDialog(String imageViewLink, int photoNumber) {
         if (getActivity() != null) {
+
+            Log.d("debago", "photoURI is " + imageViewLink + " and photo description is " + photoDescription1);
             DialogImage = new Dialog(getActivity());
             DialogImage.requestWindowFeature(Window.FEATURE_NO_TITLE);
             DialogImage.setContentView(R.layout.custom_dialog_image);
             DialogImage.setTitle("My Custom Dialog");
 
-
-            closeButton = DialogImage.findViewById(R.id.button_close);
+            closeButton = DialogImage.findViewById(R.id.custom_dialog_close);
+            clearButton = DialogImage.findViewById(R.id.button_clear);
             saveButton = DialogImage.findViewById(R.id.button_save);
             dialogPhotoImageView = DialogImage.findViewById(R.id.custom_dialog_photo);
             dialogEditText = DialogImage.findViewById(R.id.custom_dialog_edittext);
@@ -342,11 +342,46 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
             });
 
-            closeButton.setEnabled(true);
+            clearButton.setEnabled(true);
             saveButton.setEnabled(true);
 
-            closeButton.setOnClickListener(view -> DialogImage.cancel());
+            clearButton.setOnClickListener(view -> {
+                //we clear image and photodescription in custom dialog
+                Glide.with(this)
+                        .load(R.drawable.no_image)
+                        .apply(RequestOptions.centerCropTransform())
+                        .override(240, 240)
+                        .fitCenter()
+                        .into(dialogPhotoImageView);
+                dialogEditText.setText("");
+                //we clear photouri and photodescription to update UI in fragment
+                switch (photoNumber) {
 
+                    case 1:
+                        photoDescription1 = null;
+                        photoUri1 = null;
+                        break;
+                    case 2:
+                        photoDescription2 = null;
+                        photoUri2 = null;
+                        break;
+                    case 3:
+                        photoDescription3 = null;
+                        photoUri3 = null;
+                        break;
+                    case 4:
+                        photoDescription4 = null;
+                        photoUri4 = null;
+                        break;
+                    case 5:
+                        photoDescription5 = null;
+                        photoUri5 = null;
+                        break;
+
+                }
+
+            });
+            closeButton.setOnClickListener(view -> DialogImage.cancel());
             saveButton.setOnClickListener(view -> {
 
                 switch (photoNumber) {
@@ -450,6 +485,11 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             photoUri3 = property.getPhotoUri3();
             photoUri4 = property.getPhotoUri4();
             photoUri5 = property.getPhotoUri5();
+            photoDescription1 = property.getPhotoDescription1();
+            photoDescription2 = property.getPhotoDescription2();
+            photoDescription3 = property.getPhotoDescription3();
+            photoDescription4 = property.getPhotoDescription4();
+            photoDescription5 = property.getPhotoDescription5();
             updateUI();
 
         });
@@ -900,6 +940,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void updateUI() {
 
+        Log.d("debago", "property is 1: " + photoDescription1 + " 2: " + photoDescription2 + " 3: " + photoDescription3 + " photo 1:" + photoUri1 + " photo 2: " + photoUri2);
+
         Uri fileUri;
         if (photoUri1 != null) {
             fileUri = Uri.parse(photoUri1);
@@ -997,7 +1039,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         startActivity(intent);
     }
 
-    private void glideNoImage(ImageView imageView){
+    private void glideNoImage(ImageView imageView) {
         Glide.with(this)
                 .load(R.drawable.no_image)
                 .override(50, 50)

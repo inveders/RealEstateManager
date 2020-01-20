@@ -225,9 +225,9 @@
     <string name="first_photo">First photo</string>
     <string name="your_image_name">Your image name</string>
     <string name="button_save">Save</string>
-    <string name="button_close">Close</string>
-    <string name="no_good_agent">You can only clic on your own profile</string>
-
+    <string name="button_clear">Clear</string>
+    <string name="no_good_agent">You can only click on your own profile</string>
+    <string name="already_five_photo">You can\'t add more than 5 photos</string>
 
     <!-- MAP-->
 
