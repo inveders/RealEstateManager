@@ -56,9 +56,9 @@
     <string name="detail_property_surface_area_text">750 sq m</string>
     <string name="detail_property_number_of_room_title">Rooms</string>
     <string name="detail_property_number_of_room_text">6</string>
-    <string name="detail_property_number_of_bathroom_title">Number of bathrooms</string>
+    <string name="detail_property_number_of_bathroom_title">Bathrooms</string>
     <string name="detail_property_number_of_bathroom_text">2</string>
-    <string name="detail_property_number_of_bedroom_title">Number of bedrooms</string>
+    <string name="detail_property_number_of_bedroom_title">Bedrooms</string>
     <string name="detail_property_number_of_bedroom_text">4</string>
     <string name="detail_property_location_title">Location</string>
     <string name="detail_property_location_text">740 Park Avenue&#xA;Apt 6/7A&#xA;New-York&#xA;NY 10021&#xA;United States&#xA;</string>
