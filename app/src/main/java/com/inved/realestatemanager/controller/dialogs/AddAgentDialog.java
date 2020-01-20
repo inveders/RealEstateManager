@@ -178,9 +178,12 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             firstnameEditText.setError(getString(R.string.set_error_add_agent_firstname));
         } else if (lastnameEditText.getText().toString().isEmpty()) {
             lastnameEditText.setError(getString(R.string.set_error_add_agent_lastname));
-      /*  } else if (agencyName.isEmpty()) {
-            Toast.makeText(getContext(), getString(R.string.set_error_add_agent_agency), Toast.LENGTH_SHORT).show();
-        */
+        } else if (agencyName==null) {
+            if(getActivity()!=null){
+                agencyName=ManageAgency.getAgencyName(getActivity());
+            }
+
+
         } else {
             String firstname = firstnameEditText.getText().toString();
             String lastname = lastnameEditText.getText().toString();
@@ -215,7 +218,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             if (bundle != null) {
 
                 String realEstateAgentIdBundle = bundle.getString("myRealEstateAgentId", null);
-                Log.d("debago", "agencyName :" + agencyName + " real estate agent string : " + realEstateAgents.toString());
+                Log.d("debago", "agencyName :" + agencyName + " real estate agent string : " + realEstateAgents.toString()+" and urlpicture is "+urlPicture);
                 if (realEstateAgentIdBundle != null) {
                     this.propertyViewModel.updateRealEstateAgent(realEstateAgentIdBundle, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
@@ -261,8 +264,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         builder.setItems(items, (dialog, item) -> {
             if (items[item].equals(MainApplication.getInstance().getResources().getString(R.string.dialog_select_image_take_photo))) {
                 AddAgentDialogPermissionsDispatcher.dispatchTakePictureIntentWithPermissionCheck(this);
-
-                dispatchTakePictureIntent();
             } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_choose_from_library))) {
                 dispatchGalleryIntent();
             } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_cancel))) {
@@ -323,12 +324,12 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
 
-                    try {
+                  /*  try {
                         mPhotoFile = mCompressor.compressToFile1(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    agentPhoto.setImageURI(selectedImage);
+                    }*/
+                    //agentPhoto.setImageURI(selectedImage);
 
                     if (selectedImage != null) {
                         urlPicture = imageCameraOrGallery.getRealPathFromUri(selectedImage);
@@ -338,12 +339,14 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                     break;
                 case REQUEST_CAMERA_PHOTO:
 
-                    try {
+                   /* try {
                         Log.d("debago", "mPhotoFile is: " + mPhotoFile + " and camerafilepath is: " + cameraFilePath);
                         mPhotoFile = mCompressor.compressToFile1(mPhotoFile);
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
+                    }*/
 
                     if (cameraFilePath != null) {
                         urlPicture = cameraFilePath;
@@ -403,6 +406,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private void showImageInCircle(String photoStringFromRoom) {
 
+        Log.d("debago","Show image in circle "+photoStringFromRoom);
         Uri fileUri = Uri.parse(photoStringFromRoom);
         if (fileUri.getPath() != null) {
             Glide.with(MainApplication.getInstance().getApplicationContext())

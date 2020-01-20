@@ -100,16 +100,21 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             showShimmer();
             Log.d("debago", "getphotoUri1 " + property.getPhotoUri1());
             File localFile = new File(property.getPhotoUri1());
-
+            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            String mFileName = "/" + localFile.getName();
+            File goodFile = new File(storageDir, mFileName);
             if (property.getDateOfSaleForProperty() == null || property.getDateOfSaleForProperty().isEmpty()) {
                 try {
-                    Log.d("debago", "localfile is " + localFile);
-                    if (localFile.exists()) {
-                        Log.d("debago", "good file exist " + localFile);
-                        photoUriInGlide(localFile);
 
+                    if (goodFile.exists()) {
+                        Log.d("debago", "file internal exist " + goodFile);
+                        photoUriInGlide(goodFile);
+
+                    } else if (localFile.exists()) {
+                        Log.d("debago", "file external exist " + localFile);
+                        photoUriInGlide(localFile);
                     } else {
-                        Log.d("debago", "good file NOT exist " + localFile);
+                        Log.d("debago", "good file NOT exist ");
                         photoFirebaseStorageInGlide(property.getPropertyId(), property.getPhotoUri1());
                     }
                 } catch (Exception e) {
@@ -119,12 +124,15 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
             } else {
                 try {
-                    if (localFile.exists()) {
-                        Log.d("debago", "good file internal sold exist " + localFile);
-                        photoSoldUriInGlide(localFile);
+                    if (goodFile.exists()) {
+                        Log.d("debago", "file sold internal exist " + goodFile);
+                        photoSoldUriInGlide(goodFile);
 
+                    } else if (localFile.exists()) {
+                        Log.d("debago", "file sold external exist " + localFile);
+                        photoSoldUriInGlide(localFile);
                     } else {
-                        Log.d("debago", "good file sold NOT exist " + localFile);
+                        Log.d("debago", "good file sold NOT exist ");
                         photoSoldFirebaseStorageInGlide(property.getPropertyId(), property.getPhotoUri1());
                     }
                 } catch (Exception e) {
@@ -185,9 +193,9 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     private void photoFirebaseStorageInGlide(String propertyId, String photoUri) {
 
-       // Log.d("debago","CHILD NAME photo uri is "+photoUri);
-        if(photoUri!=null){
-            if(!photoUri.isEmpty()){
+        // Log.d("debago","CHILD NAME photo uri is "+photoUri);
+        if (photoUri != null) {
+            if (!photoUri.isEmpty()) {
                 PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
 
@@ -221,7 +229,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                                                 })
                                                 .into(photo);
 
-                                    }else {
+                                    } else {
                                         glideNoImage();
                                     }
 
@@ -230,19 +238,18 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                         }
                     }
                 });
-            }else{
+            } else {
                 glideNoImage();
             }
-        }else{
+        } else {
             glideNoImage();
         }
-
 
 
     }
 
     private void photoSoldFirebaseStorageInGlide(String propertyId, String photoUri) {
-        if(photoUri!=null) {
+        if (photoUri != null) {
             if (!photoUri.isEmpty()) {
                 PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -252,7 +259,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                                 String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
                                 if (photoUriFromFirebase != null) {
                                     int numberCharacter = photoUriFromFirebase.length();
-                                    if(numberCharacter!=0){
+                                    if (numberCharacter != 0) {
                                         StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
                                                 .child(splitString.lastCharacters(photoUri, numberCharacter));
 
@@ -276,7 +283,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                                                     }
                                                 })
                                                 .into(photo);
-                                    }else{
+                                    } else {
                                         glideNoImage();
                                     }
 
@@ -286,10 +293,10 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                         }
                     }
                 });
-            }else{
+            } else {
                 glideNoImage();
             }
-        }else{
+        } else {
             glideNoImage();
         }
 
@@ -311,7 +318,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void glideNoImage(){
+    public void glideNoImage() {
         GlideApp.with(MainApplication.getInstance().getApplicationContext())
                 .load(R.drawable.no_image)
                 .into((photo));

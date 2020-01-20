@@ -66,13 +66,17 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
             File localFile = new File(realEstateAgentsList.get(position).getUrlPicture());
 
-            if (localFile.exists()) {
-                Log.d("debago", "good file internal exist for agent " + localFile);
+            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            String mFileName = "/" + localFile.getName();
+            File goodFile = new File(storageDir,mFileName);
+           // Log.d("debago", "localfile for agent is " + goodFile);
+            if (goodFile.exists()) {
+                Log.d("debago", "file internal exist for agent " + goodFile);
 
 
-                if (localFile.getPath() != null) {
+                if (goodFile.getPath() != null) {
                     GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                            .load(localFile)
+                            .load(goodFile)
                             .apply(RequestOptions.circleCropTransform())
                             .listener(new RequestListener<Drawable>() {
                                 @Override
@@ -92,7 +96,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                 }
 
             } else if (localFile.exists()){
-                Log.d("debago", "good file external exist for agent " + localFile);
+                Log.d("debago", "file external exist for agent " + localFile);
 
                 if (localFile.getPath() != null) {
                     GlideApp.with(MainApplication.getInstance().getApplicationContext())
