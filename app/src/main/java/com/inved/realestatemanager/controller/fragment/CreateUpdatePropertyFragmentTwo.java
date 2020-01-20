@@ -609,6 +609,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     String selectedDate = data.getStringExtra("selectedDate");
                     // set the value of the editText
                     dateOfEntry.setText(selectedDate);
+                    dateOfEntry.setBackgroundResource(R.drawable.edit_text_design_focused);
                     break;
             }
 
@@ -696,6 +697,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void datePickerInit() {
         dateOfEntry.setText(getString(R.string.create_update_choose_date));
+        dateOfEntry.setBackgroundResource(R.drawable.edit_text_design);
         dateOfEntry.setOnClickListener(v -> showDatePickerDialog());
 
     }
