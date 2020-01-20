@@ -25,11 +25,11 @@ import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.GlideApp;
+import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.WatermarkTransformation;
 
 import java.io.File;
-import java.io.IOException;
 
 
 public class PropertyListViewHolder extends RecyclerView.ViewHolder {
@@ -43,6 +43,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     private ImageView photo;
     private ShimmerFrameLayout shimmerFrameLayout;
     private SplitString splitString = new SplitString();
+    private ImageCameraOrGallery imageCameraOrGallery;
 
     PropertyListViewHolder(View propertyItemView) {
         super(propertyItemView);
@@ -62,6 +63,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
 
         UnitConversion unitConversion = new UnitConversion();
+        imageCameraOrGallery = new ImageCameraOrGallery();
 
         //TYPE PROPERTY
         if (property.getTypeProperty() != null) {
@@ -98,25 +100,16 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             showShimmer();
             Log.d("debago", "getphotoUri1 " + property.getPhotoUri1());
             File localFile = new File(property.getPhotoUri1());
-            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            String mFileName = "/" + localFile.getName();
-            File goodFileInternal = new File(storageDir, mFileName);
-
-            File goodFileExternal = new File(localFile.getAbsolutePath()+ File.separator + mFileName);
 
             if (property.getDateOfSaleForProperty() == null || property.getDateOfSaleForProperty().isEmpty()) {
                 try {
                     Log.d("debago", "localfile is " + localFile);
                     if (localFile.exists()) {
-                        Log.d("debago", "good file exist external" + localFile);
+                        Log.d("debago", "good file exist " + localFile);
                         photoUriInGlide(localFile);
 
-                    } else if (goodFileInternal.exists()) {
-
-                        Log.d("debago", "good file exist internal" + localFile);
-                        photoUriInGlide(localFile);
                     } else {
-                        Log.d("debago", "good file NOT exist " + goodFileInternal);
+                        Log.d("debago", "good file NOT exist " + localFile);
                         photoFirebaseStorageInGlide(property.getPropertyId(), property.getPhotoUri1());
                     }
                 } catch (Exception e) {
@@ -126,15 +119,12 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
             } else {
                 try {
-                    if (goodFileExternal.exists()) {
-                        Log.d("debago", "good file internal sold exist " + goodFileExternal);
-                        photoSoldUriInGlide(goodFileExternal);
+                    if (localFile.exists()) {
+                        Log.d("debago", "good file internal sold exist " + localFile);
+                        photoSoldUriInGlide(localFile);
 
-                    } else if (goodFileInternal.exists()) {
-                        Log.d("debago", "good file internal sold exist " + goodFileInternal);
-                        photoSoldUriInGlide(goodFileInternal);
                     } else {
-                        Log.d("debago", "good file sold NOT exist " + goodFileInternal);
+                        Log.d("debago", "good file sold NOT exist " + localFile);
                         photoSoldFirebaseStorageInGlide(property.getPropertyId(), property.getPhotoUri1());
                     }
                 } catch (Exception e) {
@@ -158,10 +148,10 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void photoUriInGlide(File file) {
-        Uri fileUri = Uri.fromFile(file);
-        if (fileUri.getPath() != null) {
+
+        if (file.getPath() != null) {
             GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                    .load(fileUri)
+                    .load(file)
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -181,10 +171,10 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void photoSoldUriInGlide(File file) {
-        Uri fileUri = Uri.fromFile(file);
-        if (fileUri.getPath() != null) {
+
+        if (file.getPath() != null) {
             GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                    .load(fileUri)
+                    .load(file)
                     .transform(new WatermarkTransformation())
                     .into((photo));
             stopShimmer();
@@ -195,87 +185,114 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     private void photoFirebaseStorageInGlide(String propertyId, String photoUri) {
 
-        PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+        Log.d("debago","CHILD NAME photo uri is "+photoUri);
+        if(photoUri!=null){
+            if(!photoUri.isEmpty()){
+                PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
 
-                if (task.getResult() != null) {
-                    if (task.getResult().getDocuments().size() != 0) {
-                        String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
-                        if (photoUriFromFirebase != null) {
-                            int numberCharacter = photoUriFromFirebase.length();
+                        if (task.getResult() != null) {
+                            if (task.getResult().getDocuments().size() != 0) {
+                                String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
+                                if (photoUriFromFirebase != null) {
+                                    int numberCharacter = photoUriFromFirebase.length();
+                                    Log.d("debago", "photouri is " + photoUri + " number caracter is " + numberCharacter + " and chilnamme is " + splitString.lastCharacters(photoUri, numberCharacter));
+                                    if (numberCharacter != 0) {
+                                        StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
+                                                .child(splitString.lastCharacters(photoUri, numberCharacter));
 
-                            StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
-                                    .child(splitString.lastCharacters(photoUri, numberCharacter));
+                                        downloadFileFromStorage(splitString.lastCharacters(photoUri, numberCharacter), fileReference);
 
-                            downloadFileFromStorage(splitString.lastCharacters(photoUri, numberCharacter), fileReference);
+                                        GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                                                .load(fileReference)
+                                                .listener(new RequestListener<Drawable>() {
+                                                    @Override
+                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                        Log.e("debago", "Exception is : " + e);
+                                                        return false;
+                                                    }
 
-                            GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                                    .load(fileReference)
-                                    .listener(new RequestListener<Drawable>() {
-                                        @Override
-                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                            Log.e("debago", "Exception is : " + e);
-                                            return false;
-                                        }
+                                                    @Override
+                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                        Log.d("debago", "onResourceReady");
+                                                        stopShimmer();
+                                                        return false;
+                                                    }
+                                                })
+                                                .into(photo);
 
-                                        @Override
-                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                            Log.d("debago", "onResourceReady");
-                                            stopShimmer();
-                                            return false;
-                                        }
-                                    })
-                                    .into(photo);
+                                    }else {
+                                        glideNoImage();
+                                    }
+
+                                }
+                            }
                         }
-
                     }
-                }
+                });
+            }else{
+                glideNoImage();
             }
-        });
+        }else{
+            glideNoImage();
+        }
+
 
 
     }
 
     private void photoSoldFirebaseStorageInGlide(String propertyId, String photoUri) {
+        if(photoUri!=null) {
+            if (!photoUri.isEmpty()) {
+                PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
 
-        PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+                        if (task.getResult() != null) {
+                            if (task.getResult().getDocuments().size() != 0) {
+                                String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
+                                if (photoUriFromFirebase != null) {
+                                    int numberCharacter = photoUriFromFirebase.length();
+                                    if(numberCharacter!=0){
+                                        StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
+                                                .child(splitString.lastCharacters(photoUri, numberCharacter));
 
-                if (task.getResult() != null) {
-                    if (task.getResult().getDocuments().size() != 0) {
-                        String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
-                        if (photoUriFromFirebase != null) {
-                            int numberCharacter = photoUriFromFirebase.length();
+                                        downloadFileFromStorage(splitString.lastCharacters(photoUri, numberCharacter), fileReference);
 
-                            StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
-                                    .child(splitString.lastCharacters(photoUri, numberCharacter));
+                                        GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                                                .load(fileReference)
+                                                .transform(new WatermarkTransformation())
+                                                .listener(new RequestListener<Drawable>() {
+                                                    @Override
+                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                        Log.e("debago", "Exception is : " + e);
+                                                        return false;
+                                                    }
 
-                            downloadFileFromStorage(splitString.lastCharacters(photoUri, numberCharacter), fileReference);
+                                                    @Override
+                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                        Log.d("debago", "onResourceReady");
+                                                        stopShimmer();
+                                                        return false;
+                                                    }
+                                                })
+                                                .into(photo);
+                                    }else{
+                                        glideNoImage();
+                                    }
 
-                            GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                                    .load(fileReference)
-                                    .transform(new WatermarkTransformation())
-                                    .listener(new RequestListener<Drawable>() {
-                                        @Override
-                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                            Log.e("debago", "Exception is : " + e);
-                                            return false;
-                                        }
+                                }
 
-                                        @Override
-                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                            Log.d("debago", "onResourceReady");
-                                            stopShimmer();
-                                            return false;
-                                        }
-                                    })
-                                    .into(photo);
+                            }
                         }
-
                     }
-                }
+                });
+            }else{
+                glideNoImage();
             }
-        });
+        }else{
+            glideNoImage();
+        }
+
 
     }
 
@@ -284,8 +301,21 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         String mFileName = "/" + lastPathFromFirebase;
         File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File localFile = new File(storageDir + mFileName);
-        fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local item file created from ViewHolder")).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
+        fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local item file created from ViewHolder")).addOnFailureListener(exception -> {
+            Log.d("debago", ";local tem file not created  created " + exception.toString());
 
+            glideNoImage();
+            stopShimmer();
+
+        });
+
+    }
+
+    public void glideNoImage(){
+        GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                .load(R.drawable.no_image)
+                .into((photo));
+        stopShimmer();
     }
 
     public interface PropertyListInterface {

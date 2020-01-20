@@ -149,7 +149,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         View v = inflater.inflate(R.layout.fragment_create_update_two, container, false);
 
-imageCameraOrGallery=new ImageCameraOrGallery();
+        imageCameraOrGallery = new ImageCameraOrGallery();
         dateOfEntry = v.findViewById(R.id.activity_create_update_property_date_entry_text);
         agentNameSpinner = v.findViewById(R.id.activity_create_update_spinner_real_estate_agent_text);
         //Spinner step 1/4 Initialize spinner to be selected
@@ -578,12 +578,13 @@ imageCameraOrGallery=new ImageCameraOrGallery();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    photo1.setImageURI(selectedImage);
-                    if (selectedImage != null) {
-                        photoUri = selectedImage.toString();
+                    // photo1.setImageURI(selectedImage);
+                    Log.d("debago", "selected image from gallery is " + imageCameraOrGallery.getRealPathFromUri(selectedImage));
 
-                        editImageName();
-                    }
+                    photoUri = imageCameraOrGallery.getRealPathFromUri(selectedImage);
+
+                    editImageName();
+
 
                     break;
                 case REQUEST_CAMERA_PHOTO:
@@ -595,7 +596,7 @@ imageCameraOrGallery=new ImageCameraOrGallery();
                     }
 
                     if (cameraFilePath != null) {
-                        Log.d("debago","camerafilepath is "+cameraFilePath);
+                        Log.d("debago", "camerafilepath is " + cameraFilePath);
                         photoUri = cameraFilePath;
                         editImageName();
 
@@ -612,7 +613,7 @@ imageCameraOrGallery=new ImageCameraOrGallery();
             }
 
 
-            if(photoUri!=null){
+            if (photoUri != null) {
                 managePhotoUri(photoUri);
             }
 
@@ -623,8 +624,8 @@ imageCameraOrGallery=new ImageCameraOrGallery();
     }
 
 
-    private void managePhotoUri(String photoUri){
-        if(getActivity()!=null){
+    private void managePhotoUri(String photoUri) {
+        if (getActivity() != null) {
             if (ManagePhotoNumberCreateUpdate.getUpdateStatus(getActivity()).equals("create")) {
                 //When we add a new photo
                 if (photoUri1 == null) {
@@ -656,7 +657,6 @@ imageCameraOrGallery=new ImageCameraOrGallery();
         }
 
     }
-
 
 
     //REAL ESTATE AGENT MANAGEMENT AND SPINNER

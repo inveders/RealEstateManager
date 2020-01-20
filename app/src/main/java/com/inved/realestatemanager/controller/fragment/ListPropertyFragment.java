@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.controller.fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,9 +32,12 @@ import com.inved.realestatemanager.view.PropertyListViewHolder;
 
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
-
+@RuntimePermissions
 public class ListPropertyFragment extends Fragment implements PropertyListViewHolder.PropertyListInterface, SearchFullScreenDialog.OnClickSearchInterface {
 
     // FOR DESIGN
@@ -129,14 +133,16 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
             Log.d("debago"," changement here getAllProperties");
             callback.onMenuChanged(0);
-            updatePropertyList(properties);
+            ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this,properties);
+
 
 
         } );
     }
 
     // 6 - Update the list of properties
-    private void updatePropertyList(List<Property> properties) {
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    public void updatePropertyList(List<Property> properties) {
         this.adapter.updateData(properties);
     }
 
@@ -163,7 +169,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public void searchButton(List<Property> properties) {
 
         Log.d("debago","Search Button: "+properties);
-        updatePropertyList(properties);
+        ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this,properties);
+
     }
 
     @Override
@@ -186,6 +193,13 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         } catch (ClassCastException e) {
             throw new ClassCastException(e.toString()+ " must implement MenuChamgementsInterface");
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        ListPropertyFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
 

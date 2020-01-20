@@ -47,12 +47,6 @@ public class MyUploadService extends Service {
             int numberPhoto = intent.getIntExtra(EXTRA_PHOTO_NUMBER,0);
             mStorageRef = FirebaseStorage.getInstance().getReference(documentId);
             Log.d(TAG, "onStartCommand in in documentId:" + documentId + " and number photo is " + numberPhoto);
-            // Make sure we have permission to read the data
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                getContentResolver().takePersistableUriPermission(
-                        fileUri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
 
             uploadFromUri(fileUri,documentId,numberPhoto);
         }

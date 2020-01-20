@@ -2,7 +2,6 @@ package com.inved.realestatemanager.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,18 +65,14 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
         if (realEstateAgentsList.get(position).getUrlPicture() != null) {
 
             File localFile = new File(realEstateAgentsList.get(position).getUrlPicture());
-            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            String mFileName = "/" + localFile.getName();
-            File goodFileInternal = new File(storageDir, mFileName);
-            File goodFileExternal = new File(Environment.getExternalStorageDirectory() + File.separator + mFileName);
 
-            if (goodFileInternal.exists()) {
-                Log.d("debago", "good file internal exist for agent " + goodFileInternal);
+            if (localFile.exists()) {
+                Log.d("debago", "good file internal exist for agent " + localFile);
 
-                Uri fileUri = Uri.fromFile(goodFileInternal);
-                if (fileUri.getPath() != null) {
+
+                if (localFile.getPath() != null) {
                     GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                            .load(fileUri)
+                            .load(localFile)
                             .apply(RequestOptions.circleCropTransform())
                             .listener(new RequestListener<Drawable>() {
                                 @Override
@@ -96,13 +91,12 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                             .into(holder.mAgentPhoto);
                 }
 
-            } else if (goodFileExternal.exists()){
-                Log.d("debago", "good file exist for agent " + goodFileExternal);
+            } else if (localFile.exists()){
+                Log.d("debago", "good file external exist for agent " + localFile);
 
-                Uri fileUri = Uri.fromFile(goodFileExternal);
-                if (fileUri.getPath() != null) {
+                if (localFile.getPath() != null) {
                     GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                            .load(fileUri)
+                            .load(localFile)
                             .apply(RequestOptions.circleCropTransform())
                             .listener(new RequestListener<Drawable>() {
                                 @Override
@@ -146,7 +140,12 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                             String mFileName2 = "/" + splitString.lastCharacters(realEstateAgentsList.get(position).getUrlPicture(),numberCharacter);
                                             File storageDir2 = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                                             File localFile2 = new File(storageDir2 + mFileName2);
-                                            fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local item file created from ViewHolder Agent Management")).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
+                                            fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local item file created from ViewHolder Agent Management")).addOnFailureListener(exception -> {
+                                                Log.d("debago", ";local tem file not created  created " + exception.toString());
+                                                GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                                                        .load(R.drawable.ic_anon_user_48dp)
+                                                        .into((holder.mAgentPhoto));
+                                            });
 
                                             GlideApp.with(MainApplication.getInstance().getApplicationContext())
                                                     .load(fileReference)

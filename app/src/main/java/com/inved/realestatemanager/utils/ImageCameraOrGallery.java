@@ -41,7 +41,7 @@ public class ImageCameraOrGallery {
         Cursor cursor = null;
         try {
             String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = Objects.requireNonNull(context).getContentResolver().query(contentUri, proj, null, null, null);
+            cursor = MainApplication.getInstance().getApplicationContext().getContentResolver().query(contentUri, proj, null, null, null);
             assert cursor != null;
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
