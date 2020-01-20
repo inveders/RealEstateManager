@@ -256,6 +256,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
 
     private void myCustomDialog(String imageViewLink, int photoNumber) {
+
         if (getActivity() != null) {
 
             Log.d("debago", "photoURI is " + imageViewLink + " and photo description is " + photoDescription1);
@@ -283,136 +284,119 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 selectImage();
             });
 
-            Log.d("debago", "fragment two property id is " + propertyId);
-            propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
+            Log.d("debago", "fragment two create photoDescription1 is " + photoDescription1 + " plus 2: " + photoDescription2);
 
-                Log.d("debago", "fragment two getPhotoDescription1 is " + property.getPhotoDescription1());
-                if (property.getPhotoDescription1() != null) {
-                    photoDescription1 = property.getPhotoDescription1();
-                } else {
-                    photoDescription1 = "";
-                }
+            if (photoDescription1 == null) {
+                photoDescription1 = "";
+            }
+            if (photoDescription2 == null) {
+                photoDescription2 = "";
+            }
+            if (photoDescription3 == null) {
+                photoDescription3 = "";
+            }
+            if (photoDescription4 == null) {
+                photoDescription4 = "";
+            }
+            if (photoDescription5 == null) {
+                photoDescription5 = "";
+            }
 
-                if (property.getPhotoDescription2() != null) {
-                    photoDescription2 = property.getPhotoDescription2();
-                } else {
-                    photoDescription2 = "";
-                }
+            switch (photoNumber) {
 
-                if (property.getPhotoDescription3() != null) {
-                    photoDescription3 = property.getPhotoDescription3();
-                } else {
-                    photoDescription3 = "";
-                }
+                case 1:
+                    dialogEditText.setText(photoDescription1, TextView.BufferType.EDITABLE);
+                    break;
+                case 2:
+                    dialogEditText.setText(photoDescription2, TextView.BufferType.EDITABLE);
+                    break;
+                case 3:
+                    dialogEditText.setText(photoDescription3, TextView.BufferType.EDITABLE);
+                    break;
+                case 4:
+                    dialogEditText.setText(photoDescription4, TextView.BufferType.EDITABLE);
+                    break;
+                case 5:
+                    dialogEditText.setText(photoDescription5, TextView.BufferType.EDITABLE);
+                    break;
 
-                if (property.getPhotoDescription4() != null) {
-                    photoDescription4 = property.getPhotoDescription4();
-                } else {
-                    photoDescription4 = "";
-                }
+            }
 
-                if (property.getPhotoDescription5() != null) {
-                    photoDescription5 = property.getPhotoDescription5();
-                } else {
-                    photoDescription5 = "";
-                }
+            ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "update");
+            ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), photoNumber);
 
-                switch (photoNumber) {
 
-                    case 1:
-                        dialogEditText.setText(photoDescription1, TextView.BufferType.EDITABLE);
-                        break;
-                    case 2:
-                        dialogEditText.setText(photoDescription2, TextView.BufferType.EDITABLE);
-                        break;
-                    case 3:
-                        dialogEditText.setText(photoDescription3, TextView.BufferType.EDITABLE);
-                        break;
-                    case 4:
-                        dialogEditText.setText(photoDescription4, TextView.BufferType.EDITABLE);
-                        break;
-                    case 5:
-                        dialogEditText.setText(photoDescription5, TextView.BufferType.EDITABLE);
-                        break;
+        clearButton.setEnabled(true);
+        saveButton.setEnabled(true);
 
-                }
+        clearButton.setOnClickListener(view -> {
+            //we clear image and photodescription in custom dialog
+            Glide.with(this)
+                    .load(R.drawable.no_image)
+                    .apply(RequestOptions.centerCropTransform())
+                    .override(240, 240)
+                    .fitCenter()
+                    .into(dialogPhotoImageView);
+            dialogEditText.setText("");
+            //we clear photouri and photodescription to update UI in fragment
+            switch (photoNumber) {
 
-                ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "update");
-                ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), photoNumber);
+                case 1:
+                    photoDescription1 = null;
+                    photoUri1 = null;
+                    break;
+                case 2:
+                    photoDescription2 = null;
+                    photoUri2 = null;
+                    break;
+                case 3:
+                    photoDescription3 = null;
+                    photoUri3 = null;
+                    break;
+                case 4:
+                    photoDescription4 = null;
+                    photoUri4 = null;
+                    break;
+                case 5:
+                    photoDescription5 = null;
+                    photoUri5 = null;
+                    break;
 
-            });
+            }
 
-            clearButton.setEnabled(true);
-            saveButton.setEnabled(true);
+        });
+        closeButton.setOnClickListener(view -> DialogImage.cancel());
+        saveButton.setOnClickListener(view -> {
 
-            clearButton.setOnClickListener(view -> {
-                //we clear image and photodescription in custom dialog
-                Glide.with(this)
-                        .load(R.drawable.no_image)
-                        .apply(RequestOptions.centerCropTransform())
-                        .override(240, 240)
-                        .fitCenter()
-                        .into(dialogPhotoImageView);
-                dialogEditText.setText("");
-                //we clear photouri and photodescription to update UI in fragment
-                switch (photoNumber) {
+            switch (photoNumber) {
 
-                    case 1:
-                        photoDescription1 = null;
-                        photoUri1 = null;
-                        break;
-                    case 2:
-                        photoDescription2 = null;
-                        photoUri2 = null;
-                        break;
-                    case 3:
-                        photoDescription3 = null;
-                        photoUri3 = null;
-                        break;
-                    case 4:
-                        photoDescription4 = null;
-                        photoUri4 = null;
-                        break;
-                    case 5:
-                        photoDescription5 = null;
-                        photoUri5 = null;
-                        break;
+                case 1:
+                    photoDescription1 = dialogEditText.getText().toString();
+                    break;
+                case 2:
+                    photoDescription2 = dialogEditText.getText().toString();
+                    break;
+                case 3:
+                    photoDescription3 = dialogEditText.getText().toString();
+                    break;
+                case 4:
+                    photoDescription4 = dialogEditText.getText().toString();
+                    break;
+                case 5:
+                    photoDescription5 = dialogEditText.getText().toString();
+                    break;
 
-                }
+            }
 
-            });
-            closeButton.setOnClickListener(view -> DialogImage.cancel());
-            saveButton.setOnClickListener(view -> {
+            DialogImage.dismiss();
+            ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), 0);
+            ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "create");
+        });
 
-                switch (photoNumber) {
-
-                    case 1:
-                        photoDescription1 = dialogEditText.getText().toString();
-                        break;
-                    case 2:
-                        photoDescription2 = dialogEditText.getText().toString();
-                        break;
-                    case 3:
-                        photoDescription3 = dialogEditText.getText().toString();
-                        break;
-                    case 4:
-                        photoDescription4 = dialogEditText.getText().toString();
-                        break;
-                    case 5:
-                        photoDescription5 = dialogEditText.getText().toString();
-                        break;
-
-                }
-
-                DialogImage.dismiss();
-                ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), 0);
-                ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "create");
-            });
-
-            DialogImage.show();
-        }
-
+        DialogImage.show();
     }
+
+}
 
 
     @Override
@@ -521,7 +505,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     }
 
 
-    private void editImageName() {
+    private void editImageName(String photoUri) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogCustom))
@@ -541,6 +525,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                             photoDescription4 = photoDescription;
                         } else if (photoDescription5 == null) {
                             photoDescription5 = photoDescription;
+                        }
+                        if (photoUri != null) {
+                            managePhotoUri(photoUri);
                         }
                         updateUI();
 
@@ -622,7 +609,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
                     photoUri = imageCameraOrGallery.getRealPathFromUri(selectedImage);
 
-                    editImageName();
+                    editImageName(photoUri);
 
 
                     break;
@@ -637,7 +624,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     if (cameraFilePath != null) {
                         Log.d("debago", "camerafilepath is " + cameraFilePath);
                         photoUri = cameraFilePath;
-                        editImageName();
+                        editImageName(photoUri);
 
                     }
 
@@ -653,11 +640,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             }
 
 
-            if (photoUri != null) {
-                managePhotoUri(photoUri);
-            }
-
-
         }
 
 
@@ -668,6 +650,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         if (getActivity() != null) {
             if (ManagePhotoNumberCreateUpdate.getUpdateStatus(getActivity()).equals("create")) {
                 //When we add a new photo
+                Log.d("debago", "photouri1 is " + photoUri1 + " and photoUri2 is " + photoUri2 + " and photoUri is " + photoUri);
                 if (photoUri1 == null) {
                     photoUri1 = photoUri;
                 } else if (photoUri2 == null) {
@@ -682,6 +665,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             } else if (ManagePhotoNumberCreateUpdate.getUpdateStatus(getActivity()).equals("update")) {
                 int photoNumber = ManagePhotoNumberCreateUpdate.getPhotoNumber(getActivity());
                 //When we change existing photo
+                Log.d("debago", "photouri1 is " + photoUri1 + " and photoUri2 is " + photoUri2 + " and photoUri is " + photoUri);
                 if (photoNumber == 1) {
                     photoUri1 = photoUri;
                 } else if (photoNumber == 2) {
@@ -785,11 +769,11 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+public interface OnFragmentInteractionListener {
+    // TODO: Update argument type and name
+    void onFragmentInteraction(Uri uri);
 
-    }
+}
 
 
     private void finishToCreateProperty() {
@@ -940,7 +924,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void updateUI() {
 
-        Log.d("debago", "property is 1: " + photoDescription1 + " 2: " + photoDescription2 + " 3: " + photoDescription3 + " photo 1:" + photoUri1 + " photo 2: " + photoUri2);
+        Log.d("debago", "property is 1: " + photoDescription1 + " 2: " + photoDescription2 + " 3: " + photoDescription3 + " photo 1:" + photoUri1 + " photo 2: " + photoUri2 + " photo 3 is " + photoUri3);
 
         Uri fileUri;
         if (photoUri1 != null) {

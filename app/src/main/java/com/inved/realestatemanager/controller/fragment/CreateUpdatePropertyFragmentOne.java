@@ -130,7 +130,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                  priceEditText.addTextChangedListener(this);
             }else if (surfaceEditText.getText().hashCode() == editable.hashCode()){
-                Log.d("debago","value is "+editable.toString());
+               // Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 surfaceEditText.removeTextChangedListener(this);
 
@@ -143,7 +143,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 surfaceEditText.addTextChangedListener(this);
             }else if (streetNumberEditText.getText().hashCode() == editable.hashCode()){
-                Log.d("debago","value is "+editable.toString());
+                //Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 streetNumberEditText.removeTextChangedListener(this);
 
@@ -156,7 +156,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 streetNumberEditText.addTextChangedListener(this);
             }else if (additionnalEditText.getText().hashCode() == editable.hashCode()){
-                Log.d("debago","value is "+editable.toString());
+               // Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 additionnalEditText.removeTextChangedListener(this);
 
@@ -169,7 +169,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 additionnalEditText.addTextChangedListener(this);
             }else if (streetNameEditText.getText().hashCode() == editable.hashCode()){
-                Log.d("debago","value is "+editable.toString());
+               // Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 streetNameEditText.removeTextChangedListener(this);
 
@@ -182,7 +182,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 streetNameEditText.addTextChangedListener(this);
             }else if (zipCodeEditText.getText().hashCode() == editable.hashCode()){
-                Log.d("debago","value is "+editable.toString());
+               // Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 zipCodeEditText.removeTextChangedListener(this);
 
@@ -195,7 +195,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 zipCodeEditText.addTextChangedListener(this);
             }else if (townNameEditText.getText().hashCode() == editable.hashCode()){
-                Log.d("debago","value is "+editable.toString());
+                //Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 townNameEditText.removeTextChangedListener(this);
 
@@ -209,7 +209,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 townNameEditText.addTextChangedListener(this);
             }
             else if (countryEditText.getText().hashCode() == editable.hashCode()){
-                Log.d("debago","value is "+editable.toString());
+                //Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 countryEditText.removeTextChangedListener(this);
 
@@ -222,13 +222,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 countryEditText.addTextChangedListener(this);
             }
-        } /*else if (editText2.getText().hashCode() == editable.hashCode()){
-                    // This is just an example, your magic will be here!
-                    String value = editable.toString();
-                    editText2.removeTextChangedListener(textWatcher);
-                    editText2.setText(value);
-                    editText2.addTextChangedListener(textWatcher);
-                }*/
+        }
     }
 
 
