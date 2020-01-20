@@ -39,7 +39,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
         //  context.deleteDatabase("MyDatabase.db");
 
 
-        if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
+     //   if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
             if (INSTANCE == null) {
                 synchronized (RealEstateManagerDatabase.class) {
                     if (INSTANCE == null) {
@@ -55,9 +55,9 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
 
                 }
             }
-        }else{
+       /* }/*else{
             Log.d("debago","Pas de connexion internet, merci de réitérer");
-        }
+        }*/
 
 
 
