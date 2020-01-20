@@ -185,7 +185,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     private void photoFirebaseStorageInGlide(String propertyId, String photoUri) {
 
-        Log.d("debago","CHILD NAME photo uri is "+photoUri);
+       // Log.d("debago","CHILD NAME photo uri is "+photoUri);
         if(photoUri!=null){
             if(!photoUri.isEmpty()){
                 PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
@@ -196,7 +196,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                                 String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
                                 if (photoUriFromFirebase != null) {
                                     int numberCharacter = photoUriFromFirebase.length();
-                                    Log.d("debago", "photouri is " + photoUri + " number caracter is " + numberCharacter + " and chilnamme is " + splitString.lastCharacters(photoUri, numberCharacter));
+                                    //Log.d("debago", "photouri is " + photoUri + " number caracter is " + numberCharacter + " and chilnamme is " + splitString.lastCharacters(photoUri, numberCharacter));
                                     if (numberCharacter != 0) {
                                         StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
                                                 .child(splitString.lastCharacters(photoUri, numberCharacter));
