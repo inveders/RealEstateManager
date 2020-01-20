@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -121,8 +122,26 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
             }
             else {
 
-
                 Log.d("debago", "good file NOT exist for agent ");
+                Glide.with(MainApplication.getInstance().getApplicationContext())
+                        .load(R.drawable.no_image)
+                        .apply(RequestOptions.circleCropTransform())
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                Log.e("debago", "Exception is : " + e);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                Log.d("debago", "onResourceReady");
+
+                                return false;
+                            }
+                        })
+                        .into(holder.mAgentPhoto);
+
                 SplitString splitString = new SplitString();
 
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -158,7 +177,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                                         @Override
                                                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                                             Log.e("debago", "Exception is : " + e);
-                                                            holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
                                                             return false;
                                                         }
 
