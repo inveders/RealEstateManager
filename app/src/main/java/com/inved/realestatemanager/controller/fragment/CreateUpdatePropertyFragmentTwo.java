@@ -91,7 +91,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private ImageView photo3;
     private ImageView photo4;
     private ImageView photo5;
-    private TextView photoDescriptionTextView;
 
     private String photoUri = null;
     private String photoUri1 = null;
@@ -901,8 +900,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void updateUI() {
 
-        String urlNoImage = "https://semantic-ui.com/images/wireframe/image.png";
-
         Uri fileUri;
         if (photoUri1 != null) {
             fileUri = Uri.parse(photoUri1);
@@ -919,11 +916,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             }
 
         } else {
-            Glide.with(this)
-                    .load(urlNoImage)
-                    .override(240, 240)
-                    .fitCenter()
-                    .into(photo1);
+            glideNoImage(photo1);
+
         }
 
         if (photoUri2 != null) {
@@ -938,11 +932,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 photo2.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri2).getPath(), 2));
             }
         } else {
-            Glide.with(this)
-                    .load(urlNoImage)
-                    .override(50, 50)
-                    .fitCenter()
-                    .into(photo2);
+            glideNoImage(photo2);
+
         }
 
         if (photoUri3 != null) {
@@ -958,11 +949,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 photo3.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri3).getPath(), 3));
             }
         } else {
-            Glide.with(this)
-                    .load(urlNoImage)
-                    .override(50, 50)
-                    .fitCenter()
-                    .into(photo3);
+            glideNoImage(photo3);
+
         }
 
         if (photoUri4 != null) {
@@ -977,11 +965,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 photo4.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri4).getPath(), 4));
             }
         } else {
-            Glide.with(this)
-                    .load(urlNoImage)
-                    .override(50, 50)
-                    .fitCenter()
-                    .into(photo4);
+            glideNoImage(photo4);
+
         }
 
         if (photoUri5 != null) {
@@ -996,11 +981,8 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 photo5.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri5).getPath(), 5));
             }
         } else {
-            Glide.with(this)
-                    .load(urlNoImage)
-                    .override(50, 50)
-                    .fitCenter()
-                    .into(photo5);
+            glideNoImage(photo5);
+
         }
     }
 
@@ -1015,5 +997,12 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         startActivity(intent);
     }
 
+    private void glideNoImage(ImageView imageView){
+        Glide.with(this)
+                .load(R.drawable.no_image)
+                .override(50, 50)
+                .fitCenter()
+                .into(imageView);
+    }
 
 }
