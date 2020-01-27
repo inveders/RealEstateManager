@@ -77,162 +77,11 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private Context context;
     private Utils utils;
 
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        if(i2==0){
-            //put backgroung grey when we remove all text
-
-            if (priceEditText.getText().hashCode() == charSequence.hashCode()){
-                Log.d("debago","priceedittex charsequence is "+charSequence.hashCode());
-                priceEditText.setBackgroundResource(R.drawable.edit_text_design);
-            }else if (surfaceEditText.getText().hashCode() == charSequence.hashCode()){
-                Log.d("debago","surfaceedittext charsequence is "+charSequence.hashCode());
-                surfaceEditText.setBackgroundResource(R.drawable.edit_text_design);
-            }else if (streetNumberEditText.getText().hashCode() == charSequence.hashCode()){
-                streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design);
-            }else if (additionnalEditText.getText().hashCode() == charSequence.hashCode()){
-                additionnalEditText.setBackgroundResource(R.drawable.edit_text_design);
-            }else if (streetNameEditText.getText().hashCode() == charSequence.hashCode()){
-                streetNameEditText.setBackgroundResource(R.drawable.edit_text_design);
-            }else if (zipCodeEditText.getText().hashCode() == charSequence.hashCode()){
-                zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design);
-            }else if (townNameEditText.getText().hashCode() == charSequence.hashCode()){
-                townNameEditText.setBackgroundResource(R.drawable.edit_text_design);
-            }
-            else if (countryEditText.getText().hashCode() == charSequence.hashCode()){
-                countryEditText.setBackgroundResource(R.drawable.edit_text_design);
-            }
-        }
 
 
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        if (editable != null && !editable.toString().equalsIgnoreCase("")){
-            // Checking editable.hashCode() to understand which edittext is using right now
-
-            if (priceEditText.getText().hashCode() == editable.hashCode()){
-
-                String value = editable.toString();
-                 priceEditText.removeTextChangedListener(this);
-                // priceEditText.setText(value);
-                if (value.length() == 0) {
-                    // put backgroung grey when there is no action
-                    priceEditText.setBackgroundResource(R.drawable.edit_text_design);
-                } else {
-                    // put backgroung white when there write
-                    priceEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                }
-                 priceEditText.addTextChangedListener(this);
-            }else if (surfaceEditText.getText().hashCode() == editable.hashCode()){
-               // Log.d("debago","value is "+editable.toString());
-                String value = editable.toString();
-                surfaceEditText.removeTextChangedListener(this);
-
-                if (value.length() == 0) {
-
-                    surfaceEditText.setBackgroundResource(R.drawable.edit_text_design);
-                } else {
-
-                    surfaceEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                }
-                surfaceEditText.addTextChangedListener(this);
-            }else if (streetNumberEditText.getText().hashCode() == editable.hashCode()){
-                //Log.d("debago","value is "+editable.toString());
-                String value = editable.toString();
-                streetNumberEditText.removeTextChangedListener(this);
-
-                if (value.length() == 0) {
-
-                    streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design);
-                } else {
-
-                    streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                }
-                streetNumberEditText.addTextChangedListener(this);
-            }else if (additionnalEditText.getText().hashCode() == editable.hashCode()){
-               // Log.d("debago","value is "+editable.toString());
-                String value = editable.toString();
-                additionnalEditText.removeTextChangedListener(this);
-
-                if (value.length() == 0) {
-
-                    additionnalEditText.setBackgroundResource(R.drawable.edit_text_design);
-                } else {
-
-                    additionnalEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                }
-                additionnalEditText.addTextChangedListener(this);
-            }else if (streetNameEditText.getText().hashCode() == editable.hashCode()){
-               // Log.d("debago","value is "+editable.toString());
-                String value = editable.toString();
-                streetNameEditText.removeTextChangedListener(this);
-
-                if (value.length() == 0) {
-
-                    streetNameEditText.setBackgroundResource(R.drawable.edit_text_design);
-                } else {
-
-                    streetNameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                }
-                streetNameEditText.addTextChangedListener(this);
-            }else if (zipCodeEditText.getText().hashCode() == editable.hashCode()){
-               // Log.d("debago","value is "+editable.toString());
-                String value = editable.toString();
-                zipCodeEditText.removeTextChangedListener(this);
-
-                if (value.length() == 0) {
-
-                    zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design);
-                } else {
-
-                    zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                }
-                zipCodeEditText.addTextChangedListener(this);
-            }else if (townNameEditText.getText().hashCode() == editable.hashCode()){
-                //Log.d("debago","value is "+editable.toString());
-                String value = editable.toString();
-                townNameEditText.removeTextChangedListener(this);
-
-                if (value.length() == 0) {
-
-                    townNameEditText.setBackgroundResource(R.drawable.edit_text_design);
-                } else {
-
-                    townNameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                }
-                townNameEditText.addTextChangedListener(this);
-            }
-            else if (countryEditText.getText().hashCode() == editable.hashCode()){
-                //Log.d("debago","value is "+editable.toString());
-                String value = editable.toString();
-                countryEditText.removeTextChangedListener(this);
-
-                if (value.length() == 0) {
-
-                    countryEditText.setBackgroundResource(R.drawable.edit_text_design);
-                } else {
-
-                    countryEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                }
-                countryEditText.addTextChangedListener(this);
-            }
-        }
-    }
-
-
-
-    public interface CreateUpdateChangePageInterface {
-        void changeFragmentPage();
-    }
-
+    // --------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -310,6 +159,13 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         return v;
     }
 
+    // 2 - Configuring ViewModel
+    private void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(context);
+        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -328,54 +184,23 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     }
 
-    @SuppressLint("SetTextI18n")
-    private void updateUIwithDataFromDatabase(String propertyId) {
-        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try {
+            callbackChangePage = (CreatePropertyActivity) context;
 
-            priceEditText.setText(utils.getPriceInGoodCurrency(property.getPricePropertyInEuro()));
-            surfaceEditText.setText(Double.toString(property.getSurfaceAreaProperty()));
-            streetNumberEditText.setText(property.getStreetNumber());
-            streetNameEditText.setText(property.getStreetName());
-            zipCodeEditText.setText(property.getZipCode());
-            townNameEditText.setText(property.getTownProperty());
-            countryEditText.setText(property.getCountry());
-            splitPoiInCheckbox(property.getPointOfInterest());
-
-            typePropertySpinner.setSelection(getSpinner.getIndexSpinner(typePropertySpinner, property.getTypeProperty()));
-            typePropertySpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
-            numberRoomSpinner.setSelection(getSpinner.getIndexSpinner(numberRoomSpinner, property.getNumberRoomsInProperty()));
-            numberBedroomSpinner.setSelection(getSpinner.getIndexSpinnerInt(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
-            numberBathroomSpinner.setSelection(getSpinner.getIndexSpinner(numberBathroomSpinner, property.getNumberBathroomsInProperty()));
-
-        });
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnCreatePropertyInterface");
+        }
     }
 
 
-    private void splitPoiInCheckbox(String propertyPointOfInterest) {
-
-        ArrayList<String> poiList = new ArrayList<>(Arrays.asList(propertyPointOfInterest.split(",")));
-        Log.d("debago","in splitPOI inCheckbox "+poiList);
-        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_school))) {
-            Log.d("debago","school checkbox is ok");
-            schoolCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_restaurants))) {
-            restaurantsCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_shops))) {
-            shopsCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_tourist_attraction))) {
-            touristAttractionCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_car_parks))) {
-            carParksCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_oil_station))) {
-            oilStationCheckBox.setChecked(true);
-        }
-
-    }
+    // --------------
+    // CREATE PROPERTY
+    // --------------
 
     private void createProperty() {
 
@@ -425,67 +250,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         }
 
     }
-
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        // This makes sure that the host activity has implemented the callback interface
-        // If not, it throws an exception
-        try {
-            callbackChangePage = (CreatePropertyActivity) context;
-
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnCreatePropertyInterface");
-        }
-    }
-
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        if (parent.getId() == R.id.create_update_spinner_type_property) {
-            typeProperty = typePropertySpinner.getSelectedItem().toString();
-            if(typePropertySpinner.getSelectedItem().toString().equals(getString(R.string.select_type_property))){
-                typePropertySpinner.setBackgroundResource(R.drawable.edit_text_design);
-            }else{
-                typePropertySpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
-            }
-        } else if (parent.getId() == R.id.create_update_spinner_number_rooms) {
-
-
-            numberRoomsInProperty = numberRoomSpinner.getSelectedItem().toString();
-
-            if(numberRoomSpinner.getSelectedItem().toString().equals("0")){
-                numberRoomSpinner.setBackgroundResource(R.drawable.edit_text_design);
-            }else{
-                numberRoomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
-            }
-
-        } else if (parent.getId() == R.id.create_update_spinner_number_bedroom) {
-
-            if (numberBedroomSpinner.getSelectedItem().toString().equals("7+")) {
-                numberBedroomsInProperty = 7;
-                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
-            } else if(numberBedroomSpinner.getSelectedItem().toString().equals("0")){
-                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design);
-            }else {
-                numberBedroomsInProperty = Integer.valueOf(numberBedroomSpinner.getSelectedItem().toString());
-                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
-            }
-
-        } else if (parent.getId() == R.id.create_update_spinner_number_bathrooms) {
-
-            numberBathroomsInProperty = numberBathroomSpinner.getSelectedItem().toString();
-            if(numberBathroomSpinner.getSelectedItem().toString().equals("0")){
-                numberBathroomSpinner.setBackgroundResource(R.drawable.edit_text_design);
-            }else{
-                numberBathroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
-            }
-
-        }
-    }
-
-
 
     private String fillPoiCheckboxList() {
 
@@ -538,15 +302,278 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     }
 
+    // --------------
+    // UPDATE PROPERTY
+    // --------------
+
+    @SuppressLint("SetTextI18n")
+    private void updateUIwithDataFromDatabase(String propertyId) {
+        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
+
+            priceEditText.setText(utils.getPriceInGoodCurrency(property.getPricePropertyInEuro()));
+            surfaceEditText.setText(Double.toString(property.getSurfaceAreaProperty()));
+            streetNumberEditText.setText(property.getStreetNumber());
+            streetNameEditText.setText(property.getStreetName());
+            zipCodeEditText.setText(property.getZipCode());
+            townNameEditText.setText(property.getTownProperty());
+            countryEditText.setText(property.getCountry());
+            splitPoiInCheckbox(property.getPointOfInterest());
+
+            typePropertySpinner.setSelection(getSpinner.getIndexSpinner(typePropertySpinner, property.getTypeProperty()));
+            typePropertySpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+            numberRoomSpinner.setSelection(getSpinner.getIndexSpinner(numberRoomSpinner, property.getNumberRoomsInProperty()));
+            numberBedroomSpinner.setSelection(getSpinner.getIndexSpinnerInt(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
+            numberBathroomSpinner.setSelection(getSpinner.getIndexSpinner(numberBathroomSpinner, property.getNumberBathroomsInProperty()));
+
+        });
+    }
+
+    //Split poi list from Room to know wich checkbox is checked
+    private void splitPoiInCheckbox(String propertyPointOfInterest) {
+
+        ArrayList<String> poiList = new ArrayList<>(Arrays.asList(propertyPointOfInterest.split(",")));
+
+        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_school))) {
+
+            schoolCheckBox.setChecked(true);
+        }
+        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_restaurants))) {
+            restaurantsCheckBox.setChecked(true);
+        }
+        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_shops))) {
+            shopsCheckBox.setChecked(true);
+        }
+        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_tourist_attraction))) {
+            touristAttractionCheckBox.setChecked(true);
+        }
+        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_car_parks))) {
+            carParksCheckBox.setChecked(true);
+        }
+        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_oil_station))) {
+            oilStationCheckBox.setChecked(true);
+        }
+
+    }
+
+
+    // --------------
+    // SPINNER
+    // --------------
+
+
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        if (parent.getId() == R.id.create_update_spinner_type_property) {
+            typeProperty = typePropertySpinner.getSelectedItem().toString();
+            if(typePropertySpinner.getSelectedItem().toString().equals(getString(R.string.select_type_property))){
+                typePropertySpinner.setBackgroundResource(R.drawable.edit_text_design);
+            }else{
+                typePropertySpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+        } else if (parent.getId() == R.id.create_update_spinner_number_rooms) {
+
+
+            numberRoomsInProperty = numberRoomSpinner.getSelectedItem().toString();
+
+            if(numberRoomSpinner.getSelectedItem().toString().equals("0")){
+                numberRoomSpinner.setBackgroundResource(R.drawable.edit_text_design);
+            }else{
+                numberRoomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+
+        } else if (parent.getId() == R.id.create_update_spinner_number_bedroom) {
+
+            if (numberBedroomSpinner.getSelectedItem().toString().equals("7+")) {
+                numberBedroomsInProperty = 7;
+                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            } else if(numberBedroomSpinner.getSelectedItem().toString().equals("0")){
+                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design);
+            }else {
+                numberBedroomsInProperty = Integer.valueOf(numberBedroomSpinner.getSelectedItem().toString());
+                numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+
+        } else if (parent.getId() == R.id.create_update_spinner_number_bathrooms) {
+
+            numberBathroomsInProperty = numberBathroomSpinner.getSelectedItem().toString();
+            if(numberBathroomSpinner.getSelectedItem().toString().equals("0")){
+                numberBathroomSpinner.setBackgroundResource(R.drawable.edit_text_design);
+            }else{
+                numberBathroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+
+        }
+    }
+
+
+
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }
 
-    // 2 - Configuring ViewModel
-    private void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(context);
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+    // --------------
+    // TEXTWATCHER
+    // --------------
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
     }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        if(i2==0){
+            //put backgroung grey when we remove all text
+
+            if (priceEditText.getText().hashCode() == charSequence.hashCode()){
+                Log.d("debago","priceedittex charsequence is "+charSequence.hashCode());
+                priceEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (surfaceEditText.getText().hashCode() == charSequence.hashCode()){
+                Log.d("debago","surfaceedittext charsequence is "+charSequence.hashCode());
+                surfaceEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (streetNumberEditText.getText().hashCode() == charSequence.hashCode()){
+                streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (additionnalEditText.getText().hashCode() == charSequence.hashCode()){
+                additionnalEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (streetNameEditText.getText().hashCode() == charSequence.hashCode()){
+                streetNameEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (zipCodeEditText.getText().hashCode() == charSequence.hashCode()){
+                zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }else if (townNameEditText.getText().hashCode() == charSequence.hashCode()){
+                townNameEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }
+            else if (countryEditText.getText().hashCode() == charSequence.hashCode()){
+                countryEditText.setBackgroundResource(R.drawable.edit_text_design);
+            }
+        }
+
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (editable != null && !editable.toString().equalsIgnoreCase("")){
+            // Checking editable.hashCode() to understand which edittext is using right now
+
+            if (priceEditText.getText().hashCode() == editable.hashCode()){
+
+                String value = editable.toString();
+                priceEditText.removeTextChangedListener(this);
+                // priceEditText.setText(value);
+                if (value.length() == 0) {
+                    // put backgroung grey when there is no action
+                    priceEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+                    // put backgroung white when there write
+                    priceEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                priceEditText.addTextChangedListener(this);
+            }else if (surfaceEditText.getText().hashCode() == editable.hashCode()){
+                // Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                surfaceEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    surfaceEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    surfaceEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                surfaceEditText.addTextChangedListener(this);
+            }else if (streetNumberEditText.getText().hashCode() == editable.hashCode()){
+                //Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                streetNumberEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                streetNumberEditText.addTextChangedListener(this);
+            }else if (additionnalEditText.getText().hashCode() == editable.hashCode()){
+                // Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                additionnalEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    additionnalEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    additionnalEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                additionnalEditText.addTextChangedListener(this);
+            }else if (streetNameEditText.getText().hashCode() == editable.hashCode()){
+                // Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                streetNameEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    streetNameEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    streetNameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                streetNameEditText.addTextChangedListener(this);
+            }else if (zipCodeEditText.getText().hashCode() == editable.hashCode()){
+                // Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                zipCodeEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    zipCodeEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                zipCodeEditText.addTextChangedListener(this);
+            }else if (townNameEditText.getText().hashCode() == editable.hashCode()){
+                //Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                townNameEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    townNameEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    townNameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                townNameEditText.addTextChangedListener(this);
+            }
+            else if (countryEditText.getText().hashCode() == editable.hashCode()){
+                //Log.d("debago","value is "+editable.toString());
+                String value = editable.toString();
+                countryEditText.removeTextChangedListener(this);
+
+                if (value.length() == 0) {
+
+                    countryEditText.setBackgroundResource(R.drawable.edit_text_design);
+                } else {
+
+                    countryEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                }
+                countryEditText.addTextChangedListener(this);
+            }
+        }
+    }
+
+
+    // --------------
+    // INTERFACE
+    // --------------
+
+    public interface CreateUpdateChangePageInterface {
+        void changeFragmentPage();
+    }
+
 
 }

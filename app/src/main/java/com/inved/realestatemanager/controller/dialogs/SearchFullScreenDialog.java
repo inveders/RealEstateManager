@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.controller.dialogs;
 
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import com.inved.realestatemanager.models.RealEstateAgents;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import io.apptik.widget.MultiSlider;
 
 public class SearchFullScreenDialog extends DialogFragment implements AdapterView.OnItemSelectedListener {
@@ -71,6 +71,10 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     //View Model
     private PropertyViewModel propertyViewModel;
+
+    // --------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -121,6 +125,16 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         return view;
     }
 
+    private void configureViewModel() {
+        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
+        this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
+    }
+
+
+    // --------------
+    // UI
+    // --------------
+
     private void seekbarChangements() {
         
         priceSeekbar.setMax(MAX_PRICE_PROPERTY);
@@ -155,14 +169,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         });
     }
 
-    // --------------
-    // UI
-    // --------------
-
-    private void configureViewModel() {
-        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
-        this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
-    }
 
     // Update the list of Real Estate item
     private void updateRealEstateItemsList(List<Property> properties) {
@@ -172,7 +178,93 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     }
 
     // --------------
-    // Action
+    // SPINNERS
+    // --------------
+
+    //Spinner step 2/3 : implement methods onItemSelected and onNothingSelected
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+
+        if (parent.getId() == R.id.dialog_spinner_type_property) {
+            mTypeProperty = typePropertySpinner.getSelectedItem().toString();
+
+            if(mTypeProperty.equals(getString(R.string.select_type_property))){
+                mTypeProperty=null;
+            }
+        } else if (parent.getId() == R.id.dialog_spinner_status) {
+            mStatus = statusSpinner.getSelectedItem().toString();
+
+            if(mStatus.equals(getString(R.string.select_status))){
+                mStatus=null;
+            }
+
+        } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_min) {
+
+            if (minBedroomSpinner.getSelectedItem().toString().equals("7+")) {
+                mMinBedroom = 7;
+            } else {
+                mMinBedroom = Integer.valueOf(minBedroomSpinner.getSelectedItem().toString());
+            }
+
+        } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_max) {
+
+            if (maxBedroomSpinner.getSelectedItem().toString().equals("7+")) {
+                mMaxBedroom = 7;
+            } else {
+                mMaxBedroom = Integer.valueOf(maxBedroomSpinner.getSelectedItem().toString());
+            }
+
+        } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
+
+            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItem().toString();
+            if(mRealEstateAgentName.equals(getString(R.string.select_agent))){
+                mRealEstateAgentName=null;
+            }
+
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    //REAL ESTATE AGENT MANAGEMENT AND SPINNER
+
+    //Spinner step 3/3 : retrieve all agents in database and fill spinner with them
+    private void retriveRealEstateAgentsForSpinner() {
+        if (propertyViewModel.getAllRealEstateAgents() != null) {
+            propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> {
+                for (RealEstateAgents list : realEstateAgents) {
+                    String firstname = list.getFirstname();
+                    String lastname = list.getLastname();
+                    String agentFirstnameLastname = firstname + " " + lastname;
+                    spinnerAgentList.add(agentFirstnameLastname);
+                }
+
+
+            });
+
+            //I fill agent spinner with firstname and lastname of the database programatically
+
+            if (getActivity() != null) {
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        getActivity(), android.R.layout.simple_spinner_item, spinnerAgentList);
+
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                realEstateAgentNameSpinner.setAdapter(adapter);
+
+                adapter.notifyDataSetChanged();
+            }
+
+        }
+    }
+
+    // --------------
+    // SEARCH BUTTON ACTIONS
     // --------------
 
     private void startSearchProperty() {
@@ -226,60 +318,9 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     }
 
-    //Spinner step 2/3 : implement methods onItemSelected and onNothingSelected
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-
-        if (parent.getId() == R.id.dialog_spinner_type_property) {
-            mTypeProperty = typePropertySpinner.getSelectedItem().toString();
-
-            if(mTypeProperty.equals(getString(R.string.select_type_property))){
-                mTypeProperty=null;
-            }
-        } else if (parent.getId() == R.id.dialog_spinner_status) {
-            mStatus = statusSpinner.getSelectedItem().toString();
-
-            if(mStatus.equals(getString(R.string.select_status))){
-                mStatus=null;
-            }
-
-        } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_min) {
-
-            if (minBedroomSpinner.getSelectedItem().toString().equals("7+")) {
-                mMinBedroom = 7;
-            } else {
-                mMinBedroom = Integer.valueOf(minBedroomSpinner.getSelectedItem().toString());
-            }
-
-        } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_max) {
-
-            if (maxBedroomSpinner.getSelectedItem().toString().equals("7+")) {
-                mMaxBedroom = 7;
-            } else {
-                mMaxBedroom = Integer.valueOf(maxBedroomSpinner.getSelectedItem().toString());
-            }
-
-        } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
-
-            mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItem().toString();
-            if(mRealEstateAgentName.equals(getString(R.string.select_agent))){
-                mRealEstateAgentName=null;
-            }
-
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-  /*  public void setCallback(OnClickSearchInterface callback) {
-        this.callback = callback;
-    }*/
+    // --------------
+    // INTERFACE
+    // --------------
 
     public interface OnClickSearchInterface {
 
@@ -287,35 +328,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         void cancelButton();
     }
 
-    //REAL ESTATE AGENT MANAGEMENT AND SPINNER
 
-    //Spinner step 3/3 : retrieve all agents in database and fill spinner with them
-    private void retriveRealEstateAgentsForSpinner() {
-        if (propertyViewModel.getAllRealEstateAgents() != null) {
-            propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> {
-                for (RealEstateAgents list : realEstateAgents) {
-                    String firstname = list.getFirstname();
-                    String lastname = list.getLastname();
-                    String agentFirstnameLastname = firstname + " " + lastname;
-                    spinnerAgentList.add(agentFirstnameLastname);
-                }
-
-
-            });
-
-            //I fill agent spinner with firstname and lastname of the database programatically
-
-            if (getActivity() != null) {
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                        getActivity(), android.R.layout.simple_spinner_item, spinnerAgentList);
-
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                realEstateAgentNameSpinner.setAdapter(adapter);
-
-                adapter.notifyDataSetChanged();
-            }
-
-        }
-    }
 
 }

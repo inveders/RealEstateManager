@@ -141,6 +141,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private static final int REQUEST_CODE_DATE_PICKER = 11; // Used to identify the result
 
+    // --------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -160,49 +164,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         photo5 = v.findViewById(R.id.activity_create_update_added_photo_five);
         fullDescriptionEditText = v.findViewById(R.id.activity_create_update_property_full_description_text);
 
-        textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (i2 == 0) {
-                    //put backgroung grey when we remove all text
-
-                    if (fullDescriptionEditText.getText().hashCode() == charSequence.hashCode()) {
-                        fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design);
-                    }
-                }
+        this.textwatcherMethod();
 
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                if (editable != null && !editable.toString().equalsIgnoreCase("")) {
-                    if (fullDescriptionEditText.getText().hashCode() == editable.hashCode()) {
-                        String value = editable.toString();
-                        fullDescriptionEditText.removeTextChangedListener(this);
-
-                        if (value.length() == 0) {
-
-                            fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design);
-                        } else {
-
-                            fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
-                        }
-                        fullDescriptionEditText.addTextChangedListener(this);
-                    }
-                }
-
-
-            }
-        }
-
-        ;
 
         fullDescriptionEditText.addTextChangedListener(textWatcher);
 
@@ -254,6 +218,106 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         return v;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            CreateUpdatePropertyViewModel createUpdatePropertyViewModel = ViewModelProviders.of(getActivity()).get(CreateUpdatePropertyViewModel.class);
+            createUpdatePropertyViewModel.getMyData().observe(getViewLifecycleOwner(), objects -> {
+
+                this.typeProperty = objects.get(0).toString();
+                this.numberRoomsInProperty = objects.get(1).toString();
+                this.numberBathroomsInProperty = objects.get(2).toString();
+                this.numberBedroomsInProperty = (int) objects.get(3);
+                this.pricePropertyInDollar = Double.valueOf(objects.get(4).toString());
+                this.surfaceAreaProperty = Double.valueOf(objects.get(5).toString());
+                this.streetNumber = objects.get(6).toString();
+                this.streetName = objects.get(7).toString();
+                this.zipCode = objects.get(8).toString();
+                this.townProperty = objects.get(9).toString();
+                this.country = objects.get(10).toString();
+                this.pointOfInterest = objects.get(11).toString();
+
+                if (objects.get(12) != null) {
+                    this.addressCompl = objects.get(12).toString();
+                } else {
+                    this.addressCompl = null;
+                }
+
+                if (objects.get(13) != null) {
+                    this.propertyId = objects.get(13).toString();
+                }
+
+
+            });
+        }
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), null);
+    }
+
+    private void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
+        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+
+    }
+
+    // --------------
+    // TEXTWATCHER
+    // --------------
+    private void textwatcherMethod() {
+
+        textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (i2 == 0) {
+                    //put backgroung grey when we remove all text
+
+                    if (fullDescriptionEditText.getText().hashCode() == charSequence.hashCode()) {
+                        fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (editable != null && !editable.toString().equalsIgnoreCase("")) {
+                    if (fullDescriptionEditText.getText().hashCode() == editable.hashCode()) {
+                        String value = editable.toString();
+                        fullDescriptionEditText.removeTextChangedListener(this);
+
+                        if (value.length() == 0) {
+
+                            fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design);
+                        } else {
+
+                            fullDescriptionEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
+                        }
+                        fullDescriptionEditText.addTextChangedListener(this);
+                    }
+                }
+
+
+            }
+        };
+    }
+
+    // --------------
+    // CUSTOM DIALOG TO EDIT PHOTO
+    // --------------
 
     private void myCustomDialog(String imageViewLink, int photoNumber) {
 
@@ -399,88 +463,12 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 }
 
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (getActivity() != null) {
-            CreateUpdatePropertyViewModel createUpdatePropertyViewModel = ViewModelProviders.of(getActivity()).get(CreateUpdatePropertyViewModel.class);
-            createUpdatePropertyViewModel.getMyData().observe(getViewLifecycleOwner(), objects -> {
-
-                this.typeProperty = objects.get(0).toString();
-                this.numberRoomsInProperty = objects.get(1).toString();
-                this.numberBathroomsInProperty = objects.get(2).toString();
-                this.numberBedroomsInProperty = (int) objects.get(3);
-                this.pricePropertyInDollar = Double.valueOf(objects.get(4).toString());
-                this.surfaceAreaProperty = Double.valueOf(objects.get(5).toString());
-                this.streetNumber = objects.get(6).toString();
-                this.streetName = objects.get(7).toString();
-                this.zipCode = objects.get(8).toString();
-                this.townProperty = objects.get(9).toString();
-                this.country = objects.get(10).toString();
-                this.pointOfInterest = objects.get(11).toString();
-
-                if (objects.get(12) != null) {
-                    this.addressCompl = objects.get(12).toString();
-                } else {
-                    this.addressCompl = null;
-                }
-
-                if (objects.get(13) != null) {
-                    this.propertyId = objects.get(13).toString();
-                }
 
 
-            });
-        }
 
-    }
-
-
-    private void updateUIwithDataFromDatabase(String propertyId) {
-        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
-
-            if (property.getDateOfEntryOnMarketForProperty().isEmpty() || property.getDateOfEntryOnMarketForProperty() == null) {
-                datePickerInit();
-            } else {
-                dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
-                dateOfEntry.setBackgroundResource(R.drawable.edit_text_design_focused);
-            }
-
-            //Spinner step 3/4 : retrieve the agents who are already in database and show him in the spinner (pre-fill spinner)
-            propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
-                if (realEstateAgents.getFirstname() != null) {
-                    String firstname = realEstateAgents.getFirstname();
-                    String lastname = realEstateAgents.getLastname();
-                    int indexSpinner = getSpinner.getIndexSpinner(agentNameSpinner, firstname + " " + lastname);
-                    Log.d("debago", "set selection in spinner " + firstname + " " + lastname + " and index spinner is: " + agentNameSpinner.getCount());
-                    agentNameSpinner.setSelection(indexSpinner);
-                }
-
-            });
-
-
-            if (!property.getFullDescriptionProperty().isEmpty() || property.getFullDescriptionProperty() != null) {
-                fullDescriptionEditText.setText(property.getFullDescriptionProperty());
-            }
-
-            photoUri1 = property.getPhotoUri1();
-            photoUri2 = property.getPhotoUri2();
-            photoUri3 = property.getPhotoUri3();
-            photoUri4 = property.getPhotoUri4();
-            photoUri5 = property.getPhotoUri5();
-            photoDescription1 = property.getPhotoDescription1();
-            photoDescription2 = property.getPhotoDescription2();
-            photoDescription3 = property.getPhotoDescription3();
-            photoDescription4 = property.getPhotoDescription4();
-            photoDescription5 = property.getPhotoDescription5();
-            updateUI();
-
-        });
-    }
-
-    //TAKE A PICTURE
-
+    // --------------
+    // TAKE PICTURE
+    // --------------
     /**
      * Alert dialog for capture or select from galley
      */
@@ -682,8 +670,79 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     }
 
+    // --------------
+    // SPINNER
+    // --------------
 
-    //REAL ESTATE AGENT MANAGEMENT AND SPINNER
+    //Spinner step 2/4 : implement methods onItemSelected and onNothingSelected
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        // An item was selected. You can retrieve the selected item using
+        //Log.d("debago", "in on item selected method: ");
+        if (adapterView.getId() == R.id.activity_create_update_spinner_real_estate_agent_text) {
+
+            selectedAgent = agentNameSpinner.getSelectedItem().toString();
+            Log.d("debago", "selected agent: " + selectedAgent);
+            if (agentNameSpinner.getSelectedItem().toString().equals(getString(R.string.select_agent))) {
+                agentNameSpinner.setBackgroundResource(R.drawable.edit_text_design);
+            } else {
+                agentNameSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    // --------------
+    // UPDATE PROPERTY
+    // --------------
+
+    private void updateUIwithDataFromDatabase(String propertyId) {
+        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
+
+            if (property.getDateOfEntryOnMarketForProperty().isEmpty() || property.getDateOfEntryOnMarketForProperty() == null) {
+                datePickerInit();
+            } else {
+                dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
+                dateOfEntry.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+
+            //Spinner step 3/4 : retrieve the agents who are already in database and show him in the spinner (pre-fill spinner)
+            propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
+                if (realEstateAgents.getFirstname() != null) {
+                    String firstname = realEstateAgents.getFirstname();
+                    String lastname = realEstateAgents.getLastname();
+                    int indexSpinner = getSpinner.getIndexSpinner(agentNameSpinner, firstname + " " + lastname);
+                    Log.d("debago", "set selection in spinner " + firstname + " " + lastname + " and index spinner is: " + agentNameSpinner.getCount());
+                    agentNameSpinner.setSelection(indexSpinner);
+                }
+
+            });
+
+
+            if (!property.getFullDescriptionProperty().isEmpty() || property.getFullDescriptionProperty() != null) {
+                fullDescriptionEditText.setText(property.getFullDescriptionProperty());
+            }
+
+            photoUri1 = property.getPhotoUri1();
+            photoUri2 = property.getPhotoUri2();
+            photoUri3 = property.getPhotoUri3();
+            photoUri4 = property.getPhotoUri4();
+            photoUri5 = property.getPhotoUri5();
+            photoDescription1 = property.getPhotoDescription1();
+            photoDescription2 = property.getPhotoDescription2();
+            photoDescription3 = property.getPhotoDescription3();
+            photoDescription4 = property.getPhotoDescription4();
+            photoDescription5 = property.getPhotoDescription5();
+            updateUI();
+
+        });
+    }
+
 
     //Spinner step 4/4 : retrieve all agents in database and fill spinner with them
     private void retriveRealEstateAgents() {
@@ -716,7 +775,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     //private method of your class
 
 
-    //DATE PICKER
+    // --------------
+    // DATE PICKER
+    // --------------
 
     private void datePickerInit() {
         dateOfEntry.setText(getString(R.string.create_update_choose_date));
@@ -740,34 +801,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        ManageCreateUpdateChoice.saveCreateUpdateChoice(MainApplication.getInstance().getApplicationContext(), null);
-    }
 
-    //Spinner step 2/4 : implement methods onItemSelected and onNothingSelected
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        // An item was selected. You can retrieve the selected item using
-        //Log.d("debago", "in on item selected method: ");
-        if (adapterView.getId() == R.id.activity_create_update_spinner_real_estate_agent_text) {
 
-            selectedAgent = agentNameSpinner.getSelectedItem().toString();
-            Log.d("debago", "selected agent: " + selectedAgent);
-            if (agentNameSpinner.getSelectedItem().toString().equals(getString(R.string.select_agent))) {
-                agentNameSpinner.setBackgroundResource(R.drawable.edit_text_design);
-            } else {
-                agentNameSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
-            }
 
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 
 public interface OnFragmentInteractionListener {
     // TODO: Update argument type and name
@@ -775,6 +811,37 @@ public interface OnFragmentInteractionListener {
 
 }
 
+
+    private void actionsAccordingToCreateOrUpdate() {
+        if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != null) {
+
+            //The choice is to update property
+
+            updatePropertyInRoom();
+            updatePropertyInFirebase();
+
+            Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
+            uploadFileChoice(propertyId);
+        } else {
+
+            //The choice is to create property
+
+            createPropertyInRoom();
+            createPropertyInFirebase();
+
+            Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
+            uploadFileChoice(propertyIdCreate);
+
+        }
+
+
+        reinitializeManageChoice();
+        startMainActivity();
+    }
+
+    // --------------
+    // CREATE PROPERTY
+    // --------------
 
     private void finishToCreateProperty() {
 
@@ -829,39 +896,6 @@ public interface OnFragmentInteractionListener {
 
     }
 
-    private void actionsAccordingToCreateOrUpdate() {
-        if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != null) {
-
-            //The choice is to update property
-
-            updatePropertyInRoom();
-            updatePropertyInFirebase();
-
-            Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_update), Toast.LENGTH_SHORT).show();
-            uploadFileChoice(propertyId);
-        } else {
-
-            //The choice is to create property
-
-            createPropertyInRoom();
-            createPropertyInFirebase();
-
-            Toast.makeText(getContext(), getString(R.string.create_update_creation_confirmation_creation), Toast.LENGTH_SHORT).show();
-            uploadFileChoice(propertyIdCreate);
-
-        }
-
-
-        reinitializeManageChoice();
-        startMainActivity();
-    }
-
-    private void reinitializeManageChoice() {
-        if (getContext() != null) {
-            ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(), null);
-        }
-    }
-
     private void createPropertyInFirebase() {
         PropertyHelper.createProperty(propertyIdCreate, typeProperty, pricePropertyInDollar,
                 surfaceAreaProperty, numberRoomsInProperty,
@@ -883,6 +917,16 @@ public interface OnFragmentInteractionListener {
 
         this.propertyViewModel.createProperty(newProperty);
     }
+
+
+
+    private void reinitializeManageChoice() {
+        if (getContext() != null) {
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(), null);
+        }
+    }
+
+
 
     private void updatePropertyInFirebase() {
         PropertyHelper.createProperty(propertyId, typeProperty, pricePropertyInDollar,
@@ -1012,11 +1056,7 @@ public interface OnFragmentInteractionListener {
         }
     }
 
-    private void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
 
-    }
 
     private void startMainActivity() {
         Intent intent = new Intent(getContext(), ListPropertyActivity.class);
