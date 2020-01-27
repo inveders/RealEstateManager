@@ -56,6 +56,10 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private PropertyViewModel propertyViewModel;
     private FragmentRefreshListener fragmentRefreshListener;
 
+    // --------------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,17 +79,17 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
+    @Override
+    protected int getLayoutContentViewID() {
+        return R.layout.activity_list_property;
+    }
+
     protected void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
 
     }
 
-
-    @Override
-    protected int getLayoutContentViewID() {
-        return R.layout.activity_list_property;
-    }
 
 
     // ---------------------------
