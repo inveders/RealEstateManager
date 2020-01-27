@@ -10,7 +10,6 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,6 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
-import com.inved.realestatemanager.utils.FileCompressor;
 import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
@@ -59,12 +57,14 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
+    //final values
     private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
     private static final String TAG = "debago";
     private String cameraFilePath;
     private Bundle bundle;
+
     //View Model
     private PropertyViewModel propertyViewModel;
 
@@ -78,14 +78,13 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private AutocompleteSupportFragment autocompleteFragment;
 
-    private FileCompressor mCompressor;
-    private File mPhotoFile;
-
     private String agencyName;
     private String agencyPlaceId;
     private ImageCameraOrGallery imageCameraOrGallery;
-private View view;
 
+    // --------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -126,9 +125,28 @@ private View view;
         addPhotoButton.setOnClickListener(v -> selectImage());
         cancelSearchButton.setOnClickListener(v -> getDialog().dismiss());
         addActionButton.setOnClickListener(v -> this.createNewRealEstateAgent());
-        mCompressor = new FileCompressor(getContext());
+
         return view;
     }
+
+
+    private void configureViewModel() {
+        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
+        this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        //To close the autocompletefragment to avoid to duplicate his id
+        if(autocompleteFragment != null && getActivity() != null && !getActivity().isFinishing()) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
+        }
+    }
+
+    // --------------
+    // FRAGMENT AUTOCOMPLETE
+    // --------------
 
     private void autocompleteAgency() {
 
@@ -168,19 +186,10 @@ private View view;
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        //To close the autocompletefragment to avoid to duplicate his id
-        if(autocompleteFragment != null && getActivity() != null && !getActivity().isFinishing()) {
-            getActivity().getSupportFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
-        }
-    }
 
-    private void configureViewModel() {
-        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
-        this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
-    }
+    // --------------
+    // AGENT
+    // --------------
 
     // Get all items for a user
     private void createNewRealEstateAgent() {
@@ -260,7 +269,42 @@ private View view;
 
     }
 
-    //TAKE A PICTURE
+    // Get all items for a user
+    private void editRealEstateAgent(String realEstateAgendId) {
+
+        propertyViewModel.getRealEstateAgentById(realEstateAgendId).observe(getViewLifecycleOwner(), realEstateAgents -> {
+
+            if (realEstateAgents.getFirstname() != null) {
+                firstnameEditText.setText(realEstateAgents.getFirstname());
+            }
+
+            if (realEstateAgents.getLastname() != null) {
+                lastnameEditText.setText(realEstateAgents.getLastname());
+            }
+
+            if (realEstateAgents.getAgencyName() != null) {
+                //    agencyNameTextview.setVisibility(View.VISIBLE);
+                // agencyNameTextview.setText(realEstateAgents.getAgencyName());
+                autocompleteFragment.setText(realEstateAgents.getAgencyName());
+            }
+
+            if (realEstateAgents.getUrlPicture() != null) {
+                Log.d("debago","getUrlPicture is "+realEstateAgents.getUrlPicture());
+                urlPicture = realEstateAgents.getUrlPicture();
+                showImageInCircle(realEstateAgents.getUrlPicture());
+            }else{
+                Log.d("debago","getUrlPicture is null ");
+            }
+
+
+        });
+
+
+    }
+
+    // --------------
+    // TAKE A PICTURE
+    // --------------
 
     /**
      * Alert dialog for capture or select from galley
@@ -373,48 +417,6 @@ private View view;
 
     }
 
-    //PERMISSION
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // NOTE: delegate the permission handling to generated method
-        AddAgentDialogPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
-    // Get all items for a user
-    private void editRealEstateAgent(String realEstateAgendId) {
-
-        propertyViewModel.getRealEstateAgentById(realEstateAgendId).observe(getViewLifecycleOwner(), realEstateAgents -> {
-
-            if (realEstateAgents.getFirstname() != null) {
-                firstnameEditText.setText(realEstateAgents.getFirstname());
-            }
-
-            if (realEstateAgents.getLastname() != null) {
-                lastnameEditText.setText(realEstateAgents.getLastname());
-            }
-
-            if (realEstateAgents.getAgencyName() != null) {
-            //    agencyNameTextview.setVisibility(View.VISIBLE);
-               // agencyNameTextview.setText(realEstateAgents.getAgencyName());
-                autocompleteFragment.setText(realEstateAgents.getAgencyName());
-            }
-
-            if (realEstateAgents.getUrlPicture() != null) {
-                Log.d("debago","getUrlPicture is "+realEstateAgents.getUrlPicture());
-                urlPicture = realEstateAgents.getUrlPicture();
-                showImageInCircle(realEstateAgents.getUrlPicture());
-            }else{
-                Log.d("debago","getUrlPicture is null ");
-            }
-
-
-        });
-
-
-    }
-
     private void showImageInCircle(String photoStringFromRoom) {
 
         Log.d("debago","Show image in circle "+photoStringFromRoom);
@@ -429,11 +431,34 @@ private View view;
         }
     }
 
+    // --------------
+    // PERMISSION
+    // --------------
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        AddAgentDialogPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+
+
+
+
+    // --------------
+    // INTENT TO OPEN ACTIVITY
+    // --------------
+
     private void startListPropertyActivity() {
         Intent intent = new Intent(getContext(), ListPropertyActivity.class);
 
         startActivity(intent);
     }
+
+    // --------------
+    // TEXTWATCHER
+    // --------------
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
