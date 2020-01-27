@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,13 +84,15 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
     private String agencyName;
     private String agencyPlaceId;
     private ImageCameraOrGallery imageCameraOrGallery;
+private View view;
 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.layout_add_agent_dialog, container, false);
+
+       View view = inflater.inflate(R.layout.layout_add_agent_dialog, container, false);
 
         imageCameraOrGallery=new ImageCameraOrGallery();
         agentPhoto = view.findViewById(R.id.add_agent_photo);
@@ -98,7 +101,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         firstnameEditText = view.findViewById(R.id.add_agent_edittext_firstname);
         TextView addActionButton = view.findViewById(R.id.add_agent_dialog_add_new_agent);
         ImageButton cancelSearchButton = view.findViewById(R.id.agent_add_dialog_close);
-
 
         firstnameEditText.addTextChangedListener(this);
         lastnameEditText.addTextChangedListener(this);
@@ -164,6 +166,15 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         }
 
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        //To close the autocompletefragment to avoid to duplicate his id
+        if(autocompleteFragment != null && getActivity() != null && !getActivity().isFinishing()) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
+        }
     }
 
     private void configureViewModel() {

@@ -1,7 +1,6 @@
 package com.inved.realestatemanager.view;
 
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.GlideApp;
-import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.WatermarkTransformation;
 
@@ -43,7 +41,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     private ImageView photo;
     private ShimmerFrameLayout shimmerFrameLayout;
     private SplitString splitString = new SplitString();
-    private ImageCameraOrGallery imageCameraOrGallery;
 
     PropertyListViewHolder(View propertyItemView) {
         super(propertyItemView);
@@ -63,7 +60,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
 
         UnitConversion unitConversion = new UnitConversion();
-        imageCameraOrGallery = new ImageCameraOrGallery();
 
         //TYPE PROPERTY
         if (property.getTypeProperty() != null) {
@@ -78,6 +74,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         } else {
             this.pricePropertyInDollar.setText(MainApplication.getResourses().getString(R.string.list_property_no_price_indicated));
         }
+
 
         //TOWN PROPERTY
         if (property.getTownProperty() != null) {
@@ -103,43 +100,10 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             String mFileName = "/" + localFile.getName();
             File goodFile = new File(storageDir, mFileName);
-            if (property.getDateOfSaleForProperty() == null || property.getDateOfSaleForProperty().isEmpty()) {
-                try {
+            boolean isPropertySoled;
+            isPropertySoled= property.getDateOfSaleForProperty() == null || property.getDateOfSaleForProperty().isEmpty();
 
-                    if (goodFile.exists()) {
-                        Log.d("debago", "file internal exist " + goodFile);
-                        photoUriInGlide(goodFile);
-
-                    } else if (localFile.exists()) {
-                        Log.d("debago", "file external exist " + localFile);
-                        photoUriInGlide(localFile);
-                    } else {
-                        Log.d("debago", "good file NOT exist ");
-                        photoFirebaseStorageInGlide(property.getPropertyId(), property.getPhotoUri1());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-            } else {
-                try {
-                    if (goodFile.exists()) {
-                        Log.d("debago", "file sold internal exist " + goodFile);
-                        photoSoldUriInGlide(goodFile);
-
-                    } else if (localFile.exists()) {
-                        Log.d("debago", "file sold external exist " + localFile);
-                        photoSoldUriInGlide(localFile);
-                    } else {
-                        Log.d("debago", "good file sold NOT exist ");
-                        photoSoldFirebaseStorageInGlide(property.getPropertyId(), property.getPhotoUri1());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
+            dispatchFileToGlide(goodFile,localFile,isPropertySoled,property.getPropertyId(),property.getPhotoUri1());
 
         }
 
@@ -153,6 +117,46 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         });
 
 
+    }
+
+    private void dispatchFileToGlide(File fileInternal, File fileExternal,boolean isPropertySolded,String propertyId,String photoUri1 ){
+        if (isPropertySolded) {
+            try {
+
+                if (fileInternal.exists()) {
+                    Log.d("debago", "file internal exist " + fileInternal);
+                    photoUriInGlide(fileInternal);
+
+                } else if (fileExternal.exists()) {
+                    Log.d("debago", "file external exist " + fileExternal);
+                    photoUriInGlide(fileExternal);
+                } else {
+                    Log.d("debago", "good file NOT exist ");
+                    photoFirebaseStorageInGlide(propertyId, photoUri1);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        } else {
+            try {
+                if (fileInternal.exists()) {
+                    Log.d("debago", "file sold internal exist " + fileInternal);
+                    photoSoldUriInGlide(fileInternal);
+
+                } else if (fileExternal.exists()) {
+                    Log.d("debago", "file sold external exist " + fileExternal);
+                    photoSoldUriInGlide(fileExternal);
+                } else {
+                    Log.d("debago", "good file sold NOT exist ");
+                    photoSoldFirebaseStorageInGlide(propertyId, photoUri1);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private void photoUriInGlide(File file) {
@@ -177,6 +181,8 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                     .into((photo));
         }
     }
+
+
 
     private void photoSoldUriInGlide(File file) {
 
