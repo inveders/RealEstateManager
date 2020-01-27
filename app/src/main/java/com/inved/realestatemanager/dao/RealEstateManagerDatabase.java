@@ -112,7 +112,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
 
     private static void prepopulateRealEstateAgents() {
         RealEstateAgentHelper.getAllAgents().get().addOnSuccessListener(queryDocumentSnapshots -> {
-           // Log.d("debago", "check if getAllAgent not null: " + queryDocumentSnapshots.size());
 
             if (queryDocumentSnapshots.size() > 0) {
 
@@ -127,21 +126,19 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                     String agencyPlaceId = realEstateAgents.getAgencyPlaceId();
                     String realEstateAgentId = realEstateAgents.getRealEstateAgentId();
 
-                   // Log.d("debago", "create agent list: " + realEstateAgents.toString());
-
                     RealEstateAgents newAgent = new RealEstateAgents(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
                     //Create real estate agent in room with data from firebase
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).realEstateAgentsDao().createRealEstateAgent(newAgent));
 
                 }
-                Log.d("debago","In database 2");
+
                 preopopulateProperties();
 
             }
 
 
-        }).addOnFailureListener(e -> Log.d("debago","NO CONNECTION"));
+        }).addOnFailureListener(e -> {});
     }
 
     private static void preopopulateProperties(){
@@ -229,14 +226,11 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                             dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                             photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
-                   // Log.d("debago", "create property list: " + property.toString());
-
                     //Create property in room with data from firebase
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
 
 
                 }
-               // Log.d("debago","In database 3");
             }
 
         }).addOnFailureListener(e -> {

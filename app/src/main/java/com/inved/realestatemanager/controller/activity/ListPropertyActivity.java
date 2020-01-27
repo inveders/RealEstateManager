@@ -10,10 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
@@ -37,26 +36,12 @@ import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.utils.ManageCurrency;
 
-import java.util.List;
-import java.util.Objects;
-
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ListPropertyFragment.MenuChangementsInterface {
-
-
-    /**
-     * Nous avons également créé différentes méthodes privées (3) appelant les méthodes publiques de notre ViewModel
-     * afin d'observer leur résultat. Pour les méthodes de type Get, nous avons utilisé la méthode  observe()  pour
-     * être alerté automatiquement si le résultat en base de données change... :)
-     * <p>
-     * Nous avons également utilisé les lambdas pour réduire notre expression et appeler la méthode  updateHeader()
-     * quand un changement se produit.
-     * <p>
-     * On peut aussi enlever le bouton de suppression de notre recycler view et tout le code relatif à cela
-     */
+    
 
     //Declaration for Navigation Drawer
     private Toolbar toolbar;
@@ -98,7 +83,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String result = spinnerCurrency.getSelectedItem().toString();
                 ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
-                ManageCurrency.saveCurrency(ListPropertyActivity.this,result);
+                ManageCurrency.saveCurrency(ListPropertyActivity.this, result);
                 refreshFragment();
             }
 
@@ -119,107 +104,102 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     Log.d("debago", "properties in firebase " + queryDocumentSnapshots.size() + " and properties in room is " + properties.size());
 
                     if (queryDocumentSnapshots.size() != properties.size()) {
-                        for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
 
-                            int isPropertyExist = 0;
-                            for (int j = 0; j < properties.size(); j++) {
-                                if (properties.get(j).getPropertyId().equals(queryDocumentSnapshots.getDocuments().get(i).get("propertyId"))) {
-
-                                    isPropertyExist++;
-                                    Log.d("debago", "isPopertyExist " + isPropertyExist);
-                                }
+                        //I delete all properties in room
+                        if (properties.size() != 0) {
+                            for (int i = 0; i < properties.size(); i++) {
+                                propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
                             }
-
-                            if (isPropertyExist == 0) {
-                                Log.d("debago", "property don't exist, we create it in room ");
-
-                                String propertyId = queryDocumentSnapshots.getDocuments().get(i).getString("propertyId");
-                                String typeProperty = queryDocumentSnapshots.getDocuments().get(i).getString("typeProperty");
-                                double pricePropertyInEuro = queryDocumentSnapshots.getDocuments().get(i).getDouble("pricePropertyInEuro");
-                                double surfaceAreaProperty = queryDocumentSnapshots.getDocuments().get(i).getDouble("surfaceAreaProperty");
-                                String numberRoomsInProperty = queryDocumentSnapshots.getDocuments().get(i).getString("numberRoomsInProperty");
-                                String numberBathroomsInProperty = queryDocumentSnapshots.getDocuments().get(i).getString("numberBathroomsInProperty");
-                                int numberBedroomsInProperty = Objects.requireNonNull(queryDocumentSnapshots.getDocuments().get(i).getDouble("numberBedroomsInProperty")).intValue();
-                                String fullDescriptionProperty = queryDocumentSnapshots.getDocuments().get(i).getString("fullDescriptionProperty");
-
-                                String streetNumber = queryDocumentSnapshots.getDocuments().get(i).getString("streetNumber");
-                                String streetName = queryDocumentSnapshots.getDocuments().get(i).getString("streetName");
-                                String zipCode = queryDocumentSnapshots.getDocuments().get(i).getString("zipCode");
-                                String townProperty = queryDocumentSnapshots.getDocuments().get(i).getString("townProperty");
-                                String country = queryDocumentSnapshots.getDocuments().get(i).getString("country");
-                                String addressCompl = queryDocumentSnapshots.getDocuments().get(i).getString("addressCompl");
-                                String pointOfInterest = queryDocumentSnapshots.getDocuments().get(i).getString("pointOfInterest");
-                                String statusProperty = queryDocumentSnapshots.getDocuments().get(i).getString("statusProperty");
-                                String dateOfEntryOnMarketForProperty = queryDocumentSnapshots.getDocuments().get(i).getString("dateOfEntryOnMarketForProperty");
-                                String dateOfSaleForProperty = queryDocumentSnapshots.getDocuments().get(i).getString("dateOfSaleForProperty");
-                                boolean selected = false;
-                                String photoUri1 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri1");
-                                String photoUri2 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri2");
-                                String photoUri3 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri3");
-                                String photoUri4 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri4");
-                                String photoUri5 = queryDocumentSnapshots.getDocuments().get(i).getString("photoUri5");
-                                String photoDescription1 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription1");
-                                String photoDescription2 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription2");
-                                String photoDescription3 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription3");
-                                String photoDescription4 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription4");
-                                String photoDescription5 = queryDocumentSnapshots.getDocuments().get(i).getString("photoDescription5");
-                                String realEstateAgentId = queryDocumentSnapshots.getDocuments().get(i).getString("realEstateAgentId");
-
-                                StorageDownload storageDownload = new StorageDownload();
-
-                                if (photoUri1 != null && photoUri1.length() < 30) {
-                                    String uri1 = storageDownload.beginDownload(photoUri1, propertyId);
-                                    if (uri1 != null) {
-                                        photoUri1 = uri1;
-                                    }
-                                }
-
-                                if (photoUri2 != null && photoUri2.length() < 30) {
-                                    String uri2 = storageDownload.beginDownload(photoUri2, propertyId);
-                                    if (uri2 != null) {
-                                        photoUri2 = uri2;
-                                    }
-                                }
-
-                                if (photoUri3 != null && photoUri3.length() < 30) {
-                                    String uri3 = storageDownload.beginDownload(photoUri3, propertyId);
-                                    if (uri3 != null) {
-                                        photoUri3 = uri3;
-                                    }
-                                }
-
-                                if (photoUri4 != null && photoUri4.length() < 30) {
-                                    String uri4 = storageDownload.beginDownload(photoUri4, propertyId);
-                                    if (uri4 != null) {
-                                        photoUri4 = uri4;
-                                    }
-                                }
-
-                                if (photoUri5 != null && photoUri5.length() < 30) {
-                                    String uri5 = storageDownload.beginDownload(photoUri5, propertyId);
-                                    if (uri5 != null) {
-                                        photoUri1 = uri5;
-                                    }
-                                }
-
-                                Property newProperty = null;
-                                if (propertyId != null) {
-                                    newProperty = new Property(propertyId, typeProperty, pricePropertyInEuro,
-                                            surfaceAreaProperty, numberRoomsInProperty,
-                                            numberBathroomsInProperty, numberBedroomsInProperty,
-                                            fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
-                                            statusProperty, dateOfEntryOnMarketForProperty,
-                                            dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                                            photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
-                                }
-
-                                //Create property in room with data from firebase
-
-                                propertyViewModel.createProperty(newProperty);
-                            }
-
                         }
+
+
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Property property = documentSnapshot.toObject(Property.class);
+
+                            String propertyId = property.getPropertyId();
+                            String typeProperty = property.getTypeProperty();
+                            double pricePropertyInEuro = property.getPricePropertyInEuro();
+                            double surfaceAreaProperty = property.getSurfaceAreaProperty();
+                            String numberRoomsInProperty = property.getNumberRoomsInProperty();
+                            String numberBathroomsInProperty = property.getNumberBathroomsInProperty();
+                            int numberBedroomsInProperty = property.getNumberBedroomsInProperty();
+                            String fullDescriptionProperty = property.getFullDescriptionProperty();
+
+                            String streetNumber = property.getStreetNumber();
+                            String streetName = property.getStreetName();
+                            String zipCode = property.getZipCode();
+                            String townProperty = property.getTownProperty();
+                            String country = property.getCountry();
+                            String addressCompl = property.getAddressCompl();
+                            String pointOfInterest = property.getPointOfInterest();
+                            String statusProperty = property.getStatusProperty();
+                            String dateOfEntryOnMarketForProperty = property.getDateOfEntryOnMarketForProperty();
+                            String dateOfSaleForProperty = property.getDateOfSaleForProperty();
+                            boolean selected = property.isSelected();
+                            String photoUri1 = property.getPhotoUri1();
+                            String photoUri2 = property.getPhotoUri2();
+                            String photoUri3 = property.getPhotoUri3();
+                            String photoUri4 = property.getPhotoUri4();
+                            String photoUri5 = property.getPhotoUri5();
+                            String photoDescription1 = property.getPhotoDescription1();
+                            String photoDescription2 = property.getPhotoDescription2();
+                            String photoDescription3 = property.getPhotoDescription3();
+                            String photoDescription4 = property.getPhotoDescription4();
+                            String photoDescription5 = property.getPhotoDescription5();
+                            String realEstateAgentId = property.getRealEstateAgentId();
+
+                            StorageDownload storageDownload = new StorageDownload();
+
+                            if (photoUri1 != null && photoUri1.length() < 30) {
+                                String uri1 = storageDownload.beginDownload(photoUri1, propertyId);
+                                if (uri1 != null) {
+                                    photoUri1 = uri1;
+                                }
+                            }
+
+                            if (photoUri2 != null && photoUri2.length() < 30) {
+                                String uri2 = storageDownload.beginDownload(photoUri2, propertyId);
+                                if (uri2 != null) {
+                                    photoUri2 = uri2;
+                                }
+                            }
+
+                            if (photoUri3 != null && photoUri3.length() < 30) {
+                                String uri3 = storageDownload.beginDownload(photoUri3, propertyId);
+                                if (uri3 != null) {
+                                    photoUri3 = uri3;
+                                }
+                            }
+
+                            if (photoUri4 != null && photoUri4.length() < 30) {
+                                String uri4 = storageDownload.beginDownload(photoUri4, propertyId);
+                                if (uri4 != null) {
+                                    photoUri4 = uri4;
+                                }
+                            }
+
+                            if (photoUri5 != null && photoUri5.length() < 30) {
+                                String uri5 = storageDownload.beginDownload(photoUri5, propertyId);
+                                if (uri5 != null) {
+                                    photoUri1 = uri5;
+                                }
+                            }
+
+                            Property newProperty = new Property(propertyId, typeProperty, pricePropertyInEuro,
+                                    surfaceAreaProperty, numberRoomsInProperty,
+                                    numberBathroomsInProperty, numberBedroomsInProperty,
+                                    fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
+                                    statusProperty, dateOfEntryOnMarketForProperty,
+                                    dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
+                                    photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
+
+                            //Create property in room with data from firebase
+                            propertyViewModel.createProperty(newProperty);
+                        }
+
+
                     }
+
 
                 });
 
@@ -238,7 +218,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             }
 
 
-        }).addOnFailureListener(e -> { });
+        }).addOnFailureListener(e -> {
+        });
     }
 
     protected void configureViewModel() {
