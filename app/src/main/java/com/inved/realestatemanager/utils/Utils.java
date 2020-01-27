@@ -5,6 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.domain.UnitConversion;
+
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -23,18 +26,48 @@ public class Utils {
      * @param dollars
      * @return
      */
-    public static int convertDollarToEuro(int dollars) {
+    private static double convertDollarToEuro(double dollars) {
         return (int) Math.round(dollars * 0.812);
     }
 
     //Convert euro in dollars
     public String convertEuroToDollars(double dollarsRates, double euroToConvert) {
-
+        UnitConversion unitConversion = new UnitConversion();
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumFractionDigits(2);
         format.setMaximumFractionDigits(2);
+        //format.format(dollarsRates * euroToConvert);
+        return unitConversion.changeDoubleToStringWithThousandSeparator(dollarsRates*euroToConvert);
+    }
 
-        return format.format(dollarsRates * euroToConvert);
+    //Get price in good currency
+    public String getPriceInGoodCurrency(double priceInEuro){
+
+        UnitConversion unitConversion = new UnitConversion();
+        if(ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")){
+            return unitConversion.changeDoubleToStringWithThousandSeparator(priceInEuro);
+        }else{
+            return convertEuroToDollars(0.91,priceInEuro);
+        }
+    }
+
+    //Save price in good currency
+    public double savePriceInEuro(double price){
+
+        if(ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")){
+            return price;
+        }else{
+            return convertDollarToEuro(price);
+        }
+    }
+
+    public String goodCurrencyUnit(){
+
+        if(ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")){
+            return MainApplication.getResourses().getString(R.string.list_property_unit_price_euro);
+        }else{
+            return MainApplication.getResourses().getString(R.string.list_property_unit_price_dollars);
+        }
     }
 
     /**

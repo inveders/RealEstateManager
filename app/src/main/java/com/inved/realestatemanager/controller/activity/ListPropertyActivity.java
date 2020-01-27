@@ -8,6 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,6 +27,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
+import com.inved.realestatemanager.domain.GetSpinner;
 import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.injections.Injection;
@@ -28,7 +35,9 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.utils.ManageCurrency;
 
+import java.util.List;
 import java.util.Objects;
 
 import permissions.dispatcher.NeedsPermission;
@@ -57,7 +66,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private ListPropertyFragment listPropertyFragment;
     private DetailPropertyFragment detailPropertyFragment;
     private FragmentRefreshListener fragmentRefreshListener;
-
+    private NavigationView navigationView;
 
     private Menu mOptionsMenu;
     private PropertyViewModel propertyViewModel;
@@ -73,9 +82,30 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         //NavigationDrawer
         this.configureDrawerLayout();
         this.configureNavigationView();
-
+        this.spinnerManagement();
         this.configureAndShowListFragment();
         // this.configureAndShowDetailFragment();
+
+    }
+
+    private void spinnerManagement() {
+
+        Spinner spinnerCurrency = (Spinner) navigationView.getMenu().findItem(R.id.activity_main_drawer_currency).getActionView();
+        GetSpinner getSpinner = new GetSpinner();
+        spinnerCurrency.setSelection(getSpinner.getIndexSpinner(spinnerCurrency, ManageCurrency.getCurrency(ListPropertyActivity.this)));
+        spinnerCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String result = spinnerCurrency.getSelectedItem().toString();
+                ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
+                ManageCurrency.saveCurrency(ListPropertyActivity.this,result);
+                refreshFragment();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
     }
 
@@ -249,7 +279,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     // Configure NavigationView
     private void configureNavigationView() {
-        NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
+        navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.textOnPrimary)));
         navigationView.setItemIconTintList(ColorStateList.valueOf(getResources().getColor(R.color.textOnPrimary)));
         navigationView.setNavigationItemSelectedListener(this);
@@ -271,6 +301,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 ListPropertyActivityPermissionsDispatcher.startMapsActivityWithPermissionCheck(this);
                 break;
             case R.id.activity_main_drawer_logout:
+
                 this.logoutAlertDialog();
                 break;
             default:

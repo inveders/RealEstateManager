@@ -32,6 +32,7 @@ import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,6 +75,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private GetSpinner getSpinner=new GetSpinner();
 
     private Context context;
+    private Utils utils;
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -238,8 +240,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
         View v = inflater.inflate(R.layout.fragment_create_update_one, container, false);
         Button nextButton = v.findViewById(R.id.create_update_next_button);
-
-      //   drawable = (GradientDrawable).getBackground();
+        utils = new Utils();
 
         typePropertySpinner = v.findViewById(R.id.create_update_spinner_type_property);
         numberRoomSpinner = v.findViewById(R.id.create_update_spinner_number_rooms);
@@ -276,6 +277,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         numberBedroomSpinner.setOnItemSelectedListener(this);
         numberBathroomSpinner.setOnItemSelectedListener(this);
 
+        priceEditText.setHint(getString(R.string.create_update_by_price_hint,utils.goodCurrencyUnit()));
 
         //Texwatcher
         priceEditText.addTextChangedListener(this);
@@ -330,7 +332,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private void updateUIwithDataFromDatabase(String propertyId) {
         propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
 
-            priceEditText.setText(Double.toString(property.getPricePropertyInDollar()));
+            priceEditText.setText(utils.getPriceInGoodCurrency(property.getPricePropertyInDollar()));
             surfaceEditText.setText(Double.toString(property.getSurfaceAreaProperty()));
             streetNumberEditText.setText(property.getStreetNumber());
             streetNameEditText.setText(property.getStreetName());
@@ -345,11 +347,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             numberBedroomSpinner.setSelection(getSpinner.getIndexSpinnerInt(numberBedroomSpinner, property.getNumberBedroomsInProperty()));
             numberBathroomSpinner.setSelection(getSpinner.getIndexSpinner(numberBathroomSpinner, property.getNumberBathroomsInProperty()));
 
-
         });
     }
-
-
 
 
     private void splitPoiInCheckbox(String propertyPointOfInterest) {
@@ -408,7 +407,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             myList.add(numberRoomsInProperty);
             myList.add(numberBathroomsInProperty);
             myList.add(numberBedroomsInProperty);
-            myList.add(pricePropertyInDollar);
+            myList.add(utils.savePriceInEuro(pricePropertyInDollar));
             myList.add(surfaceAreaProperty);
             myList.add(streetNumber);
             myList.add(streetName);

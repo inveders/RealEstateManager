@@ -25,6 +25,7 @@ import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.GlideApp;
 import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.Utils;
 import com.inved.realestatemanager.utils.WatermarkTransformation;
 
 import java.io.File;
@@ -35,6 +36,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
     public static final String PROPERTY_ID = "PROPERTY_ID";
     private TextView typeProperty;
     private TextView pricePropertyInDollar;
+    private TextView pricePropertyUnit;
     private TextView surfaceAreaProperty;
     private TextView townProperty;
     private CardView mCardview;
@@ -47,6 +49,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         typeProperty = propertyItemView.findViewById(R.id.fragment_list_property_item_type);
         pricePropertyInDollar = propertyItemView.findViewById(R.id.fragment_list_property_item_price);
+        pricePropertyUnit = propertyItemView.findViewById(R.id.fragment_list_property_item_unit_price);
         townProperty = propertyItemView.findViewById(R.id.fragment_list_property_item_city);
         mCardview = propertyItemView.findViewById(R.id.fragment_list_property_item);
         surfaceAreaProperty = propertyItemView.findViewById(R.id.fragment_detail_property_surface_area_text);
@@ -70,9 +73,13 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         //PRICE IN DOLLARS
         if (property.getPricePropertyInDollar() != 0.0) {
-            this.pricePropertyInDollar.setText(unitConversion.changeDoubleToStringWithThousandSeparator(property.getPricePropertyInDollar()));
+            Utils utils = new Utils();
+            String priceValue = utils.getPriceInGoodCurrency(property.getPricePropertyInDollar());
+            this.pricePropertyInDollar.setText(priceValue);
+            this.pricePropertyUnit.setText(utils.goodCurrencyUnit());
         } else {
             this.pricePropertyInDollar.setText(MainApplication.getResourses().getString(R.string.list_property_no_price_indicated));
+            this.pricePropertyUnit.setText("");
         }
 
 

@@ -38,6 +38,7 @@ import com.inved.realestatemanager.models.GeocodingViewModel;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -51,6 +52,7 @@ public class DetailPropertyFragment extends Fragment {
 
     private TextView typeProperty;
     private TextView pricePropertyInDollar;
+    private TextView pricePropertyUnit;
     private TextView surfaceAreaProperty;
     private TextView streetNumber;
     private TextView streetName;
@@ -99,6 +101,7 @@ public class DetailPropertyFragment extends Fragment {
 
         typeProperty = mView.findViewById(R.id.fragment_detail_property_type_text);
         pricePropertyInDollar = mView.findViewById(R.id.fragment_detail_property_price_text);
+        pricePropertyUnit = mView.findViewById(R.id.fragment_detail_property_item_unit_price);
         surfaceAreaProperty = mView.findViewById(R.id.fragment_detail_property_surface_area_text);
         numberRoomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_room_text);
         numberBedroomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_bedroom_text);
@@ -221,9 +224,14 @@ public class DetailPropertyFragment extends Fragment {
 
         //PRICE IN DOLLARS
         if (property.getPricePropertyInDollar() != 0.0) {
-            this.pricePropertyInDollar.setText(unitConversion.changeDoubleToStringWithThousandSeparator(property.getPricePropertyInDollar()));
+            Utils utils = new Utils();
+            String priceValue = utils.getPriceInGoodCurrency(property.getPricePropertyInDollar());
+            this.pricePropertyInDollar.setText(priceValue);
+            this.pricePropertyUnit.setText(utils.goodCurrencyUnit());
+
         } else {
             this.pricePropertyInDollar.setText(MainApplication.getResourses().getString(R.string.list_property_no_price_indicated));
+            this.pricePropertyUnit.setText("");
         }
 
         //ADDRESS PROPERTY

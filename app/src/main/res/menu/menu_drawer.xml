@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
 
     <item
         android:id="@+id/activity_main_drawer_agent_management"
@@ -12,6 +12,12 @@
         android:id="@+id/activity_main_drawer_map"
         android:icon="@drawable/ic_menu_drawer_map_white_24dp"
         android:title="@string/menu_drawer_map" />
+
+    <item
+        android:id="@+id/activity_main_drawer_currency"
+        android:icon="@drawable/ic_menu_drawer_currency_euro_white_24dp"
+        android:title="@string/menu_drawer_currency"
+        app:actionLayout="@layout/spinner_menu"/>
 
     <item
         android:id="@+id/activity_main_drawer_logout"

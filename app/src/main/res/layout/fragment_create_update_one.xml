@@ -64,7 +64,7 @@
             app:layout_constraintBaseline_toBaselineOf="@id/create_update_price_text"
             style="@style/EditTextStyleText"
             android:inputType="numberDecimal"
-            android:hint="@string/create_update_by_price"
+            android:hint="@string/create_update_by_price_hint"
             tools:ignore="LabelFor"
             android:autofillHints="no"
             tools:targetApi="o"

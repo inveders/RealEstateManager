@@ -60,6 +60,15 @@
                 app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
                 app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_type_text" />
 
+            <TextView
+                android:id="@+id/fragment_detail_property_item_unit_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:text="@string/list_property_unit_price_euro"
+                app:layout_constraintRight_toLeftOf="@id/fragment_detail_property_price_text"
+                app:layout_constraintTop_toTopOf="@id/fragment_detail_property_price_text" />
+
 
             <TextView
                 android:id="@+id/fragment_detail_property_price_text"

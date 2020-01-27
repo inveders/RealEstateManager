@@ -28,7 +28,7 @@ public class QueryTest {
         int maxBedRoom=5;
         String country="France";
         String status=null;
-        long realEstateAgentId=0;
+        String realEstateAgentId=null;
 
 
         //When

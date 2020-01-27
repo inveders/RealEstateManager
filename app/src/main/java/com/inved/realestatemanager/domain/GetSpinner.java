@@ -9,8 +9,6 @@ public class GetSpinner {
         for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)) {
 
-                Log.d("debago","spinner at position "+i+" is : "+spinner.getItemAtPosition(i));
-
                 return i;
             }
         }
