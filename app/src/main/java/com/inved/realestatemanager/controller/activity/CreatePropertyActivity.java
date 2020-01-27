@@ -23,10 +23,9 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     ViewPager2 viewPager2;
     ViewPagerFragmentAdapter myAdapter;
 
-    @Override
-    protected int getLayoutContentViewID() {
-        return R.layout.activity_create_update_property;
-    }
+    // --------------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------------
 
 
     @Override
@@ -57,6 +56,14 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
     }
 
+    @Override
+    protected int getLayoutContentViewID() {
+        return R.layout.activity_create_update_property;
+    }
+
+    // --------------------
+    // TOOLBAR
+    // --------------------
 
     // Configure Toolbar
     private void configureToolBar() {

@@ -20,6 +20,10 @@ public class DetailActivity extends BaseActivity  {
     public static final String PROPERTY_ID_INTENT = "PROPERTY_ID_INTENT";
     private String propertyId;
 
+    // --------------------
+    // LIFE CYCLE
+    // --------------------
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,15 @@ public class DetailActivity extends BaseActivity  {
         propertyId=getIntent().getStringExtra(PROPERTY_ID);
 
     }
+
+    @Override
+    protected int getLayoutContentViewID() {
+        return R.layout.activity_detail;
+    }
+
+    // --------------------
+    // TOOLBAR
+    // --------------------
 
     private void configureToolbar() {
 
@@ -40,11 +53,6 @@ public class DetailActivity extends BaseActivity  {
             getSupportActionBar().setTitle(getString(R.string.page_name_activity_detail));
         }
 
-    }
-
-    @Override
-    protected int getLayoutContentViewID() {
-        return R.layout.activity_detail;
     }
 
     // --------------
@@ -86,6 +94,10 @@ public class DetailActivity extends BaseActivity  {
 
         return true;
     }
+
+    // --------------
+    // INTENT TO OPEN ACTIVITY
+    // --------------
 
     private void startCreatePropertyActivity() {
 

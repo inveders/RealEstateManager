@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.controller.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,7 +12,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -61,13 +59,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private PropertyViewModel propertyViewModel;
     private GeocodingViewModel geocodingViewModel;
 
+    // --------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
         checkLocation();
-
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -81,6 +82,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    private void configureViewModel() {
+        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(this);
+        this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
+
+        this.geocodingViewModel = ViewModelProviders.of(this).get(GeocodingViewModel.class);
+    }
+
+    // --------------
+    // TOOLBAR
+    // --------------
+
+    private void configureToolbar() {
+
+        Toolbar toolbar = findViewById(R.id.toolbar_map);
+
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.page_name_activity_maps));
+        }
+    }
+
+    // --------------
+    // CONFIGURE MAP
+    // --------------
 
     /**
      * Manipulates the map once available.
@@ -107,23 +133,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void configureToolbar() {
-
-        Toolbar toolbar = findViewById(R.id.toolbar_map);
-
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.page_name_activity_maps));
-        }
-    }
-
-    private void configureViewModel() {
-        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(this);
-        this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
-
-        this.geocodingViewModel = ViewModelProviders.of(this).get(GeocodingViewModel.class);
-    }
 
     private void initializeMap() {
 
@@ -222,12 +231,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
-    // Launch View Place Activity
-    private void startDetailActivity(String propertyId) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(PROPERTY_ID, propertyId);
-        startActivity(intent);
-    }
+
 
     private void moveCamera(double myCurrentLat, double myCurrentLongi) {
 
@@ -244,7 +248,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    //LOCATION
+    // --------------
+    // LOCATION
+    // --------------
 
     @SuppressLint("MissingPermission")
 
@@ -311,6 +317,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    // --------------
+    // INTENT TO OPEN ACTIVITY
+    // --------------
+
+    // Launch View Place Activity
+    private void startDetailActivity(String propertyId) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(PROPERTY_ID, propertyId);
+        startActivity(intent);
+    }
 
 
 }

@@ -27,6 +27,10 @@ public class MainActivity extends BaseActivity {
     private static final int RC_SIGN_IN = 123;
     CoordinatorLayout coordinatorLayout;
 
+    // --------------
+    // LIFE CYCLE
+    // --------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +64,19 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
+    // --------------------
+    // INTENT TO OPEN ACTIVITY
+    // --------------------
+
     private void startListPropertyActivity() {
         Intent intent = new Intent(this, ListPropertyActivity.class);
 
         startActivity(intent);
     }
+
+    // --------------------
+    // SIGN IN WITH EMAIL ADDRESS
+    // --------------------
 
     // 2 - Launch Sign-In Activity
     private void startSignInActivity() {
