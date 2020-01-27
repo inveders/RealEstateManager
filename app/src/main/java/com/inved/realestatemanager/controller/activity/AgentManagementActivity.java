@@ -22,10 +22,9 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
     private RecyclerViewAgentManagement adapter;
 
-    @Override
-    protected int getLayoutContentViewID() {
-        return R.layout.activity_agent_management;
-    }
+    // --------------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------------
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +41,21 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
     }
 
+    @Override
+    protected int getLayoutContentViewID() {
+        return R.layout.activity_agent_management;
+    }
+
+    // 2 - Configuring ViewModel
+    private void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
+        PropertyViewModel propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+        propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> adapter.setData(realEstateAgents));
+    }
+
+    // --------------------
+    // TOOLBAR
+    // --------------------
 
     private void configToolbar() {
 
@@ -55,13 +69,9 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
     }
 
-    // 2 - Configuring ViewModel
-    private void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
-        PropertyViewModel propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> adapter.setData(realEstateAgents));
-    }
-
+    // --------------------
+    // AGENT
+    // --------------------
 
     @Override
     public void onEditAgent(String id) {
