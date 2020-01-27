@@ -41,58 +41,56 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ListPropertyFragment.MenuChangementsInterface {
-    
 
     //Declaration for Navigation Drawer
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
 
-    // Declare fragments
+    // Declaration for fragments
     private ListPropertyFragment listPropertyFragment;
     private DetailPropertyFragment detailPropertyFragment;
-    private FragmentRefreshListener fragmentRefreshListener;
-    private NavigationView navigationView;
 
+
+    private NavigationView navigationView;
     private Menu mOptionsMenu;
     private PropertyViewModel propertyViewModel;
+    private FragmentRefreshListener fragmentRefreshListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        checkIfUserExistInFirebase();
+        this.checkIfUserExistInFirebase();
         this.configureViewModel();
         this.checkIfSyncWithFirebaseIsNecessary();
         this.configureToolbarAndNavigationDrawer();
+
         //NavigationDrawer
         this.configureDrawerLayout();
         this.configureNavigationView();
         this.spinnerManagement();
+
         this.configureAndShowListFragment();
         // this.configureAndShowDetailFragment();
 
     }
 
-    private void spinnerManagement() {
-
-        Spinner spinnerCurrency = (Spinner) navigationView.getMenu().findItem(R.id.activity_main_drawer_currency).getActionView();
-        GetSpinner getSpinner = new GetSpinner();
-        spinnerCurrency.setSelection(getSpinner.getIndexSpinner(spinnerCurrency, ManageCurrency.getCurrency(ListPropertyActivity.this)));
-        spinnerCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String result = spinnerCurrency.getSelectedItem().toString();
-                ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
-                ManageCurrency.saveCurrency(ListPropertyActivity.this, result);
-                refreshFragment();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+    protected void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
+        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
 
     }
+
+
+    @Override
+    protected int getLayoutContentViewID() {
+        return R.layout.activity_list_property;
+    }
+
+
+    // ---------------------------
+    // SYNC WITH FIREFASE
+    // ---------------------------
 
     private void checkIfSyncWithFirebaseIsNecessary() {
 
@@ -105,14 +103,14 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
                     if (queryDocumentSnapshots.size() != properties.size()) {
 
-                        //I delete all properties in room
+                        //We delete all properties in room in there is a difference between properties number in firebase and in room
                         if (properties.size() != 0) {
                             for (int i = 0; i < properties.size(); i++) {
                                 propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
                             }
                         }
 
-
+                        //We create properties from firebase in room
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             Property property = documentSnapshot.toObject(Property.class);
 
@@ -222,18 +220,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         });
     }
 
-    protected void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-
-    }
-
-
-    @Override
-    protected int getLayoutContentViewID() {
-        return R.layout.activity_list_property;
-    }
-
 
     // ---------------------------
     // NAVIGATION DRAWER & TOOLBAR
@@ -266,8 +252,30 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    //Spinner to choose currency in navigation drawer
+    private void spinnerManagement() {
 
-    //Navigation drawer
+        Spinner spinnerCurrency = (Spinner) navigationView.getMenu().findItem(R.id.activity_main_drawer_currency).getActionView();
+        GetSpinner getSpinner = new GetSpinner();
+        spinnerCurrency.setSelection(getSpinner.getIndexSpinner(spinnerCurrency, ManageCurrency.getCurrency(ListPropertyActivity.this)));
+        spinnerCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String result = spinnerCurrency.getSelectedItem().toString();
+                ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
+                ManageCurrency.saveCurrency(ListPropertyActivity.this, result);
+                refreshFragment();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+    }
+
+
+    //Navigation drawer selection of elements
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
@@ -276,7 +284,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
         switch (id) {
             case R.id.activity_main_drawer_agent_management:
-                startProfileActivity();
+                startAgentManagementActivity();
                 break;
             case R.id.activity_main_drawer_map:
                 ListPropertyActivityPermissionsDispatcher.startMapsActivityWithPermissionCheck(this);
@@ -294,7 +302,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         return true;
     }
 
-    //Navigation drawer
     @Override
     public void onBackPressed() {
         // 5 - Handle back click to close menu
@@ -305,6 +312,10 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
+
+    // ---------------------------
+    // MENU
+    // ---------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -356,7 +367,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
 
     // ---------------------------
-    // INTENT TO OPEN NEW ACTIVITY
+    // INTENTS TO OPEN NEW ACTIVITY
     // ---------------------------
 
     @NeedsPermission(Manifest.permission.CAMERA)
@@ -365,8 +376,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         startActivity(intent);
     }
 
-    // Launch Profile Activity
-    private void startProfileActivity() {
+
+    private void startAgentManagementActivity() {
         Intent intent = new Intent(this, AgentManagementActivity.class);
         startActivity(intent);
     }
@@ -377,6 +388,10 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         startActivity(intent);
     }
 
+    // --------------
+    // PERMISSIONS
+    // --------------
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -386,7 +401,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
 
     // --------------
-    // FRAGMENTS
+    // FRAGMENTS AND REFRESH FRAGMENT
     // --------------
 
     private void configureAndShowListFragment() {
