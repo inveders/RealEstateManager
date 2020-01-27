@@ -27,7 +27,7 @@ public class PropertyHelper {
 
     // --- CREATE ---
 
-    public static void createProperty(String propertyId, String typeProperty, double pricePropertyInDollar,
+    public static void createProperty(String propertyId, String typeProperty, double pricePropertyInEuro,
                                       double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                       int numberBedroomsInProperty, String fullDescriptionProperty, String streetNumber,
                                       String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
@@ -39,7 +39,7 @@ public class PropertyHelper {
 
 
 
-        Property propertyToCreate = new Property(propertyId,typeProperty, pricePropertyInDollar,
+        Property propertyToCreate = new Property(propertyId,typeProperty, pricePropertyInEuro,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,

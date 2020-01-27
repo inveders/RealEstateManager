@@ -332,7 +332,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private void updateUIwithDataFromDatabase(String propertyId) {
         propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
 
-            priceEditText.setText(utils.getPriceInGoodCurrency(property.getPricePropertyInDollar()));
+            priceEditText.setText(utils.getPriceInGoodCurrency(property.getPricePropertyInEuro()));
             surfaceEditText.setText(Double.toString(property.getSurfaceAreaProperty()));
             streetNumberEditText.setText(property.getStreetNumber());
             streetNameEditText.setText(property.getStreetName());

@@ -15,7 +15,7 @@ public class Property {
     @PrimaryKey
     private String propertyId;
     private String typeProperty;
-    private double pricePropertyInDollar;
+    private double pricePropertyInEuro;
     private double surfaceAreaProperty;
     private String numberRoomsInProperty;
     private String numberBathroomsInProperty;
@@ -47,7 +47,7 @@ public class Property {
 
     public Property(){}
 
-    public Property(@NonNull String propertyId, String typeProperty, double pricePropertyInDollar,
+    public Property(@NonNull String propertyId, String typeProperty, double pricePropertyInEuro,
                     double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                     int numberBedroomsInProperty, String fullDescriptionProperty, String streetNumber,
                     String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
@@ -58,7 +58,7 @@ public class Property {
 
         this.propertyId=propertyId;
         this.typeProperty = typeProperty;
-        this.pricePropertyInDollar = pricePropertyInDollar;
+        this.pricePropertyInEuro = pricePropertyInEuro;
         this.surfaceAreaProperty = surfaceAreaProperty;
         this.numberRoomsInProperty = numberRoomsInProperty;
         this.numberBathroomsInProperty = numberBathroomsInProperty;
@@ -105,12 +105,12 @@ public class Property {
         this.typeProperty = typeProperty;
     }
 
-    public double getPricePropertyInDollar() {
-        return pricePropertyInDollar;
+    public double getPricePropertyInEuro() {
+        return pricePropertyInEuro;
     }
 
-    public void setPricePropertyInDollar(double pricePropertyInDollar) {
-        this.pricePropertyInDollar = pricePropertyInDollar;
+    public void setPricePropertyInEuro(double pricePropertyInEuro) {
+        this.pricePropertyInEuro = pricePropertyInEuro;
     }
 
     public double getSurfaceAreaProperty() {
@@ -336,7 +336,7 @@ public class Property {
         return "Property{" +
                 "propertyId=" + propertyId +
                 ", typeProperty='" + typeProperty + '\'' +
-                ", pricePropertyInDollar=" + pricePropertyInDollar +
+                ", pricePropertyInEuro=" + pricePropertyInEuro +
                 ", surfaceAreaProperty=" + surfaceAreaProperty +
                 ", numberRoomsInProperty='" + numberRoomsInProperty + '\'' +
                 ", numberBathroomsInProperty='" + numberBathroomsInProperty + '\'' +

@@ -223,9 +223,9 @@ public class DetailPropertyFragment extends Fragment {
         }
 
         //PRICE IN DOLLARS
-        if (property.getPricePropertyInDollar() != 0.0) {
+        if (property.getPricePropertyInEuro() != 0.0) {
             Utils utils = new Utils();
-            String priceValue = utils.getPriceInGoodCurrency(property.getPricePropertyInDollar());
+            String priceValue = utils.getPriceInGoodCurrency(property.getPricePropertyInEuro());
             this.pricePropertyInDollar.setText(priceValue);
             this.pricePropertyUnit.setText(utils.goodCurrencyUnit());
 

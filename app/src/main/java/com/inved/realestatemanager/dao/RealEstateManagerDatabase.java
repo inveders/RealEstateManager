@@ -18,7 +18,6 @@ import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
-import com.inved.realestatemanager.utils.Utils;
 
 import java.util.concurrent.Executors;
 
@@ -155,7 +154,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
 
                     String propertyId = property.getPropertyId();
                     String typeProperty = property.getTypeProperty();
-                    double pricePropertyInDollar = property.getPricePropertyInDollar();
+                    double pricePropertyInEuro = property.getPricePropertyInEuro();
                     double surfaceAreaProperty = property.getSurfaceAreaProperty();
                     String numberRoomsInProperty = property.getNumberRoomsInProperty();
                     String numberBathroomsInProperty = property.getNumberBathroomsInProperty();
@@ -222,7 +221,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                         }
                     }
 
-                    Property newProperty = new Property(propertyId,typeProperty, pricePropertyInDollar,
+                    Property newProperty = new Property(propertyId,typeProperty, pricePropertyInEuro,
                             surfaceAreaProperty, numberRoomsInProperty,
                             numberBathroomsInProperty, numberBedroomsInProperty,
                             fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,

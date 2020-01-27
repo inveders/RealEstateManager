@@ -135,7 +135,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
                                 String propertyId = queryDocumentSnapshots.getDocuments().get(i).getString("propertyId");
                                 String typeProperty = queryDocumentSnapshots.getDocuments().get(i).getString("typeProperty");
-                                double pricePropertyInDollar = queryDocumentSnapshots.getDocuments().get(i).getDouble("pricePropertyInDollar");
+                                double pricePropertyInEuro = queryDocumentSnapshots.getDocuments().get(i).getDouble("pricePropertyInEuro");
                                 double surfaceAreaProperty = queryDocumentSnapshots.getDocuments().get(i).getDouble("surfaceAreaProperty");
                                 String numberRoomsInProperty = queryDocumentSnapshots.getDocuments().get(i).getString("numberRoomsInProperty");
                                 String numberBathroomsInProperty = queryDocumentSnapshots.getDocuments().get(i).getString("numberBathroomsInProperty");
@@ -204,7 +204,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
                                 Property newProperty = null;
                                 if (propertyId != null) {
-                                    newProperty = new Property(propertyId, typeProperty, pricePropertyInDollar,
+                                    newProperty = new Property(propertyId, typeProperty, pricePropertyInEuro,
                                             surfaceAreaProperty, numberRoomsInProperty,
                                             numberBathroomsInProperty, numberBedroomsInProperty,
                                             fullDescriptionProperty, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,

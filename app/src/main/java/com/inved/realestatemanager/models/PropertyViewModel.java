@@ -75,6 +75,11 @@ public class PropertyViewModel extends ViewModel {
         return propertyDataSource.getOneItem(propertyId);
     }
 
+    public int getMaxPrice() {
+        return propertyDataSource.getMaxPrice();
+    }
+
+
     public void createProperty(Property property) {
         executor.execute(() -> propertyDataSource.createItem(property));
     }
@@ -83,7 +88,7 @@ public class PropertyViewModel extends ViewModel {
         executor.execute(() -> propertyDataSource.deleteItem(propertyId));
     }
 
-    public void updateProperty(String typeProperty, double pricePropertyInDollar,
+    public void updateProperty(String typeProperty, double pricePropertyInEuro,
                                                    double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                                    int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
                                                    String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
@@ -91,7 +96,7 @@ public class PropertyViewModel extends ViewModel {
                                                    boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                                    String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
                                                    String photoDescription4, String photoDescription5, String realEstateAgentId,String propertyId) {
-        executor.execute(() -> propertyDataSource.updateProperty(typeProperty, pricePropertyInDollar,
+        executor.execute(() -> propertyDataSource.updateProperty(typeProperty, pricePropertyInEuro,
                 surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty, dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,

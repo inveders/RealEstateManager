@@ -21,6 +21,7 @@ public class MainApplication extends Application { //extends MultiDexApplication
         super.onCreate();
         mInstance = this;
         JodaTimeAndroid.init(this);
+       // deleteDatabase("MyDatabase.db");
         Stetho.initializeWithDefaults(this);
         Fabric.with(this, new Crashlytics());
         res=getResources();
