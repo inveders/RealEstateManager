@@ -34,7 +34,7 @@ public class PropertyHelper {
                                       String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForProperty,
                                       boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                       String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                                      String photoDescription4, String photoDescription5, String realEstateAgentId,int myCase,String id) {
+                                      String photoDescription4, String photoDescription5, String realEstateAgentId) {
         // 1 - Create
 
 
@@ -46,16 +46,7 @@ public class PropertyHelper {
                 dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                 photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
-
-        /**POURQUOI JE FAIS CA**/
-        if(myCase==1){
-            //to create
-            Log.d("debago", "PropertyHelper : " + myCase);
-            PropertyHelper.getPropertyCollection().document(propertyId).set(propertyToCreate);
-        }else if(myCase==2){
-            //to update
-            PropertyHelper.getPropertyCollection().document(id).set(propertyToCreate);
-        }
+        PropertyHelper.getPropertyCollection().document(propertyId).set(propertyToCreate);
 
     }
 
@@ -74,7 +65,6 @@ public class PropertyHelper {
 
     static void updatePhotoUri1(String photoUri1Url, String documentId) {
 
-        Log.d("debago","in updatePhotoUri, propertyHelper");
         PropertyHelper.getPropertyCollection()
                 .document(documentId)
                 .update("photoUri1", photoUri1Url);

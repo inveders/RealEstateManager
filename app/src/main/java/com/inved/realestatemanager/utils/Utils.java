@@ -7,17 +7,18 @@ import android.util.Log;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
+import com.inved.realestatemanager.retrofit.RetrofitServiceApiExchange;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
 
 public class Utils {
-
 
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
@@ -27,7 +28,8 @@ public class Utils {
      * @return
      */
     private static double convertDollarToEuro(double dollars) {
-        return (int) Math.round(dollars * 0.812);
+        
+        return (int) Math.round(dollars * ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()));
     }
 
     //Convert euro in dollars
@@ -47,7 +49,7 @@ public class Utils {
         if(ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")){
             return unitConversion.changeDoubleToStringWithThousandSeparator(priceInEuro);
         }else{
-            return convertEuroToDollars(0.91,priceInEuro);
+            return convertEuroToDollars(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()),priceInEuro);
         }
     }
 
@@ -77,7 +79,7 @@ public class Utils {
      * @return
      */
     public String getTodayDate() {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
         return dateFormat.format(new Date());
     }

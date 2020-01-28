@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class DatePickerFragment extends AppCompatDialogFragment implements DatePickerDialog.OnDateSetListener, CreateUpdatePropertyFragmentTwo.OnFragmentInteractionListener {
+public class DatePickerFragment extends AppCompatDialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "debago";
     private final Calendar calendar = Calendar.getInstance();
@@ -63,8 +63,5 @@ public class DatePickerFragment extends AppCompatDialogFragment implements DateP
 
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 }

@@ -5,6 +5,7 @@ import android.content.res.Resources;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
+import com.inved.realestatemanager.retrofit.RetrofitServiceApiExchange;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -22,6 +23,8 @@ public class MainApplication extends Application { //extends MultiDexApplication
         mInstance = this;
         JodaTimeAndroid.init(this);
        // deleteDatabase("MyDatabase.db");
+        RetrofitServiceApiExchange retrofitServiceApiExchange = new RetrofitServiceApiExchange();
+        retrofitServiceApiExchange.retrofitCall();
         Stetho.initializeWithDefaults(this);
         Fabric.with(this, new Crashlytics());
         res=getResources();

@@ -85,6 +85,8 @@ public class DetailPropertyFragment extends Fragment {
     private int imagePosition=0;
     private String myPropertyId;
     private int imageSwitcherNumber=0;
+    private ArrayList<String> myImages;
+    private ArrayList<String> myDescriptionImage;
     private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
 
     private static final int REQUEST_CODE_DATE_PICKER_DETAIL = 12; // Used to identify the result of date picker
@@ -127,6 +129,8 @@ public class DetailPropertyFragment extends Fragment {
         realEstateAgent = mView.findViewById(R.id.fragment_detail_property_real_estate_agent_text);
         propertyLocalisationImage = mView.findViewById(R.id.fragment_detail_property_location_map);
 
+        myImages = new ArrayList<>();
+        myDescriptionImage = new ArrayList<>();
 
         if (getActivity() != null) {
             Intent intent = getActivity().getIntent();
@@ -210,6 +214,7 @@ public class DetailPropertyFragment extends Fragment {
                 //set the value in firebase
                 PropertyHelper.updateDateOfSale(selectedDate,myPropertyId);
                 PropertyHelper.updateStatusProperty(status,myPropertyId);
+                Log.d("debago","in DetailPropertyFragment status is "+status+" and propertyId is: "+myPropertyId);
             }
 
         }
@@ -227,13 +232,9 @@ public class DetailPropertyFragment extends Fragment {
         UnitConversion unitConversion = new UnitConversion();
 
         //TYPE PROPERTY
-        if (property.getTypeProperty() != null) {
-            this.typeProperty.setText(property.getTypeProperty());
-        } else {
-            this.typeProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }
+        textManagement(property.getTypeProperty(),typeProperty);
 
-        //PRICE IN DOLLARS
+        //PRICE
         if (property.getPricePropertyInEuro() != 0.0) {
             Utils utils = new Utils();
             String priceValue = utils.getPriceInGoodCurrency(property.getPricePropertyInEuro());
@@ -246,49 +247,42 @@ public class DetailPropertyFragment extends Fragment {
         }
 
         //ADDRESS PROPERTY
-
-        if (property.getStreetNumber() != null) {
-            this.streetNumber.setText(property.getStreetNumber());
-        } else {
-            this.streetNumber.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-        if (property.getStreetName() != null) {
-            this.streetName.setText(property.getStreetName());
-        } else {
-            this.streetName.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-        if (property.getAddressCompl() != null) {
-            this.complAddress.setText(property.getAddressCompl());
-        } else {
-            this.complAddress.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-        if (property.getTownProperty() != null) {
-            this.townProperty.setText(property.getTownProperty());
-        } else {
-            this.townProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-        if (property.getZipCode() != null) {
-            this.zipCode.setText(property.getZipCode());
-        } else {
-            this.zipCode.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-        if (property.getCountry() != null) {
-            this.country.setText(property.getCountry());
-        } else {
-            this.country.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
+        textManagement(property.getStreetNumber(),streetNumber);
+        textManagement(property.getStreetName(),streetName);
+        textManagement(property.getAddressCompl(),complAddress);
+        textManagement(property.getTownProperty(),townProperty);
+        textManagement(property.getZipCode(),zipCode);
+        textManagement(property.getCountry(),country);
 
         //SURFACE AREA
         if (property.getSurfaceAreaProperty() != 0.0) {
             this.surfaceAreaProperty.setText(unitConversion.changeDoubleToStringWithThousandSeparator(property.getSurfaceAreaProperty()));
         } else {
             this.surfaceAreaProperty.setText(MainApplication.getResourses().getString(R.string.none));
+        }
+
+        //POINT OF INTEREST
+        textManagement(property.getPointOfInterest(),pointsOfInterestNearProperty);
+
+        //FULL DESCRIPTION PROPERTY
+        textManagement(property.getFullDescriptionProperty(),fullDescriptionProperty);
+
+        //NUMBER OF ROOM, BEDROOM, BATHROOM
+        this.numberRoomsInProperty.setText(String.valueOf(property.getNumberRoomsInProperty()));
+        this.numberBathroomsInProperty.setText(String.valueOf(property.getNumberBathroomsInProperty()));
+        this.numberBedroomsInProperty.setText(String.valueOf(property.getNumberBedroomsInProperty()));
+
+        //STATUS PROPERTY
+        textManagement(property.getStatusProperty(),statusProperty);
+
+        //DATE OF ENTRY
+        textManagement(property.getDateOfEntryOnMarketForProperty(),dateOfEntryOnMarketForProperty);
+
+        //DATE OF SALE
+        if (property.getDateOfSaleForProperty() != null) {
+            this.dateOfSaleForPorperty.setText(property.getDateOfSaleForProperty());
+        } else {
+            this.dateOfSaleForPorperty.setText(MainApplication.getResourses().getString(R.string.date_of_sale_to_define));
         }
 
         //IMAGE SWITCHER
@@ -303,42 +297,27 @@ public class DetailPropertyFragment extends Fragment {
             return imageView;
         });
 
-        Animation in = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_in_left);
-        Animation out = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_out_right);
+        imagesManagement(property.getPhotoUri1(),property.getPhotoDescription1());
+        imagesManagement(property.getPhotoUri2(),property.getPhotoDescription2());
+        imagesManagement(property.getPhotoUri3(),property.getPhotoDescription3());
+        imagesManagement(property.getPhotoUri4(),property.getPhotoDescription4());
+        imagesManagement(property.getPhotoUri5(),property.getPhotoDescription5());
 
+        myImagesManagement();
 
+        clickOnImagesArrow();
 
+    }
 
-        ArrayList<String> myImages = new ArrayList<>();
-        ArrayList<String> myDescriptionImage = new ArrayList<>();
-
-        if (property.getPhotoUri1() != null) {
-            myImages.add(property.getPhotoUri1());
-            myDescriptionImage.add(property.getPhotoDescription1());
-
-
-        }
-        if (property.getPhotoUri2() != null) {
-            myImages.add(property.getPhotoUri2());
-            myDescriptionImage.add(property.getPhotoDescription2());
-
-        }
-        if (property.getPhotoUri3() != null) {
-            myImages.add(property.getPhotoUri3());
-            myDescriptionImage.add(property.getPhotoDescription3());
-
-        }
-        if (property.getPhotoUri4() != null) {
-            myImages.add(property.getPhotoUri4());
-            myDescriptionImage.add(property.getPhotoDescription4());
-
-        }
-        if (property.getPhotoUri5() != null) {
-            myImages.add(property.getPhotoUri5());
-            myDescriptionImage.add(property.getPhotoDescription5());
-
+    private void imagesManagement(String photoUri,String photoDescription){
+        if (photoUri != null) {
+            myImages.add(photoUri);
+            myDescriptionImage.add(photoDescription);
         }
 
+    }
+
+    private void myImagesManagement(){
         if(myImages.size()==1){
             Log.d("debago","in myImagesize equal to 1 "+myImages.size());
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
@@ -358,9 +337,12 @@ public class DetailPropertyFragment extends Fragment {
             imageNameSwitcher.setVisibility(View.INVISIBLE);
             imageCount=0;
         }
+    }
 
+    private void clickOnImagesArrow(){
 
-
+        Animation in = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_in_left);
+        Animation out = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_out_right);
 
         nextImage.setOnClickListener(view -> {
 
@@ -385,53 +367,21 @@ public class DetailPropertyFragment extends Fragment {
                 Toast.makeText(getContext(), MainApplication.getResourses().getString(R.string.first_photo), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        //POINT OF INTEREST
-        if (property.getPointOfInterest() != null) {
-            this.pointsOfInterestNearProperty.setText(property.getPointOfInterest());
+    private void textManagement(String text, TextView textView){
+
+        if (text != null) {
+            textView.setText(text);
         } else {
-            this.pointsOfInterestNearProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-
-        //FULL DESCRIPTION PROPERTY
-        if (property.getFullDescriptionProperty() != null) {
-            this.fullDescriptionProperty.setText(property.getFullDescriptionProperty());
-        } else {
-            this.fullDescriptionProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-        //NUMBER OF ROOM, BEDROOM, BATHROOM
-        this.numberRoomsInProperty.setText(String.valueOf(property.getNumberRoomsInProperty()));
-        this.numberBathroomsInProperty.setText(String.valueOf(property.getNumberBathroomsInProperty()));
-        this.numberBedroomsInProperty.setText(String.valueOf(property.getNumberBedroomsInProperty()));
-
-        //STATUS PROPERTY
-        if (property.getStatusProperty() != null) {
-            this.statusProperty.setText(property.getStatusProperty());
-        } else {
-            this.statusProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-        //DATE OF ENTRY
-        if (property.getDateOfEntryOnMarketForProperty() != null) {
-            this.dateOfEntryOnMarketForProperty.setText(property.getDateOfEntryOnMarketForProperty());
-        } else {
-            this.dateOfEntryOnMarketForProperty.setText(MainApplication.getResourses().getString(R.string.none));
-        }
-
-        //DATE OF SALE
-        if (property.getDateOfSaleForProperty() != null) {
-            this.dateOfSaleForPorperty.setText(property.getDateOfSaleForProperty());
-        } else {
-            this.dateOfSaleForPorperty.setText(MainApplication.getResourses().getString(R.string.date_of_sale_to_define));
+            textView.setText(MainApplication.getResourses().getString(R.string.none));
         }
 
     }
 
     private void setMapStatic(String propertyId) {
 
-
+        //Construct formatted address from data in room
         propertyViewModel.getOneProperty(propertyId).observe(this, properties -> {
 
             SplitString splitString = new SplitString();
@@ -444,33 +394,37 @@ public class DetailPropertyFragment extends Fragment {
             String addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
             String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
 
-            geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
-                Log.d("debago", "Address formatting is "+results);
-                if (results.size() != 0) {
+            geocodingSearch(addressFormatted);
 
-                    double latitude = results.get(0).getGeometry().getLocation().getLat();
-                    double longitude = results.get(0).getGeometry().getLocation().getLng();
-
-                    String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + addressFormatted + "&zoom=16&size=170x100&maptype=roadmap&markers=color:blue%7C" + latitude + "," + longitude + "&key=" + MAP_API_KEY;
-                    Log.d("debago", "Address formatting is "+addressFormatted);
-                    //IMAGE LOCATION
-                    Glide.with(MainApplication.getInstance().getApplicationContext())
-                            .load(url)
-
-                            .into((propertyLocalisationImage));
-                } else {
-                    Log.d("debago", "Geocoding no result ");
-
-                }
-
-
-            });
 
 
         });
 
     }
 
+    //Search latitude and longitude with formatted address, and show static map
+    private void geocodingSearch(String addressFormatted){
+        geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
+
+            if (results.size() != 0) {
+
+                double latitude = results.get(0).getGeometry().getLocation().getLat();
+                double longitude = results.get(0).getGeometry().getLocation().getLng();
+
+                String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + addressFormatted + "&zoom=16&size=170x100&maptype=roadmap&markers=color:blue%7C" + latitude + "," + longitude + "&key=" + MAP_API_KEY;
+
+                //IMAGE LOCATION
+                Glide.with(MainApplication.getInstance().getApplicationContext())
+                        .load(url)
+                        .into((propertyLocalisationImage));
+            } else {
+                Log.d("debago", "Geocoding no result ");
+
+            }
+
+
+        });
+    }
     // --------------
     // AGENT
     // --------------

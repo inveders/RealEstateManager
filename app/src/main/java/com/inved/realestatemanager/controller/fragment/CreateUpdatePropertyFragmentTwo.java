@@ -70,7 +70,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
-
     private StorageHelper storageHelper = new StorageHelper();
 
     private String cameraFilePath;
@@ -89,7 +88,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private ImageView photo4;
     private ImageView photo5;
 
-    private String photoUri = null;
     private String photoUri1 = null;
     private String photoUri2 = null;
     private String photoUri3 = null;
@@ -107,7 +105,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private String numberRoomsInProperty;
     private String numberBathroomsInProperty;
     private int numberBedroomsInProperty;
-    private double pricePropertyInDollar;
+    private double pricePropertyInEuro;
     private double surfaceAreaProperty;
     private String streetNumber;
     private String streetName;
@@ -227,7 +225,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 this.numberRoomsInProperty = objects.get(1).toString();
                 this.numberBathroomsInProperty = objects.get(2).toString();
                 this.numberBedroomsInProperty = (int) objects.get(3);
-                this.pricePropertyInDollar = Double.valueOf(objects.get(4).toString());
+                this.pricePropertyInEuro = Double.valueOf(objects.get(4).toString());
                 this.surfaceAreaProperty = Double.valueOf(objects.get(5).toString());
                 this.streetNumber = objects.get(6).toString();
                 this.streetName = objects.get(7).toString();
@@ -328,6 +326,33 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         if (getActivity() != null) {
 
             Log.d("debago", "photoURI is " + imageViewLink + " and photo description is " + photoDescription1);
+            initDialogImage();
+
+            Glide.with(this)
+                    .load(new File(imageViewLink))
+                    .apply(RequestOptions.centerCropTransform())
+                    .override(240, 240)
+                    .fitCenter()
+                    .into(dialogPhotoImageView);
+
+
+            Log.d("debago", "fragment two create photoDescription1 is " + photoDescription1 + " plus 2: " + photoDescription2);
+
+            managePhotoDescription(photoNumber);
+            ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "update");
+            ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), photoNumber);
+
+            setClearButton(photoNumber);
+            setSaveButton(photoNumber);
+            closeButton.setOnClickListener(view -> DialogImage.cancel());
+
+            DialogImage.show();
+        }
+
+    }
+
+    private void initDialogImage(){
+        if(getActivity()!=null){
             DialogImage = new Dialog(getActivity());
             DialogImage.requestWindowFeature(Window.FEATURE_NO_TITLE);
             DialogImage.setContentView(R.layout.custom_dialog_image);
@@ -339,101 +364,58 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             dialogPhotoImageView = DialogImage.findViewById(R.id.custom_dialog_photo);
             dialogEditText = DialogImage.findViewById(R.id.custom_dialog_edittext);
 
-
-            Glide.with(this)
-                    .load(new File(imageViewLink))
-                    .apply(RequestOptions.centerCropTransform())
-                    .override(240, 240)
-                    .fitCenter()
-                    .into(dialogPhotoImageView);
+            clearButton.setEnabled(true);
+            saveButton.setEnabled(true);
 
             dialogPhotoImageView.setOnClickListener(view -> {
                 DialogImage.dismiss();
                 selectImage();
             });
-
-            Log.d("debago", "fragment two create photoDescription1 is " + photoDescription1 + " plus 2: " + photoDescription2);
-
-            if (photoDescription1 == null) {
-                photoDescription1 = "";
-            }
-            if (photoDescription2 == null) {
-                photoDescription2 = "";
-            }
-            if (photoDescription3 == null) {
-                photoDescription3 = "";
-            }
-            if (photoDescription4 == null) {
-                photoDescription4 = "";
-            }
-            if (photoDescription5 == null) {
-                photoDescription5 = "";
-            }
-
-            switch (photoNumber) {
-
-                case 1:
-                    dialogEditText.setText(photoDescription1, TextView.BufferType.EDITABLE);
-                    break;
-                case 2:
-                    dialogEditText.setText(photoDescription2, TextView.BufferType.EDITABLE);
-                    break;
-                case 3:
-                    dialogEditText.setText(photoDescription3, TextView.BufferType.EDITABLE);
-                    break;
-                case 4:
-                    dialogEditText.setText(photoDescription4, TextView.BufferType.EDITABLE);
-                    break;
-                case 5:
-                    dialogEditText.setText(photoDescription5, TextView.BufferType.EDITABLE);
-                    break;
-
-            }
-
-            ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "update");
-            ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), photoNumber);
+        }
 
 
-            clearButton.setEnabled(true);
-            saveButton.setEnabled(true);
+    }
 
-            clearButton.setOnClickListener(view -> {
-                //we clear image and photodescription in custom dialog
-                Glide.with(this)
-                        .load(R.drawable.no_image)
-                        .apply(RequestOptions.centerCropTransform())
-                        .override(240, 240)
-                        .fitCenter()
-                        .into(dialogPhotoImageView);
-                dialogEditText.setText("");
-                //we clear photouri and photodescription to update UI in fragment
-                switch (photoNumber) {
+    private void managePhotoDescription(int photoNumber){
+        if (photoDescription1 == null) {
+            photoDescription1 = "";
+        }
+        if (photoDescription2 == null) {
+            photoDescription2 = "";
+        }
+        if (photoDescription3 == null) {
+            photoDescription3 = "";
+        }
+        if (photoDescription4 == null) {
+            photoDescription4 = "";
+        }
+        if (photoDescription5 == null) {
+            photoDescription5 = "";
+        }
 
-                    case 1:
-                        photoDescription1 = null;
-                        photoUri1 = null;
-                        break;
-                    case 2:
-                        photoDescription2 = null;
-                        photoUri2 = null;
-                        break;
-                    case 3:
-                        photoDescription3 = null;
-                        photoUri3 = null;
-                        break;
-                    case 4:
-                        photoDescription4 = null;
-                        photoUri4 = null;
-                        break;
-                    case 5:
-                        photoDescription5 = null;
-                        photoUri5 = null;
-                        break;
+        switch (photoNumber) {
 
-                }
+            case 1:
+                dialogEditText.setText(photoDescription1, TextView.BufferType.EDITABLE);
+                break;
+            case 2:
+                dialogEditText.setText(photoDescription2, TextView.BufferType.EDITABLE);
+                break;
+            case 3:
+                dialogEditText.setText(photoDescription3, TextView.BufferType.EDITABLE);
+                break;
+            case 4:
+                dialogEditText.setText(photoDescription4, TextView.BufferType.EDITABLE);
+                break;
+            case 5:
+                dialogEditText.setText(photoDescription5, TextView.BufferType.EDITABLE);
+                break;
 
-            });
-            closeButton.setOnClickListener(view -> DialogImage.cancel());
+        }
+    }
+
+    private void setSaveButton(int photoNumber){
+        if(getActivity()!=null){
             saveButton.setOnClickListener(view -> {
 
                 switch (photoNumber) {
@@ -460,10 +442,47 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), 0);
                 ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "create");
             });
-
-            DialogImage.show();
         }
 
+    }
+
+    private void setClearButton(int photoNumber){
+        clearButton.setOnClickListener(view -> {
+            //we clear image and photodescription in custom dialog
+            Glide.with(this)
+                    .load(R.drawable.no_image)
+                    .apply(RequestOptions.centerCropTransform())
+                    .override(240, 240)
+                    .fitCenter()
+                    .into(dialogPhotoImageView);
+            dialogEditText.setText("");
+            //we clear photouri and photodescription to update UI in fragment
+            switch (photoNumber) {
+
+                case 1:
+                    photoDescription1 = null;
+                    photoUri1 = null;
+                    break;
+                case 2:
+                    photoDescription2 = null;
+                    photoUri2 = null;
+                    break;
+                case 3:
+                    photoDescription3 = null;
+                    photoUri3 = null;
+                    break;
+                case 4:
+                    photoDescription4 = null;
+                    photoUri4 = null;
+                    break;
+                case 5:
+                    photoDescription5 = null;
+                    photoUri5 = null;
+                    break;
+
+            }
+
+        });
     }
 
 
@@ -558,7 +577,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     mPhotoFile = photoFile;
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
-
                     startActivityForResult(takePictureIntent, REQUEST_CAMERA_PHOTO);
 
 
@@ -597,7 +615,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     // photo1.setImageURI(selectedImage);
                     Log.d("debago", "selected image from gallery is " + imageCameraOrGallery.getRealPathFromUri(selectedImage));
 
-                    photoUri = imageCameraOrGallery.getRealPathFromUri(selectedImage);
+                    String photoUri = imageCameraOrGallery.getRealPathFromUri(selectedImage);
 
                     editImageName(photoUri);
 
@@ -762,17 +780,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     }
 
-
-    // --------------
-    // INTERFACE
-    // --------------
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-
-    }
-
     // --------------
     // CREATE OR UPDATE
     // --------------
@@ -862,17 +869,17 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     }
 
     private void createPropertyInFirebase() {
-        PropertyHelper.createProperty(propertyIdCreate, typeProperty, pricePropertyInDollar,
+        PropertyHelper.createProperty(propertyIdCreate, typeProperty, pricePropertyInEuro,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty,
                 null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId, 1, null);
+                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
     }
 
     private void createPropertyInRoom() {
-        Property newProperty = new Property(propertyIdCreate, typeProperty, pricePropertyInDollar,
+        Property newProperty = new Property(propertyIdCreate, typeProperty, pricePropertyInEuro,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
@@ -932,18 +939,17 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
 
     private void updatePropertyInFirebase() {
-        PropertyHelper.createProperty(propertyId, typeProperty, pricePropertyInDollar,
+        PropertyHelper.createProperty(propertyId, typeProperty, pricePropertyInEuro,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty,
                 null, false, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId, 2, propertyId);
+                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
     }
 
     private void updatePropertyInRoom() {
-        Log.d("debago", "propertyId is " + propertyId);
-        this.propertyViewModel.updateProperty(typeProperty, pricePropertyInDollar,
+        this.propertyViewModel.updateProperty(typeProperty, pricePropertyInEuro,
                 surfaceAreaProperty, numberRoomsInProperty,
                 numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
@@ -981,92 +987,32 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         Log.d("debago", "property is 1: " + photoDescription1 + " 2: " + photoDescription2 + " 3: " + photoDescription3 + " photo 1:" + photoUri1 + " photo 2: " + photoUri2 + " photo 3 is " + photoUri3);
 
+        showImageWithGlide(photoUri1,photo1,1);
+        showImageWithGlide(photoUri2,photo2,2);
+        showImageWithGlide(photoUri3,photo3,3);
+        showImageWithGlide(photoUri4,photo4,4);
+        showImageWithGlide(photoUri5,photo5,5);
+    }
+
+    private void showImageWithGlide(String photoUriGlide,ImageView photoGlide,int photoNumber){
+
         Uri fileUri;
-        if (photoUri1 != null) {
-            fileUri = Uri.parse(photoUri1);
-            if (fileUri.getPath() != null) {
-                Glide.with(this)
-                        .load(new File(fileUri.getPath()))
-                        .apply(RequestOptions.centerCropTransform())
-                        .override(240, 240)
-                        .fitCenter()
-                        .into(photo1);
-
-                photo1.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri1).getPath(), 1));
-
-            }
-
-        } else {
-            glideNoImage(photo1);
-
-        }
-
-        if (photoUri2 != null) {
-            fileUri = Uri.parse(photoUri2);
+        if (photoUriGlide != null) {
+            fileUri = Uri.parse(photoUriGlide);
             if (fileUri.getPath() != null) {
                 Glide.with(this)
                         .load(new File(fileUri.getPath()))
                         .override(50, 50)
                         .fitCenter()
-                        .into(photo2);
+                        .into(photoGlide);
 
-                photo2.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri2).getPath(), 2));
+                photoGlide.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUriGlide).getPath(), photoNumber));
             }
         } else {
-            glideNoImage(photo2);
-
-        }
-
-        if (photoUri3 != null) {
-            fileUri = Uri.parse(photoUri3);
-            if (fileUri.getPath() != null) {
-                Glide.with(this)
-                        .load(new File(fileUri.getPath()))
-                        .override(50, 50)
-                        .fitCenter()
-                        .into(photo3);
-
-
-                photo3.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri3).getPath(), 3));
-            }
-        } else {
-            glideNoImage(photo3);
-
-        }
-
-        if (photoUri4 != null) {
-            fileUri = Uri.parse(photoUri4);
-            if (fileUri.getPath() != null) {
-                Glide.with(this)
-                        .load(new File(fileUri.getPath()))
-                        .override(50, 50)
-                        .fitCenter()
-                        .into(photo4);
-
-                photo4.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri4).getPath(), 4));
-            }
-        } else {
-            glideNoImage(photo4);
-
-        }
-
-        if (photoUri5 != null) {
-            fileUri = Uri.parse(photoUri5);
-            if (fileUri.getPath() != null) {
-                Glide.with(this)
-                        .load(new File(fileUri.getPath()))
-                        .override(50, 50)
-                        .fitCenter()
-                        .into(photo5);
-
-                photo5.setOnClickListener(view -> myCustomDialog(Uri.parse(photoUri5).getPath(), 5));
-            }
-        } else {
-            glideNoImage(photo5);
+            glideNoImage(photoGlide);
 
         }
     }
-
 
     // --------------
     // INTENTS
