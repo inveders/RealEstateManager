@@ -35,6 +35,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     //Widget
 
+
     private Spinner typePropertySpinner;
     private AutoCompleteTextView townPropertyAutocomplete;
     private MultiSlider surfaceSeekbar;
@@ -66,6 +67,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     private String realEstateAgentId=null;
     //Interface
     private OnClickSearchInterface callback;
+
     private UnitConversion unitConversion = new UnitConversion();
 
 
@@ -103,7 +105,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         spinnerAgentList.add(getString(R.string.select_agent));
 
 
-        //Spinner step 1/3 Initialize all spinner to be selected
+        //Spinner step 1/3 Initialize all spinners to be selected
         realEstateAgentNameSpinner.setOnItemSelectedListener(this);
         statusSpinner.setOnItemSelectedListener(this);
         typePropertySpinner.setOnItemSelectedListener(this);
@@ -231,8 +233,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-    //REAL ESTATE AGENT MANAGEMENT AND SPINNER
 
     //Spinner step 3/3 : retrieve all agents in database and fill spinner with them
     private void retriveRealEstateAgentsForSpinner() {

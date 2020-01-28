@@ -50,15 +50,9 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private MenuChangementsInterface callback;
     private TextView noPropertyFoundTextview;
 
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        adapter = new PropertyListAdapter(context, this);
-        Log.d("debago"," ON ATTACH");
-        this.createCallbackToParentActivity();
-    }
-
+    // --------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------
 
 
     public ListPropertyFragment() {
@@ -97,6 +91,27 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         return mView;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        adapter = new PropertyListAdapter(context, this);
+        Log.d("debago"," ON ATTACH");
+        this.createCallbackToParentActivity();
+    }
+
+    // 2 - Configuring ViewModel
+    private void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
+        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+
+        getAllProperties();
+
+    }
+
+    // --------------
+    // SEARCH
+    // --------------
+
     private void startSearchProperty() {
 
         openSearchButton.setOnClickListener(v -> {
@@ -117,18 +132,24 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     }
 
+    @Override
+    public void searchButton(List<Property> properties) {
+
+        Log.d("debago","Search Button: "+properties);
+        ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this,properties);
+
+    }
+
+    @Override
+    public void cancelButton() {
+        callback.onMenuChanged(0);
+    }
+
     // -------------------
     // DATA
     // -------------------
 
-    // 2 - Configuring ViewModel
-    private void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
 
-        getAllProperties();
-
-    }
 
     // 3 - Get all properties for a real estate agent
     private void getAllProperties() {
@@ -175,21 +196,14 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     }
 
-    @Override
-    public void searchButton(List<Property> properties) {
-
-        Log.d("debago","Search Button: "+properties);
-        ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this,properties);
-
-    }
-
-    @Override
-    public void cancelButton() {
-        callback.onMenuChanged(0);
-    }
 
 
-    //INTERFACE BETWEEN LISTPROPERTYFRAGMENT AND LISTPROPERTYACTIVITY
+
+    // --------------
+    // INTERFACE
+    // --------------
+
+    //Interface beween ListPropertyActivity and ListPropertyFragment
 
     public interface MenuChangementsInterface {
         void onMenuChanged(int number);
@@ -204,6 +218,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             throw new ClassCastException(e.toString()+ " must implement MenuChamgementsInterface");
         }
     }
+
+    // --------------
+    // PERMISSIONS
+    // --------------
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

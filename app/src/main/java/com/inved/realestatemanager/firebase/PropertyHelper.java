@@ -35,8 +35,7 @@ public class PropertyHelper {
                                       boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
                                       String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
                                       String photoDescription4, String photoDescription5, String realEstateAgentId,int myCase,String id) {
-        // 1 - Create Obj
-
+        // 1 - Create
 
 
         Property propertyToCreate = new Property(propertyId,typeProperty, pricePropertyInEuro,
@@ -47,6 +46,8 @@ public class PropertyHelper {
                 dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                 photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
 
+
+        /**POURQUOI JE FAIS CA**/
         if(myCase==1){
             //to create
             Log.d("debago", "PropertyHelper : " + myCase);

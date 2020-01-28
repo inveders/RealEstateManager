@@ -167,7 +167,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         this.textwatcherMethod();
 
 
-
         fullDescriptionEditText.addTextChangedListener(textWatcher);
 
 
@@ -197,9 +196,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         this.datePickerInit();
 
 
-        if (
-
-                getActivity() != null) {
+        if (getActivity() != null) {
             context = getActivity();
         } else {
             context = MainApplication.getInstance().getApplicationContext();
@@ -266,6 +263,13 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
 
     }
+
+    private void reinitializeManageChoice() {
+        if (getContext() != null) {
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(), null);
+        }
+    }
+
 
     // --------------
     // TEXTWATCHER
@@ -390,85 +394,83 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), photoNumber);
 
 
-        clearButton.setEnabled(true);
-        saveButton.setEnabled(true);
+            clearButton.setEnabled(true);
+            saveButton.setEnabled(true);
 
-        clearButton.setOnClickListener(view -> {
-            //we clear image and photodescription in custom dialog
-            Glide.with(this)
-                    .load(R.drawable.no_image)
-                    .apply(RequestOptions.centerCropTransform())
-                    .override(240, 240)
-                    .fitCenter()
-                    .into(dialogPhotoImageView);
-            dialogEditText.setText("");
-            //we clear photouri and photodescription to update UI in fragment
-            switch (photoNumber) {
+            clearButton.setOnClickListener(view -> {
+                //we clear image and photodescription in custom dialog
+                Glide.with(this)
+                        .load(R.drawable.no_image)
+                        .apply(RequestOptions.centerCropTransform())
+                        .override(240, 240)
+                        .fitCenter()
+                        .into(dialogPhotoImageView);
+                dialogEditText.setText("");
+                //we clear photouri and photodescription to update UI in fragment
+                switch (photoNumber) {
 
-                case 1:
-                    photoDescription1 = null;
-                    photoUri1 = null;
-                    break;
-                case 2:
-                    photoDescription2 = null;
-                    photoUri2 = null;
-                    break;
-                case 3:
-                    photoDescription3 = null;
-                    photoUri3 = null;
-                    break;
-                case 4:
-                    photoDescription4 = null;
-                    photoUri4 = null;
-                    break;
-                case 5:
-                    photoDescription5 = null;
-                    photoUri5 = null;
-                    break;
+                    case 1:
+                        photoDescription1 = null;
+                        photoUri1 = null;
+                        break;
+                    case 2:
+                        photoDescription2 = null;
+                        photoUri2 = null;
+                        break;
+                    case 3:
+                        photoDescription3 = null;
+                        photoUri3 = null;
+                        break;
+                    case 4:
+                        photoDescription4 = null;
+                        photoUri4 = null;
+                        break;
+                    case 5:
+                        photoDescription5 = null;
+                        photoUri5 = null;
+                        break;
 
-            }
+                }
 
-        });
-        closeButton.setOnClickListener(view -> DialogImage.cancel());
-        saveButton.setOnClickListener(view -> {
+            });
+            closeButton.setOnClickListener(view -> DialogImage.cancel());
+            saveButton.setOnClickListener(view -> {
 
-            switch (photoNumber) {
+                switch (photoNumber) {
 
-                case 1:
-                    photoDescription1 = dialogEditText.getText().toString();
-                    break;
-                case 2:
-                    photoDescription2 = dialogEditText.getText().toString();
-                    break;
-                case 3:
-                    photoDescription3 = dialogEditText.getText().toString();
-                    break;
-                case 4:
-                    photoDescription4 = dialogEditText.getText().toString();
-                    break;
-                case 5:
-                    photoDescription5 = dialogEditText.getText().toString();
-                    break;
+                    case 1:
+                        photoDescription1 = dialogEditText.getText().toString();
+                        break;
+                    case 2:
+                        photoDescription2 = dialogEditText.getText().toString();
+                        break;
+                    case 3:
+                        photoDescription3 = dialogEditText.getText().toString();
+                        break;
+                    case 4:
+                        photoDescription4 = dialogEditText.getText().toString();
+                        break;
+                    case 5:
+                        photoDescription5 = dialogEditText.getText().toString();
+                        break;
 
-            }
+                }
 
-            DialogImage.dismiss();
-            ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), 0);
-            ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "create");
-        });
+                DialogImage.dismiss();
+                ManagePhotoNumberCreateUpdate.savePhotoNumber(getActivity(), 0);
+                ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "create");
+            });
 
-        DialogImage.show();
+            DialogImage.show();
+        }
+
     }
-
-}
-
-
-
 
 
     // --------------
     // TAKE PICTURE
     // --------------
+
     /**
      * Alert dialog for capture or select from galley
      */
@@ -670,6 +672,14 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     }
 
+    private void glideNoImage(ImageView imageView) {
+        Glide.with(this)
+                .load(R.drawable.no_image)
+                .override(50, 50)
+                .fitCenter()
+                .into(imageView);
+    }
+
     // --------------
     // SPINNER
     // --------------
@@ -691,58 +701,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         }
     }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    // --------------
-    // UPDATE PROPERTY
-    // --------------
-
-    private void updateUIwithDataFromDatabase(String propertyId) {
-        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
-
-            if (property.getDateOfEntryOnMarketForProperty().isEmpty() || property.getDateOfEntryOnMarketForProperty() == null) {
-                datePickerInit();
-            } else {
-                dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
-                dateOfEntry.setBackgroundResource(R.drawable.edit_text_design_focused);
-            }
-
-            //Spinner step 3/4 : retrieve the agents who are already in database and show him in the spinner (pre-fill spinner)
-            propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
-                if (realEstateAgents.getFirstname() != null) {
-                    String firstname = realEstateAgents.getFirstname();
-                    String lastname = realEstateAgents.getLastname();
-                    int indexSpinner = getSpinner.getIndexSpinner(agentNameSpinner, firstname + " " + lastname);
-                    Log.d("debago", "set selection in spinner " + firstname + " " + lastname + " and index spinner is: " + agentNameSpinner.getCount());
-                    agentNameSpinner.setSelection(indexSpinner);
-                }
-
-            });
-
-
-            if (!property.getFullDescriptionProperty().isEmpty() || property.getFullDescriptionProperty() != null) {
-                fullDescriptionEditText.setText(property.getFullDescriptionProperty());
-            }
-
-            photoUri1 = property.getPhotoUri1();
-            photoUri2 = property.getPhotoUri2();
-            photoUri3 = property.getPhotoUri3();
-            photoUri4 = property.getPhotoUri4();
-            photoUri5 = property.getPhotoUri5();
-            photoDescription1 = property.getPhotoDescription1();
-            photoDescription2 = property.getPhotoDescription2();
-            photoDescription3 = property.getPhotoDescription3();
-            photoDescription4 = property.getPhotoDescription4();
-            photoDescription5 = property.getPhotoDescription5();
-            updateUI();
-
-        });
-    }
-
 
     //Spinner step 4/4 : retrieve all agents in database and fill spinner with them
     private void retriveRealEstateAgents() {
@@ -772,7 +730,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         }
     }
 
-    //private method of your class
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 
 
     // --------------
@@ -802,15 +763,19 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     }
 
 
+    // --------------
+    // INTERFACE
+    // --------------
 
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
 
+    }
 
-public interface OnFragmentInteractionListener {
-    // TODO: Update argument type and name
-    void onFragmentInteraction(Uri uri);
-
-}
-
+    // --------------
+    // CREATE OR UPDATE
+    // --------------
 
     private void actionsAccordingToCreateOrUpdate() {
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(MainApplication.getInstance().getApplicationContext()) != null) {
@@ -919,13 +884,51 @@ public interface OnFragmentInteractionListener {
     }
 
 
+    // --------------
+    // UPDATE PROPERTY
+    // --------------
 
-    private void reinitializeManageChoice() {
-        if (getContext() != null) {
-            ManageCreateUpdateChoice.saveCreateUpdateChoice(getContext(), null);
-        }
+    private void updateUIwithDataFromDatabase(String propertyId) {
+        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
+
+            if (property.getDateOfEntryOnMarketForProperty().isEmpty() || property.getDateOfEntryOnMarketForProperty() == null) {
+                datePickerInit();
+            } else {
+                dateOfEntry.setText(property.getDateOfEntryOnMarketForProperty());
+                dateOfEntry.setBackgroundResource(R.drawable.edit_text_design_focused);
+            }
+
+            //Spinner step 3/4 : retrieve the agents who are already in database and show him in the spinner (pre-fill spinner)
+            propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
+                if (realEstateAgents.getFirstname() != null) {
+                    String firstname = realEstateAgents.getFirstname();
+                    String lastname = realEstateAgents.getLastname();
+                    int indexSpinner = getSpinner.getIndexSpinner(agentNameSpinner, firstname + " " + lastname);
+                    Log.d("debago", "set selection in spinner " + firstname + " " + lastname + " and index spinner is: " + agentNameSpinner.getCount());
+                    agentNameSpinner.setSelection(indexSpinner);
+                }
+
+            });
+
+
+            if (!property.getFullDescriptionProperty().isEmpty() || property.getFullDescriptionProperty() != null) {
+                fullDescriptionEditText.setText(property.getFullDescriptionProperty());
+            }
+
+            photoUri1 = property.getPhotoUri1();
+            photoUri2 = property.getPhotoUri2();
+            photoUri3 = property.getPhotoUri3();
+            photoUri4 = property.getPhotoUri4();
+            photoUri5 = property.getPhotoUri5();
+            photoDescription1 = property.getPhotoDescription1();
+            photoDescription2 = property.getPhotoDescription2();
+            photoDescription3 = property.getPhotoDescription3();
+            photoDescription4 = property.getPhotoDescription4();
+            photoDescription5 = property.getPhotoDescription5();
+            updateUI();
+
+        });
     }
-
 
 
     private void updatePropertyInFirebase() {
@@ -950,6 +953,10 @@ public interface OnFragmentInteractionListener {
 
     }
 
+    // --------------
+    // FILE
+    // --------------
+
     private void uploadFileChoice(String id) {
         //Update firestore database with good image url and upload image in Firebase Storage
         Log.d("debago", "storage helper before uploadFromUri : " + propertyId);
@@ -965,6 +972,10 @@ public interface OnFragmentInteractionListener {
             storageHelper.uploadFromUri(Uri.parse(photoUri5), id, 5);
 
     }
+
+    // --------------
+    // UI
+    // --------------
 
     private void updateUI() {
 
@@ -1057,18 +1068,14 @@ public interface OnFragmentInteractionListener {
     }
 
 
+    // --------------
+    // INTENTS
+    // --------------
 
     private void startMainActivity() {
         Intent intent = new Intent(getContext(), ListPropertyActivity.class);
         startActivity(intent);
     }
 
-    private void glideNoImage(ImageView imageView) {
-        Glide.with(this)
-                .load(R.drawable.no_image)
-                .override(50, 50)
-                .fitCenter()
-                .into(imageView);
-    }
 
 }

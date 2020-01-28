@@ -90,14 +90,12 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
-
-
     // ---------------------------
     // SYNC WITH FIREFASE
     // ---------------------------
 
     private void checkIfSyncWithFirebaseIsNecessary() {
-
+    /**Afficher depuis room et si pas de données dans room, afficher depuis firebase*/
         PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
 
             if (queryDocumentSnapshots.size() > 0) {
@@ -342,7 +340,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
             switch (number) {
                 case 0:
-                    // code block for add
+                    // add icon
                     item.setIcon(R.drawable.ic_menu_add_white_24dp);
                     item.setOnMenuItemClickListener(menuItem -> {
                         ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
@@ -351,7 +349,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     });
                     break;
                 case 1:
-                    // code block clear
+                    //clear icon
                     item.setIcon(R.drawable.ic_menu_clear_white_24dp);
                     item.setOnMenuItemClickListener(menuItem -> {
                         refreshFragment();
@@ -359,11 +357,11 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     });
                     break;
                 case 2:
-                    // code block edit
+                    // edit icon
                     item.setIcon(R.drawable.ic_menu_update_white_24dp);
                     break;
                 default:
-                    // code block
+
             }
 
         }

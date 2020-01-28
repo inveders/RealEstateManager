@@ -35,6 +35,8 @@ public class DatePickerFragment extends AppCompatDialogFragment implements DateP
             int dd = calendar.get(Calendar.DAY_OF_MONTH);
             return new DatePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, DatePickerFragment.this, yy, mm, dd);
         } else {
+            /**Voir si on utilise cela*/
+            Log.d(TAG,"getActivity is null in DatePickerFragment");
             int yy = calendar.get(Calendar.YEAR);
             int mm = calendar.get(Calendar.MONTH);
             int dd = calendar.get(Calendar.DAY_OF_MONTH);

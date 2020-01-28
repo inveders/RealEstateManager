@@ -93,6 +93,9 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
+    // --------------
+    // LIFE CYCLE AND VIEW MODEL
+    // --------------
 
     @Nullable
     @Override
@@ -165,6 +168,32 @@ public class DetailPropertyFragment extends Fragment {
         return mView;
     }
 
+    // 2 - Configuring ViewModel
+    private void configureViewModel() {
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
+        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+        this.geocodingViewModel = ViewModelProviders.of(this).get(GeocodingViewModel.class);
+    }
+
+
+    // --------------
+    // DATE PICKER
+    // --------------
+
+    private void showDatePickerDialog() {
+
+        if (getActivity() != null) {
+            // get fragment manager so we can launch from fragment
+            final FragmentManager fm = getActivity().getSupportFragmentManager();
+            AppCompatDialogFragment newFragment = new DatePickerFragment();
+            // set the targetFragment to receive the results, specifying the request code
+
+            newFragment.setTargetFragment(DetailPropertyFragment.this, REQUEST_CODE_DATE_PICKER_DETAIL);
+            // show the datePicker
+            newFragment.show(fm, "datePickerDetail");
+        }
+
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Result code is RESULT_OK only if the user selects an Image
@@ -188,27 +217,9 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
-    private void showDatePickerDialog() {
-
-        if (getActivity() != null) {
-            // get fragment manager so we can launch from fragment
-            final FragmentManager fm = getActivity().getSupportFragmentManager();
-            AppCompatDialogFragment newFragment = new DatePickerFragment();
-            // set the targetFragment to receive the results, specifying the request code
-
-            newFragment.setTargetFragment(DetailPropertyFragment.this, REQUEST_CODE_DATE_PICKER_DETAIL);
-            // show the datePicker
-            newFragment.show(fm, "datePickerDetail");
-        }
-
-    }
-
-    // 2 - Configuring ViewModel
-    private void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        this.geocodingViewModel = ViewModelProviders.of(this).get(GeocodingViewModel.class);
-    }
+    // --------------
+    // PROPERTY
+    // --------------
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     public void updateWithProperty(Property property) {
@@ -418,22 +429,6 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
-    private void getRealEstateAgent(String realEstateAgentId) {
-
-        propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this, realEstateAgents -> {
-
-            if (realEstateAgents.getFirstname() != null && realEstateAgents.getLastname() != null) {
-                String completeName = realEstateAgents.getFirstname() + " " + realEstateAgents.getLastname();
-                this.realEstateAgent.setText(completeName);
-            } else if (realEstateAgents.getFirstname() != null) {
-                this.realEstateAgent.setText(realEstateAgents.getFirstname());
-            } else if (realEstateAgents.getLastname() != null) {
-                this.realEstateAgent.setText(realEstateAgents.getLastname());
-            }
-        });
-
-    }
-
     private void setMapStatic(String propertyId) {
 
 
@@ -475,6 +470,30 @@ public class DetailPropertyFragment extends Fragment {
         });
 
     }
+
+    // --------------
+    // AGENT
+    // --------------
+
+    private void getRealEstateAgent(String realEstateAgentId) {
+
+        propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this, realEstateAgents -> {
+
+            if (realEstateAgents.getFirstname() != null && realEstateAgents.getLastname() != null) {
+                String completeName = realEstateAgents.getFirstname() + " " + realEstateAgents.getLastname();
+                this.realEstateAgent.setText(completeName);
+            } else if (realEstateAgents.getFirstname() != null) {
+                this.realEstateAgent.setText(realEstateAgents.getFirstname());
+            } else if (realEstateAgents.getLastname() != null) {
+                this.realEstateAgent.setText(realEstateAgents.getLastname());
+            }
+        });
+
+    }
+
+    // --------------
+    // PERMISSION
+    // --------------
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

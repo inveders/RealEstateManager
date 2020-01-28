@@ -1,9 +1,8 @@
 package com.inved.realestatemanager.controller.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.dialogs.AddAgentDialog;
@@ -21,7 +20,6 @@ public class FinishRegisterActivity extends AppCompatActivity {
     private void openDialog() {
 
         AddAgentDialog dialog = new AddAgentDialog();
-        Log.d("debago","MA openDialog");
         dialog.show(getSupportFragmentManager(), "AddAgentDialog");
     }
 }

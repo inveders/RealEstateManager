@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.utils.MainApplication;
@@ -35,27 +32,14 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Check if user is signed in and update UI accordingly.
         if (this.getCurrentUser()!= null) {
             Log.d("debago", "MA onStart : "+this.getUserEmail());
             startListPropertyActivity();
 
-
         }
 
-        Button connexionButton = findViewById(R.id.login_button);
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        Log.d("debago", "MA onCreate");
-
-        connexionButton.setOnClickListener(view -> {
-            if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
-                startSignInActivity();
-            }else{
-                showSnackBar(this.coordinatorLayout, getString(R.string.error_no_internet));
-                Log.d("debago","Pas de connexion internet, merci de réitérer");
-            }
-
-        });
+        this.connexionButton();
 
     }
 
@@ -77,6 +61,21 @@ public class MainActivity extends BaseActivity {
     // --------------------
     // SIGN IN WITH EMAIL ADDRESS
     // --------------------
+
+    private void connexionButton(){
+        Button connexionButton = findViewById(R.id.login_button);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+
+        connexionButton.setOnClickListener(view -> {
+            if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
+                startSignInActivity();
+            }else{
+                showSnackBar(this.coordinatorLayout, getString(R.string.error_no_internet));
+                Log.d("debago","Pas de connexion internet, merci de réitérer");
+            }
+
+        });
+    }
 
     // 2 - Launch Sign-In Activity
     private void startSignInActivity() {
@@ -100,9 +99,7 @@ public class MainActivity extends BaseActivity {
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
-    private void showSnackBar(CoordinatorLayout coordinatorLayout, String message) {
-        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
-    }
+
 
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
 
@@ -112,14 +109,13 @@ public class MainActivity extends BaseActivity {
            // Log.d("debago", "MA resultCode");
             if (resultCode == RESULT_OK) { // SUCCESS
                 showSnackBar(this.coordinatorLayout, getString(R.string.connection_succeed));
-               // Log.d("debago", "MA onsuccess");
+
+                /**Je ne sais pas si j'ai besoin de ça, essayer la connexion sans cette ligne de code*/
                 if (this.getCurrentUser() != null) {
 
                     startListPropertyActivity();
 
                 }
-
-               // finish();
 
             } else { // ERRORS
                 if (response == null) {
@@ -135,7 +131,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
+    private void showSnackBar(CoordinatorLayout coordinatorLayout, String message) {
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+    }
 
 
 

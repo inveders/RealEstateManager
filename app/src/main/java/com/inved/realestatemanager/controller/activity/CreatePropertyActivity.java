@@ -24,7 +24,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     ViewPagerFragmentAdapter myAdapter;
 
     // --------------------
-    // LIFE CYCLE AND VIEW MODEL
+    // LIFE CYCLE
     // --------------------
 
 
@@ -33,16 +33,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         super.onCreate(savedInstanceState);
 
         this.configureToolBar();
-
-        // Instantiate a ViewPager2 and a PagerAdapter.
-        viewPager2 = findViewById(R.id.viewPager2);
-
-        myAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(), getLifecycle());
-
-        // set Orientation in your ViewPager2
-        viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        viewPager2.setUserInputEnabled(false);// SAMPLE CODE to disable swiping in viewpager2
-        viewPager2.setAdapter(myAdapter);
+        this.configureViewPager();
 
 
         if (getIntent().getStringExtra(PROPERTY_ID_INTENT) != null) {
@@ -65,7 +56,6 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     // TOOLBAR
     // --------------------
 
-    // Configure Toolbar
     private void configureToolBar() {
         Toolbar toolbar = findViewById(R.id.toolbar_create_update);
         setSupportActionBar(toolbar);
@@ -76,6 +66,21 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
             getSupportActionBar().setTitle(getString(R.string.page_name_activity_create_property));
         }
 
+    }
+
+    // --------------------
+    // VIEW PAGER
+    // --------------------
+
+    private void configureViewPager(){
+        // Instantiate a ViewPager2 and a PagerAdapter.
+        viewPager2 = findViewById(R.id.viewPager2);
+        myAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(), getLifecycle());
+
+        // set Orientation in your ViewPager2
+        viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        viewPager2.setUserInputEnabled(false);// SAMPLE CODE to disable swiping in viewpager2
+        viewPager2.setAdapter(myAdapter);
     }
 
     @Override
@@ -96,8 +101,10 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         viewPager2.setCurrentItem(1);
     }
 
-
+    // --------------------
     // CHECKBOX CLICK
+    // --------------------
+
     public void onCheckboxClicked(View view) {
 
         ((CheckBox) view).setOnCheckedChangeListener((compoundButton, b) -> {

@@ -62,25 +62,25 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
     private static final int REQUEST_CAMERA_PHOTO = 456;
     private static final int REQUEST_GALLERY_PHOTO = 455;
     private static final String TAG = "debago";
-    private String cameraFilePath;
-    private Bundle bundle;
 
     //View Model
     private PropertyViewModel propertyViewModel;
 
-    //UI
+    //Photo
     private String urlPicture;
+    private String cameraFilePath;
+    private ImageCameraOrGallery imageCameraOrGallery;
 
-    //Widget
+    //UI
     private ImageView agentPhoto;
     private EditText lastnameEditText;
     private EditText firstnameEditText;
 
     private AutocompleteSupportFragment autocompleteFragment;
-
+    private Bundle bundle;
     private String agencyName;
     private String agencyPlaceId;
-    private ImageCameraOrGallery imageCameraOrGallery;
+
 
     // --------------
     // LIFE CYCLE AND VIEW MODEL
@@ -101,21 +101,24 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         TextView addActionButton = view.findViewById(R.id.add_agent_dialog_add_new_agent);
         ImageButton cancelSearchButton = view.findViewById(R.id.agent_add_dialog_close);
 
+        //Initialize TextWatcher
         firstnameEditText.addTextChangedListener(this);
         lastnameEditText.addTextChangedListener(this);
+
         this.configureViewModel();
 
         if (getDialog() != null) {
             getDialog().setTitle(getString(R.string.add_agent_dialog_title));
         }
 
+        //Retrieve data from AgentManagement Activity
         bundle = getArguments();
         if (bundle != null) {
             addActionButton.setText(getString(R.string.add_agent_dialog_edit_text));
 
             String realEstateAgentIdBundle = bundle.getString("myRealEstateAgentId", null);
             if (realEstateAgentIdBundle != null) {
-                editRealEstateAgent(realEstateAgentIdBundle);
+                retrieveRealEstateAgentData(realEstateAgentIdBundle);
             }
 
         }
@@ -124,7 +127,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
         addPhotoButton.setOnClickListener(v -> selectImage());
         cancelSearchButton.setOnClickListener(v -> getDialog().dismiss());
-        addActionButton.setOnClickListener(v -> this.createNewRealEstateAgent());
+        addActionButton.setOnClickListener(v -> this.createOrUpdateRealEstateAgent());
 
         return view;
     }
@@ -150,7 +153,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private void autocompleteAgency() {
 
-        Log.d("debago","getactivity is "+getActivity());
         if (getActivity() != null) {
             Places.initialize(getActivity(), MAP_API_KEY);
 
@@ -191,8 +193,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
     // AGENT
     // --------------
 
-    // Get all items for a user
-    private void createNewRealEstateAgent() {
+    private void createOrUpdateRealEstateAgent() {
 
         if (firstnameEditText.getText().toString().isEmpty()) {
             firstnameEditText.setError(getString(R.string.set_error_add_agent_firstname));
@@ -228,15 +229,17 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
             }
 
-            assert realEstateAgentId != null;
-            RealEstateAgents realEstateAgents = new RealEstateAgents(realEstateAgentId, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
             //create agent in firebase
             RealEstateAgentHelper.createAgent(realEstateAgentId, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 
+            assert realEstateAgentId != null;
+            //agent object to create agent in room
+            RealEstateAgents realEstateAgents = new RealEstateAgents(realEstateAgentId, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
+
 
             if (bundle != null) {
-
+                //update agent in room
                 String realEstateAgentIdBundle = bundle.getString("myRealEstateAgentId", null);
                 Log.d("debago", "agencyName :" + agencyName + " real estate agent string : " + realEstateAgents.toString()+" and urlpicture is "+urlPicture);
                 if (realEstateAgentIdBundle != null) {
@@ -247,7 +250,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
 
             } else {
-
+                //create new agent in room
                 this.propertyViewModel.createRealEstateAgent(realEstateAgents);
 
                 Toast.makeText(getContext(), getString(R.string.add_agent_dialog_add_confirm_text), Toast.LENGTH_SHORT).show();
@@ -255,12 +258,14 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
             }
 
+            //to upload a photo on Firebase storage
             if (urlPicture != null) {
                 StorageHelper storageHelper = new StorageHelper();
                 storageHelper.uploadFromUri(Uri.parse(urlPicture), FirebaseAuth.getInstance().getCurrentUser().getEmail(), 6);
 
             }
 
+            //to close the dialog
             if (getDialog() != null) {
                 getDialog().dismiss();
             }
@@ -269,8 +274,8 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     }
 
-    // Get all items for a user
-    private void editRealEstateAgent(String realEstateAgendId) {
+
+    private void retrieveRealEstateAgentData(String realEstateAgendId) {
 
         propertyViewModel.getRealEstateAgentById(realEstateAgendId).observe(getViewLifecycleOwner(), realEstateAgents -> {
 
@@ -283,17 +288,14 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             }
 
             if (realEstateAgents.getAgencyName() != null) {
-                //    agencyNameTextview.setVisibility(View.VISIBLE);
-                // agencyNameTextview.setText(realEstateAgents.getAgencyName());
                 autocompleteFragment.setText(realEstateAgents.getAgencyName());
             }
 
             if (realEstateAgents.getUrlPicture() != null) {
-                Log.d("debago","getUrlPicture is "+realEstateAgents.getUrlPicture());
                 urlPicture = realEstateAgents.getUrlPicture();
                 showImageInCircle(realEstateAgents.getUrlPicture());
             }else{
-                Log.d("debago","getUrlPicture is null ");
+                Log.d(TAG,"getUrlPicture is null ");
             }
 
 
@@ -379,13 +381,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
 
-                  /*  try {
-                        mPhotoFile = mCompressor.compressToFile1(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-                    //agentPhoto.setImageURI(selectedImage);
-
                     if (selectedImage != null) {
                         urlPicture = imageCameraOrGallery.getRealPathFromUri(selectedImage);
                         showImageInCircle(urlPicture);
@@ -393,15 +388,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
                     break;
                 case REQUEST_CAMERA_PHOTO:
-
-                   /* try {
-                        Log.d("debago", "mPhotoFile is: " + mPhotoFile + " and camerafilepath is: " + cameraFilePath);
-                        mPhotoFile = mCompressor.compressToFile1(mPhotoFile);
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
 
                     if (cameraFilePath != null) {
                         urlPicture = cameraFilePath;
@@ -419,7 +405,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private void showImageInCircle(String photoStringFromRoom) {
 
-        Log.d("debago","Show image in circle "+photoStringFromRoom);
         Uri fileUri = Uri.parse(photoStringFromRoom);
         if (fileUri.getPath() != null) {
             Glide.with(MainApplication.getInstance().getApplicationContext())
@@ -471,10 +456,8 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             //put backgroung grey when we remove all text
 
             if (firstnameEditText.getText().hashCode() == charSequence.hashCode()) {
-                Log.d("debago", "priceedittex charsequence is " + charSequence.hashCode());
                 firstnameEditText.setBackgroundResource(R.drawable.edit_text_design);
             } else if (lastnameEditText.getText().hashCode() == charSequence.hashCode()) {
-                Log.d("debago", "surfaceedittext charsequence is " + charSequence.hashCode());
                 lastnameEditText.setBackgroundResource(R.drawable.edit_text_design);
             }
         }
@@ -494,12 +477,12 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                     // put backgroung grey when there is no action
                     firstnameEditText.setBackgroundResource(R.drawable.edit_text_design);
                 } else {
-                    // put backgroung white when there write
+                    // put backgroung white when they write
                     firstnameEditText.setBackgroundResource(R.drawable.edit_text_design_focused);
                 }
                 firstnameEditText.addTextChangedListener(this);
             } else if (lastnameEditText.getText().hashCode() == editable.hashCode()) {
-                Log.d("debago", "value is " + editable.toString());
+
                 String value = editable.toString();
                 lastnameEditText.removeTextChangedListener(this);
 

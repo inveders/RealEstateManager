@@ -31,12 +31,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         super.onCreate(savedInstanceState);
 
         this.configToolbar();
-        RecyclerView recyclerView = findViewById(R.id.agent_management_recycler_view);
-        adapter = new RecyclerViewAgentManagement(this, this);
-        recyclerView.setAdapter(this.adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        this.configureRecyclerView();
         this.configureViewModel();
 
     }
@@ -68,6 +63,20 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
         }
 
     }
+
+    // --------------------
+    // RECYCLER VIEW
+    // --------------------
+
+    private void configureRecyclerView(){
+        RecyclerView recyclerView = findViewById(R.id.agent_management_recycler_view);
+        adapter = new RecyclerViewAgentManagement(this, this);
+        recyclerView.setAdapter(this.adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+    }
+
 
     // --------------------
     // AGENT

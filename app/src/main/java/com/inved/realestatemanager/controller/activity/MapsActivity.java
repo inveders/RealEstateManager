@@ -44,7 +44,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //GOOGLE GEOCODING
     private GoogleMap mGoogleMap;
-    //  private Marker mMarker;
+
     List<Double> latitudeList = new ArrayList<>();
     List<Double> longitudeList = new ArrayList<>();
 
@@ -68,13 +68,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        checkLocation();
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-        }
+        this.checkLocation();
+        this.configureMap();
         this.configureToolbar();
         this.configureViewModel();
         this.initializeMap();
@@ -117,6 +112,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    private void configureMap(){
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -240,7 +244,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int mTilt = 35;
 
         LatLng latLngCurrent = new LatLng(myCurrentLat, myCurrentLongi);
-        Log.d("debago","mycurrent lat is "+myCurrentLat);
         CameraPosition Liberty = CameraPosition.builder().target(latLngCurrent).zoom(mZoom).bearing(mBearing).tilt(mTilt).build();
         mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngCurrent));
@@ -321,7 +324,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     // INTENT TO OPEN ACTIVITY
     // --------------
 
-    // Launch View Place Activity
     private void startDetailActivity(String propertyId) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(PROPERTY_ID, propertyId);

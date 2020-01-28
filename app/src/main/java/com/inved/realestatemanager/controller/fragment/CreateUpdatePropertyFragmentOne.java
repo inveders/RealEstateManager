@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
 import com.inved.realestatemanager.domain.GetSpinner;
+import com.inved.realestatemanager.domain.JoinCheckBoxInString;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
@@ -112,31 +113,13 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         touristAttractionCheckBox = v.findViewById(R.id.create_update_checkbox_poi_tourist_attraction);
         oilStationCheckBox = v.findViewById(R.id.create_update_checkbox_poi_oil_station);
 
-
-        // Get the string array
-        String[] countries = getResources().getStringArray(R.array.countries_array);
-        // Create the adapter and set it to the AutoCompleteTextView
-        ArrayAdapter<String> adapterCountry =
-                new ArrayAdapter<>(MainApplication.getInstance().getApplicationContext(), android.R.layout.simple_list_item_1, countries);
-        countryEditText.setAdapter(adapterCountry);
-
         nextButton.setOnClickListener(view -> createProperty());
-        typePropertySpinner.setOnItemSelectedListener(this);
-        numberRoomSpinner.setOnItemSelectedListener(this);
-        numberBedroomSpinner.setOnItemSelectedListener(this);
-        numberBathroomSpinner.setOnItemSelectedListener(this);
 
         priceEditText.setHint(getString(R.string.create_update_by_price_hint,utils.goodCurrencyUnit()));
+        this.spinnerInitialization();
+        this.textWatcherInitialization();
 
-        //Texwatcher
-        priceEditText.addTextChangedListener(this);
-        surfaceEditText.addTextChangedListener(this);
-        streetNumberEditText.addTextChangedListener(this);
-        additionnalEditText.addTextChangedListener(this);
-        streetNameEditText.addTextChangedListener(this);
-        zipCodeEditText.addTextChangedListener(this);
-        townNameEditText.addTextChangedListener(this);
-        countryEditText.addTextChangedListener(this);
+        this.configureViewModel();
 
         //We check if it's a new add property or just a modification
         if (getActivity() != null) {
@@ -145,11 +128,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             context = MainApplication.getInstance().getApplicationContext();
         }
 
-        this.configureViewModel();
-
-
-
-        Log.d("debagp","Manage choice is :" +ManageCreateUpdateChoice.getCreateUpdateChoice(context));
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
             String propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
             this.updateUIwithDataFromDatabase(propertyId);
@@ -197,6 +175,37 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         }
     }
 
+    // --------------
+    // Initialization
+    // --------------
+
+    private void textWatcherInitialization(){
+        //Texwatcher initialization
+        priceEditText.addTextChangedListener(this);
+        surfaceEditText.addTextChangedListener(this);
+        streetNumberEditText.addTextChangedListener(this);
+        additionnalEditText.addTextChangedListener(this);
+        streetNameEditText.addTextChangedListener(this);
+        zipCodeEditText.addTextChangedListener(this);
+        townNameEditText.addTextChangedListener(this);
+        countryEditText.addTextChangedListener(this);
+    }
+
+    private void spinnerInitialization(){
+        //Spinner initialization
+        // Get the string array
+        String[] countries = getResources().getStringArray(R.array.countries_array);
+        // Create the adapter and set it to the AutoCompleteTextView
+        ArrayAdapter<String> adapterCountry =
+                new ArrayAdapter<>(MainApplication.getInstance().getApplicationContext(), android.R.layout.simple_list_item_1, countries);
+        countryEditText.setAdapter(adapterCountry);
+
+
+        typePropertySpinner.setOnItemSelectedListener(this);
+        numberRoomSpinner.setOnItemSelectedListener(this);
+        numberBedroomSpinner.setOnItemSelectedListener(this);
+        numberBathroomSpinner.setOnItemSelectedListener(this);
+    }
 
     // --------------
     // CREATE PROPERTY
@@ -217,7 +226,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         } else if (streetNameEditText.getText().toString().trim().isEmpty()) {
             streetNameEditText.setError(getString(R.string.set_error_street_name));
         } else {
-            double pricePropertyInDollar = Double.valueOf(priceEditText.getText().toString());
+            double price = Double.valueOf(priceEditText.getText().toString());
             double surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
             String streetNumber = streetNumberEditText.getText().toString();
             String streetName = streetNameEditText.getText().toString();
@@ -232,7 +241,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             myList.add(numberRoomsInProperty);
             myList.add(numberBathroomsInProperty);
             myList.add(numberBedroomsInProperty);
-            myList.add(utils.savePriceInEuro(pricePropertyInDollar));
+            myList.add(utils.savePriceInEuro(price));
             myList.add(surfaceAreaProperty);
             myList.add(streetNumber);
             myList.add(streetName);
@@ -275,32 +284,14 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             myList = String.join(",", pointsOfInterestList);
         }else{
-            myList=joinMethod(pointsOfInterestList);
+            JoinCheckBoxInString joinCheckBoxInString = new JoinCheckBoxInString();
+            myList=joinCheckBoxInString.joinMethod(pointsOfInterestList);
         }
 
         return myList;
     }
 
-    private static String joinMethod(List<String> input) {
 
-        if (input == null || input.size() <= 0) return "";
-
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < input.size(); i++) {
-
-            sb.append(input.get(i));
-
-            // if not the last item
-            if (i != input.size() - 1) {
-                sb.append(",");
-            }
-
-        }
-
-        return sb.toString();
-
-    }
 
     // --------------
     // UPDATE PROPERTY
@@ -428,10 +419,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             //put backgroung grey when we remove all text
 
             if (priceEditText.getText().hashCode() == charSequence.hashCode()){
-                Log.d("debago","priceedittex charsequence is "+charSequence.hashCode());
                 priceEditText.setBackgroundResource(R.drawable.edit_text_design);
             }else if (surfaceEditText.getText().hashCode() == charSequence.hashCode()){
-                Log.d("debago","surfaceedittext charsequence is "+charSequence.hashCode());
                 surfaceEditText.setBackgroundResource(R.drawable.edit_text_design);
             }else if (streetNumberEditText.getText().hashCode() == charSequence.hashCode()){
                 streetNumberEditText.setBackgroundResource(R.drawable.edit_text_design);
@@ -471,7 +460,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 priceEditText.addTextChangedListener(this);
             }else if (surfaceEditText.getText().hashCode() == editable.hashCode()){
-                // Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 surfaceEditText.removeTextChangedListener(this);
 
@@ -510,7 +498,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 additionnalEditText.addTextChangedListener(this);
             }else if (streetNameEditText.getText().hashCode() == editable.hashCode()){
-                // Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 streetNameEditText.removeTextChangedListener(this);
 
@@ -523,7 +510,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 streetNameEditText.addTextChangedListener(this);
             }else if (zipCodeEditText.getText().hashCode() == editable.hashCode()){
-                // Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 zipCodeEditText.removeTextChangedListener(this);
 
@@ -536,7 +522,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 zipCodeEditText.addTextChangedListener(this);
             }else if (townNameEditText.getText().hashCode() == editable.hashCode()){
-                //Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 townNameEditText.removeTextChangedListener(this);
 
@@ -550,7 +535,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 townNameEditText.addTextChangedListener(this);
             }
             else if (countryEditText.getText().hashCode() == editable.hashCode()){
-                //Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 countryEditText.removeTextChangedListener(this);
 
