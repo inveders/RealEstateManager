@@ -28,7 +28,7 @@ public class Utils {
      * @return
      */
     private static double convertDollarToEuro(double dollars) {
-        
+
         return (int) Math.round(dollars * ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()));
     }
 

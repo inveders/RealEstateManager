@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.inved.realestatemanager.retrofit.exchangePojo.Exchange;
-import com.inved.realestatemanager.retrofit.modelPojo.Geocoding;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageCurrency;
 
