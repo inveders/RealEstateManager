@@ -7,9 +7,9 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomUpdateQuery {
+public class  RoomUpdateQuery {
 
-    public SimpleSQLiteQuery queryRoomUpdateDatabase(String typeProperty, double pricePropertyInDollar,
+    public SimpleSQLiteQuery queryRoomUpdateDatabase(String typeProperty, double pricePropertyInEuro,
                                                      double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
                                                      int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
                                                      String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
@@ -35,11 +35,11 @@ public class RoomUpdateQuery {
 
         }
 
-        if (pricePropertyInDollar != 0.0) {
+        if (pricePropertyInEuro != 0.0) {
 
-            queryString += " pricePropertyInDollar = :pricePropertyInDollar";
+            queryString += " pricePropertyInEuro = :pricePropertyInEuro";
             queryString += ",";
-            args.add(pricePropertyInDollar);
+            args.add(pricePropertyInEuro);
         }
 
         if (surfaceAreaProperty != 0.0) {

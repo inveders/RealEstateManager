@@ -84,7 +84,7 @@ public class RoomSearchQuery {
                 containsCondition = true;
             }
 
-            queryString += " pricePropertyInDollar BETWEEN :minPrice AND :maxPrice";
+            queryString += " pricePropertyInEuro BETWEEN :minPrice AND :maxPrice";
             args.add(minPrice);
             args.add(maxPrice);
         }

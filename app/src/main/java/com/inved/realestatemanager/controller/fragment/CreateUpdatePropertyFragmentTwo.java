@@ -563,7 +563,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 File photoFile = null;
                 try {
                     photoFile = imageCameraOrGallery.createImageFile();
-                    cameraFilePath = imageCameraOrGallery.getCameraFilePath(photoFile); /**Pas sûr que cela serve ici*/
+                    cameraFilePath = imageCameraOrGallery.getCameraFilePath(photoFile);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     // Error occurred while creating the File
