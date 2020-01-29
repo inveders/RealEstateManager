@@ -1,11 +1,13 @@
 package com.inved.realestatemanager.firebase;
 
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.inved.realestatemanager.controller.activity.AgentManagementActivity;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.ManageAgency;
@@ -19,9 +21,11 @@ public class PropertyHelper {
     // --- COLLECTION REFERENCE ---
 
     private static CollectionReference getPropertyCollection() {
+        Log.d("debago","agencyPlaceId is "+ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext()));
         return FirebaseFirestore.getInstance().collection(COLLECTION_GENERAL)
                 .document(ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext()))
                 .collection(SUB_COLLECTION_NAME);
+
 
     }
 

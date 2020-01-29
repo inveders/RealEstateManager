@@ -124,7 +124,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
                 Log.d("debago", "good file NOT exist for agent ");
                 Glide.with(MainApplication.getInstance().getApplicationContext())
-                        .load(R.drawable.no_image)
+                        .load(R.drawable.ic_anon_user_48dp)
                         .apply(RequestOptions.circleCropTransform())
                         .listener(new RequestListener<Drawable>() {
                             @Override

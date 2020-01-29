@@ -24,7 +24,7 @@ public class RetrofitServiceApiExchange {
 
     public interface ExchangeApi {
 
-        @GET("/json")
+        @GET("latest")
         Call<Exchange> getExchangeValue(
                 @Query("symbols") String currency);
     }
@@ -37,7 +37,7 @@ public class RetrofitServiceApiExchange {
 
 
            retrofit = new Retrofit.Builder()
-                   .baseUrl("https://api.exchangeratesapi.io/latest?symbols=USD")
+                   .baseUrl("https://api.exchangeratesapi.io/")
                    .addConverterFactory(GsonConverterFactory.create())
                    .client(client)
                    .build();

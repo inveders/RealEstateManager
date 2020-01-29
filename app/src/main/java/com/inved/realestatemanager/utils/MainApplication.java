@@ -12,7 +12,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import io.fabric.sdk.android.Fabric;
 
 
-public class MainApplication extends Application { //extends MultiDexApplication
+public class MainApplication extends Application {
 
     private static MainApplication mInstance;
     private static Resources res;
@@ -22,7 +22,6 @@ public class MainApplication extends Application { //extends MultiDexApplication
         super.onCreate();
         mInstance = this;
         JodaTimeAndroid.init(this);
-       // deleteDatabase("MyDatabase.db");
         RetrofitServiceApiExchange retrofitServiceApiExchange = new RetrofitServiceApiExchange();
         retrofitServiceApiExchange.retrofitCall();
         Stetho.initializeWithDefaults(this);
