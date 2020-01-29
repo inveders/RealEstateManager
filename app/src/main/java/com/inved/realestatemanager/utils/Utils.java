@@ -7,9 +7,11 @@ import android.util.Log;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
-import com.inved.realestatemanager.retrofit.RetrofitServiceApiExchange;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,35 +41,59 @@ public class Utils {
         format.setMinimumFractionDigits(2);
         format.setMaximumFractionDigits(2);
         //format.format(dollarsRates * euroToConvert);
-        return unitConversion.changeDoubleToStringWithThousandSeparator(dollarsRates*euroToConvert);
+        return unitConversion.changeDoubleToStringWithThousandSeparator(dollarsRates * euroToConvert);
+    }
+
+    //Convert euro in dollars
+    private String convertEuroToDollarsInDoubleFormat(double dollarsRates, double euroToConvert) {
+
+        double conversion = dollarsRates*euroToConvert;
+        BigDecimal bd = new BigDecimal(conversion).setScale(2,RoundingMode.HALF_UP);
+        double newInput = bd.doubleValue();
+
+        NumberFormat format = NumberFormat.getInstance();
+        format.setMinimumFractionDigits(2);
+        format.setMaximumFractionDigits(2);
+        return String.valueOf(newInput);
+    }
+
+
+    //Get price in good currency
+    public String getPriceInGoodCurrency(double priceInEuro) {
+
+        UnitConversion unitConversion = new UnitConversion();
+        if (ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")) {
+            return unitConversion.changeDoubleToStringWithThousandSeparator(priceInEuro);
+        } else {
+            return convertEuroToDollars(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()), priceInEuro);
+        }
     }
 
     //Get price in good currency
-    public String getPriceInGoodCurrency(double priceInEuro){
+    public String getPriceInGoodCurrencyDoubleType(double priceInEuro) {
 
-        UnitConversion unitConversion = new UnitConversion();
-        if(ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")){
-            return unitConversion.changeDoubleToStringWithThousandSeparator(priceInEuro);
-        }else{
-            return convertEuroToDollars(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()),priceInEuro);
+        if (ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")) {
+            return String.valueOf(priceInEuro);
+        } else {
+            return convertEuroToDollarsInDoubleFormat(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()),priceInEuro);
         }
     }
 
     //Save price in good currency
-    public double savePriceInEuro(double price){
+    public double savePriceInEuro(double price) {
 
-        if(ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")){
+        if (ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")) {
             return price;
-        }else{
+        } else {
             return convertDollarToEuro(price);
         }
     }
 
-    public String goodCurrencyUnit(){
+    public String goodCurrencyUnit() {
 
-        if(ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")){
+        if (ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")) {
             return MainApplication.getResourses().getString(R.string.list_property_unit_price_euro);
-        }else{
+        } else {
             return MainApplication.getResourses().getString(R.string.list_property_unit_price_dollars);
         }
     }
@@ -129,47 +155,5 @@ public class Utils {
     }
 
 
-
-
-
 }
-
-    //VolleyRequest to get USD rates and convert euro in dollars
-  /*  public void volleyRequest() {
-
-
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.exchangeratesapi.io/latest?symbols=USD";
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-                    JSONObject jsonObject = response.getJSONObject("rates");
-                    double dollarsRates = jsonObject.getDouble("USD");
-
-                    String myDollars = dollarsConversion(dollarsRates,10);
-                    Log.d("Debago","myDollars is "+myDollars);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Debago","That didn't work!");
-
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(objectRequest);
-
-    }*/
-
-
-
 

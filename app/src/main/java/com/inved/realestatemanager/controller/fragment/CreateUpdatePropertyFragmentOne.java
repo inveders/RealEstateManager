@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,9 +216,9 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         if (streetNumberEditText.getText().toString().trim().isEmpty() || Integer.parseInt(streetNumberEditText.getText().toString()) > 99999) {
             streetNumberEditText.setError(getString(R.string.set_error_street_number));
         } else if (priceEditText.getText().toString().trim().isEmpty() || Double.parseDouble(priceEditText.getText().toString()) > 999999999.0) {
-            priceEditText.setError(getString(R.string.set_error_surface_area));
+            priceEditText.setError(getString(R.string.set_error_price));
         } else if (surfaceEditText.getText().toString().trim().isEmpty() || Double.parseDouble(surfaceEditText.getText().toString()) > 1000000.0) {
-            surfaceEditText.setError(getString(R.string.set_error_price));
+            surfaceEditText.setError(getString(R.string.set_error_surface_area));
         } else if (townNameEditText.getText().toString().trim().isEmpty()) {
             townNameEditText.setError(getString(R.string.set_error_town));
         } else if (zipCodeEditText.getText().toString().trim().isEmpty()) {
@@ -290,8 +291,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         return myList;
     }
 
-
-
     // --------------
     // UPDATE PROPERTY
     // --------------
@@ -300,7 +299,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private void updateUIwithDataFromDatabase(String propertyId) {
         propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
 
-            priceEditText.setText(utils.getPriceInGoodCurrency(property.getPricePropertyInEuro()));
+            priceEditText.setText(utils.getPriceInGoodCurrencyDoubleType(property.getPricePropertyInEuro()));
             surfaceEditText.setText(Double.toString(property.getSurfaceAreaProperty()));
             streetNumberEditText.setText(property.getStreetNumber());
             streetNameEditText.setText(property.getStreetName());
