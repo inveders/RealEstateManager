@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.utils.MainApplication;
+import com.inved.realestatemanager.utils.ManageAgency;
 import com.inved.realestatemanager.utils.Utils;
 
 import java.util.Collections;
@@ -34,8 +35,16 @@ public class MainActivity extends BaseActivity {
 
         // Check if user is signed in and update UI accordingly.
         if (this.getCurrentUser()!= null) {
-            Log.d("debago", "MA onStart : "+this.getUserEmail());
-            startListPropertyActivity();
+            if(ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext())==null){
+
+                Intent intent = new Intent(this, FinishRegisterActivity.class);
+                startActivity(intent);
+
+            }else{
+                Log.d("debago", "MA onStart : "+this.getUserEmail());
+                startListPropertyActivity();
+            }
+
 
         }
 
