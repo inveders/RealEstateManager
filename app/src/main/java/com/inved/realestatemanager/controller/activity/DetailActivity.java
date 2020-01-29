@@ -1,10 +1,12 @@
 package com.inved.realestatemanager.controller.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
@@ -12,9 +14,12 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
-
+@RuntimePermissions
 public class DetailActivity extends BaseActivity  {
 
     public static final String PROPERTY_ID_INTENT = "PROPERTY_ID_INTENT";
@@ -86,7 +91,8 @@ public class DetailActivity extends BaseActivity  {
         MenuItem item = menu.findItem(R.id.menu);
         item.setIcon(R.drawable.ic_menu_update_white_24dp);
         item.setOnMenuItemClickListener(menuItem -> {
-            startCreatePropertyActivity();
+            DetailActivityPermissionsDispatcher.startCreatePropertyActivityWithPermissionCheck(this);
+
 
             return true;
         });
@@ -99,12 +105,26 @@ public class DetailActivity extends BaseActivity  {
     // INTENT TO OPEN ACTIVITY
     // --------------
 
-    private void startCreatePropertyActivity() {
+    @NeedsPermission(Manifest.permission.CAMERA)
+    public void startCreatePropertyActivity() {
 
         //We send data to the CreateProeprtyActivity
         Intent intent = new Intent(this, CreatePropertyActivity.class);
         intent.putExtra(PROPERTY_ID_INTENT,propertyId);
         startActivity(intent);
+    }
+
+
+
+    // --------------
+    // PERMISSIONS
+    // --------------
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        DetailActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
 
