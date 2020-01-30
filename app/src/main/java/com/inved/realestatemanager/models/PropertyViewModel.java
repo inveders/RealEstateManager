@@ -79,6 +79,9 @@ public class PropertyViewModel extends ViewModel {
         return propertyDataSource.getMaxPrice();
     }
 
+    public int getMaxSurface() {
+        return propertyDataSource.getMaxSurface();
+    }
 
     public void createProperty(Property property) {
         executor.execute(() -> propertyDataSource.createItem(property));

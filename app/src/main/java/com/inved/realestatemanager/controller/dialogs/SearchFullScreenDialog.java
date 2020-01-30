@@ -138,7 +138,23 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     // --------------
 
     private void seekbarChangements() {
-        
+
+        new Thread(() -> {
+            int maxPriceFromRoom = propertyViewModel.getMaxPrice();
+            Log.d("debago","max price from room is "+maxPriceFromRoom);
+            priceSeekbar.setMax(maxPriceFromRoom);
+
+
+        }).start();
+
+        new Thread(() -> {
+
+            int maxSurfaceFromRoom = propertyViewModel.getMaxSurface();
+            Log.d("debago","max surface from room is "+maxSurfaceFromRoom);
+            surfaceSeekbar.setMax(maxSurfaceFromRoom);
+
+        }).start();
+
         priceSeekbar.setMax(MAX_PRICE_PROPERTY);
         surfaceSeekbar.setMax(MAX_SURFACE_PROPERTY);
         surfaceSeekbar.getThumb(1).setValue(surfaceSeekbar.getMax());

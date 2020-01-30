@@ -27,6 +27,9 @@ public interface PropertyDao {
     @Query("SELECT MAX(pricePropertyInEuro) FROM Property")
     int getMaxPrice();
 
+    @Query("SELECT MAX(surfaceAreaProperty) FROM Property")
+    int getMaxSurface();
+
     @RawQuery(observedEntities = Property.class)
     LiveData<List<Property>> searchProperty(SupportSQLiteQuery query);
 

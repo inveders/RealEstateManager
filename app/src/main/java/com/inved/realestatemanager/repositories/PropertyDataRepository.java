@@ -29,6 +29,8 @@ public class PropertyDataRepository {
 
     public int getMaxPrice(){return this.propertyDao.getMaxPrice();}
 
+    public int getMaxSurface(){return this.propertyDao.getMaxSurface();}
+
     // --- SEARCH ---
 
     public LiveData<List<Property>> searchProperty(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
