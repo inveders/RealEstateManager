@@ -64,7 +64,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     private double minPrice = 0;
     private double maxPrice = 3000000;
     private List<String> spinnerAgentList = new ArrayList<>();
-    private String realEstateAgentId=null;
+    private String realEstateAgentId = null;
     //Interface
     private OnClickSearchInterface callback;
 
@@ -87,17 +87,17 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         //declarations
         typePropertySpinner = view.findViewById(R.id.dialog_spinner_type_property);
         townPropertyAutocomplete = view.findViewById(R.id.dialog_town_autocompleteText);
-        surfaceSeekbar =view.findViewById(R.id.dialog_seekbar_surface);
-        surfaceMinValue=view.findViewById(R.id.dialog_surface_left_value);
-        surfaceMaxValue=view.findViewById(R.id.dialog_surface_right_value);
-        priceSeekbar=view.findViewById(R.id.dialog_seekbar_price);
-        priceMinValue=view.findViewById(R.id.dialog_price_left_value);
-        priceMaxValue=view.findViewById(R.id.dialog_price_right_value);
-        minBedroomSpinner=view.findViewById(R.id.dialog_spinner_number_bedroom_min);
-        maxBedroomSpinner=view.findViewById(R.id.dialog_spinner_number_bedroom_max);
-        countryAutocomplete=view.findViewById(R.id.dialog_country_autocompleteText);
-        statusSpinner=view.findViewById(R.id.dialog_spinner_status);
-        realEstateAgentNameSpinner=view.findViewById(R.id.dialog_spinner_agent_name);
+        surfaceSeekbar = view.findViewById(R.id.dialog_seekbar_surface);
+        surfaceMinValue = view.findViewById(R.id.dialog_surface_left_value);
+        surfaceMaxValue = view.findViewById(R.id.dialog_surface_right_value);
+        priceSeekbar = view.findViewById(R.id.dialog_seekbar_price);
+        priceMinValue = view.findViewById(R.id.dialog_price_left_value);
+        priceMaxValue = view.findViewById(R.id.dialog_price_right_value);
+        minBedroomSpinner = view.findViewById(R.id.dialog_spinner_number_bedroom_min);
+        maxBedroomSpinner = view.findViewById(R.id.dialog_spinner_number_bedroom_max);
+        countryAutocomplete = view.findViewById(R.id.dialog_country_autocompleteText);
+        statusSpinner = view.findViewById(R.id.dialog_spinner_status);
+        realEstateAgentNameSpinner = view.findViewById(R.id.dialog_spinner_agent_name);
         TextView searchActionButton = view.findViewById(R.id.fullscreen_dialog_launch_search);
         ImageButton cancelSearchButton = view.findViewById(R.id.fullscreen_dialog_close);
 
@@ -141,18 +141,12 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
         new Thread(() -> {
             int maxPriceFromRoom = propertyViewModel.getMaxPrice();
-            Log.d("debago","max price from room is "+maxPriceFromRoom);
             priceSeekbar.setMax(maxPriceFromRoom);
-
-
         }).start();
 
         new Thread(() -> {
-
             int maxSurfaceFromRoom = propertyViewModel.getMaxSurface();
-            Log.d("debago","max surface from room is "+maxSurfaceFromRoom);
             surfaceSeekbar.setMax(maxSurfaceFromRoom);
-
         }).start();
 
         priceSeekbar.setMax(MAX_PRICE_PROPERTY);
@@ -208,14 +202,14 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         if (parent.getId() == R.id.dialog_spinner_type_property) {
             mTypeProperty = typePropertySpinner.getSelectedItem().toString();
 
-            if(mTypeProperty.equals(getString(R.string.select_type_property))){
-                mTypeProperty=null;
+            if (mTypeProperty.equals(getString(R.string.select_type_property))) {
+                mTypeProperty = null;
             }
         } else if (parent.getId() == R.id.dialog_spinner_status) {
             mStatus = statusSpinner.getSelectedItem().toString();
 
-            if(mStatus.equals(getString(R.string.select_status))){
-                mStatus=null;
+            if (mStatus.equals(getString(R.string.select_status))) {
+                mStatus = null;
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_min) {
@@ -237,8 +231,8 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         } else if (parent.getId() == R.id.dialog_spinner_agent_name) {
 
             mRealEstateAgentName = realEstateAgentNameSpinner.getSelectedItem().toString();
-            if(mRealEstateAgentName.equals(getString(R.string.select_agent))){
-                mRealEstateAgentName=null;
+            if (mRealEstateAgentName.equals(getString(R.string.select_agent))) {
+                mRealEstateAgentName = null;
             }
 
         }
@@ -294,11 +288,11 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
                 String town = !townPropertyAutocomplete.getText().toString().equals("") ? townPropertyAutocomplete.getText().toString() : null;
                 String country = !countryAutocomplete.getText().toString().equals("") ? countryAutocomplete.getText().toString() : null;
 
-                Log.d("debago","search property elements are : "+mTypeProperty+" "+ town+" "+ minSurface+" "+ maxSurface+" "+ minPrice+" "+ maxPrice+" "+
-                        mMinBedroom+" "+ mMaxBedroom+" "+ country+" "+ mStatus+" "+ mRealEstateAgentName);
+                Log.d("debago", "search property elements are : " + mTypeProperty + " " + town + " " + minSurface + " " + maxSurface + " " + minPrice + " " + maxPrice + " " +
+                        mMinBedroom + " " + mMaxBedroom + " " + country + " " + mStatus + " " + mRealEstateAgentName);
 
 
-                if(mRealEstateAgentName!=null){
+                if (mRealEstateAgentName != null) {
                     SplitString splitString = new SplitString();
                     String firstname = splitString.splitStringWithSpace(mRealEstateAgentName, 0);
                     String lastname = splitString.splitStringWithSpace(mRealEstateAgentName, 1);
@@ -308,22 +302,21 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
                         this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
                                 mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
                                 .observe(this, properties -> {
-                                    Log.d("debago","properties size is " +properties.size()+ "1. realestateagentId is "+realEstateAgentId);
+                                    Log.d("debago", "properties size is " + properties.size() + "1. realestateagentId is " + realEstateAgentId);
                                     updateRealEstateItemsList(properties);
 
-                                }) ;
+                                });
                     });
 
 
-                }else{
+                } else {
                     this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
                             mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
                             .observe(this, properties -> {
-                                Log.d("debago","properties size is " +properties.size()+ "2. realestateagentId is "+realEstateAgentId);
+                                Log.d("debago", "properties size is " + properties.size() + "2. realestateagentId is " + realEstateAgentId);
                                 updateRealEstateItemsList(properties);
-                            }) ;
+                            });
                 }
-
 
 
                 getDialog().dismiss();
@@ -341,9 +334,9 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     public interface OnClickSearchInterface {
 
         void searchButton(List<Property> properties);
+
         void cancelButton();
     }
-
 
 
 }
