@@ -16,6 +16,7 @@ import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.sharedpreferences.ManageDatabaseFilling;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 
@@ -42,7 +43,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
             if (INSTANCE == null) {
                 synchronized (RealEstateManagerDatabase.class) {
                     if (INSTANCE == null) {
-
+                        ManageDatabaseFilling.saveDatabaseFillingState(context.getApplicationContext(),true);
                         INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                 RealEstateManagerDatabase.class, "MyDatabase.db")
                                 .addCallback(fillDatabaseWithFirebaseValues())
@@ -232,6 +233,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
 
                 }
             }
+            ManageDatabaseFilling.saveDatabaseFillingState(MainApplication.getInstance().getApplicationContext(),false);
 
         }).addOnFailureListener(e -> {
 
