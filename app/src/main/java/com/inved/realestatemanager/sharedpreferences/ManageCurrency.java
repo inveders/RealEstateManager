@@ -30,7 +30,7 @@ public class ManageCurrency {
         editor.apply();
     }
 
-    static float getRate(Context context){
+    public static float getRate(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(KEY_CURRENCY_RETRIEVE_RETROFIT, Context.MODE_PRIVATE);
         return sharedPreferences.getFloat(KEY_CURRENCY_VALUE,2);
     }
