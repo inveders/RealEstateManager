@@ -64,7 +64,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.checkIfUserExistInFirebase();
+
         this.configureViewModel();
         this.checkIfSyncWithFirebaseIsNecessary();
         this.configureToolbarAndNavigationDrawer();

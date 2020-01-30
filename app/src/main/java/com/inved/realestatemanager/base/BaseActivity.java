@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.FinishRegisterActivity;
+import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.activity.MainActivity;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.utils.ManageAgency;
@@ -61,6 +62,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                     if (task.getResult().getDocuments().size() == 0) {
                         ManageAgency.saveAgencyPlaceId(this, null);
                         startFinishRegisterActivity();
+                    }else{
+                        ManageAgency.saveAgencyPlaceId(this, task.getResult().getDocuments().get(0).getString("agencyPlaceId"));
+                        startListPropertyActivity();
+
                     }
                 }
 
@@ -117,6 +122,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void startFinishRegisterActivity() {
 
         Intent intent = new Intent(this, FinishRegisterActivity.class);
+
+        startActivity(intent);
+    }
+
+    private void startListPropertyActivity() {
+
+        Intent intent = new Intent(this, ListPropertyActivity.class);
 
         startActivity(intent);
     }

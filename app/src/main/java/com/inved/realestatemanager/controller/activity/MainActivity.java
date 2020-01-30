@@ -37,8 +37,7 @@ public class MainActivity extends BaseActivity {
         if (this.getCurrentUser()!= null) {
             if(ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext())==null){
 
-                Intent intent = new Intent(this, FinishRegisterActivity.class);
-                startActivity(intent);
+                this.checkIfUserExistInFirebase();
 
             }else{
                 Log.d("debago", "MA onStart : "+this.getUserEmail());
@@ -122,9 +121,18 @@ public class MainActivity extends BaseActivity {
                 /**Je ne sais pas si j'ai besoin de ça, essayer la connexion sans cette ligne de code*/
                 if (this.getCurrentUser() != null) {
 
-                    startListPropertyActivity();
+                    if(ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext())==null){
+
+                        this.checkIfUserExistInFirebase();
+
+                    }else{
+                        Log.d("debago", "MA onStart : "+this.getUserEmail());
+                        startListPropertyActivity();
+                    }
 
                 }
+
+
 
             } else { // ERRORS
                 if (response == null) {
