@@ -54,6 +54,8 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                     }
 
                 }
+            }else{
+                ManageDatabaseFilling.saveDatabaseFillingState(context.getApplicationContext(),false);
             }
        /* }/*else{
             Log.d("debago","Pas de connexion internet, merci de réitérer");

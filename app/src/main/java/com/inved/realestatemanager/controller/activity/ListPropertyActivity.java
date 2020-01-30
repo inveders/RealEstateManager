@@ -108,7 +108,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
                         if (queryDocumentSnapshots.size() != properties.size()) {
 
-                            //We delete all properties in room in there is a difference between properties number in firebase and in room
+                            //We delete all properties in room if there is a difference between properties number in firebase and in room
                             if (properties.size() != 0) {
                                 for (int i = 0; i < properties.size(); i++) {
                                     propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
