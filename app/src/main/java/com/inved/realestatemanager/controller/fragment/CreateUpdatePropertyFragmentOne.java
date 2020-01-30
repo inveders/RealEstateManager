@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.utils.Utils;
 
 import java.util.ArrayList;

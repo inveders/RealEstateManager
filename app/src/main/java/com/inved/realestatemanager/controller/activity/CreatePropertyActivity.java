@@ -12,7 +12,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.ViewPagerFragmentAdapter;
 import com.inved.realestatemanager.controller.fragment.CreateUpdatePropertyFragmentOne;
-import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
 
 import static com.inved.realestatemanager.controller.activity.DetailActivity.PROPERTY_ID_INTENT;
 

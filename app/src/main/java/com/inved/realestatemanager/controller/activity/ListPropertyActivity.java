@@ -33,8 +33,8 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
-import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
-import com.inved.realestatemanager.utils.ManageCurrency;
+import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;

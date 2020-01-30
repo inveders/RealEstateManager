@@ -17,7 +17,7 @@ import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.ManageAgency;
+import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 
 import java.util.concurrent.Executors;
 
@@ -84,11 +84,11 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                                     //We have this agency in firebase and we have to put these items in a new Room database
 
                                     String agencyPlaceIdToSave = task.getResult().getDocuments().get(0).getString("agencyPlaceId");
-
+                                    String agencyNameToSave = task.getResult().getDocuments().get(0).getString("agencyName");
                                     Log.d("debago", "DATABASE We have an agency, we create database and fill it: " + agencyPlaceIdToSave);
 
                                     ManageAgency.saveAgencyPlaceId(MainApplication.getInstance().getApplicationContext(), agencyPlaceIdToSave);
-
+                                    ManageAgency.saveAgencyName(MainApplication.getInstance().getApplicationContext(), agencyNameToSave);
                                     prepopulateRealEstateAgents();
 
                                 }

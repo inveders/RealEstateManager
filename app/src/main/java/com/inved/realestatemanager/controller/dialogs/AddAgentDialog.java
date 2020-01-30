@@ -45,7 +45,7 @@ import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.ManageAgency;
+import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 
 import java.io.File;
 import java.io.IOException;
@@ -218,8 +218,10 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             if (getContext() != null) {
                 if (agencyName != null) {
                     ManageAgency.saveAgencyName(getContext(), agencyName);
+
                 } else {
                     agencyName = ManageAgency.getAgencyName(getContext());
+
                 }
                 if (agencyPlaceId != null) {
                     ManageAgency.saveAgencyPlaceId(getContext(), agencyPlaceId);

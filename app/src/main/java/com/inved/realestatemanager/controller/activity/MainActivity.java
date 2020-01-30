@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.ManageAgency;
+import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 import com.inved.realestatemanager.utils.Utils;
 
 import java.util.Collections;

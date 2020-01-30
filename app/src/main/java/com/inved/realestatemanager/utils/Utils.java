@@ -7,11 +7,11 @@ import android.util.Log;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
+import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

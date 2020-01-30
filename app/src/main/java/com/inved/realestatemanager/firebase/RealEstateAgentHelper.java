@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.ManageAgency;
+import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 
 public class RealEstateAgentHelper {
 

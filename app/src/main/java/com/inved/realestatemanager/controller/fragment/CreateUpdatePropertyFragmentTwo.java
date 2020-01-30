@@ -56,8 +56,8 @@ import com.inved.realestatemanager.models.RealEstateAgents;
 import com.inved.realestatemanager.utils.FileCompressor;
 import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.ManageCreateUpdateChoice;
-import com.inved.realestatemanager.utils.ManagePhotoNumberCreateUpdate;
+import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.sharedpreferences.ManagePhotoNumberCreateUpdate;
 import com.inved.realestatemanager.utils.RandomString;
 
 import java.io.File;

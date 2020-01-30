@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.utils;
+package com.inved.realestatemanager.sharedpreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

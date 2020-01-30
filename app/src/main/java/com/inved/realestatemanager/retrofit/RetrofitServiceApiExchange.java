@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.inved.realestatemanager.retrofit.exchangePojo.Exchange;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.utils.ManageCurrency;
+import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
