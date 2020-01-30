@@ -34,13 +34,13 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         // Check if user is signed in and update UI accordingly.
-        if (this.getCurrentUser()!= null) {
-            if(ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext())==null){
+        if (this.getCurrentUser() != null) {
+            if (ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext()) == null) {
 
                 this.checkIfUserExistInFirebase();
 
-            }else{
-                Log.d("debago", "MA onStart : "+this.getUserEmail());
+            } else {
+                Log.d("debago", "MA onStart : " + this.getUserEmail());
                 startListPropertyActivity();
             }
 
@@ -70,16 +70,16 @@ public class MainActivity extends BaseActivity {
     // SIGN IN WITH EMAIL ADDRESS
     // --------------------
 
-    private void connexionButton(){
+    private void connexionButton() {
         Button connexionButton = findViewById(R.id.login_button);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         connexionButton.setOnClickListener(view -> {
-            if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
+            if (Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())) {
                 startSignInActivity();
-            }else{
+            } else {
                 showSnackBar(this.coordinatorLayout, getString(R.string.error_no_internet));
-                Log.d("debago","Pas de connexion internet, merci de réitérer");
+                Log.d("debago", "Pas de connexion internet, merci de réitérer");
             }
 
         });
@@ -108,30 +108,23 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
 
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
         if (requestCode == RC_SIGN_IN) {
-           // Log.d("debago", "MA resultCode");
+            // Log.d("debago", "MA resultCode");
             if (resultCode == RESULT_OK) { // SUCCESS
                 showSnackBar(this.coordinatorLayout, getString(R.string.connection_succeed));
+                
+                if (ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext()) == null) {
 
-                /**Je ne sais pas si j'ai besoin de ça, essayer la connexion sans cette ligne de code*/
-                if (this.getCurrentUser() != null) {
+                    this.checkIfUserExistInFirebase();
 
-                    if(ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext())==null){
-
-                        this.checkIfUserExistInFirebase();
-
-                    }else{
-                        Log.d("debago", "MA onStart : "+this.getUserEmail());
-                        startListPropertyActivity();
-                    }
-
+                } else {
+                    Log.d("debago", "MA onStart : " + this.getUserEmail());
+                    startListPropertyActivity();
                 }
-
 
 
             } else { // ERRORS
@@ -151,8 +144,6 @@ public class MainActivity extends BaseActivity {
     private void showSnackBar(CoordinatorLayout coordinatorLayout, String message) {
         Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
     }
-
-
 
 
 }
