@@ -1,15 +1,10 @@
 package com.inved.realestatemanager;
 
 import com.inved.realestatemanager.domain.DateOfDay;
-import com.inved.realestatemanager.domain.SplitString;
 
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import java.util.Calendar;
-import java.util.Locale;
 
 public class DateOfDayTest {
 
