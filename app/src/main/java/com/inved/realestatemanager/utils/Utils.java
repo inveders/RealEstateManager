@@ -44,7 +44,7 @@ public class Utils {
         return unitConversion.changeDoubleToStringWithThousandSeparator(dollarsRates * euroToConvert);
     }
 
-    //Convert euro in dollars
+    //Convert euro in dollars in String
     private String convertEuroToDollarsInDoubleFormat(double dollarsRates, double euroToConvert) {
 
         double conversion = dollarsRates*euroToConvert;
@@ -55,6 +55,17 @@ public class Utils {
         format.setMinimumFractionDigits(2);
         format.setMaximumFractionDigits(2);
         return String.valueOf(newInput);
+    }
+
+
+    //Convert euro in dollars in Int
+    private int convertEuroToDollarsInIntFormat(double dollarsRates, double euroToConvert) {
+
+        double conversion = dollarsRates*euroToConvert;
+        BigDecimal bd = new BigDecimal(conversion).setScale(2,RoundingMode.HALF_UP);
+        double newInput = bd.doubleValue();
+
+        return (int)newInput;
     }
 
 
@@ -69,13 +80,24 @@ public class Utils {
         }
     }
 
-    //Get price in good currency
+    //Get price in good currency Double type
     public String getPriceInGoodCurrencyDoubleType(double priceInEuro) {
 
         if (ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")) {
             return String.valueOf(priceInEuro);
         } else {
             return convertEuroToDollarsInDoubleFormat(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()),priceInEuro);
+        }
+    }
+
+
+    //Get price in good currency int type
+    public int getPriceInGoodCurrencyIntType(double priceInEuro) {
+
+        if (ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")) {
+            return (int) priceInEuro;
+        } else {
+            return convertEuroToDollarsInIntFormat(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()),priceInEuro);
         }
     }
 

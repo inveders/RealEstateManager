@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity {
             // Log.d("debago", "MA resultCode");
             if (resultCode == RESULT_OK) { // SUCCESS
                 showSnackBar(this.coordinatorLayout, getString(R.string.connection_succeed));
-                
+
                 if (ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext()) == null) {
 
                     this.checkIfUserExistInFirebase();

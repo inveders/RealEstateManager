@@ -25,6 +25,8 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
+import com.inved.realestatemanager.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,9 +141,12 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     private void seekbarChangements() {
 
+        Utils utils = new Utils();
+
         new Thread(() -> {
-            int maxPriceFromRoom = propertyViewModel.getMaxPrice();
-            priceSeekbar.setMax(maxPriceFromRoom);
+            double maxPriceFromRoom = propertyViewModel.getMaxPrice();
+            int maxPriceConvertInInt = utils.getPriceInGoodCurrencyIntType(maxPriceFromRoom);
+            priceSeekbar.setMax(maxPriceConvertInInt);
         }).start();
 
         new Thread(() -> {
