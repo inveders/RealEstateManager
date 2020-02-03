@@ -102,7 +102,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         if (property.getPhotoUri1() != null) {
             showShimmer();
-            Log.d("debago", "getphotoUri1 " + property.getPhotoUri1());
             File localFile = new File(property.getPhotoUri1()); //file external
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             String mFileName = "/" + localFile.getName();
@@ -113,7 +112,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             dispatchFileToGlide(goodFile,localFile,isPropertySoled,property.getPropertyId(),property.getPhotoUri1());
 
         }
-
 
         //CLICK ON CARDVIEW
         mCardview.setOnClickListener(view -> {

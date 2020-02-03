@@ -20,6 +20,12 @@
         app:actionLayout="@layout/spinner_menu"/>
 
     <item
+        android:id="@+id/activity_main_drawer_refresh"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:title="@string/menu_drawer_currency"
+        />
+
+    <item
         android:id="@+id/activity_main_drawer_logout"
         android:icon="@drawable/ic_menu_drawer_logout_white_24dp"
         android:title="@string/menu_drawer_logout" />

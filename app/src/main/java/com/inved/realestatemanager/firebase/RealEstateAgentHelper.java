@@ -31,6 +31,18 @@ public class RealEstateAgentHelper {
         return RealEstateAgentHelper.getUsersCollection().document(realEstateAgendId).set(realEstateAgentsToCreate);
     }
 
+    public static RealEstateAgents resetAgent(RealEstateAgents realEstateAgents){
+
+        String firstname = realEstateAgents.getFirstname();
+        String lastname = realEstateAgents.getLastname();
+        String urlPicture = realEstateAgents.getUrlPicture();
+        String agencyName = realEstateAgents.getAgencyName();
+        String agencyPlaceId = realEstateAgents.getAgencyPlaceId();
+        String realEstateAgentId = realEstateAgents.getRealEstateAgentId();
+
+        return new RealEstateAgents(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
+    }
+
     // --- GET ---
 
     public static Query getAgentWhateverAgency(String realEstateAgentId){

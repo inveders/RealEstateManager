@@ -23,6 +23,7 @@
     <string name="menu_drawer_agents_management">Agents management</string>
     <string name="menu_drawer_map">Map</string>
     <string name="menu_drawer_currency">Currency</string>
+    <string name="menu_drawer_refresh">Refresh Manually</string>
     <string name="menu_drawer_delete">Delete account</string>
     <string name="menu_drawer_logout">Logout</string>
     <string name="firstname">firstname</string>
@@ -231,6 +232,7 @@
     <string name="button_clear">Clear</string>
     <string name="no_good_agent">You can only click on your own profile</string>
     <string name="already_five_photo">You can\'t add more than 5 photos</string>
+    <string name="no_properties_in_firebase">No properties in Firebase yet</string>
 
     <!-- MAP-->
 
