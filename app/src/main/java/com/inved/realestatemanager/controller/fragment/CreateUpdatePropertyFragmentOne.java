@@ -132,7 +132,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             this.updateUIwithDataFromDatabase(propertyId);
         }
 
-
         return v;
     }
 
