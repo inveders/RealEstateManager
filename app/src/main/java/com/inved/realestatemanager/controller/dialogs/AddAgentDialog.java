@@ -195,6 +195,22 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private void createOrUpdateRealEstateAgent() {
 
+        if (getContext() != null) {
+            if (agencyName != null) {
+                ManageAgency.saveAgencyName(getContext(), agencyName);
+
+            } else {
+                agencyName = ManageAgency.getAgencyName(getContext());
+
+            }
+            if (agencyPlaceId != null) {
+                ManageAgency.saveAgencyPlaceId(getContext(), agencyPlaceId);
+            } else {
+                agencyPlaceId = ManageAgency.getAgencyPlaceId(getContext());
+            }
+
+        }
+
         if (firstnameEditText.getText().toString().isEmpty()) {
             firstnameEditText.setError(getString(R.string.set_error_add_agent_firstname));
         } else if (lastnameEditText.getText().toString().isEmpty()) {
@@ -243,7 +259,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             if (bundle != null) {
                 //update agent in room
                 String realEstateAgentIdBundle = bundle.getString("myRealEstateAgentId", null);
-                Log.d("debago", "agencyName :" + agencyName + " real estate agent string : " + realEstateAgents.toString()+" and urlpicture is "+urlPicture);
                 if (realEstateAgentIdBundle != null) {
                     this.propertyViewModel.updateRealEstateAgent(realEstateAgentIdBundle, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
 

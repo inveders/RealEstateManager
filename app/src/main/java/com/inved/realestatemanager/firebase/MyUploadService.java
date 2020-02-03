@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -12,17 +13,25 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.inved.realestatemanager.utils.ImageCameraOrGallery;
+import com.inved.realestatemanager.utils.MainApplication;
+
+import java.io.File;
 
 public class MyUploadService extends Service {
 
     private static final String TAG = "debago";
 
-    /** Intent Actions **/
+    /**
+     * Intent Actions
+     **/
     public static final String ACTION_UPLOAD = "action_upload";
     public static final String UPLOAD_COMPLETED = "upload_completed";
     public static final String UPLOAD_ERROR = "upload_error";
 
-    /** Intent Extras **/
+    /**
+     * Intent Extras
+     **/
     public static final String EXTRA_FILE_URI = "extra_file_uri";
     public static final String EXTRA_DOCUMENT_ID = "extra_document_id";
     public static final String EXTRA_PHOTO_NUMBER = "extra_photo_number";
@@ -40,28 +49,28 @@ public class MyUploadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand:" + intent + ":" + startId);
+        //Log.d(TAG, "onStartCommand:" + intent + ":" + startId);
         if (ACTION_UPLOAD.equals(intent.getAction())) {
             Uri fileUri = intent.getParcelableExtra(EXTRA_FILE_URI);
             String documentId = intent.getStringExtra(EXTRA_DOCUMENT_ID);
-            int numberPhoto = intent.getIntExtra(EXTRA_PHOTO_NUMBER,0);
+            int numberPhoto = intent.getIntExtra(EXTRA_PHOTO_NUMBER, 0);
             mStorageRef = FirebaseStorage.getInstance().getReference(documentId);
-            Log.d(TAG, "onStartCommand in in documentId:" + documentId + " and number photo is " + numberPhoto);
 
-            uploadFromUri(fileUri,documentId,numberPhoto);
+            uploadFromUri(fileUri, documentId, numberPhoto);
+
         }
 
         return START_REDELIVER_INTENT;
     }
 
     // [START upload_from_uri]
-    private void uploadFromUri(final Uri fileUri,String documentId, int numberPhoto) {
-        Log.d(TAG, "uploadFromUri:src: upload" + fileUri.toString()+" Photo number is: "+numberPhoto);
+    private void uploadFromUri(final Uri fileUri, String documentId, int numberPhoto) {
+        Log.d(TAG, "uploadFromUri:src: upload" + fileUri.toString() + " Photo number is: " + numberPhoto);
 
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
-        if(fileUri.getLastPathSegment()!=null){
+        if (fileUri.getLastPathSegment() != null) {
             final StorageReference photoRef = mStorageRef.child("Pictures")
                     .child(fileUri.getLastPathSegment());
 
@@ -91,37 +100,25 @@ public class MyUploadService extends Service {
                     // code block
             }
 
+            //File from external
+            ImageCameraOrGallery imageCameraOrGallery = new ImageCameraOrGallery();
+            Uri localFile = Uri.fromFile(new File(fileUri.toString()));
+            File fileExternal = imageCameraOrGallery.getFile(MainApplication.getInstance().getApplicationContext(),localFile); //file external
 
-            // Upload file to Firebase Storage
-            Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());
-            photoRef.putFile(fileUri)
-                    .continueWithTask(task -> {
-                        // Forward any exceptions
-                        if (!task.isSuccessful()) {
-                            if(task.getException()!=null){
-                                throw task.getException();
-                            }
+            //File from internal
+            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            String mFileName = "/" + fileExternal.getName();
+            File fileInternal = new File(storageDir, mFileName); //file internal
 
-                        }
+            if (fileInternal.exists()) {
+                uploadInternalFile(photoRef,fileUri);
 
-                        Log.d(TAG, "uploadFromUri: upload success");
+            } else if (fileExternal.exists()) {
+                uploadExternalFile(photoRef,fileExternal);
 
-                        // Request the public download URL
-                        return photoRef.getDownloadUrl();
-                    })
-                    .addOnSuccessListener(downloadUri -> {
-                        // Upload succeeded
-                        Log.d(TAG, "uploadFromUri: getDownloadUri success");
+            }
 
-                    })
-                    .addOnFailureListener(exception -> {
-                        // Upload failed
-                        Log.w(TAG, "uploadFromUri:onFailure", exception);
-
-                    });
         }
-
-
 
 
     }
@@ -134,4 +131,65 @@ public class MyUploadService extends Service {
 
         return filter;
     }
+
+    private void uploadInternalFile(StorageReference photoRef,Uri internalFile){
+        // Upload file to Firebase Storage
+        //Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());
+        photoRef.putFile(internalFile)
+                .continueWithTask(task -> {
+                    // Forward any exceptions
+                    if (!task.isSuccessful()) {
+                        if (task.getException() != null) {
+                            throw task.getException();
+                        }
+
+                    }
+
+                    Log.d(TAG, "uploadFromUri: upload success");
+
+                    // Request the public download URL
+                    return photoRef.getDownloadUrl();
+                })
+                .addOnSuccessListener(downloadUri -> {
+                    // Upload succeeded
+                    Log.d(TAG, "uploadFromUri: getDownloadUri success");
+
+                })
+                .addOnFailureListener(exception -> {
+                    // Upload failed
+                    Log.w(TAG, "uploadFromUri:onFailure", exception);
+
+
+                });
+
+    }
+
+    private void uploadExternalFile(StorageReference photoRef,File externalFile){
+
+        photoRef.putFile(Uri.fromFile(externalFile)).continueWithTask(task -> {
+            // Forward any exceptions
+            if (!task.isSuccessful()) {
+                if (task.getException() != null) {
+                    throw task.getException();
+                }
+
+            }
+
+            Log.d(TAG, "uploadFromUri: upload success 2");
+
+            // Request the public download URL
+            return photoRef.getDownloadUrl();
+        })
+                .addOnSuccessListener(downloadUri -> {
+                    // Upload succeeded
+                    Log.d(TAG, "uploadFromUri: getDownloadUri success 2");
+
+                })
+                .addOnFailureListener(exception2 -> {
+                    // Upload failed
+                    Log.w(TAG, "uploadFromUri:onFailure2", exception2);
+
+                });
+    }
 }
+

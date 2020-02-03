@@ -103,10 +103,10 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         if (property.getPhotoUri1() != null) {
             showShimmer();
             Log.d("debago", "getphotoUri1 " + property.getPhotoUri1());
-            File localFile = new File(property.getPhotoUri1());
+            File localFile = new File(property.getPhotoUri1()); //file external
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             String mFileName = "/" + localFile.getName();
-            File goodFile = new File(storageDir, mFileName);
+            File goodFile = new File(storageDir, mFileName); //file internal
             boolean isPropertySoled;
             isPropertySoled= property.getDateOfSaleForProperty() == null || property.getDateOfSaleForProperty().isEmpty();
 
@@ -131,14 +131,11 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             try {
 
                 if (fileInternal.exists()) {
-                    Log.d("debago", "file internal exist " + fileInternal);
                     photoUriInGlide(fileInternal);
 
                 } else if (fileExternal.exists()) {
-                    Log.d("debago", "file external exist " + fileExternal);
                     photoUriInGlide(fileExternal);
                 } else {
-                    Log.d("debago", "good file NOT exist ");
                     photoFirebaseStorageInGlide(propertyId, photoUri1);
                 }
             } catch (Exception e) {
@@ -149,14 +146,11 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         } else {
             try {
                 if (fileInternal.exists()) {
-                    Log.d("debago", "file sold internal exist " + fileInternal);
                     photoSoldUriInGlide(fileInternal);
 
                 } else if (fileExternal.exists()) {
-                    Log.d("debago", "file sold external exist " + fileExternal);
                     photoSoldUriInGlide(fileExternal);
                 } else {
-                    Log.d("debago", "good file sold NOT exist ");
                     photoSoldFirebaseStorageInGlide(propertyId, photoUri1);
                 }
             } catch (Exception e) {
@@ -180,7 +174,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            //Log.d("debago", "yes yes yes YEAH");
                             stopShimmer();
                             return false;
                         }
@@ -206,7 +199,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     private void photoFirebaseStorageInGlide(String propertyId, String photoUri) {
 
-        // Log.d("debago","CHILD NAME photo uri is "+photoUri);
         if (photoUri != null) {
             if (!photoUri.isEmpty()) {
                 PropertyHelper.getPropertyWithId(propertyId).get().addOnCompleteListener(task -> {
@@ -217,8 +209,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                                 String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("photoUri1");
                                 if (photoUriFromFirebase != null) {
                                     int numberCharacter = photoUriFromFirebase.length();
-                                    //Log.d("debago", "photouri is " + photoUri + " number caracter is " + numberCharacter + " and chilnamme is " + splitString.lastCharacters(photoUri, numberCharacter));
-                                    if (numberCharacter != 0) {
+                                      if (numberCharacter != 0) {
                                         StorageReference fileReference = FirebaseStorage.getInstance().getReference(propertyId).child("Pictures")
                                                 .child(splitString.lastCharacters(photoUri, numberCharacter));
 

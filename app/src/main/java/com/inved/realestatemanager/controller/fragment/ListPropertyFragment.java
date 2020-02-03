@@ -42,7 +42,6 @@ import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_I
 public class ListPropertyFragment extends Fragment implements PropertyListViewHolder.PropertyListInterface, SearchFullScreenDialog.OnClickSearchInterface {
 
     // FOR DESIGN
-
     private PropertyListAdapter adapter;
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
@@ -122,7 +121,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             SearchFullScreenDialog dialog = new SearchFullScreenDialog();
             dialog.setTargetFragment(this,1);
 
-          //  dialog.setCallback(this::updatePropertyList);
+            //  dialog.setCallback(this::updatePropertyList);
 
             if (getFragmentManager() != null) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -155,11 +154,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private void getAllProperties() {
         this.propertyViewModel.getAllProperties().observe(this,properties -> {
 
-            Log.d("debago"," changement here getAllProperties");
             callback.onMenuChanged(0);
             ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this,properties);
-
-
 
         } );
     }
