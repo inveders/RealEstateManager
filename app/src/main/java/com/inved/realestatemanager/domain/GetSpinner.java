@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.domain;
 
-import android.util.Log;
 import android.widget.Spinner;
 
 public class GetSpinner {
