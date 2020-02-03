@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,9 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
 
+    //Progress bar
+    private ProgressBar mProgressBar;
+
     // Declaration for fragments
     private ListPropertyFragment listPropertyFragment;
     private DetailPropertyFragment detailPropertyFragment;
@@ -66,6 +70,11 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        //Progress bar
+        mProgressBar = findViewById(R.id.progressBar);
+        mProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent),android.graphics.PorterDuff.Mode.MULTIPLY);
 
         this.configureViewModel();
         this.checkIfSyncWithFirebaseIsNecessary();
@@ -91,6 +100,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
 
     }
+
+
 
     // ---------------------------
     // SYNC WITH FIREFASE
@@ -173,6 +184,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                             propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
                         }
                         refreshFragment();
+                       // hideProgressBar();
 
                     });
 
@@ -256,7 +268,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 ListPropertyActivityPermissionsDispatcher.startMapsActivityWithPermissionCheck(this);
                 break;
             case R.id.activity_main_drawer_refresh:
-
+              //  showProgressBar();
                 refreshWithFirebase();
 
 
@@ -407,7 +419,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 */
 
     private void refreshFragment() {
-
+        Log.d("debago","refresh fragmennt");
         if (getFragmentRefreshListener() != null) {
             getFragmentRefreshListener().onRefresh();
         }
@@ -426,5 +438,18 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         this.fragmentRefreshListener = fragmentRefreshListener;
     }
 
+    // --------------
+    // UI
+    // --------------
+
+    private void showProgressBar(){
+        mProgressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    private void hideProgressBar(){
+        mProgressBar.setVisibility(View.GONE);
+
+    }
 }
 
