@@ -23,7 +23,6 @@
     <string name="menu_drawer_agents_management">Agents management</string>
     <string name="menu_drawer_map">Map</string>
     <string name="menu_drawer_currency">Currency</string>
-    <string name="menu_drawer_refresh">Refresh Manually</string>
     <string name="menu_drawer_delete">Delete account</string>
     <string name="menu_drawer_logout">Logout</string>
     <string name="firstname">firstname</string>

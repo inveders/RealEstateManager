@@ -5,13 +5,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +29,6 @@ import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.domain.GetSpinner;
 import com.inved.realestatemanager.firebase.PropertyHelper;
-import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
@@ -50,9 +47,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
 
-    //Progress bar
-    private ProgressBar mProgressBar;
-
     // Declaration for fragments
     private ListPropertyFragment listPropertyFragment;
     private DetailPropertyFragment detailPropertyFragment;
@@ -70,11 +64,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        //Progress bar
-        mProgressBar = findViewById(R.id.progressBar);
-        mProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent),android.graphics.PorterDuff.Mode.MULTIPLY);
 
         this.configureViewModel();
         this.checkIfSyncWithFirebaseIsNecessary();
@@ -184,7 +173,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                             propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
                         }
                         refreshFragment();
-                       // hideProgressBar();
+
 
                     });
 
@@ -266,12 +255,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 break;
             case R.id.activity_main_drawer_map:
                 ListPropertyActivityPermissionsDispatcher.startMapsActivityWithPermissionCheck(this);
-                break;
-            case R.id.activity_main_drawer_refresh:
-              //  showProgressBar();
-                refreshWithFirebase();
-
-
                 break;
             case R.id.activity_main_drawer_logout:
 
@@ -419,7 +402,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 */
 
     private void refreshFragment() {
-        Log.d("debago","refresh fragmennt");
         if (getFragmentRefreshListener() != null) {
             getFragmentRefreshListener().onRefresh();
         }
@@ -438,18 +420,5 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         this.fragmentRefreshListener = fragmentRefreshListener;
     }
 
-    // --------------
-    // UI
-    // --------------
-
-    private void showProgressBar(){
-        mProgressBar.setVisibility(View.VISIBLE);
-
-    }
-
-    private void hideProgressBar(){
-        mProgressBar.setVisibility(View.GONE);
-
-    }
 }
 
