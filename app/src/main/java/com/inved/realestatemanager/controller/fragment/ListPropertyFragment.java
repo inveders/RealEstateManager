@@ -173,6 +173,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             // Create an instance of the dialog fragment and show it
             SearchFullScreenDialog dialog = new SearchFullScreenDialog();
             dialog.setTargetFragment(this, 1);
+            dialog.setCancelable(false);
 
             //  dialog.setCallback(this::updatePropertyList);
 
