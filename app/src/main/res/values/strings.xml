@@ -40,7 +40,6 @@
     <string name="list_property_city">Ottange</string>
     <string name="list_property_unit_price_dollars">$</string>
     <string name="list_property_unit_price_euro">€</string>
-    <string name="list_property_price">150000</string>
     <string name="list_property_no_price_indicated">No price indicated</string>
     <string name="none"> </string>
     <string name="date_of_sale_to_define">CLIQUEZ ICI POUR DEFINIR </string>

@@ -12,7 +12,7 @@ import java.io.File;
 public class StorageDownload {
 
     public String beginDownload(String getLastPathFromFirebase, String documentId) {
-        Log.d("debago", "BEGIN DOWNLOAD");
+        //Log.d("debago", "BEGIN DOWNLOAD");
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
                 .child(getLastPathFromFirebase);
 

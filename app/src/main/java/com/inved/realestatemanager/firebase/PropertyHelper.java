@@ -120,7 +120,7 @@ public class PropertyHelper {
         if (photoUri5 != null && photoUri5.length() < 30) {
             String uri5 = storageDownload.beginDownload(photoUri5, propertyId);
             if (uri5 != null) {
-                photoUri1 = uri5;
+                photoUri5 = uri5;
             }
         }
 

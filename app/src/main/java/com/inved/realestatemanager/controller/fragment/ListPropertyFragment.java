@@ -4,25 +4,31 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
+import com.inved.realestatemanager.firebase.PropertyHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
@@ -43,11 +49,13 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     // FOR DESIGN
     private PropertyListAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     // 1 - FOR DATA
     private PropertyViewModel propertyViewModel;
     private FloatingActionButton openSearchButton;
     private MenuChangementsInterface callback;
     private TextView noPropertyFoundTextview;
+    private int queryCount = 0;
 
     // --------------
     // LIFE CYCLE AND VIEW MODEL
@@ -71,6 +79,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         noPropertyFoundTextview = mView.findViewById(R.id.fragment_list_property_no_property_found_text);
         openSearchButton = mView.findViewById(R.id.list_property_search_open_floating_button);
+        mSwipeRefreshLayout = mView.findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = mView.findViewById(R.id.fragment_list_property_recycler_view);
         recyclerView.setAdapter(this.adapter);
         recyclerView.setHasFixedSize(true);
@@ -86,6 +95,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         }
 
         startSearchProperty();
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(true);
+            refreshWithFirebase();
+        });
 
         return mView;
     }
@@ -94,7 +107,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         adapter = new PropertyListAdapter(context, this);
-        Log.d("debago"," ON ATTACH");
+
         this.createCallbackToParentActivity();
     }
 
@@ -107,9 +120,49 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     }
 
+    private void refreshWithFirebase() {
+
+        PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            if (queryDocumentSnapshots.size() > 0) {
+
+                propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
+
+                    //We create properties from firebase in room
+                    if (queryCount < queryDocumentSnapshots.size()) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Property property = documentSnapshot.toObject(Property.class);
+
+                            propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
+                            queryCount++;
+                        }
+                    }
+
+                    new Handler().postDelayed(() -> {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        getAllProperties();
+                        queryCount = 0;
+                    }, 5000);
+
+                });
+
+
+            } else {
+                Toast.makeText(getContext(), this.getString(R.string.no_properties_in_firebase), Toast.LENGTH_SHORT).show();
+            }
+
+        }).addOnFailureListener(e -> {
+        });
+    }
+
+    private void syncFirebaseAndRoom(QueryDocumentSnapshot queryDocumentSnapshot) {
+
+    }
+
     // --------------
     // SEARCH
     // --------------
+
 
     private void startSearchProperty() {
 
@@ -119,7 +172,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             //setHasOptionsMenu(true);
             // Create an instance of the dialog fragment and show it
             SearchFullScreenDialog dialog = new SearchFullScreenDialog();
-            dialog.setTargetFragment(this,1);
+            dialog.setTargetFragment(this, 1);
 
             //  dialog.setCallback(this::updatePropertyList);
 
@@ -134,8 +187,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     @Override
     public void searchButton(List<Property> properties) {
 
-        Log.d("debago","Search Button: "+properties);
-        ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this,properties);
+        Log.d("debago", "Search Button: " + properties);
+        ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this, properties);
 
     }
 
@@ -149,15 +202,14 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     // -------------------
 
 
-
     // 3 - Get all properties for a real estate agent
     private void getAllProperties() {
-        this.propertyViewModel.getAllProperties().observe(this,properties -> {
+        this.propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
 
             callback.onMenuChanged(0);
-            ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this,properties);
+            ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this, properties);
 
-        } );
+        });
     }
 
     // 6 - Update the list of properties
@@ -165,9 +217,9 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public void updatePropertyList(List<Property> properties) {
         this.adapter.updateData(properties);
         noPropertyFoundTextview.setVisibility(this.adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
-        if(this.adapter.getItemCount()==0){
+        if (this.adapter.getItemCount() == 0) {
             openSearchButton.hide();
-        }else{
+        } else {
             openSearchButton.show();
         }
 
@@ -193,8 +245,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     }
 
 
-
-
     // --------------
     // INTERFACE
     // --------------
@@ -206,12 +256,12 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     }
 
     // 3 - Create callback to parent activity
-    private void createCallbackToParentActivity(){
+    private void createCallbackToParentActivity() {
         try {
             //Parent activity will automatically subscribe to callback
             callback = (MenuChangementsInterface) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(e.toString()+ " must implement MenuChamgementsInterface");
+            throw new ClassCastException(e.toString() + " must implement MenuChamgementsInterface");
         }
     }
 
@@ -225,7 +275,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         // NOTE: delegate the permission handling to generated method
         ListPropertyFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
-
 
 
 }

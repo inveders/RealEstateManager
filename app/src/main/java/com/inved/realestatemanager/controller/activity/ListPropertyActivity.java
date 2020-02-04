@@ -150,42 +150,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         });
     }
 
-    private void refreshWithFirebase() {
 
-        PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
-
-                if (queryDocumentSnapshots.size() > 0) {
-
-                    propertyViewModel.getAllProperties().observe(this, properties -> {
-
-                        //We delete all properties in room if there is a difference between properties number in firebase and in room
-                        if (properties.size() != 0) {
-                            for (int i = 0; i < properties.size(); i++) {
-                                propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
-                            }
-                        }
-
-                        //We create properties from firebase in room
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            Property property = documentSnapshot.toObject(Property.class);
-
-                            //Create property in room with data from firebase
-                            propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
-                        }
-                        refreshFragment();
-
-
-                    });
-
-
-                }else{
-                    Toast.makeText(this, this.getString(R.string.no_properties_in_firebase), Toast.LENGTH_SHORT).show();
-                }
-
-
-        }).addOnFailureListener(e -> {
-        });
-    }
 
 
     // ---------------------------

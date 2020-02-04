@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@string/list_property_price"
+
                 app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
                 app:layout_constraintTop_toTopOf="@id/fragment_detail_property_type_text" />
 

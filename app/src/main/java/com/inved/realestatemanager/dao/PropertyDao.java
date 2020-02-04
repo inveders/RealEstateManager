@@ -3,6 +3,7 @@ package com.inved.realestatemanager.dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.sqlite.db.SupportSQLiteQuery;
@@ -33,7 +34,7 @@ public interface PropertyDao {
     @RawQuery(observedEntities = Property.class)
     LiveData<List<Property>> searchProperty(SupportSQLiteQuery query);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertProperty(Property property);
 
     @RawQuery(observedEntities = Property.class)
