@@ -55,4 +55,55 @@ public class SplitStringTest {
         Assert.assertNull(nullString);
 
     }
+
+
+    @Test
+    public void should_ReplaceAllSpace_With_Addition() {
+
+        //Given
+        String stringToConvert="42 bis rue principale 57840 Ottange";
+        String strintToRetrieve="42+bis+rue+principale+57840+Ottange";
+
+        //When
+        String conversionResult = splitString.replaceAllSpacesByAddition(stringToConvert);
+
+        //Then
+
+        Assert.assertEquals(strintToRetrieve, conversionResult);
+
+    }
+
+    @Test
+    public void should_GiveFiveLastString() {
+
+        //Given
+        String stringToConvert="Mariage";
+        String strintToRetrieve="riage";
+
+        //When
+        String conversionResult = splitString.lastCharacters(stringToConvert,5);
+
+        //Then
+
+        Assert.assertEquals(strintToRetrieve, conversionResult);
+
+    }
+
+
+    @Test
+    public void should_GiveFiveAllString_When_NumberCharacterMoreThanLenght() {
+
+        //Given
+        String stringToConvert="Mariage";
+        String strintToRetrieve="Mariage";
+
+        //When
+        String conversionResult = splitString.lastCharacters(stringToConvert,8);
+
+        //Then
+
+        Assert.assertEquals(strintToRetrieve, conversionResult);
+
+    }
+
 }

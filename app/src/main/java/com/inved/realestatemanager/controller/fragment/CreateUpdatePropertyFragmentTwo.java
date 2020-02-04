@@ -59,6 +59,7 @@ import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.sharedpreferences.ManagePhotoNumberCreateUpdate;
 import com.inved.realestatemanager.utils.RandomString;
+import com.inved.realestatemanager.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -830,10 +831,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             fullDescriptionText = fullDescriptionEditText.getText().toString();
 
             if (dateOfEntry.getText().toString().trim().equals(getString(R.string.create_update_choose_date))) {
-                DateOfDay dateOfDay = new DateOfDay();
+                Utils utils = new Utils();
 
-                dateOfEntry.setText(dateOfDay.getDateOfDay());
-                dateOfEntryOnMarketForProperty = dateOfDay.getDateOfDay();
+                dateOfEntry.setText(utils.getTodayDate());
+                dateOfEntryOnMarketForProperty = utils.getTodayDate();
             } else {
                 dateOfEntryOnMarketForProperty = dateOfEntry.getText().toString();
             }

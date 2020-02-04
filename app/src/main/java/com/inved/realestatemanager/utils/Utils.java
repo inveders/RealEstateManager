@@ -29,7 +29,7 @@ public class Utils {
      * @param dollars
      * @return
      */
-    private static double convertDollarToEuro(double dollars) {
+    public double convertDollarToEuro(double dollars) {
 
         return (int) Math.round(dollars * ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()));
     }
@@ -59,7 +59,7 @@ public class Utils {
 
 
     //Convert euro in dollars in Int
-    private int convertEuroToDollarsInIntFormat(double dollarsRates, double euroToConvert) {
+    public int convertEuroToDollarsInIntFormat(double dollarsRates, double euroToConvert) {
 
         double conversion = dollarsRates*euroToConvert;
         BigDecimal bd = new BigDecimal(conversion).setScale(2,RoundingMode.HALF_UP);

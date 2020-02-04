@@ -160,7 +160,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 town = p.getTownProperty();
                 country = p.getCountry();
                 addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
-                String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
+                String addressFormatted = splitString.replaceAllSpacesByAddition(addressToConvert);
                 String propertyId = p.getPropertyId();
 
 

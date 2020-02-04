@@ -392,7 +392,7 @@ public class DetailPropertyFragment extends Fragment {
             String town = properties.getTownProperty();
             String country = properties.getCountry();
             String addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
-            String addressFormatted = splitString.replaceAllSpacesOrCommaByAddition(addressToConvert);
+            String addressFormatted = splitString.replaceAllSpacesByAddition(addressToConvert);
 
             geocodingSearch(addressFormatted);
 

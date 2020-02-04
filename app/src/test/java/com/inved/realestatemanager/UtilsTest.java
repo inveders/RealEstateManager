@@ -1,9 +1,13 @@
 package com.inved.realestatemanager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.inved.realestatemanager.utils.Utils;
 
 import org.junit.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -11,10 +15,23 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+
 public class UtilsTest {
 
-    private Utils utils = Mockito.spy(new Utils());
+    private Utils utils;
+    private SharedPreferences sharedPrefs;
+    private Context context;
 
+    @Before
+    public void before() throws Exception {
+        this.sharedPrefs = Mockito.mock(SharedPreferences.class);
+        this.context = Mockito.mock(Context.class);
+        this.utils = Mockito.spy(new Utils());
+        Mockito.when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPrefs);
+    }
 
     @Test
     public void should_ConvertInDollars_With_Euro() {
@@ -28,7 +45,43 @@ public class UtilsTest {
 
         //Then
 
-        Assert.assertEquals("11,10", dollarsConversion);
+        Assert.assertEquals("11", dollarsConversion);
+
+
+    }
+
+
+    @Test
+    public void should_ConvertInDollars_When_IntFormat_With_Euro() {
+
+        //Given
+        double dollarsRates = 1.11;
+        double euroToConvert = 10;
+
+        //When
+        int dollarsConversion = utils.convertEuroToDollarsInIntFormat(dollarsRates,euroToConvert);
+
+        //Then
+
+        Assert.assertEquals(11, dollarsConversion);
+
+
+    }
+
+    @Test
+    public void should_ConvertInEuro_With_Dollars() {
+
+        //Given
+        double dollarsToConvert = 10;
+        double euroToRetrieve = 10;
+
+        //When
+        Mockito.when(sharedPrefs.getFloat("KEY_CURRENCY_VALUE", 2)).thenReturn((float) 2.2);
+        double dollarsConversion = utils.convertDollarToEuro(dollarsToConvert);
+
+
+        //Then
+        Assert.assertEquals(String.valueOf(euroToRetrieve), String.valueOf(dollarsConversion));
 
 
     }

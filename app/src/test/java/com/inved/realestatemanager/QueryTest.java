@@ -32,11 +32,16 @@ public class QueryTest {
 
 
         //When
-        SimpleSQLiteQuery query = roomSearchQuery.queryRoomDatabase(type, town, minSurface, maxSurface, minPrice,
-                maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId);
+        /*SimpleSQLiteQuery query = roomSearchQuery.queryRoomDatabase(type, town, minSurface, maxSurface, minPrice,
+                maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId);*/
 
-        String queryString="SELECT * FROM Property WHERE town =:town";
+        SimpleSQLiteQuery query = roomSearchQuery.queryRoomDatabase(null, town, 0, 0, 0,
+                0, 0,0,null,null,null);
+
+
+        String queryString="SELECT * FROM Property WHERE town =:Ottange";
         List<Object> args = new ArrayList();
+        args.add(town);
 
         //Then
         Assert.assertEquals(new SimpleSQLiteQuery(queryString, args.toArray()), query);

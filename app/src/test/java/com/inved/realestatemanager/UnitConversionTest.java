@@ -54,7 +54,7 @@ public class UnitConversionTest {
 
 
         //When
-        String stringToRetrieve = unitConversion.changeDoubleToStringWithThousandSeparator(intToConvert);
+        String stringToRetrieve = unitConversion.changeIntToStringWithThousandSeparator(intToConvert);
 
         //Then
 
@@ -62,4 +62,5 @@ public class UnitConversionTest {
 
 
     }
+
 }

@@ -22,7 +22,7 @@ public class SplitString {
     }
 
 
-    public String replaceAllSpacesOrCommaByAddition(String stringToConvert){
+    public String replaceAllSpacesByAddition(String stringToConvert){
         return stringToConvert.replaceAll("\\s", "+");
     }
 

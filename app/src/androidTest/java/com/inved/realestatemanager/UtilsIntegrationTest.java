@@ -17,4 +17,5 @@ public class UtilsIntegrationTest {
     public void isInternetAvailable()throws Exception{
         assertTrue(Utils.isInternetAvailable(InstrumentationRegistry.getInstrumentation().getContext()));
     }
+
 }

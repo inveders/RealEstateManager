@@ -14,7 +14,7 @@ public class JoinCheckBoxInStringTest {
     private JoinCheckBoxInString joinCheckBoxInString = Mockito.spy(new JoinCheckBoxInString());
 
     @Test
-    public void should_ShowString_WithListString() {
+    public void shouldShowStringWithListString() {
 
         //Given
         List<String> list = new ArrayList<>();
@@ -27,7 +27,6 @@ public class JoinCheckBoxInStringTest {
         String convertedList = joinCheckBoxInString.joinMethod(list);
 
         //Then
-
         Assert.assertEquals("Paris,Luxembourg,Monaco,Washington",convertedList);
 
     }
