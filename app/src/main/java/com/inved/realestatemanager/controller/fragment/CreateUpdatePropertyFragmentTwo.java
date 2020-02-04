@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
@@ -218,7 +219,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         super.onActivityCreated(savedInstanceState);
 
         if (getActivity() != null) {
-            CreateUpdatePropertyViewModel createUpdatePropertyViewModel = ViewModelProviders.of(getActivity()).get(CreateUpdatePropertyViewModel.class);
+            CreateUpdatePropertyViewModel createUpdatePropertyViewModel = new ViewModelProvider(getActivity()).get(CreateUpdatePropertyViewModel.class);
             createUpdatePropertyViewModel.getMyData().observe(getViewLifecycleOwner(), objects -> {
 
                 this.typeProperty = objects.get(0).toString();
@@ -258,7 +259,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+        this.propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
 
     }
 

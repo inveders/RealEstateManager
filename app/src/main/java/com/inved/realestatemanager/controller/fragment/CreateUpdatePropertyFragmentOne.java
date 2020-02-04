@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
@@ -138,7 +139,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     // 2 - Configuring ViewModel
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(context);
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+        this.propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
 
     }
 
@@ -147,7 +148,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         super.onActivityCreated(savedInstanceState);
 
         if (getActivity() != null) {
-            this.createUpdatePropertyViewModel = ViewModelProviders.of(getActivity()).get(CreateUpdatePropertyViewModel.class);
+            this.createUpdatePropertyViewModel = new ViewModelProvider(getActivity()).get(CreateUpdatePropertyViewModel.class);
         }
 
     }
@@ -295,7 +296,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     @SuppressLint("SetTextI18n")
     private void updateUIwithDataFromDatabase(String propertyId) {
-        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
+        propertyViewModel.getOneProperty(propertyId).observe(getViewLifecycleOwner(), property -> {
 
             priceEditText.setText(utils.getPriceInGoodCurrencyDoubleType(property.getPricePropertyInEuro()));
             surfaceEditText.setText(Double.toString(property.getSurfaceAreaProperty()));

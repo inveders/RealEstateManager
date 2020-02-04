@@ -25,8 +25,6 @@ public class PropertyViewModel extends ViewModel {
         this.executor = executor;
     }
 
-
-
     // -------------
     // FOR USER
     // -------------

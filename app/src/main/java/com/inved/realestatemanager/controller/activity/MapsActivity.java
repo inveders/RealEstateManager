@@ -14,6 +14,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -79,9 +80,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void configureViewModel() {
         ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(this);
-        this.propertyViewModel = ViewModelProviders.of(this, viewModelFactory).get(PropertyViewModel.class);
+        this.propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);
 
-        this.geocodingViewModel = ViewModelProviders.of(this).get(GeocodingViewModel.class);
+        this.geocodingViewModel = new ViewModelProvider(this).get(GeocodingViewModel.class);
     }
 
     // --------------
