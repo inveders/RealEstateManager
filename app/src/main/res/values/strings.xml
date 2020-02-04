@@ -151,7 +151,7 @@
     <string name="create_update_by_number_of_bathroom">Number of bathroom</string>
     <string name="create_update_by_number_of_bedroom">Number of bedroom</string>
     <string name="create_update_next_button">NEXT PAGE</string>
-    <string name="create_update_add_photo_button">ADD PHOTO</string>
+    <string name="create_update_add_photo_button">PHOTO</string>
     <string name="create_update_confirm_button_create">CREATE PROPERTY</string>
     <string name="create_update_confirm_button_update">UPDATE PROPERTY</string>
     <string name="create_update_previous_button">PREVIOUS PAGE</string>
