@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.BuildConfig;
@@ -82,9 +82,9 @@ public class DetailPropertyFragment extends Fragment {
     private GeocodingViewModel geocodingViewModel;
 
     private int imageCount;
-    private int imagePosition=0;
+    private int imagePosition = 0;
     private String myPropertyId;
-    private int imageSwitcherNumber=0;
+    private int imageSwitcherNumber = 0;
     private ArrayList<String> myImages;
     private ArrayList<String> myDescriptionImage;
     private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
@@ -113,7 +113,7 @@ public class DetailPropertyFragment extends Fragment {
         numberBathroomsInProperty = mView.findViewById(R.id.fragment_detail_property_number_of_bathroom_text);
         fullDescriptionProperty = mView.findViewById(R.id.fragment_detail_property_description_text);
         imageSwitcher = mView.findViewById(R.id.fragment_detail_property_image_switcher);
-        imageNameSwitcher=mView.findViewById(R.id.fragment_detail_property_image_name_text);
+        imageNameSwitcher = mView.findViewById(R.id.fragment_detail_property_image_name_text);
         nextImage = mView.findViewById(R.id.next_button_arrow);
         prevImage = mView.findViewById(R.id.prev_button_arrow);
         streetNumber = mView.findViewById(R.id.fragment_detail_property_street_number_text);
@@ -137,9 +137,9 @@ public class DetailPropertyFragment extends Fragment {
             myPropertyId = intent.getStringExtra(PROPERTY_ID);
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                Log.d("debago","updateUI getActivity: "+imageSwitcherNumber);
-                if(imageSwitcherNumber==0){
-                    DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this,property);
+                Log.d("debago", "updateUI getActivity: " + imageSwitcherNumber);
+                if (imageSwitcherNumber == 0) {
+                    DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
                     getRealEstateAgent(property.getRealEstateAgentId());
 
                 }
@@ -155,12 +155,12 @@ public class DetailPropertyFragment extends Fragment {
             myPropertyId = bundle.getString(PROPERTY_ID);
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                Log.d("debago","updateUI bundle");
-                        if(imageSwitcherNumber==0){
-                            updateWithProperty(property);
-                            getRealEstateAgent(property.getRealEstateAgentId());
-                            imageSwitcherNumber++;
-                        }
+                Log.d("debago", "updateUI bundle");
+                if (imageSwitcherNumber == 0) {
+                    updateWithProperty(property);
+                    getRealEstateAgent(property.getRealEstateAgentId());
+                    imageSwitcherNumber++;
+                }
 
             });
             setMapStatic(myPropertyId);
@@ -175,8 +175,8 @@ public class DetailPropertyFragment extends Fragment {
     // 2 - Configuring ViewModel
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
-        this.propertyViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
-        this.geocodingViewModel = ViewModelProviders.of(this).get(GeocodingViewModel.class);
+        this.propertyViewModel = new ViewModelProvider(this,mViewModelFactory).get(PropertyViewModel.class);
+        this.geocodingViewModel = new ViewModelProvider(this).get(GeocodingViewModel.class);
     }
 
 
@@ -209,12 +209,12 @@ public class DetailPropertyFragment extends Fragment {
 
                 String status = "sold";
                 // set the value in the database
-                propertyViewModel.updateDateOfSaleForProperty(selectedDate,status,myPropertyId);
+                propertyViewModel.updateDateOfSaleForProperty(selectedDate, status, myPropertyId);
 
                 //set the value in firebase
-                PropertyHelper.updateDateOfSale(selectedDate,myPropertyId);
-                PropertyHelper.updateStatusProperty(status,myPropertyId);
-                Log.d("debago","in DetailPropertyFragment status is "+status+" and propertyId is: "+myPropertyId);
+                PropertyHelper.updateDateOfSale(selectedDate, myPropertyId);
+                PropertyHelper.updateStatusProperty(status, myPropertyId);
+                Log.d("debago", "in DetailPropertyFragment status is " + status + " and propertyId is: " + myPropertyId);
             }
 
         }
@@ -232,7 +232,7 @@ public class DetailPropertyFragment extends Fragment {
         UnitConversion unitConversion = new UnitConversion();
 
         //TYPE PROPERTY
-        textManagement(property.getTypeProperty(),typeProperty);
+        textManagement(property.getTypeProperty(), typeProperty);
 
         //PRICE
         if (property.getPricePropertyInEuro() != 0.0) {
@@ -247,12 +247,12 @@ public class DetailPropertyFragment extends Fragment {
         }
 
         //ADDRESS PROPERTY
-        textManagement(property.getStreetNumber(),streetNumber);
-        textManagement(property.getStreetName(),streetName);
-        textManagement(property.getAddressCompl(),complAddress);
-        textManagement(property.getTownProperty(),townProperty);
-        textManagement(property.getZipCode(),zipCode);
-        textManagement(property.getCountry(),country);
+        textManagement(property.getStreetNumber(), streetNumber);
+        textManagement(property.getStreetName(), streetName);
+        textManagement(property.getAddressCompl(), complAddress);
+        textManagement(property.getTownProperty(), townProperty);
+        textManagement(property.getZipCode(), zipCode);
+        textManagement(property.getCountry(), country);
 
         //SURFACE AREA
         if (property.getSurfaceAreaProperty() != 0.0) {
@@ -262,10 +262,10 @@ public class DetailPropertyFragment extends Fragment {
         }
 
         //POINT OF INTEREST
-        textManagement(property.getPointOfInterest(),pointsOfInterestNearProperty);
+        textManagement(property.getPointOfInterest(), pointsOfInterestNearProperty);
 
         //FULL DESCRIPTION PROPERTY
-        textManagement(property.getFullDescriptionProperty(),fullDescriptionProperty);
+        textManagement(property.getFullDescriptionProperty(), fullDescriptionProperty);
 
         //NUMBER OF ROOM, BEDROOM, BATHROOM
         this.numberRoomsInProperty.setText(String.valueOf(property.getNumberRoomsInProperty()));
@@ -273,10 +273,10 @@ public class DetailPropertyFragment extends Fragment {
         this.numberBedroomsInProperty.setText(String.valueOf(property.getNumberBedroomsInProperty()));
 
         //STATUS PROPERTY
-        textManagement(property.getStatusProperty(),statusProperty);
+        textManagement(property.getStatusProperty(), statusProperty);
 
         //DATE OF ENTRY
-        textManagement(property.getDateOfEntryOnMarketForProperty(),dateOfEntryOnMarketForProperty);
+        textManagement(property.getDateOfEntryOnMarketForProperty(), dateOfEntryOnMarketForProperty);
 
         //DATE OF SALE
         if (property.getDateOfSaleForProperty() != null) {
@@ -297,11 +297,11 @@ public class DetailPropertyFragment extends Fragment {
             return imageView;
         });
 
-        imagesManagement(property.getPhotoUri1(),property.getPhotoDescription1());
-        imagesManagement(property.getPhotoUri2(),property.getPhotoDescription2());
-        imagesManagement(property.getPhotoUri3(),property.getPhotoDescription3());
-        imagesManagement(property.getPhotoUri4(),property.getPhotoDescription4());
-        imagesManagement(property.getPhotoUri5(),property.getPhotoDescription5());
+        imagesManagement(property.getPhotoUri1(), property.getPhotoDescription1());
+        imagesManagement(property.getPhotoUri2(), property.getPhotoDescription2());
+        imagesManagement(property.getPhotoUri3(), property.getPhotoDescription3());
+        imagesManagement(property.getPhotoUri4(), property.getPhotoDescription4());
+        imagesManagement(property.getPhotoUri5(), property.getPhotoDescription5());
 
         myImagesManagement();
 
@@ -309,7 +309,7 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
-    private void imagesManagement(String photoUri,String photoDescription){
+    private void imagesManagement(String photoUri, String photoDescription) {
         if (photoUri != null) {
             myImages.add(photoUri);
             myDescriptionImage.add(photoDescription);
@@ -317,59 +317,83 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
-    private void myImagesManagement(){
-        if(myImages.size()==1){
-            Log.d("debago","in myImagesize equal to 1 "+myImages.size());
+    private void myImagesManagement() {
+
+        if (myImages.size() == 1) {
+            Log.d("debago", "in myImagesize equal to 1 " + myImages.size());
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
             imageNameSwitcher.setText(myDescriptionImage.get(0));
-            imageCount=myImages.size();
+            imageCount = myImages.size();
             nextImage.setVisibility(View.INVISIBLE);
             prevImage.setVisibility(View.INVISIBLE);
         } else if (myImages.size() != 0) {
-            Log.d("debago","in myImagesize equal different to zero "+myImages.size());
+            Log.d("debago", "in myImagesize equal different to zero " + myImages.size());
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
             imageNameSwitcher.setText(myDescriptionImage.get(0));
-            imageCount=myImages.size();
-        }else {
+            imageCount = myImages.size();
+            if(imagePosition==0){prevImage.setVisibility(View.INVISIBLE);}
+        } else {
             imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_realestate_round);
             nextImage.setVisibility(View.INVISIBLE);
             prevImage.setVisibility(View.INVISIBLE);
             imageNameSwitcher.setVisibility(View.INVISIBLE);
-            imageCount=0;
+            imageCount = 0;
         }
     }
 
-    private void clickOnImagesArrow(){
+    private void clickOnImagesArrow() {
+
 
         Animation in = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_in_left);
         Animation out = AnimationUtils.loadAnimation(MainApplication.getInstance().getApplicationContext(), android.R.anim.slide_out_right);
 
         nextImage.setOnClickListener(view -> {
 
-            if(imagePosition+1<imageCount){
-                imageSwitcher.setInAnimation(in);
-                imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition+1)));
-                imageNameSwitcher.setText(myDescriptionImage.get(imagePosition+1));
+            Log.d("debaga","image position is "+imagePosition+" and image count is "+imageCount);
+            if (imagePosition + 1 < imageCount) {
+                imageSwitcher.setInAnimation(out);
+                imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition + 1)));
+                imageNameSwitcher.setText(myDescriptionImage.get(imagePosition + 1));
+                prevImage.setVisibility(View.VISIBLE);
                 imagePosition++;
-            }else{
+                if(imagePosition==imageCount-1 && myImages.size()!=0){
+                    nextImage.setVisibility(View.INVISIBLE);
+                }else{
+                    nextImage.setVisibility(View.VISIBLE);
+                    prevImage.setVisibility(View.VISIBLE);
+                }
+            } else {
                 Toast.makeText(getContext(), MainApplication.getResourses().getString(R.string.no_more_photo), Toast.LENGTH_SHORT).show();
             }
         });
 
         prevImage.setOnClickListener(view -> {
 
-            if(imagePosition-1>=0){
-                imageSwitcher.setOutAnimation(out);
-                imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition-1)));
-                imageNameSwitcher.setText(myDescriptionImage.get(imagePosition-1));
+            Log.d("debaga","image position is "+imagePosition+" and image count is "+imageCount);
+            if (imagePosition - 1 >= 0) {
+                imageSwitcher.setOutAnimation(in);
+                imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition - 1)));
+                imageNameSwitcher.setText(myDescriptionImage.get(imagePosition - 1));
                 imagePosition--;
-            }else{
+                if(imagePosition==0 && myImages.size()!=0){
+                    prevImage.setVisibility(View.INVISIBLE);
+                }else{
+                    prevImage.setVisibility(View.VISIBLE);
+                    nextImage.setVisibility(View.VISIBLE);
+                }
+            } else {
                 Toast.makeText(getContext(), MainApplication.getResourses().getString(R.string.first_photo), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void textManagement(String text, TextView textView){
+
+    private void prevAndNextImageVisible(){
+        prevImage.setVisibility(View.VISIBLE);
+        nextImage.setVisibility(View.VISIBLE);
+    }
+
+    private void textManagement(String text, TextView textView) {
 
         if (text != null) {
             textView.setText(text);
@@ -397,13 +421,12 @@ public class DetailPropertyFragment extends Fragment {
             geocodingSearch(addressFormatted);
 
 
-
         });
 
     }
 
     //Search latitude and longitude with formatted address, and show static map
-    private void geocodingSearch(String addressFormatted){
+    private void geocodingSearch(String addressFormatted) {
         geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(getViewLifecycleOwner(), results -> {
 
             if (results.size() != 0) {

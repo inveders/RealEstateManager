@@ -3,6 +3,8 @@ package com.inved.realestatemanager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
+import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.Utils;
 
 import org.junit.Assert;
@@ -77,7 +79,7 @@ public class UtilsTest {
 
         //When
         Mockito.when(sharedPrefs.getFloat("KEY_CURRENCY_VALUE", 2)).thenReturn((float) 2.2);
-        double dollarsConversion = utils.convertDollarToEuro(dollarsToConvert);
+        double dollarsConversion = utils.convertDollarToEuro(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()),dollarsToConvert);
 
 
         //Then

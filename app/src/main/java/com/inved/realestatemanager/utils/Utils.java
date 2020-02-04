@@ -26,12 +26,16 @@ public class Utils {
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
      *
-     * @param dollars
+     * @param dollarsToConvert
      * @return
      */
-    public double convertDollarToEuro(double dollars) {
+    public double convertDollarToEuro(double dollarsRates,double dollarsToConvert) {
 
-        return (int) Math.round(dollars * ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()));
+        double conversion = dollarsToConvert/dollarsRates;
+        BigDecimal bd = new BigDecimal(conversion).setScale(2,RoundingMode.HALF_UP);
+        double newInput = bd.doubleValue();
+
+        return (int)newInput;
     }
 
     //Convert euro in dollars
@@ -107,7 +111,7 @@ public class Utils {
         if (ManageCurrency.getCurrency(MainApplication.getInstance().getApplicationContext()).equals("EUR")) {
             return price;
         } else {
-            return convertDollarToEuro(price);
+            return convertDollarToEuro(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()),price);
         }
     }
 
