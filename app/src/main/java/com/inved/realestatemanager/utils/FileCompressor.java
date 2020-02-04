@@ -16,7 +16,7 @@ public class FileCompressor {
     private int maxWidth = 612;
     private int maxHeight = 816;
     private Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.JPEG;
-    private int quality = 80;
+    private int quality = 100;
     private String destinationDirectoryPath;
 
     public FileCompressor(Context context) {

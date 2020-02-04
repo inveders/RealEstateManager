@@ -698,6 +698,10 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 .into(imageView);
     }
 
+
+
+
+
     // --------------
     // SPINNER
     // --------------
@@ -723,7 +727,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     //Spinner step 4/4 : retrieve all agents in database and fill spinner with them
     private void retriveRealEstateAgents() {
         if (propertyViewModel.getAllRealEstateAgents() != null) {
-            propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> {
+            propertyViewModel.getAllRealEstateAgents().observe(getViewLifecycleOwner(), realEstateAgents -> {
                 for (RealEstateAgents list : realEstateAgents) {
                     String firstname = list.getFirstname();
                     String lastname = list.getLastname();
@@ -896,7 +900,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     // --------------
 
     private void updateUIwithDataFromDatabase(String propertyId) {
-        propertyViewModel.getOneProperty(propertyId).observe(this, property -> {
+        propertyViewModel.getOneProperty(propertyId).observe(getViewLifecycleOwner(), property -> {
 
             if (property.getDateOfEntryOnMarketForProperty().isEmpty() || property.getDateOfEntryOnMarketForProperty() == null) {
                 datePickerInit();
@@ -906,7 +910,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             }
 
             //Spinner step 3/4 : retrieve the agents who are already in database and show him in the spinner (pre-fill spinner)
-            propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(this, realEstateAgents -> {
+            propertyViewModel.getRealEstateAgentById(property.getRealEstateAgentId()).observe(getViewLifecycleOwner(), realEstateAgents -> {
                 if (realEstateAgents.getFirstname() != null) {
                     String firstname = realEstateAgents.getFirstname();
                     String lastname = realEstateAgents.getLastname();
@@ -987,14 +991,14 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
         Log.d("debago", "property is 1: " + photoDescription1 + " 2: " + photoDescription2 + " 3: " + photoDescription3 + " photo 1:" + photoUri1 + " photo 2: " + photoUri2 + " photo 3 is " + photoUri3+ "photo 5 is "+photoUri5);
 
-        showImageWithGlide(photoUri1,photo1,1);
-        showImageWithGlide(photoUri2,photo2,2);
-        showImageWithGlide(photoUri3,photo3,3);
-        showImageWithGlide(photoUri4,photo4,4);
-        showImageWithGlide(photoUri5,photo5,5);
+        showImageWithGlide(photoUri1,photo1,1,240);
+        showImageWithGlide(photoUri2,photo2,2,50);
+        showImageWithGlide(photoUri3,photo3,3,50);
+        showImageWithGlide(photoUri4,photo4,4,50);
+        showImageWithGlide(photoUri5,photo5,5,50);
     }
 
-    private void showImageWithGlide(String photoUriGlide,ImageView photoGlide,int photoNumber){
+    private void showImageWithGlide(String photoUriGlide,ImageView photoGlide,int photoNumber,int size){
 
         Uri fileUri;
         if (photoUriGlide != null) {
@@ -1002,7 +1006,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             if (fileUri.getPath() != null) {
                 Glide.with(this)
                         .load(new File(fileUri.getPath()))
-                        .override(50, 50)
+                        .override(size, size)
                         .fitCenter()
                         .into(photoGlide);
 

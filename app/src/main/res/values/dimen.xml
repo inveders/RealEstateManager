@@ -2,6 +2,8 @@
 <resources>
     <dimen name="default_large_margin">20dip</dimen>
     <dimen name="default_extra_large_margin">30dip</dimen>
+    <dimen name="default_extra_double_large_margin">45dip</dimen>
+    <dimen name="default_extra_mega_large_margin">60dip</dimen>
     <dimen name="default_margin">10dip</dimen>
     <dimen name="default_title_size">40sp</dimen>
     <dimen name="default_little_title_size">30sp</dimen>
