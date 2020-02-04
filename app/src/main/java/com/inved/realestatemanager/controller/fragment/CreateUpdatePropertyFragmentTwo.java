@@ -42,7 +42,6 @@ import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.DatePickerFragment;
-import com.inved.realestatemanager.domain.DateOfDay;
 import com.inved.realestatemanager.domain.GetSpinner;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.firebase.PropertyHelper;
