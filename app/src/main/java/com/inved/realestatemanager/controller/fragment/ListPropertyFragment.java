@@ -155,10 +155,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         });
     }
 
-    private void syncFirebaseAndRoom(QueryDocumentSnapshot queryDocumentSnapshot) {
-
-    }
-
     // --------------
     // SEARCH
     // --------------
