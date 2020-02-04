@@ -22,7 +22,6 @@ public class ManageCurrency {
         return sharedPreferences.getString(KEY_CURRENCY_DATA,"EUR");
     }
 
-
     public static void saveRate(Context context, float rate) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(KEY_CURRENCY_RETRIEVE_RETROFIT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -34,6 +33,5 @@ public class ManageCurrency {
         SharedPreferences sharedPreferences = context.getSharedPreferences(KEY_CURRENCY_RETRIEVE_RETROFIT, Context.MODE_PRIVATE);
         return sharedPreferences.getFloat(KEY_CURRENCY_VALUE,2);
     }
-
 
 }
