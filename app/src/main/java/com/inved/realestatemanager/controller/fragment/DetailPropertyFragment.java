@@ -136,7 +136,7 @@ public class DetailPropertyFragment extends Fragment {
             Intent intent = getActivity().getIntent();
             myPropertyId = intent.getStringExtra(PROPERTY_ID);
             configureViewModel();
-            propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
+            propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
                 Log.d("debago","updateUI getActivity: "+imageSwitcherNumber);
                 if(imageSwitcherNumber==0){
                     DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this,property);
@@ -154,7 +154,7 @@ public class DetailPropertyFragment extends Fragment {
         if (bundle != null) {
             myPropertyId = bundle.getString(PROPERTY_ID);
             configureViewModel();
-            propertyViewModel.getOneProperty(myPropertyId).observe(this, property -> {
+            propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
                 Log.d("debago","updateUI bundle");
                         if(imageSwitcherNumber==0){
                             updateWithProperty(property);
@@ -382,7 +382,7 @@ public class DetailPropertyFragment extends Fragment {
     private void setMapStatic(String propertyId) {
 
         //Construct formatted address from data in room
-        propertyViewModel.getOneProperty(propertyId).observe(this, properties -> {
+        propertyViewModel.getOneProperty(propertyId).observe(getViewLifecycleOwner(), properties -> {
 
             SplitString splitString = new SplitString();
 
@@ -404,7 +404,7 @@ public class DetailPropertyFragment extends Fragment {
 
     //Search latitude and longitude with formatted address, and show static map
     private void geocodingSearch(String addressFormatted){
-        geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(this, results -> {
+        geocodingViewModel.getLatLngWithAddress(addressFormatted).observe(getViewLifecycleOwner(), results -> {
 
             if (results.size() != 0) {
 
@@ -431,7 +431,7 @@ public class DetailPropertyFragment extends Fragment {
 
     private void getRealEstateAgent(String realEstateAgentId) {
 
-        propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(this, realEstateAgents -> {
+        propertyViewModel.getRealEstateAgentById(realEstateAgentId).observe(getViewLifecycleOwner(), realEstateAgents -> {
 
             if (realEstateAgents.getFirstname() != null && realEstateAgents.getLastname() != null) {
                 String completeName = realEstateAgents.getFirstname() + " " + realEstateAgents.getLastname();

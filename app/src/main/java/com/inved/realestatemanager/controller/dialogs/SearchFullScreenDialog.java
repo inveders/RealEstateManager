@@ -251,7 +251,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
     //Spinner step 3/3 : retrieve all agents in database and fill spinner with them
     private void retriveRealEstateAgentsForSpinner() {
         if (propertyViewModel.getAllRealEstateAgents() != null) {
-            propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> {
+            propertyViewModel.getAllRealEstateAgents().observe(getViewLifecycleOwner(), realEstateAgents -> {
                 for (RealEstateAgents list : realEstateAgents) {
                     String firstname = list.getFirstname();
                     String lastname = list.getLastname();
@@ -305,7 +305,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
                         this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
                                 mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
-                                .observe(this, properties -> {
+                                .observe(getViewLifecycleOwner(), properties -> {
                                     Log.d("debago", "properties size is " + properties.size() + "1. realestateagentId is " + realEstateAgentId);
                                     updateRealEstateItemsList(properties);
 
@@ -316,7 +316,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
                 } else {
                     this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
                             mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
-                            .observe(this, properties -> {
+                            .observe(getViewLifecycleOwner(), properties -> {
                                 Log.d("debago", "properties size is " + properties.size() + "2. realestateagentId is " + realEstateAgentId);
                                 updateRealEstateItemsList(properties);
                             });
