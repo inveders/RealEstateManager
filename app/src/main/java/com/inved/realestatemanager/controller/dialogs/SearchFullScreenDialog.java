@@ -37,7 +37,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
     //Widget
 
-
     private Spinner typePropertySpinner;
     private AutoCompleteTextView townPropertyAutocomplete;
     private MultiSlider surfaceSeekbar;
