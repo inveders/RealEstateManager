@@ -163,6 +163,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         if (file.getPath() != null) {
             GlideApp.with(MainApplication.getInstance().getApplicationContext())
                     .load(file)
+                    .centerCrop()
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -187,6 +188,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         if (file.getPath() != null) {
             GlideApp.with(MainApplication.getInstance().getApplicationContext())
                     .load(file)
+                    .centerCrop()
                     .transform(new WatermarkTransformation())
                     .into((photo));
             stopShimmer();
@@ -215,6 +217,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
                                         GlideApp.with(MainApplication.getInstance().getApplicationContext())
                                                 .load(fileReference)
+                                                .centerCrop()
                                                 .listener(new RequestListener<Drawable>() {
                                                     @Override
                                                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -269,6 +272,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
                                         GlideApp.with(MainApplication.getInstance().getApplicationContext())
                                                 .load(fileReference)
+                                                .centerCrop()
                                                 .transform(new WatermarkTransformation())
                                                 .listener(new RequestListener<Drawable>() {
                                                     @Override
