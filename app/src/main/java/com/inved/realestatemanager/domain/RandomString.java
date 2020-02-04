@@ -1,4 +1,4 @@
-package com.inved.realestatemanager.utils;
+package com.inved.realestatemanager.domain;
 
 import java.security.SecureRandom;
 

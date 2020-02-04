@@ -1,7 +1,6 @@
 package com.inved.realestatemanager;
 
-import com.inved.realestatemanager.domain.SplitString;
-import com.inved.realestatemanager.utils.RandomString;
+import com.inved.realestatemanager.domain.RandomString;
 
 import org.junit.Assert;
 import org.junit.Test;
