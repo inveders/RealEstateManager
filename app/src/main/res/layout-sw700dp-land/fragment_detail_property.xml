@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_update_fragment_one"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_margin"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_detail_property_rootview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageSwitcher
+            android:id="@+id/fragment_detail_property_image_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_margin="@dimen/default_margin"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/description_image"
+            android:scaleType="fitXY"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="?attr/actionModeSplitBackground" />
+
+        <ImageButton
+            android:id="@+id/prev_button_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_image_switcher"
+            app:srcCompat="@drawable/ic_keyboard_arrow_left_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/next_button_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_image_switcher"
+            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_description_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/detail_property_description_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_type_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_item_unit_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintRight_toLeftOf="@id/fragment_detail_property_price_text"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_price_text" />
+
+
+        <TextView
+            android:id="@+id/fragment_detail_property_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+
+            app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_type_text" />
+
+
+        <TextView
+            android:id="@+id/fragment_detail_property_image_name_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/list_property_image_name"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_image_switcher" />
+
+
+        <TextView
+            android:id="@+id/fragment_detail_property_type_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/list_property_type"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_image_name_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_description_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:maxHeight="175sp"
+            android:paddingBottom="15dp"
+            android:text="@string/detail_property_description_texte"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintRight_toRightOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_description_title" />
+
+
+        <!-- BLOC CARACTERISTIQUE SURFACE -->
+        <ImageView
+            android:id="@+id/fragment_detail_property_surface_area_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_surface_area_title"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_image_switcher"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_title"
+            app:srcCompat="@drawable/detail_icon_surface_24dp" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_surface_area_title"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/detail_property_surface_area_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_surface_area_image"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_description_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_surface_area_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/detail_property_surface_area_text"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_surface_area_image"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_surface_area_title" />
+
+        <!-- BLOC CARACTERISTIQUE NUMBER OF BEDROOM -->
+        <ImageView
+            android:id="@+id/fragment_detail_property_number_of_bedroom_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="@dimen/default_extra_double_large_margin"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_number_of_bedroom_title"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_surface_area_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_image"
+            app:srcCompat="@drawable/detail_icon_bedrooms_24dp" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_number_of_bedroom_title"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/detail_property_number_of_bedroom_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_number_of_bedroom_image"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_number_of_bedroom_image" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_number_of_bedroom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/detail_property_number_of_bedroom_text"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_number_of_bedroom_image"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_number_of_bedroom_title" />
+
+        <!-- BLOC CARACTERISTIQUE NUMBER OF ROOMS -->
+
+        <ImageView
+            android:id="@+id/fragment_detail_property_number_of_room_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="@dimen/default_extra_double_large_margin"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_surface_area_title"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_number_of_bedroom_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_title"
+            app:srcCompat="@drawable/detail_icon_rooms_24dp" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_number_of_room_title"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/detail_property_number_of_room_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_number_of_room_image"
+
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_number_of_room_image" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_number_of_room_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/detail_property_number_of_room_text"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_room_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_surface_area_title" />
+
+        <!-- BLOC CARACTERISTIQUE NUMBER OF BATHROOM -->
+
+        <ImageView
+            android:id="@+id/fragment_detail_property_number_of_bathroom_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/description_image"
+            android:layout_marginStart="@dimen/default_extra_double_large_margin"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_number_of_bathroom_title"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_number_of_room_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_image"
+            app:srcCompat="@drawable/detail_icon_bathrooms_24dp" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_number_of_bathroom_title"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_property_number_of_bathroom_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_number_of_bathroom_image"
+
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_number_of_bathroom_image" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_number_of_bathroom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/detail_property_number_of_bathroom_text"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_bathroom_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_number_of_bathroom_title" />
+
+
+        <!-- BLOC CARACTERISTIQUE LOCATION -->
+        <ImageView
+            android:id="@+id/fragment_detail_property_location_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_location_title"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_surface_area_image"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_location_title"
+            app:srcCompat="@drawable/detail_icon_location_24dp" />
+
+        <!--LOCATION-->
+
+        <TextView
+            android:id="@+id/fragment_detail_property_location_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/detail_property_location_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_surface_area_text"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_surface_area_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_street_number_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="170sp"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/create_update_by_street_number"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_location_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_location_title" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_street_name_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:maxWidth="170sp"
+            android:text="@string/create_update_by_street_name"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_street_number_text"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_street_number_text" />
+
+
+        <TextView
+            android:id="@+id/fragment_detail_property_complement_address_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="170sp"
+
+            android:text="@string/create_update_by_compl_address"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_location_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_street_number_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_town_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="170sp"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/create_update_by_town_name"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_location_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_zip_code_text" />
+
+
+        <TextView
+            android:id="@+id/fragment_detail_property_zip_code_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="170sp"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/create_update_by_zip_code"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_location_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_complement_address_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_country_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="170sp"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/create_update_by_country_name"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_location_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_town_text" />
+
+
+        <ImageView
+            android:id="@+id/fragment_detail_property_location_map"
+            android:layout_width="200sp"
+            android:layout_height="200sp"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_bedroom_title"
+
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_location_title"
+            android:src="@drawable/no_image" />
+
+
+        <!-- BLOC CARACTERISTIQUE POINT OF INTEREST -->
+        <ImageView
+            android:id="@+id/fragment_detail_property_points_of_interest_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_points_of_interest_title"
+            app:layout_constraintRight_toLeftOf="@id/fragment_detail_property_points_of_interest_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_points_of_interest_title"
+            app:srcCompat="@drawable/detail_icon_point_of_interest_24dp" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_points_of_interest_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/detail_property_points_of_interest_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_bathroom_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_location_title" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_points_of_interest_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/detail_property_points_of_interest_text"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_points_of_interest_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_points_of_interest_title" />
+
+
+        <!-- BLOC CARACTERISTIQUE REAL ESTATE AGENT -->
+
+        <TextView
+            android:id="@+id/fragment_detail_property_real_estate_agent_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/detail_property_real_estate_agent_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_points_of_interest_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_points_of_interest_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_real_estate_agent_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/detail_property_real_estate_agent_text"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_real_estate_agent_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_real_estate_agent_title" />
+
+        <!-- BLOC CARACTERISTIQUE DATE OF ENTRY ON MARKET -->
+
+        <TextView
+            android:id="@+id/fragment_detail_property_date_of_entry_on_market_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/detail_property_date_of_entry_on_market_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_points_of_interest_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_real_estate_agent_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_date_of_entry_on_market_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/detail_property_date_of_entry_on_market_text"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_date_of_entry_on_market_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_date_of_entry_on_market_title" />
+
+        <!-- BLOC CARACTERISTIQUE STATUS -->
+
+        <TextView
+            android:id="@+id/fragment_detail_property_status_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/detail_property_status_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_points_of_interest_title"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_property_date_of_entry_on_market_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/detail_property_status_text"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_status_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_status_title" />
+
+        <!-- BLOC CARACTERISTIQUE DATE OF SALE -->
+
+        <TextView
+            android:id="@+id/fragment_detail_property_date_of_sale_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="@string/detail_property_date_of_sale_title"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_points_of_interest_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_country_text" />
+
+        <TextView
+            android:id="@+id/fragment_detail_property_date_of_sale_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/detail_property_date_of_sale_text"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_date_of_sale_title"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_property_date_of_sale_title" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
