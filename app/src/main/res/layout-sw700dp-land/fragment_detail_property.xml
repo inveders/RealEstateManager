@@ -134,7 +134,7 @@
 
         <TextView
             android:id="@+id/fragment_detail_property_surface_area_title"
-            android:layout_width="200sp"
+            android:layout_width="150sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
@@ -167,7 +167,7 @@
 
         <TextView
             android:id="@+id/fragment_detail_property_number_of_bedroom_title"
-            android:layout_width="200sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="@string/detail_property_number_of_bedroom_title"
@@ -191,7 +191,6 @@
             android:id="@+id/fragment_detail_property_number_of_room_image"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginStart="@dimen/default_extra_double_large_margin"
             android:contentDescription="@string/description_image"
             app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_surface_area_title"
             app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_number_of_bedroom_title"
@@ -200,7 +199,7 @@
 
         <TextView
             android:id="@+id/fragment_detail_property_number_of_room_title"
-            android:layout_width="200sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="@string/detail_property_number_of_room_title"
@@ -226,7 +225,6 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:contentDescription="@string/description_image"
-            android:layout_marginStart="@dimen/default_extra_double_large_margin"
             app:layout_constraintBottom_toBottomOf="@id/fragment_detail_property_number_of_bathroom_title"
             app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_number_of_room_title"
             app:layout_constraintTop_toTopOf="@id/fragment_detail_property_surface_area_image"
@@ -234,7 +232,7 @@
 
         <TextView
             android:id="@+id/fragment_detail_property_number_of_bathroom_title"
-            android:layout_width="200sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="@string/detail_property_number_of_bathroom_title"
             android:textStyle="bold"
@@ -344,7 +342,7 @@
             android:layout_width="200sp"
             android:layout_height="200sp"
             android:contentDescription="@string/description_image"
-            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_bedroom_title"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_bedroom_image"
 
             app:layout_constraintTop_toTopOf="@id/fragment_detail_property_location_title"
             android:src="@drawable/no_image" />
@@ -367,9 +365,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginStart="@dimen/default_extra_mega_large_margin"
             android:text="@string/detail_property_points_of_interest_title"
             android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="@id/fragment_detail_property_number_of_bathroom_title"
+            app:layout_constraintLeft_toRightOf="@id/fragment_detail_property_location_map"
             app:layout_constraintTop_toTopOf="@id/fragment_detail_property_location_title" />
 
         <TextView
