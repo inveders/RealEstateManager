@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_update_fragment_one"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:fillViewport="true"
+    >
+
+
+    <!-- PRICE SURFACE POINTS OF INTEREST DATE ENTRY DATE SALE LOCALISATION NUMBER PHOTOS TYPE ROOM BATH BED -->
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+
+        android:orientation="vertical"
+        >
+
+        <!-- TYPE PROPERTY -->
+
+        <TextView
+            android:id="@+id/create_update_type_property_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_large_margin"
+            android:text="@string/fullscreen_dialog__by_type_of_property"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/create_update_spinner_type_property"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/typeProperty"
+            android:layout_marginStart="@dimen/default_extra_large_margin"
+            app:layout_constraintLeft_toRightOf="@id/create_update_type_property_text"
+            style="@style/EditTextStylewithoutText"
+            app:layout_constraintTop_toTopOf="@id/create_update_type_property_text" />
+
+        <!-- PRICE LEVEL -->
+        <TextView
+            android:id="@+id/create_update_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_extra_mega_large_margin"
+            android:text="@string/create_update_by_price"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_type_property_text" />
+
+        <EditText
+            android:id="@+id/create_updtate_price_edittext"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_spinner_type_property"
+              app:layout_constraintBaseline_toBaselineOf="@id/create_update_price_text"
+            style="@style/EditTextStyleText"
+            android:inputType="numberDecimal"
+            android:hint="@string/create_update_by_price_hint"
+            tools:ignore="LabelFor"
+            android:autofillHints="no"
+            tools:targetApi="o"
+            />
+
+        <!-- SURFACE -->
+        <TextView
+            android:id="@+id/create_update_surface_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_update_by_surface"
+            android:layout_marginStart="@dimen/default_extra_mega_large_margin"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toRightOf="@id/create_updtate_price_edittext"
+            app:layout_constraintTop_toTopOf="@id/create_update_price_text" />
+
+
+        <EditText
+            android:id="@+id/create_update_surface_edittext"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_extra_mega_large_margin"
+            app:layout_constraintLeft_toRightOf="@id/create_update_surface_text"
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_surface_text"
+            android:inputType="numberDecimal"
+            style="@style/EditTextStyleText"
+            android:importantForAutofill="no"
+            tools:ignore="LabelFor"
+            android:hint="@string/create_update_by_surface"
+            />
+        <!--LOCALISATION-->
+
+        <TextView
+            android:id="@+id/create_update_street_number_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_extra_mega_large_margin"
+            android:text="@string/create_update_by_street_number"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_surface_text" />
+
+        <EditText
+            android:id="@+id/create_update_street_number_edittext"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_spinner_type_property"
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_number_text"
+            android:inputType="number"
+            style="@style/EditTextStyleText"
+            tools:ignore="LabelFor"
+            android:autofillHints="@string/create_update_by_street_number"
+            android:hint="@string/create_update_by_street_number"
+            tools:targetApi="o"/>
+
+        <TextView
+            android:id="@+id/create_update_street_compl_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_update_by_street_compl"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_text"
+            app:layout_constraintTop_toTopOf="@id/create_update_street_number_text" />
+
+        <EditText
+            android:id="@+id/create_update_street_compl_edittext"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_edittext"
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_compl_text"
+            android:inputType="text"
+            style="@style/EditTextStyleText"
+            tools:ignore="LabelFor"
+            android:autofillHints="@string/create_update_by_street_compl"
+            android:hint="@string/create_update_by_street_compl"
+            tools:targetApi="o"/>
+
+        <TextView
+            android:id="@+id/create_update_street_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_extra_large_margin"
+            android:text="@string/create_update_by_street_name"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_street_compl_text" />
+
+        <EditText
+            android:id="@+id/create_update_street_name_edittext"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_spinner_type_property"
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_name_text"
+            android:inputType="text"
+            style="@style/EditTextStyleText"
+            tools:ignore="LabelFor"
+            android:autofillHints="@string/create_update_by_street_name"
+            android:hint="@string/create_update_by_street_name"
+            tools:targetApi="o"/>
+
+
+        <TextView
+            android:id="@+id/create_update_zip_code_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_update_by_zip_code"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_text"
+            app:layout_constraintTop_toTopOf="@id/create_update_street_name_text"            />
+
+        <EditText
+            android:id="@+id/create_update_zip_code_edittext"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_edittext"
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_zip_code_text"
+            style="@style/EditTextStyleText"
+            tools:ignore="LabelFor"
+            android:autofillHints="@string/create_update_by_zip_code"
+            android:hint="@string/create_update_by_zip_code"
+            tools:targetApi="o"
+            android:inputType="number"
+            />
+
+
+        <TextView
+            android:id="@+id/create_update_town_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_extra_large_margin"
+            android:text="@string/create_update_by_town_name"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_zip_code_text" />
+
+        <EditText
+            android:id="@+id/create_update_town_name_edittext"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_spinner_type_property"
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_town_name_text"
+            android:inputType="text"
+            style="@style/EditTextStyleText"
+            android:autofillHints="@string/create_update_by_town_name"
+            android:hint="@string/create_update_by_town_name"
+            tools:targetApi="o"
+            tools:ignore="LabelFor" />
+
+
+        <TextView
+            android:id="@+id/create_update_country_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_update_by_country_name"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_text"
+            app:layout_constraintTop_toTopOf="@id/create_update_town_name_text" />
+
+        <AutoCompleteTextView
+            android:id="@+id/create_update_country_name_autocompleteText"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_edittext"
+            app:layout_constraintBaseline_toBaselineOf="@id/create_update_country_name_text"
+            tools:ignore="LabelFor"
+            android:hint="@string/create_update_by_country_name"
+            style="@style/EditTextStyleText"/>
+
+        <!--POINTS OF INTERESTS-->
+
+        <TextView
+            android:id="@+id/create_update_poi_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_extra_mega_large_margin"
+            android:text="@string/fullscreen_dialog__by_points_of_interest"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_spinner_number_bathrooms" />
+
+
+        <CheckBox
+            android:id="@+id/create_update_checkbox_poi_schools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckboxClicked"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/fullscreen_dialog__poi_school"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_poi_text"
+
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop" />
+
+        <CheckBox
+            android:id="@+id/create_update_checkbox_poi_restaurants"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="onCheckboxClicked"
+            android:text="@string/fullscreen_dialog__poi_restaurants"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_schools"
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop"
+            />
+
+        <CheckBox
+            android:id="@+id/create_update_checkbox_poi_car_parks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="onCheckboxClicked"
+            android:text="@string/fullscreen_dialog_poi_car_parks"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_restaurants"
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop"
+            />
+
+        <CheckBox
+            android:id="@+id/create_update_checkbox_poi_shops"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            android:onClick="onCheckboxClicked"
+            android:text="@string/fullscreen_dialog__poi_shops"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/create_update_checkbox_poi_schools"
+            android:buttonTint="@color/colorPrimaryDark"
+
+            tools:targetApi="lollipop"/>
+
+        <CheckBox
+            android:id="@+id/create_update_checkbox_poi_tourist_attraction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="onCheckboxClicked"
+            android:text="@string/fullscreen_dialog_poi_tourist_attraction"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_shops"
+            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_shops"
+            android:buttonTint="@color/colorPrimaryDark"
+            tools:targetApi="lollipop"/>
+
+        <CheckBox
+            android:id="@+id/create_update_checkbox_poi_oil_station"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="onCheckboxClicked"
+            android:text="@string/fullscreen_dialog_poi_oil_station"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_shops"
+            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_tourist_attraction"
+            android:buttonTint="@color/colorPrimaryDark"
+            tools:targetApi="lollipop"/>
+
+        <!-- NUMBER ROOMS -->
+
+        <TextView
+            android:id="@+id/create_update_number_room_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_extra_mega_large_margin"
+            android:text="@string/create_update_by_number_of_rooms"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_country_name_text" />
+
+        <Spinner
+            android:id="@+id/create_update_spinner_number_rooms"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_large_margin"
+            android:entries="@array/numberRooms"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_number_room_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_number_room_text"
+            style="@style/EditTextStylewithoutText"/>
+
+
+        <!-- NUMBER BEDROOM -->
+
+        <TextView
+            android:id="@+id/create_update_number_bedroom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_extra_mega_large_margin"
+            android:text="@string/create_update_by_number_of_bedroom"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toRightOf="@id/create_update_spinner_number_rooms"
+            app:layout_constraintTop_toTopOf="@id/create_update_number_room_text" />
+
+        <Spinner
+            android:id="@+id/create_update_spinner_number_bedroom"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_large_margin"
+            android:entries="@array/numberBedrooms"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_number_bedroom_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_number_bedroom_text"
+            style="@style/EditTextStylewithoutText"/>
+
+
+        <!-- NUMBER BATHROOM -->
+
+        <TextView
+            android:id="@+id/create_update_number_bathroom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_extra_mega_large_margin"
+            android:text="@string/create_update_by_number_of_bathroom"
+            style="@style/TextviewStyle"
+            app:layout_constraintLeft_toRightOf="@id/create_update_spinner_number_bedroom"
+            app:layout_constraintTop_toTopOf="@id/create_update_number_room_text" />
+
+        <Spinner
+            android:id="@+id/create_update_spinner_number_bathrooms"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_large_margin"
+            android:entries="@array/numberBathrooms"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_number_bathroom_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_number_bathroom_text"
+            style="@style/EditTextStylewithoutText"/>
+
+        <Button
+            android:id="@+id/create_update_next_button"
+            android:layout_marginTop="@dimen/default_extra_large_margin"
+            android:text="@string/create_update_next_button"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/create_update_checkbox_poi_car_parks"
+            style="@style/ButtonStyle"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
