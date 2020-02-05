@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,7 +19,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -47,11 +45,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     //Declaration for Navigation Drawer
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-
-    // Declaration for fragments
-    private ListPropertyFragment listPropertyFragment;
-    private DetailPropertyFragment detailPropertyFragment;
-
 
     private NavigationView navigationView;
     private Menu mOptionsMenu;
@@ -339,7 +332,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private void configureAndShowListFragment() {
         // A - Get FragmentManager (Support) and Try to find existing instance of fragment in FrameLayout container
-        listPropertyFragment = (ListPropertyFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_frame_layout);
+        // Declaration for fragments
+        ListPropertyFragment listPropertyFragment = (ListPropertyFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_frame_layout);
 
         if (listPropertyFragment == null) {
             // B - Create new list property fragment
@@ -354,7 +348,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private void configureAndShowDetailFragment() {
         // A - Get FragmentManager (Support) and Try to find existing instance of fragment in FrameLayout container
-        detailPropertyFragment = (DetailPropertyFragment) getSupportFragmentManager().findFragmentById(R.id.activity_detail_frame_layout);
+        DetailPropertyFragment detailPropertyFragment = (DetailPropertyFragment) getSupportFragmentManager().findFragmentById(R.id.activity_detail_frame_layout);
 
         //A - We only add DetailFragment in Tablet mode (If found frame_layout_detail)
         if (detailPropertyFragment == null && findViewById(R.id.activity_detail_frame_layout) != null) {

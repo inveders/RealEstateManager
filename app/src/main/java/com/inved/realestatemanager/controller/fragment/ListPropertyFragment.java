@@ -236,6 +236,15 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                 Bundle bundle = new Bundle();
                 bundle.putString(PROPERTY_ID, propertyId);
                 detailFragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.activity_detail_frame_layout, detailFragment, "fragmentDetail")
+                        .addToBackStack(null)
+                        .commit();
+
+
+
+
             }else{
                 //We open activity if we are in portrait mode
                 Log.d("debago","portrait mode fragment");
