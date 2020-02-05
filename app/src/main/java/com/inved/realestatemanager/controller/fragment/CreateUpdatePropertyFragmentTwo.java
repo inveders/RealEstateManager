@@ -693,7 +693,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private void glideNoImage(ImageView imageView) {
         Glide.with(this)
                 .load(R.drawable.no_image)
-                .override(50, 50)
+                .override(240, 240)
                 .fitCenter()
                 .into(imageView);
     }
@@ -992,10 +992,19 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         Log.d("debago", "property is 1: " + photoDescription1 + " 2: " + photoDescription2 + " 3: " + photoDescription3 + " photo 1:" + photoUri1 + " photo 2: " + photoUri2 + " photo 3 is " + photoUri3+ "photo 5 is "+photoUri5);
 
         showImageWithGlide(photoUri1,photo1,1,240);
-        showImageWithGlide(photoUri2,photo2,2,50);
-        showImageWithGlide(photoUri3,photo3,3,50);
-        showImageWithGlide(photoUri4,photo4,4,50);
-        showImageWithGlide(photoUri5,photo5,5,50);
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize) {
+            showImageWithGlide(photoUri2,photo2,2,110);
+            showImageWithGlide(photoUri3,photo3,3,110);
+            showImageWithGlide(photoUri4,photo4,4,110);
+            showImageWithGlide(photoUri5,photo5,5,110);
+        }else{
+            showImageWithGlide(photoUri2,photo2,2,50);
+            showImageWithGlide(photoUri3,photo3,3,50);
+            showImageWithGlide(photoUri4,photo4,4,50);
+            showImageWithGlide(photoUri5,photo5,5,50);
+        }
+
     }
 
     private void showImageWithGlide(String photoUriGlide,ImageView photoGlide,int photoNumber,int size){
