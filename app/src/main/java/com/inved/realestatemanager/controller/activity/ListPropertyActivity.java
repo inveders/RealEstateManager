@@ -76,7 +76,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         this.spinnerManagement();
 
         this.configureAndShowListFragment();
-        // this.configureAndShowDetailFragment();
+        this.configureAndShowDetailFragment();
 
     }
 
@@ -352,7 +352,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     }
 
 
-   /* private void configureAndShowDetailFragment() {
+    private void configureAndShowDetailFragment() {
         // A - Get FragmentManager (Support) and Try to find existing instance of fragment in FrameLayout container
         detailPropertyFragment = (DetailPropertyFragment) getSupportFragmentManager().findFragmentById(R.id.activity_detail_frame_layout);
 
@@ -365,7 +365,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
-*/
+
 
     private void refreshFragment() {
         if (getFragmentRefreshListener() != null) {

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.GeocodingViewModel;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.sharedpreferences.ManageDatabaseFilling;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.Utils;
 
@@ -131,22 +133,43 @@ public class DetailPropertyFragment extends Fragment {
 
         myImages = new ArrayList<>();
         myDescriptionImage = new ArrayList<>();
+        configureViewModel();
 
-        if (getActivity() != null) {
-            Intent intent = getActivity().getIntent();
-            myPropertyId = intent.getStringExtra(PROPERTY_ID);
-            configureViewModel();
-            propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                Log.d("debago", "updateUI getActivity: " + imageSwitcherNumber);
-                if (imageSwitcherNumber == 0) {
-                    DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
-                    getRealEstateAgent(property.getRealEstateAgentId());
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize) {
 
-                }
+            propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
+                myPropertyId = properties.get(0).getPropertyId();
+                propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
+                    Log.d("debago", "updateUI getActivity tablet: " + imageSwitcherNumber);
+                    if (imageSwitcherNumber == 0) {
+                        DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
+                        getRealEstateAgent(property.getRealEstateAgentId());
 
+                    }
+
+                });
+                setMapStatic(myPropertyId);
             });
 
-            setMapStatic(myPropertyId);
+
+        } else {
+            if (getActivity() != null) {
+                Intent intent = getActivity().getIntent();
+                myPropertyId = intent.getStringExtra(PROPERTY_ID);
+
+                propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
+                    Log.d("debago", "updateUI getActivity: " + imageSwitcherNumber);
+                    if (imageSwitcherNumber == 0) {
+                        DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
+                        getRealEstateAgent(property.getRealEstateAgentId());
+
+                    }
+
+                });
+
+                setMapStatic(myPropertyId);
+            }
         }
 
 
@@ -175,7 +198,7 @@ public class DetailPropertyFragment extends Fragment {
     // 2 - Configuring ViewModel
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
-        this.propertyViewModel = new ViewModelProvider(this,mViewModelFactory).get(PropertyViewModel.class);
+        this.propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
         this.geocodingViewModel = new ViewModelProvider(this).get(GeocodingViewModel.class);
     }
 
@@ -331,7 +354,9 @@ public class DetailPropertyFragment extends Fragment {
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
             imageNameSwitcher.setText(myDescriptionImage.get(0));
             imageCount = myImages.size();
-            if(imagePosition==0){prevImage.setVisibility(View.INVISIBLE);}
+            if (imagePosition == 0) {
+                prevImage.setVisibility(View.INVISIBLE);
+            }
         } else {
             imageSwitcher.setImageResource(R.mipmap.ic_logo_appli_realestate_round);
             nextImage.setVisibility(View.INVISIBLE);
@@ -349,16 +374,16 @@ public class DetailPropertyFragment extends Fragment {
 
         nextImage.setOnClickListener(view -> {
 
-            Log.d("debaga","image position is "+imagePosition+" and image count is "+imageCount);
+            Log.d("debaga", "image position is " + imagePosition + " and image count is " + imageCount);
             if (imagePosition + 1 < imageCount) {
                 imageSwitcher.setInAnimation(out);
                 imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition + 1)));
                 imageNameSwitcher.setText(myDescriptionImage.get(imagePosition + 1));
                 prevImage.setVisibility(View.VISIBLE);
                 imagePosition++;
-                if(imagePosition==imageCount-1 && myImages.size()!=0){
+                if (imagePosition == imageCount - 1 && myImages.size() != 0) {
                     nextImage.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     nextImage.setVisibility(View.VISIBLE);
                     prevImage.setVisibility(View.VISIBLE);
                 }
@@ -369,15 +394,15 @@ public class DetailPropertyFragment extends Fragment {
 
         prevImage.setOnClickListener(view -> {
 
-            Log.d("debaga","image position is "+imagePosition+" and image count is "+imageCount);
+            Log.d("debaga", "image position is " + imagePosition + " and image count is " + imageCount);
             if (imagePosition - 1 >= 0) {
                 imageSwitcher.setOutAnimation(in);
                 imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition - 1)));
                 imageNameSwitcher.setText(myDescriptionImage.get(imagePosition - 1));
                 imagePosition--;
-                if(imagePosition==0 && myImages.size()!=0){
+                if (imagePosition == 0 && myImages.size() != 0) {
                     prevImage.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     prevImage.setVisibility(View.VISIBLE);
                     nextImage.setVisibility(View.VISIBLE);
                 }
@@ -385,12 +410,6 @@ public class DetailPropertyFragment extends Fragment {
                 Toast.makeText(getContext(), MainApplication.getResourses().getString(R.string.first_photo), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-
-    private void prevAndNextImageVisible(){
-        prevImage.setVisibility(View.VISIBLE);
-        nextImage.setVisibility(View.VISIBLE);
     }
 
     private void textManagement(String text, TextView textView) {
@@ -404,21 +423,27 @@ public class DetailPropertyFragment extends Fragment {
     }
 
     private void setMapStatic(String propertyId) {
-
+        Log.d("debago", "database is not filling: " + propertyId);
         //Construct formatted address from data in room
         propertyViewModel.getOneProperty(propertyId).observe(getViewLifecycleOwner(), properties -> {
 
             SplitString splitString = new SplitString();
+            if (getContext() != null) {
+                if (!ManageDatabaseFilling.getIsDatabaseFilling(getContext())) {
 
-            String streetNumber = properties.getStreetNumber();
-            String streetName = properties.getStreetName();
-            String zipCode = properties.getZipCode();
-            String town = properties.getTownProperty();
-            String country = properties.getCountry();
-            String addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
-            String addressFormatted = splitString.replaceAllSpacesByAddition(addressToConvert);
+                    String streetNumber = properties.getStreetNumber();
+                    String streetName = properties.getStreetName();
+                    String zipCode = properties.getZipCode();
+                    String town = properties.getTownProperty();
+                    String country = properties.getCountry();
+                    String addressToConvert = streetNumber + " " + streetName + " " + zipCode + " " + town + " " + country;
+                    String addressFormatted = splitString.replaceAllSpacesByAddition(addressToConvert);
 
-            geocodingSearch(addressFormatted);
+                    geocodingSearch(addressFormatted);
+                } else {
+                    Log.d("debago", "database is filling");
+                }
+            }
 
 
         });

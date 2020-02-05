@@ -228,15 +228,23 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         if (getActivity() != null) {
 
-            //We open activity if we are in portrait mode
-            Intent intent = new Intent(getContext(), DetailActivity.class);
-            intent.putExtra(PROPERTY_ID, propertyId);
-            startActivity(intent);
-            //Here we open fragment in landscape mode
-            Fragment detailFragment = new DetailPropertyFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(PROPERTY_ID, propertyId);
-            detailFragment.setArguments(bundle);
+            boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+            if (tabletSize) {
+                //Here we open fragment in landscape mode
+                Log.d("debago","landcape mode fragment");
+                Fragment detailFragment = new DetailPropertyFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(PROPERTY_ID, propertyId);
+                detailFragment.setArguments(bundle);
+            }else{
+                //We open activity if we are in portrait mode
+                Log.d("debago","portrait mode fragment");
+                Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent.putExtra(PROPERTY_ID, propertyId);
+                startActivity(intent);
+            }
+
+
 
         }
 
