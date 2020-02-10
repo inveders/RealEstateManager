@@ -50,6 +50,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private Menu mOptionsMenu;
     private PropertyViewModel propertyViewModel;
     private FragmentRefreshListener fragmentRefreshListener;
+    private FragmentRefreshListenerDetail fragmentRefreshListenerDetail;
 
     // --------------------
     // LIFE CYCLE AND VIEW MODEL
@@ -191,6 +192,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
                 ManageCurrency.saveCurrency(ListPropertyActivity.this, result);
                 refreshFragment();
+                refreshFragmentDetailInTablet();
             }
 
             @Override
@@ -367,6 +369,12 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
+    private void refreshFragmentDetailInTablet() {
+        if (getFragmentRefreshListenerDetail() != null) {
+            getFragmentRefreshListenerDetail().onRefreshDetailInTablet();
+        }
+    }
+
     public interface FragmentRefreshListener {
         void onRefresh();
 
@@ -380,5 +388,18 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         this.fragmentRefreshListener = fragmentRefreshListener;
     }
 
+
+    public interface FragmentRefreshListenerDetail {
+        void onRefreshDetailInTablet();
+
+    }
+
+    public FragmentRefreshListenerDetail getFragmentRefreshListenerDetail() {
+        return fragmentRefreshListenerDetail;
+    }
+
+    public void setFragmentRefreshListenerDetail(FragmentRefreshListenerDetail fragmentRefreshListenerDetail) {
+        this.fragmentRefreshListenerDetail = fragmentRefreshListenerDetail;
+    }
 }
 

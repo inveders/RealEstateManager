@@ -989,8 +989,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void updateUI() {
 
-        Log.d("debago", "property is 1: " + photoDescription1 + " 2: " + photoDescription2 + " 3: " + photoDescription3 + " photo 1:" + photoUri1 + " photo 2: " + photoUri2 + " photo 3 is " + photoUri3+ "photo 5 is "+photoUri5);
-
         showImageWithGlide(photoUri1,photo1,1,240);
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {

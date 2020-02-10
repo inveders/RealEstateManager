@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.DatePickerFragment;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.domain.UnitConversion;
@@ -138,19 +138,14 @@ public class DetailPropertyFragment extends Fragment {
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
 
-            propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
-                myPropertyId = properties.get(0).getPropertyId();
-                propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                    Log.d("debago", "updateUI getActivity tablet: " + imageSwitcherNumber);
-                    if (imageSwitcherNumber == 0) {
-                        DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
-                        getRealEstateAgent(property.getRealEstateAgentId());
+            if (getActivity() != null) {
 
-                    }
+                ((ListPropertyActivity) getActivity()).setFragmentRefreshListenerDetail(this::getFirstProperty);
 
-                });
-                setMapStatic(myPropertyId);
-            });
+            }
+
+
+            getFirstProperty();
 
 
         } else {
@@ -200,6 +195,22 @@ public class DetailPropertyFragment extends Fragment {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
         this.propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
         this.geocodingViewModel = new ViewModelProvider(this).get(GeocodingViewModel.class);
+    }
+
+    private void getFirstProperty(){
+        propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
+            myPropertyId = properties.get(0).getPropertyId();
+            propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
+                Log.d("debago", "updateUI getActivity tablet: " + imageSwitcherNumber);
+                if (imageSwitcherNumber == 0) {
+                    DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
+                    getRealEstateAgent(property.getRealEstateAgentId());
+
+                }
+
+            });
+            setMapStatic(myPropertyId);
+        });
     }
 
 

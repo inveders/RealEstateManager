@@ -157,14 +157,14 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                         if(photoUriFromFirebase!=null){
                                             int numberCharacter = photoUriFromFirebase.length();
 
-                                            StorageReference fileReference = FirebaseStorage.getInstance().getReference(agentId).child("Pictures")
+                                            StorageReference fileReference = FirebaseStorage.getInstance().getReference(realEstateAgentsList.get(position).getRealEstateAgentId()).child("Pictures")
                                                     .child(splitString.lastCharacters(realEstateAgentsList.get(position).getUrlPicture(),numberCharacter));
 
                                             String mFileName2 = "/" + splitString.lastCharacters(realEstateAgentsList.get(position).getUrlPicture(),numberCharacter);
                                             File storageDir2 = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                                             File localFile2 = new File(storageDir2 + mFileName2);
                                             fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local item file created from ViewHolder Agent Management")).addOnFailureListener(exception -> {
-                                                Log.d("debago", ";local tem file not created  created " + exception.toString());
+                                                Log.d("debago", ";local tem file"+localFile2+" not created  created " + exception.toString());
                                                 GlideApp.with(MainApplication.getInstance().getApplicationContext())
                                                         .load(R.drawable.ic_anon_user_48dp)
                                                         .into((holder.mAgentPhoto));
