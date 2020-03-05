@@ -7,5 +7,10 @@
         android:title="@string/menu"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/menu2"
+        android:icon="@drawable/ic_menu_update_white_24dp"
+        android:title="@string/update_button"
+        app:showAsAction="ifRoom"/>
 
 </menu>

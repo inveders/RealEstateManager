@@ -106,10 +106,10 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             String mFileName = "/" + localFile.getName();
             File goodFile = new File(storageDir, mFileName); //file internal
-            boolean isPropertySoled;
-            isPropertySoled= property.getDateOfSaleForProperty() == null || property.getDateOfSaleForProperty().isEmpty();
-
-            dispatchFileToGlide(goodFile,localFile,isPropertySoled,property.getPropertyId(),property.getPhotoUri1());
+            boolean isPropertyNotSold;
+            isPropertyNotSold= property.getDateOfSaleForProperty() == null || property.getDateOfSaleForProperty().isEmpty();
+            Log.d("debago","is property not sold is "+isPropertyNotSold);
+            dispatchFileToGlide(goodFile,localFile,isPropertyNotSold,property.getPropertyId(),property.getPhotoUri1());
 
         }
 
@@ -124,18 +124,21 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    private void dispatchFileToGlide(File fileInternal, File fileExternal,boolean isPropertySolded,String propertyId,String photoUri1 ){
-        if (isPropertySolded) {
+    private void dispatchFileToGlide(File fileInternal, File fileExternal,boolean isPropertyNotSold,String propertyId,String photoUri1 ){
+        if (isPropertyNotSold) {
             try {
-
                 if (fileInternal.exists()) {
+                    Log.d("debago","File internal exist : "+fileInternal);
                     photoUriInGlide(fileInternal);
 
                 } else if (fileExternal.exists()) {
+                    Log.d("debago","File externaL exist");
                     photoUriInGlide(fileExternal);
                 } else {
+                    Log.d("debago","LOAD file from firebase");
                     photoFirebaseStorageInGlide(propertyId, photoUri1);
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -143,14 +146,21 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
         } else {
             try {
+
+
                 if (fileInternal.exists()) {
+                    Log.d("debago","File internal sold exist");
                     photoSoldUriInGlide(fileInternal);
 
                 } else if (fileExternal.exists()) {
+                    Log.d("debago","File external sold exist");
                     photoSoldUriInGlide(fileExternal);
                 } else {
+                    Log.d("debago","LOAD file sold from firebase");
                     photoSoldFirebaseStorageInGlide(propertyId, photoUri1);
                 }
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -34,10 +34,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
-            Log.d("debago","tablette");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }else{
-            Log.d("debago","portrait");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 

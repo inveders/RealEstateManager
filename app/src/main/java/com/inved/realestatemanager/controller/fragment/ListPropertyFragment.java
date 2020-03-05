@@ -34,6 +34,7 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.view.PropertyListAdapter;
 import com.inved.realestatemanager.view.PropertyListViewHolder;
@@ -58,6 +59,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private TextView noPropertyFoundTextview;
     private int queryCount = 0;
 
+
+    public static final String BOOLEAN_TABLET = "BOOLEAN_TABLET";
     // --------------
     // LIFE CYCLE AND VIEW MODEL
     // --------------
@@ -165,7 +168,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         openSearchButton.setOnClickListener(v -> {
 
-            callback.onMenuChanged(1);
+            callback.onMenuChanged(1,null);
             //setHasOptionsMenu(true);
             // Create an instance of the dialog fragment and show it
             SearchFullScreenDialog dialog = new SearchFullScreenDialog();
@@ -192,7 +195,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     @Override
     public void cancelButton() {
-        callback.onMenuChanged(0);
+        callback.onMenuChanged(0,null);
     }
 
     // -------------------
@@ -203,8 +206,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     // 3 - Get all properties for a real estate agent
     private void getAllProperties() {
         this.propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
-
-            callback.onMenuChanged(0);
+            if(getContext()!=null){
+                ManageCreateUpdateChoice.saveFirstPropertyIdOnTablet(getContext(),properties.get(0).getPropertyId());
+            }
+            callback.onMenuChanged(0,null);
             ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this, properties);
 
         });
@@ -230,11 +235,13 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
             boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
             if (tabletSize) {
+                callback.onMenuChanged(0,propertyId);
                 //Here we open fragment in landscape mode
                 Log.d("debago","landcape mode fragment");
                 Fragment detailFragment = new DetailPropertyFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(PROPERTY_ID, propertyId);
+                bundle.putBoolean(BOOLEAN_TABLET,true);
                 detailFragment.setArguments(bundle);
 
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -250,6 +257,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                 Log.d("debago","portrait mode fragment");
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra(PROPERTY_ID, propertyId);
+                intent.putExtra(BOOLEAN_TABLET,false);
                 startActivity(intent);
             }
 
@@ -267,7 +275,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     //Interface beween ListPropertyActivity and ListPropertyFragment
 
     public interface MenuChangementsInterface {
-        void onMenuChanged(int number);
+        void onMenuChanged(int number,String propertyId);
     }
 
     // 3 - Create callback to parent activity

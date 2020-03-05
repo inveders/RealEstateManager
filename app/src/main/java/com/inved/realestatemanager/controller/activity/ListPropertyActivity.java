@@ -39,6 +39,8 @@ import com.inved.realestatemanager.sharedpreferences.ManageDatabaseFilling;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.inved.realestatemanager.controller.activity.DetailActivity.PROPERTY_ID_INTENT;
+
 @RuntimePermissions
 public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ListPropertyFragment.MenuChangementsInterface {
 
@@ -84,7 +86,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         this.propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
 
     }
-
 
 
     // ---------------------------
@@ -252,31 +253,53 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
         // Save the menu reference
         mOptionsMenu = menu;
-        onMenuChanged(0);
+        onMenuChanged(0,null);
         return super.onCreateOptionsMenu(menu);
 
     }
 
     @Override
-    public void onMenuChanged(int number) {
+    public void onMenuChanged(int number,String propertyId) {
 
+        String goodPropertyId;
+        if(propertyId==null){
+            goodPropertyId=ManageCreateUpdateChoice.getFirstPropertyIdOnTablet(this);
+        }else{
+            goodPropertyId=propertyId;
+        }
+        Log.d("debaga","my property id is "+propertyId);
         if (mOptionsMenu != null) {
 
             MenuItem item = mOptionsMenu.findItem(R.id.menu);
-
+            MenuItem item2 = mOptionsMenu.findItem(R.id.menu2);
+            boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+            if (!tabletSize) {
+                item2.setVisible(false);
+            }
             switch (number) {
                 case 0:
-                    // add icon
+                    // add icon and update
                     item.setIcon(R.drawable.ic_menu_add_white_24dp);
+                    item2.setIcon(R.drawable.ic_menu_update_white_24dp);
+                    if (tabletSize) {
+                        item2.setVisible(true);
+                    }
                     item.setOnMenuItemClickListener(menuItem -> {
+                        ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
+                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this,goodPropertyId);
+                        return true;
+                    });
+                    item2.setOnMenuItemClickListener(menuItem -> {
                         ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
-                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this);
+
+                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this,goodPropertyId);
                         return true;
                     });
                     break;
                 case 1:
                     //clear icon
                     item.setIcon(R.drawable.ic_menu_clear_white_24dp);
+                    item2.setVisible(false);
                     item.setOnMenuItemClickListener(menuItem -> {
                         refreshFragment();
                         return true;
@@ -299,8 +322,11 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     // ---------------------------
 
     @NeedsPermission(Manifest.permission.CAMERA)
-    public void startCreateUpdatePropertyActivity() {
+    public void startCreateUpdatePropertyActivity(String propertyId) {
         Intent intent = new Intent(this, CreatePropertyActivity.class);
+        if(propertyId!=null){
+            intent.putExtra(PROPERTY_ID_INTENT,propertyId);
+        }
         startActivity(intent);
     }
 

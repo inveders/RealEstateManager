@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.BOOLEAN_TABLET;
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
 @RuntimePermissions
@@ -171,6 +172,9 @@ public class DetailPropertyFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             myPropertyId = bundle.getString(PROPERTY_ID);
+            if(bundle.getBoolean(BOOLEAN_TABLET)){
+                myImages.clear();
+            }
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
                 Log.d("debago", "updateUI bundle");
@@ -361,7 +365,7 @@ public class DetailPropertyFragment extends Fragment {
             nextImage.setVisibility(View.INVISIBLE);
             prevImage.setVisibility(View.INVISIBLE);
         } else if (myImages.size() != 0) {
-            Log.d("debago", "in myImagesize equal different to zero " + myImages.size());
+            Log.d("debago", "in myImagesize equal different to zero " + myImages.size()+"image is : "+myImages.get(0));
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
             imageNameSwitcher.setText(myDescriptionImage.get(0));
             imageCount = myImages.size();
@@ -405,7 +409,7 @@ public class DetailPropertyFragment extends Fragment {
 
         prevImage.setOnClickListener(view -> {
 
-            Log.d("debaga", "image position is " + imagePosition + " and image count is " + imageCount);
+            Log.d("debago", "image position is " + imagePosition + " and image path is " + myImages.get(imagePosition-1));
             if (imagePosition - 1 >= 0) {
                 imageSwitcher.setOutAnimation(in);
                 imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition - 1)));
