@@ -37,7 +37,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
 
         //  context.deleteDatabase("MyDatabase.db");
 
-
      //   if(Utils.isInternetAvailable(MainApplication.getInstance().getApplicationContext())){
             if (INSTANCE == null) {
                 synchronized (RealEstateManagerDatabase.class) {

@@ -76,6 +76,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
+
+
     @Override
     protected int getLayoutContentViewID() {
         return R.layout.activity_list_property;
@@ -145,8 +147,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }).addOnFailureListener(e -> {
         });
     }
-
-
 
 
     // ---------------------------
@@ -253,21 +253,21 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
         // Save the menu reference
         mOptionsMenu = menu;
-        onMenuChanged(0,null);
+        onMenuChanged(0, null);
         return super.onCreateOptionsMenu(menu);
 
     }
 
     @Override
-    public void onMenuChanged(int number,String propertyId) {
+    public void onMenuChanged(int number, String propertyId) {
 
         String goodPropertyId;
-        if(propertyId==null){
-            goodPropertyId=ManageCreateUpdateChoice.getFirstPropertyIdOnTablet(this);
-        }else{
-            goodPropertyId=propertyId;
+        if (propertyId == null) {
+            goodPropertyId = ManageCreateUpdateChoice.getFirstPropertyIdOnTablet(this);
+        } else {
+            goodPropertyId = propertyId;
         }
-        Log.d("debaga","my property id is "+propertyId);
+        Log.d("debaga", "my property id is " + propertyId);
         if (mOptionsMenu != null) {
 
             MenuItem item = mOptionsMenu.findItem(R.id.menu);
@@ -286,13 +286,13 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     }
                     item.setOnMenuItemClickListener(menuItem -> {
                         ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
-                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this,goodPropertyId);
+                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
                         return true;
                     });
                     item2.setOnMenuItemClickListener(menuItem -> {
                         ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
 
-                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this,goodPropertyId);
+                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
                         return true;
                     });
                     break;
@@ -324,8 +324,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     @NeedsPermission(Manifest.permission.CAMERA)
     public void startCreateUpdatePropertyActivity(String propertyId) {
         Intent intent = new Intent(this, CreatePropertyActivity.class);
-        if(propertyId!=null){
-            intent.putExtra(PROPERTY_ID_INTENT,propertyId);
+        if (propertyId != null) {
+            intent.putExtra(PROPERTY_ID_INTENT, propertyId);
         }
         startActivity(intent);
     }
@@ -386,7 +386,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     .commit();
         }
     }
-
 
 
     private void refreshFragment() {

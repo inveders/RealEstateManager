@@ -16,9 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -58,7 +56,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private MenuChangementsInterface callback;
     private TextView noPropertyFoundTextview;
     private int queryCount = 0;
-
+    private boolean tabletSize;
 
     public static final String BOOLEAN_TABLET = "BOOLEAN_TABLET";
     // --------------
@@ -80,6 +78,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_list_property, container, false);
+        if(getContext()!=null)
+        tabletSize= getContext().getResources().getBoolean(R.bool.isTablet);
 
         noPropertyFoundTextview = mView.findViewById(R.id.fragment_list_property_no_property_found_text);
         openSearchButton = mView.findViewById(R.id.list_property_search_open_floating_button);
@@ -168,7 +168,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         openSearchButton.setOnClickListener(v -> {
 
-            callback.onMenuChanged(1,null);
+            callback.onMenuChanged(1, null);
             //setHasOptionsMenu(true);
             // Create an instance of the dialog fragment and show it
             SearchFullScreenDialog dialog = new SearchFullScreenDialog();
@@ -195,7 +195,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     @Override
     public void cancelButton() {
-        callback.onMenuChanged(0,null);
+        callback.onMenuChanged(0, null);
     }
 
     // -------------------
@@ -206,10 +206,13 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     // 3 - Get all properties for a real estate agent
     private void getAllProperties() {
         this.propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
-            if(getContext()!=null){
-                ManageCreateUpdateChoice.saveFirstPropertyIdOnTablet(getContext(),properties.get(0).getPropertyId());
+            if (getContext() != null) {
+                if (properties.size() != 0) {
+                    ManageCreateUpdateChoice.saveFirstPropertyIdOnTablet(getContext(), properties.get(0).getPropertyId());
+
+                }
             }
-            callback.onMenuChanged(0,null);
+            callback.onMenuChanged(0, null);
             ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this, properties);
 
         });
@@ -233,15 +236,15 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         if (getActivity() != null) {
 
-            boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+
             if (tabletSize) {
-                callback.onMenuChanged(0,propertyId);
+                callback.onMenuChanged(0, propertyId);
                 //Here we open fragment in landscape mode
-                Log.d("debago","landcape mode fragment");
+                Log.d("debago", "landcape mode fragment");
                 Fragment detailFragment = new DetailPropertyFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(PROPERTY_ID, propertyId);
-                bundle.putBoolean(BOOLEAN_TABLET,true);
+                bundle.putBoolean(BOOLEAN_TABLET, true);
                 detailFragment.setArguments(bundle);
 
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -250,17 +253,14 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                         .commit();
 
 
-
-
-            }else{
+            } else {
                 //We open activity if we are in portrait mode
-                Log.d("debago","portrait mode fragment");
+                Log.d("debago", "portrait mode fragment");
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra(PROPERTY_ID, propertyId);
-                intent.putExtra(BOOLEAN_TABLET,false);
+                intent.putExtra(BOOLEAN_TABLET, false);
                 startActivity(intent);
             }
-
 
 
         }
@@ -275,7 +275,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     //Interface beween ListPropertyActivity and ListPropertyFragment
 
     public interface MenuChangementsInterface {
-        void onMenuChanged(int number,String propertyId);
+        void onMenuChanged(int number, String propertyId);
+
     }
 
     // 3 - Create callback to parent activity

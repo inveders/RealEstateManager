@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
@@ -91,7 +92,8 @@ public class DetailPropertyFragment extends Fragment {
     private ArrayList<String> myImages;
     private ArrayList<String> myDescriptionImage;
     private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
-
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private boolean tabletSize;
     private static final int REQUEST_CODE_DATE_PICKER_DETAIL = 12; // Used to identify the result of date picker
 
     public DetailPropertyFragment() {
@@ -136,9 +138,11 @@ public class DetailPropertyFragment extends Fragment {
         myDescriptionImage = new ArrayList<>();
         configureViewModel();
 
-        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
 
+            shimmerFrameLayout = mView.findViewById(R.id.shimmer_view_container_detail);
+            showShimmer();
             if (getActivity() != null) {
 
                 ((ListPropertyActivity) getActivity()).setFragmentRefreshListenerDetail(this::getFirstProperty);
@@ -194,6 +198,7 @@ public class DetailPropertyFragment extends Fragment {
         return mView;
     }
 
+
     // 2 - Configuring ViewModel
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(MainApplication.getInstance().getApplicationContext());
@@ -203,17 +208,21 @@ public class DetailPropertyFragment extends Fragment {
 
     private void getFirstProperty(){
         propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
-            myPropertyId = properties.get(0).getPropertyId();
-            propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                Log.d("debago", "updateUI getActivity tablet: " + imageSwitcherNumber);
-                if (imageSwitcherNumber == 0) {
-                    DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
-                    getRealEstateAgent(property.getRealEstateAgentId());
+            if(properties.size()!=0){
+                myPropertyId = properties.get(0).getPropertyId();
+                propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
+                    Log.d("debago", "updateUI getActivity tablet: " + imageSwitcherNumber);
+                    if (imageSwitcherNumber == 0) {
+                        DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
+                        getRealEstateAgent(property.getRealEstateAgentId());
 
-                }
+                    }
 
-            });
-            setMapStatic(myPropertyId);
+                });
+                setMapStatic(myPropertyId);
+            }
+
+
         });
     }
 
@@ -344,6 +353,8 @@ public class DetailPropertyFragment extends Fragment {
         myImagesManagement();
 
         clickOnImagesArrow();
+        if(tabletSize)
+        stopShimmer();
 
     }
 
@@ -519,4 +530,16 @@ public class DetailPropertyFragment extends Fragment {
         DetailPropertyFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
+    // --------------
+    // SHIMMER LAYOUT
+    // --------------
+
+    private void stopShimmer() {
+        shimmerFrameLayout.stopShimmer();
+        shimmerFrameLayout.hideShimmer();
+    }
+
+    private void showShimmer() {
+        shimmerFrameLayout.showShimmer(true);
+    }
 }
