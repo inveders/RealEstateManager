@@ -89,6 +89,8 @@ public class DetailActivity extends BaseActivity  {
         getMenuInflater().inflate(R.menu.menu, menu);
 
         MenuItem item = menu.findItem(R.id.menu);
+        MenuItem item2 = menu.findItem(R.id.menu2);
+        item2.setVisible(false);
         item.setIcon(R.drawable.ic_menu_update_white_24dp);
         item.setOnMenuItemClickListener(menuItem -> {
             DetailActivityPermissionsDispatcher.startCreatePropertyActivityWithPermissionCheck(this);

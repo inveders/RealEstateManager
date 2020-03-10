@@ -275,6 +275,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
             if (!tabletSize) {
                 item2.setVisible(false);
+                Log.d("debago","in item 2");
             }
             switch (number) {
                 case 0:
@@ -283,6 +284,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     item2.setIcon(R.drawable.ic_menu_update_white_24dp);
                     if (tabletSize) {
                         item2.setVisible(true);
+                    }else{
+                        item2.setVisible(false);
                     }
                     item.setOnMenuItemClickListener(menuItem -> {
                         ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);

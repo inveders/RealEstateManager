@@ -7,7 +7,7 @@
     <string name="page_name_activity_agent_management">Agent Management</string>
     <string name="page_name_search_dialog">Search property</string>
     <string name="page_name_activity_create_property">Create Property</string>
-    <string name="page_name_activity_udpdate_property">Update Property</string>
+    <string name="page_name_activity_update_property">Update Property</string>
     <string name="page_name_activity_profile">Profile</string>
     <string name="page_name_activity_maps">Maps</string>
 
