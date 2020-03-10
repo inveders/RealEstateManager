@@ -608,7 +608,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
                     try {
-                        mPhotoFile = mCompressor.compressToFile1(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
+                        mPhotoFile = mCompressor.compressToFile(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -624,7 +624,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 case REQUEST_CAMERA_PHOTO:
                     try {
 
-                        mPhotoFile = mCompressor.compressToFile1(mPhotoFile);
+                        mPhotoFile = mCompressor.compressToFile(mPhotoFile);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
