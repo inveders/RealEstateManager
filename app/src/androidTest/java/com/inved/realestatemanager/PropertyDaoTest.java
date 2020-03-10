@@ -78,8 +78,6 @@ public class PropertyDaoTest {
         database.close();
     }
 
-
-
     @Test
     public void insertAndGetProperty() throws InterruptedException {
         // BEFORE : Adding a new agent

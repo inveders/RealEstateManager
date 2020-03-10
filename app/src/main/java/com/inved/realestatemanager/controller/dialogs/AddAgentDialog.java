@@ -352,7 +352,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         builder.show();
     }
 
-
     /**
      * Capture image from camera
      */
