@@ -44,6 +44,8 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.utils.FileCompressor;
+import com.inved.realestatemanager.utils.GlideApp;
 import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.sharedpreferences.ManageAgency;
@@ -82,6 +84,8 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
     private String agencyName;
     private String agencyPlaceId;
 
+    private FileCompressor mCompressor;
+    private File mPhotoFile;
 
     // --------------
     // LIFE CYCLE AND VIEW MODEL
@@ -105,7 +109,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         //Initialize TextWatcher
         firstnameEditText.addTextChangedListener(this);
         lastnameEditText.addTextChangedListener(this);
-
+        mCompressor = new FileCompressor(getContext());
         this.configureViewModel();
 
         if (getDialog() != null) {
@@ -372,6 +376,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                             BuildConfig.APPLICATION_ID + ".provider",
                             photoFile);
 
+                    mPhotoFile = photoFile;
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(takePictureIntent, REQUEST_CAMERA_PHOTO);
                 }
@@ -399,13 +404,24 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                     //data.getData returns the content URI for the selected Image
                     Uri selectedImage = data.getData();
 
-                    if (selectedImage != null) {
+                    try {
+                        mPhotoFile = mCompressor.compressToFile1(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                     if (selectedImage != null) {
                         urlPicture = imageCameraOrGallery.getRealPathFromUri(selectedImage);
                         showImageInCircle(urlPicture);
                     }
 
                     break;
                 case REQUEST_CAMERA_PHOTO:
+
+                    try {
+                        mPhotoFile = mCompressor.compressToFile1(mPhotoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     if (cameraFilePath != null) {
                         urlPicture = cameraFilePath;
