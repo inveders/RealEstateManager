@@ -89,6 +89,7 @@ public class DetailPropertyFragment extends Fragment {
     private int imagePosition = 0;
     private String myPropertyId;
     private int imageSwitcherNumber = 0;
+    private int imageManagementNumber = 0;
     private ArrayList<String> myImages;
     private ArrayList<String> myDescriptionImage;
     private static final String MAP_API_KEY = BuildConfig.GOOGLE_MAPS_API_KEY;
@@ -134,7 +135,12 @@ public class DetailPropertyFragment extends Fragment {
         realEstateAgent = mView.findViewById(R.id.fragment_detail_property_real_estate_agent_text);
         propertyLocalisationImage = mView.findViewById(R.id.fragment_detail_property_location_map);
 
+
         myImages = new ArrayList<>();
+        if(myImages.size()!=0){
+            myImages.clear();
+            Log.d("debago","we clear image size");
+        }
         myDescriptionImage = new ArrayList<>();
         configureViewModel();
 
@@ -205,6 +211,8 @@ public class DetailPropertyFragment extends Fragment {
         this.propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
         this.geocodingViewModel = new ViewModelProvider(this).get(GeocodingViewModel.class);
     }
+
+
 
     private void getFirstProperty(){
         propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
@@ -344,12 +352,15 @@ public class DetailPropertyFragment extends Fragment {
             return imageView;
         });
 
-        imagesManagement(property.getPhotoUri1(), property.getPhotoDescription1());
-        imagesManagement(property.getPhotoUri2(), property.getPhotoDescription2());
-        imagesManagement(property.getPhotoUri3(), property.getPhotoDescription3());
-        imagesManagement(property.getPhotoUri4(), property.getPhotoDescription4());
-        imagesManagement(property.getPhotoUri5(), property.getPhotoDescription5());
+        if(imageManagementNumber==0){
+            imagesManagement(property.getPhotoUri1(), property.getPhotoDescription1());
+            imagesManagement(property.getPhotoUri2(), property.getPhotoDescription2());
+            imagesManagement(property.getPhotoUri3(), property.getPhotoDescription3());
+            imagesManagement(property.getPhotoUri4(), property.getPhotoDescription4());
+            imagesManagement(property.getPhotoUri5(), property.getPhotoDescription5());
 
+        }
+        imageManagementNumber=1;
         myImagesManagement();
 
         clickOnImagesArrow();
@@ -361,6 +372,7 @@ public class DetailPropertyFragment extends Fragment {
     private void imagesManagement(String photoUri, String photoDescription) {
         if (photoUri != null) {
             myImages.add(photoUri);
+            Log.d("debago","myimages size init is "+myImages.size());
             myDescriptionImage.add(photoDescription);
         }
 

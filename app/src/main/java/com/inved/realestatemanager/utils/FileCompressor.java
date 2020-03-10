@@ -16,7 +16,7 @@ public class FileCompressor {
     private int maxWidth = 612;
     private int maxHeight = 816;
     private Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.JPEG;
-    private int quality = 100;
+    private int quality = 80;
     private String destinationDirectoryPath;
 
     public FileCompressor(Context context) {
@@ -57,7 +57,7 @@ public class FileCompressor {
         return this;
     }
 
-    public File compressToFile1(File imageFile) throws IOException {
+    public File compressToFile(File imageFile) throws IOException {
         Log.d("debago","in compressToFile,imagefile.getname is: "+imageFile.getName());
         return compressToFile(imageFile, imageFile.getName());
     }
