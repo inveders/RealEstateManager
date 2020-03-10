@@ -37,7 +37,6 @@ public class PropertyDaoTest {
             null,null,null,null,null,null,
             null,"",AGENT_ID);
 
-
     private static Property PROPERTY_TEST1 = new Property("AJusneupkonspe", "flat",120000,
             75,"3","1",2,
             "","42","rue des écoles","57840","Ottange",
@@ -60,11 +59,8 @@ public class PropertyDaoTest {
             null,null,null,null,null,null,
             null,"",AGENT_ID);
 
-
     // DATA SET FOR TEST
-
     private static RealEstateAgents AGENT_DEMO = new RealEstateAgents(AGENT_ID, "Alexandra","Gnimadi", "https://www.google.fr","SCI GNIMINVEST","AuyhdysOZnsee");
-
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -93,8 +89,6 @@ public class PropertyDaoTest {
         Property property = LiveDataTestUtil.getValue(this.database.propertyDao().getOneProperty(PROPERTY_ID));
         assertTrue(property.getCountry().equals(PROPERTY_DEMO.getCountry()) && property.getCountry().equals(PROPERTY_DEMO.getCountry()));
     }
-
-
 
 
     @Test
@@ -130,7 +124,6 @@ public class PropertyDaoTest {
         //TEST
         List<Property> properties = LiveDataTestUtil.getValue(this.database.propertyDao().getProperty(AGENT_ID));
         assertTrue(properties.size() == 1 && properties.get(0).isSelected());
-
     }
 
     @Test

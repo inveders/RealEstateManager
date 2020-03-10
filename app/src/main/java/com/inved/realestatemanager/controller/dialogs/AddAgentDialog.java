@@ -405,7 +405,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                     Uri selectedImage = data.getData();
 
                     try {
-                        mPhotoFile = mCompressor.compressToFile1(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
+                        mPhotoFile = mCompressor.compressToFile(new File(imageCameraOrGallery.getRealPathFromUri(selectedImage)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -418,7 +418,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                 case REQUEST_CAMERA_PHOTO:
 
                     try {
-                        mPhotoFile = mCompressor.compressToFile1(mPhotoFile);
+                        mPhotoFile = mCompressor.compressToFile(mPhotoFile);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
