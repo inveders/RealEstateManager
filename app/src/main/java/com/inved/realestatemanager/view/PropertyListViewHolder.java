@@ -178,6 +178,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             Log.d("debago", "Exception is : " + e);
+                            photo.setImageResource(R.drawable.no_image);
                             return false;
                         }
 
@@ -232,6 +233,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                                                     @Override
                                                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                                         Log.e("debago", "Exception is : " + e);
+                                                        photo.setImageResource(R.drawable.no_image);
                                                         return false;
                                                     }
 
@@ -288,6 +290,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                                                     @Override
                                                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                                         Log.e("debago", "Exception is : " + e);
+                                                        photo.setImageResource(R.drawable.no_image);
                                                         return false;
                                                     }
 
