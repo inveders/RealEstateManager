@@ -336,16 +336,16 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private void selectImage() {
         final CharSequence[] items = {
-                MainApplication.getResourses().getString(R.string.dialog_select_image_take_photo), MainApplication.getResourses().getString(R.string.dialog_select_image_choose_from_library),
+                getString(R.string.dialog_select_image_take_photo), MainApplication.getResourses().getString(R.string.dialog_select_image_choose_from_library),
                 MainApplication.getResourses().getString(R.string.dialog_select_image_cancel)
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setItems(items, (dialog, item) -> {
             if (items[item].equals(MainApplication.getInstance().getResources().getString(R.string.dialog_select_image_take_photo))) {
                 AddAgentDialogPermissionsDispatcher.dispatchTakePictureIntentWithPermissionCheck(this);
-            } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_choose_from_library))) {
+            } else if (items[item].equals(getString(R.string.dialog_select_image_choose_from_library))) {
                 dispatchGalleryIntent();
-            } else if (items[item].equals(MainApplication.getResourses().getString(R.string.dialog_select_image_cancel))) {
+            } else if (items[item].equals(getString(R.string.dialog_select_image_cancel))) {
                 dialog.dismiss();
             }
         });
@@ -392,7 +392,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(pickPhoto, REQUEST_GALLERY_PHOTO);
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -459,10 +458,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
         // NOTE: delegate the permission handling to generated method
         AddAgentDialogPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
-
-
-
-
 
     // --------------
     // INTENT TO OPEN ACTIVITY

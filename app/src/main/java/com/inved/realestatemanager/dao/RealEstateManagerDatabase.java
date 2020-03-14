@@ -1,6 +1,7 @@
 package com.inved.realestatemanager.dao;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -89,10 +90,8 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
 
                                 }
 
-
                             } else {
                                 Log.d("debago", "DATABASE No agency here, no successful");
-
                             }
                         }
 
@@ -100,7 +99,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                 }else{
                     Log.d("debago","Nothing");
                 }
-
 
             }
         };
@@ -119,10 +117,10 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
 
                     //Create real estate agent in room with data from firebase
                     Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(MainApplication.getInstance().getApplicationContext()).realEstateAgentsDao().createRealEstateAgent(newAgent));
-
                 }
 
-                preopopulateProperties();
+                final Handler handler = new Handler();
+                handler.postDelayed(RealEstateManagerDatabase::preopopulateProperties, 1000);
 
             }
 
