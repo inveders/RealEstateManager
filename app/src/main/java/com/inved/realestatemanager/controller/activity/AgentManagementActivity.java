@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,6 +78,7 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
 
                             //Create agent in room with data from firebase
                             propertyViewModel.createRealEstateAgent(newAgent);
+                            configureRecyclerView();
                         }
 
 
