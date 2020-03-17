@@ -13,7 +13,6 @@ import com.inved.realestatemanager.utils.MainApplication;
 public class StorageHelper extends BroadcastReceiver {
 
     private Context ctx = MainApplication.getInstance().getApplicationContext();
-    private final String TAG = "debago";
 
     private BroadcastReceiver mBroadcastReceiver;
     private int valueToSend = 0;
@@ -32,7 +31,6 @@ public class StorageHelper extends BroadcastReceiver {
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.d(TAG, "onReceive:" + intent);
 
                 if (intent.getAction() != null) {
                     switch (intent.getAction()) {
@@ -51,8 +49,6 @@ public class StorageHelper extends BroadcastReceiver {
 
     public void uploadFromUri(Uri fileUri, String documentId, int number) {
         setmBroadcastReceiver();
-        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
-
         // Save the File URI
         mFileUri = fileUri;
 
@@ -81,8 +77,6 @@ public class StorageHelper extends BroadcastReceiver {
         // Got a new intent from MyUploadService with a success or failure
         mDownloadUrl = intent.getParcelableExtra(MyUploadService.EXTRA_DOWNLOAD_URL);
         mFileUri = intent.getParcelableExtra(MyUploadService.EXTRA_FILE_URI);
-        Log.d(TAG, "onUploadResultIntent, mDonwloadUrl is:" + mDownloadUrl + " mFileUri is : " + mFileUri);
-
     }
 
 

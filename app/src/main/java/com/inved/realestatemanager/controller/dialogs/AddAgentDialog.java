@@ -175,18 +175,17 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                 autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
                     public void onPlaceSelected(@NonNull Place place) {
-                        Log.d(TAG, "Place: " + place.getName() + ", " + place.getId());
                         agencyName = place.getName();
                         agencyPlaceId = place.getId();
                     }
 
                     @Override
                     public void onError(@NonNull Status status) {
-                        Log.d(TAG, "An error occurred: " + status);
+                        Log.e(TAG, "An error occurred: " + status);
                     }
                 });
             } else {
-                Log.d(TAG, "Null activity");
+                Log.e(TAG, "Null activity");
             }
         }
 
@@ -317,7 +316,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                 urlPicture = realEstateAgents.getUrlPicture();
                 showImageInCircle(realEstateAgents.getUrlPicture());
             }else{
-                Log.d(TAG,"getUrlPicture is null ");
+                Log.e(TAG,"getUrlPicture is null ");
             }
 
 

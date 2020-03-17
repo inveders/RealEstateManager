@@ -12,7 +12,6 @@ import java.io.File;
 public class StorageDownload {
 
     public String beginDownload(String getLastPathFromFirebase, String documentId) {
-        Log.d("debago", "BEGIN DOWNLOAD");
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
                 .child(getLastPathFromFirebase);
 
@@ -23,12 +22,7 @@ public class StorageDownload {
         String filePath = "file://" + storageDir + mFileName;
 
         if (!localFile.exists()) {
-            // Log.d("debago", "file doesn't exist we download it "+localFile.exists());
-            fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local tem file created  created ")).addOnFailureListener(exception -> Log.d("debago", ";local tem file not created  created " + exception.toString()));
-        }
-
-        else {
-            Log.d("debago", "file already exist");
+            fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {}).addOnFailureListener(exception -> exception.toString());
         }
 
         return filePath;

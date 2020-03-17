@@ -27,9 +27,6 @@ public class FileCompressor {
         // Save a file: path for using again
 
         destinationDirectoryPath = "file://" + storageDir + mFileName;
-        Log.d("debago","in constructor, destinationpath is: "+destinationDirectoryPath);
-     //   destinationDirectoryPath = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-    //    destinationDirectoryPath = context.getCacheDir().getPath() + File.separator + "Pictures";
     }
 
     public FileCompressor setMaxWidth(int maxWidth) {
@@ -58,12 +55,10 @@ public class FileCompressor {
     }
 
     public File compressToFile(File imageFile) throws IOException {
-        Log.d("debago","in compressToFile,imagefile.getname is: "+imageFile.getName());
-        return compressToFile(imageFile, imageFile.getName());
+       return compressToFile(imageFile, imageFile.getName());
     }
 
     public File compressToFile(File imageFile, String compressedFileName) throws IOException {
-        Log.d("debago","in compressToFile 2, destinationPath is: "+destinationDirectoryPath);
         return ImageUtil.compressImage(imageFile, maxWidth, maxHeight, compressFormat, quality,
                 destinationDirectoryPath + File.separator + compressedFileName);
     }

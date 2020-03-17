@@ -188,7 +188,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     @Override
     public void searchButton(List<Property> properties) {
 
-        Log.d("debago", "Search Button: " + properties);
         ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this, properties);
 
     }
@@ -240,7 +239,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             if (tabletSize) {
                 callback.onMenuChanged(0, propertyId);
                 //Here we open fragment in landscape mode
-                Log.d("debago", "landcape mode fragment");
                 Fragment detailFragment = new DetailPropertyFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(PROPERTY_ID, propertyId);
@@ -255,7 +253,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
             } else {
                 //We open activity if we are in portrait mode
-                Log.d("debago", "portrait mode fragment");
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra(PROPERTY_ID, propertyId);
                 intent.putExtra(BOOLEAN_TABLET, false);

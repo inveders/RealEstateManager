@@ -293,10 +293,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
                 String town = !townPropertyAutocomplete.getText().toString().equals("") ? townPropertyAutocomplete.getText().toString() : null;
                 String country = !countryAutocomplete.getText().toString().equals("") ? countryAutocomplete.getText().toString() : null;
 
-                Log.d("debago", "search property elements are : " + mTypeProperty + " " + town + " " + minSurface + " " + maxSurface + " " + minPrice + " " + maxPrice + " " +
-                        mMinBedroom + " " + mMaxBedroom + " " + country + " " + mStatus + " " + mRealEstateAgentName);
-
-
                 if (mRealEstateAgentName != null) {
                     SplitString splitString = new SplitString();
                     String firstname = splitString.splitStringWithSpace(mRealEstateAgentName, 0);
@@ -307,7 +303,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
                         this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
                                 mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
                                 .observe(getViewLifecycleOwner(), properties -> {
-                                    Log.d("debago", "properties size is " + properties.size() + "1. realestateagentId is " + realEstateAgentId);
                                     updateRealEstateItemsList(properties);
 
                                 });
@@ -318,7 +313,6 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
                     this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
                             mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
                             .observe(getViewLifecycleOwner(), properties -> {
-                                Log.d("debago", "properties size is " + properties.size() + "2. realestateagentId is " + realEstateAgentId);
                                 updateRealEstateItemsList(properties);
                             });
                 }

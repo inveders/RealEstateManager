@@ -79,9 +79,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                     }
                 }
 
-
-            } else {
-                Log.d("debago", "MA CHECK task IS NOT successful");
             }
 
 

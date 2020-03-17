@@ -1,7 +1,6 @@
 package com.inved.realestatemanager.dao;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -26,8 +25,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
     // --- INSTANCE ---
     public static RealEstateManagerDatabase getInstance(Context context) {
 
-        //  context.deleteDatabase("MyDatabase.db");
-
             if (INSTANCE == null) {
                 synchronized (RealEstateManagerDatabase.class) {
                     if (INSTANCE == null) {
@@ -36,9 +33,6 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase{
                                 RealEstateManagerDatabase.class, "MyDatabase.db")
                               //  .addCallback(fillDatabaseWithFirebaseValues())
                                 .build();
-
-                        Log.d("debago","Build database");
-
                     }
 
                 }

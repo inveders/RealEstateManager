@@ -47,7 +47,6 @@ public class GeocodingRepository {
 
             @Override
             public void onFailure(@NonNull Call<Geocoding> call, @NonNull Throwable t) {
-                Log.d("debago", "inRetrofit failure :" + t);
             }
         });
 

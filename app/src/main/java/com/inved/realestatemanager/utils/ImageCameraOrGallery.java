@@ -165,7 +165,8 @@ public class ImageCameraOrGallery {
 
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            Log.d("debago","debago 1");
+
+
             // LocalStorageProvider
             if (isLocalStorageDocument(uri)) {
                 // The path is the id
@@ -181,7 +182,6 @@ public class ImageCameraOrGallery {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
 
-                // TODO handle non-primary volumes
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
@@ -217,7 +217,6 @@ public class ImageCameraOrGallery {
         }
         // MediaStore (and general)
         else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            Log.d("debago","debago 2");
             // Return the remote address
             if (isGooglePhotosUri(uri))
                 return uri.getLastPathSegment();
@@ -226,7 +225,6 @@ public class ImageCameraOrGallery {
         }
         // File
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            Log.d("debago","debago 3");
             return uri.getPath();
         }
 

@@ -139,7 +139,6 @@ public class DetailPropertyFragment extends Fragment {
         myImages = new ArrayList<>();
         if(myImages.size()!=0){
             myImages.clear();
-            Log.d("debago","we clear image size");
         }
         myDescriptionImage = new ArrayList<>();
         configureViewModel();
@@ -165,7 +164,6 @@ public class DetailPropertyFragment extends Fragment {
                 myPropertyId = intent.getStringExtra(PROPERTY_ID);
 
                 propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                    Log.d("debago", "updateUI getActivity: " + imageSwitcherNumber);
                     if (imageSwitcherNumber == 0) {
                         DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
                         getRealEstateAgent(property.getRealEstateAgentId());
@@ -187,7 +185,6 @@ public class DetailPropertyFragment extends Fragment {
             }
             configureViewModel();
             propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                Log.d("debago", "updateUI bundle");
                 if (imageSwitcherNumber == 0) {
                     updateWithProperty(property);
                     getRealEstateAgent(property.getRealEstateAgentId());
@@ -219,17 +216,13 @@ public class DetailPropertyFragment extends Fragment {
             if(properties.size()!=0){
                 myPropertyId = properties.get(0).getPropertyId();
                 propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                    Log.d("debago", "updateUI getActivity tablet: " + imageSwitcherNumber);
-                    if (imageSwitcherNumber == 0) {
+                     if (imageSwitcherNumber == 0) {
                         DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
                         getRealEstateAgent(property.getRealEstateAgentId());
-
                     }
-
                 });
                 setMapStatic(myPropertyId);
             }
-
 
         });
     }
@@ -269,8 +262,7 @@ public class DetailPropertyFragment extends Fragment {
                 //set the value in firebase
                 PropertyHelper.updateDateOfSale(selectedDate, myPropertyId);
                 PropertyHelper.updateStatusProperty(status, myPropertyId);
-                Log.d("debago", "in DetailPropertyFragment status is " + status + " and propertyId is: " + myPropertyId);
-            }
+               }
 
         }
 
@@ -343,8 +335,6 @@ public class DetailPropertyFragment extends Fragment {
         //IMAGE SWITCHER
         imageSwitcher.removeAllViews();
         imageSwitcher.setFactory(() -> {
-            // TODO Auto-generated method stub
-
             // Create a new ImageView and set it's properties
             ImageView imageView = new ImageView(MainApplication.getInstance().getApplicationContext());
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -372,7 +362,6 @@ public class DetailPropertyFragment extends Fragment {
     private void imagesManagement(String photoUri, String photoDescription) {
         if (photoUri != null) {
             myImages.add(photoUri);
-            Log.d("debago","myimages size init is "+myImages.size());
             myDescriptionImage.add(photoDescription);
         }
 
@@ -381,14 +370,12 @@ public class DetailPropertyFragment extends Fragment {
     private void myImagesManagement() {
 
         if (myImages.size() == 1) {
-            Log.d("debago", "in myImagesize equal to 1 " + myImages.size());
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
             imageNameSwitcher.setText(myDescriptionImage.get(0));
             imageCount = myImages.size();
             nextImage.setVisibility(View.INVISIBLE);
             prevImage.setVisibility(View.INVISIBLE);
         } else if (myImages.size() != 0) {
-            Log.d("debago", "in myImagesize equal different to zero " + myImages.size()+"image is : "+myImages.get(0));
             imageSwitcher.setImageURI(Uri.parse(myImages.get(0)));
             imageNameSwitcher.setText(myDescriptionImage.get(0));
             imageCount = myImages.size();
@@ -412,7 +399,6 @@ public class DetailPropertyFragment extends Fragment {
 
         nextImage.setOnClickListener(view -> {
 
-            Log.d("debaga", "image position is " + imagePosition + " and image count is " + imageCount);
             if (imagePosition + 1 < imageCount) {
                 imageSwitcher.setInAnimation(out);
                 imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition + 1)));
@@ -432,7 +418,6 @@ public class DetailPropertyFragment extends Fragment {
 
         prevImage.setOnClickListener(view -> {
 
-            Log.d("debago", "image position is " + imagePosition + " and image path is " + myImages.get(imagePosition-1));
             if (imagePosition - 1 >= 0) {
                 imageSwitcher.setOutAnimation(in);
                 imageSwitcher.setImageURI(Uri.parse(myImages.get(imagePosition - 1)));
@@ -461,7 +446,6 @@ public class DetailPropertyFragment extends Fragment {
     }
 
     private void setMapStatic(String propertyId) {
-        Log.d("debago", "database is not filling: " + propertyId);
         //Construct formatted address from data in room
         propertyViewModel.getOneProperty(propertyId).observe(getViewLifecycleOwner(), properties -> {
 
@@ -478,8 +462,6 @@ public class DetailPropertyFragment extends Fragment {
                     String addressFormatted = splitString.replaceAllSpacesByAddition(addressToConvert);
 
                     geocodingSearch(addressFormatted);
-                } else {
-                    Log.d("debago", "database is filling");
                 }
             }
 
@@ -503,9 +485,6 @@ public class DetailPropertyFragment extends Fragment {
                 Glide.with(MainApplication.getInstance().getApplicationContext())
                         .load(url)
                         .into((propertyLocalisationImage));
-            } else {
-                Log.d("debago", "Geocoding no result ");
-
             }
 
 

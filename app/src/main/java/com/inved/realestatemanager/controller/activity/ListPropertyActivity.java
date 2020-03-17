@@ -108,7 +108,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private void fillDatabaseWithFirebaseValues() {
 
-        Log.d("debago", "in fill dqtqbqse yith firebqse vqlue");
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
             RealEstateAgentHelper.getAgentWhateverAgency(FirebaseAuth.getInstance().getCurrentUser().getEmail()).get().addOnCompleteListener(task -> {
@@ -121,22 +120,15 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
                             String agencyPlaceIdToSave = task.getResult().getDocuments().get(0).getString("agencyPlaceId");
                             String agencyNameToSave = task.getResult().getDocuments().get(0).getString("agencyName");
-                            Log.d("debago", "DATABASE We have an agency, we create database and fill it: " + agencyPlaceIdToSave);
-
                             ManageAgency.saveAgencyPlaceId(MainApplication.getInstance().getApplicationContext(), agencyPlaceIdToSave);
                             ManageAgency.saveAgencyName(MainApplication.getInstance().getApplicationContext(), agencyNameToSave);
                             launchAsynchroneTask();
 
                         }
-
-                    } else {
-                        Log.d("debago", "DATABASE No agency here, no successful");
                     }
                 }
 
-            }).addOnFailureListener(e -> Log.d("debago", "DATABASE ON FAILURE"));
-        } else {
-            Log.d("debago", "Nothing");
+            }).addOnFailureListener(e -> {});
         }
 
     }
@@ -195,7 +187,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private void preopopulateProperties() {
         PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
-            //Log.d("debago", "check if getAllProperty not null: " + queryDocumentSnapshots.size());
             if (queryDocumentSnapshots.size() > 0) {
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
@@ -229,8 +220,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 if (queryDocumentSnapshots.size() > 0) {
 
                     propertyViewModel.getAllProperties().observe(this, properties -> {
-                        Log.d("debago", "properties in firebase " + queryDocumentSnapshots.size() + " and properties in room is " + properties.size());
-
                         if (queryDocumentSnapshots.size() != properties.size()) {
 
                             //We delete all properties in room if there is a difference between properties number in firebase and in room
@@ -258,7 +247,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 } else {
 
                     propertyViewModel.getAllProperties().observe(this, properties -> {
-                        Log.d("debago", "NULL properties in firebase " + queryDocumentSnapshots.size() + " and properties in room is " + properties.size());
                         if (properties.size() != 0) {
                             //We delete all properties in Room if there is no property in firebase
                             for (int i = 0; i < properties.size(); i++) {
@@ -393,7 +381,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         } else {
             goodPropertyId = propertyId;
         }
-        Log.d("debaga", "my property id is " + propertyId);
         if (mOptionsMenu != null) {
 
             MenuItem item = mOptionsMenu.findItem(R.id.menu);
@@ -401,7 +388,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
             if (!tabletSize) {
                 item2.setVisible(false);
-                Log.d("debago", "in item 2");
             }
             switch (number) {
                 case 0:

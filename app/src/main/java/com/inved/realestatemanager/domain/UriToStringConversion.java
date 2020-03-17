@@ -18,7 +18,6 @@ public class UriToStringConversion {
 
     public String getRealPathFromURI(Context context, Uri uri) {
 
-        Log.d("debago","Uri to test : "+uri);
         if (DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
@@ -30,7 +29,6 @@ public class UriToStringConversion {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
 
-                // TODO handle non-primary volumes
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {

@@ -50,8 +50,6 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
             if (queryDocumentSnapshots.size() > 0) {
 
                 propertyViewModel.getAllRealEstateAgents().observe(this, realEstateAgents -> {
-                    Log.d("debago", "agents in firebase " + queryDocumentSnapshots.size() + " and agents in room is " + realEstateAgents.size());
-
                     if (queryDocumentSnapshots.size() != realEstateAgents.size()) {
 
                         //We create agents from firebase in room

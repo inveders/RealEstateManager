@@ -108,7 +108,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
             File goodFile = new File(storageDir, mFileName); //file internal
             boolean isPropertyNotSold;
             isPropertyNotSold= property.getDateOfSaleForProperty() == null || property.getDateOfSaleForProperty().isEmpty();
-            Log.d("debago","is property not sold is "+isPropertyNotSold);
             dispatchFileToGlide(goodFile,localFile,isPropertyNotSold,property.getPropertyId(),property.getPhotoUri1());
 
         }
@@ -128,14 +127,11 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         if (isPropertyNotSold) {
             try {
                 if (fileInternal.exists()) {
-                    Log.d("debago","File internal exist : "+fileInternal);
                     photoUriInGlide(fileInternal);
 
                 } else if (fileExternal.exists()) {
-                    Log.d("debago","File externaL exist");
                     photoUriInGlide(fileExternal);
                 } else {
-                    Log.d("debago","LOAD file from firebase");
                     photoFirebaseStorageInGlide(propertyId, photoUri1);
                 }
 
@@ -149,14 +145,11 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
 
                 if (fileInternal.exists()) {
-                    Log.d("debago","File internal sold exist");
                     photoSoldUriInGlide(fileInternal);
 
                 } else if (fileExternal.exists()) {
-                    Log.d("debago","File external sold exist");
                     photoSoldUriInGlide(fileExternal);
                 } else {
-                    Log.d("debago","LOAD file sold from firebase");
                     photoSoldFirebaseStorageInGlide(propertyId, photoUri1);
                 }
 
@@ -177,7 +170,6 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            Log.d("debago", "Exception is : " + e);
                             photo.setImageResource(R.drawable.no_image);
                             return false;
                         }
@@ -327,9 +319,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
         String mFileName = "/" + lastPathFromFirebase;
         File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File localFile = new File(storageDir + mFileName);
-        fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local item file created from ViewHolder")).addOnFailureListener(exception -> {
-            Log.d("debago", ";local tem file not created  created " + exception.toString());
-
+        fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {}).addOnFailureListener(exception -> {
             glideNoImage();
             stopShimmer();
 

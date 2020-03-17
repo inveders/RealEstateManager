@@ -4,10 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -19,8 +17,6 @@ import com.inved.realestatemanager.utils.MainApplication;
 import java.io.File;
 
 public class MyUploadService extends Service {
-
-    private static final String TAG = "debago";
 
     /**
      * Intent Actions
@@ -65,8 +61,6 @@ public class MyUploadService extends Service {
 
     // [START upload_from_uri]
     private void uploadFromUri(final Uri fileUri, String documentId, int numberPhoto) {
-        Log.d(TAG, "uploadFromUri:src: upload" + fileUri.toString() + " Photo number is: " + numberPhoto);
-
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
@@ -145,20 +139,13 @@ public class MyUploadService extends Service {
 
                     }
 
-                    Log.d(TAG, "uploadFromUri: upload success");
-
                     // Request the public download URL
                     return photoRef.getDownloadUrl();
                 })
                 .addOnSuccessListener(downloadUri -> {
-                    // Upload succeeded
-                    Log.d(TAG, "uploadFromUri: getDownloadUri success");
 
                 })
                 .addOnFailureListener(exception -> {
-                    // Upload failed
-                    Log.w(TAG, "uploadFromUri:onFailure", exception);
-
 
                 });
 
@@ -175,20 +162,14 @@ public class MyUploadService extends Service {
 
             }
 
-            Log.d(TAG, "uploadFromUri: upload success 2");
 
             // Request the public download URL
             return photoRef.getDownloadUrl();
         })
                 .addOnSuccessListener(downloadUri -> {
-                    // Upload succeeded
-                    Log.d(TAG, "uploadFromUri: getDownloadUri success 2");
 
                 })
                 .addOnFailureListener(exception2 -> {
-                    // Upload failed
-                    Log.w(TAG, "uploadFromUri:onFailure2", exception2);
-
                 });
     }
 }

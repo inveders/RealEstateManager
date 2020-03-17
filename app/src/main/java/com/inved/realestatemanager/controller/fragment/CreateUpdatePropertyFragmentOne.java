@@ -469,7 +469,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 surfaceEditText.addTextChangedListener(this);
             }else if (streetNumberEditText.getText().hashCode() == editable.hashCode()){
-                //Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 streetNumberEditText.removeTextChangedListener(this);
 
@@ -482,7 +481,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
                 }
                 streetNumberEditText.addTextChangedListener(this);
             }else if (additionnalEditText.getText().hashCode() == editable.hashCode()){
-                // Log.d("debago","value is "+editable.toString());
                 String value = editable.toString();
                 additionnalEditText.removeTextChangedListener(this);
 

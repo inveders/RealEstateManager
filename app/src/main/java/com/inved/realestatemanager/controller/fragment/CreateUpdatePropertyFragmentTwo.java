@@ -324,8 +324,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     private void myCustomDialog(String imageViewLink, int photoNumber) {
 
         if (getActivity() != null) {
-
-            Log.d("debago", "photoURI is " + imageViewLink + " and photo description is " + photoDescription1);
             initDialogImage();
 
             Glide.with(this)
@@ -334,9 +332,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     .override(240, 240)
                     .fitCenter()
                     .into(dialogPhotoImageView);
-
-
-            Log.d("debago", "fragment two create photoDescription1 is " + photoDescription1 + " plus 2: " + photoDescription2);
 
             managePhotoDescription(photoNumber);
             ManagePhotoNumberCreateUpdate.saveUpdateStatus(getActivity(), "update");
@@ -613,8 +608,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                         e.printStackTrace();
                     }
                     // photo1.setImageURI(selectedImage);
-                    Log.d("debago", "selected image from gallery is " + imageCameraOrGallery.getRealPathFromUri(selectedImage));
-
                     String photoUri = imageCameraOrGallery.getRealPathFromUri(selectedImage);
 
                     editImageName(photoUri);
@@ -630,7 +623,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     }
 
                     if (cameraFilePath != null) {
-                        Log.d("debago", "camerafilepath is " + cameraFilePath);
                         photoUri = cameraFilePath;
                         editImageName(photoUri);
 
@@ -658,7 +650,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
         if (getActivity() != null) {
             if (ManagePhotoNumberCreateUpdate.getUpdateStatus(getActivity()).equals("create")) {
                 //When we add a new photo
-                Log.d("debago", "photouri1 is " + photoUri1 + " and photoUri2 is " + photoUri2 + " and photoUri is " + photoUri);
                 if (photoUri1 == null) {
                     photoUri1 = photoUri;
                 } else if (photoUri2 == null) {
@@ -673,7 +664,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             } else if (ManagePhotoNumberCreateUpdate.getUpdateStatus(getActivity()).equals("update")) {
                 int photoNumber = ManagePhotoNumberCreateUpdate.getPhotoNumber(getActivity());
                 //When we change existing photo
-                Log.d("debago", "photouri1 is " + photoUri1 + " and photoUri2 is " + photoUri2 + " and photoUri is " + photoUri);
                 if (photoNumber == 1) {
                     photoUri1 = photoUri;
                 } else if (photoNumber == 2) {
@@ -710,11 +700,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         // An item was selected. You can retrieve the selected item using
-        //Log.d("debago", "in on item selected method: ");
         if (adapterView.getId() == R.id.activity_create_update_spinner_real_estate_agent_text) {
 
             selectedAgent = agentNameSpinner.getSelectedItem().toString();
-            Log.d("debago", "selected agent: " + selectedAgent);
             if (agentNameSpinner.getSelectedItem().toString().equals(getString(R.string.select_agent))) {
                 agentNameSpinner.setBackgroundResource(R.drawable.edit_text_design);
             } else {
@@ -745,7 +733,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 agentNameSpinner.setAdapter(adapter);
-                Log.d("debago", "spinner filled");
                 adapter.notifyDataSetChanged();
             }
 
@@ -851,7 +838,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 String lastname = splitString.splitStringWithSpace(selectedAgent, 1);
                 propertyViewModel.getRealEstateAgentByName(firstname, lastname).observe(getViewLifecycleOwner(), realEstateAgents -> {
                     realEstateAgentId = realEstateAgents.getRealEstateAgentId();
-                    Log.d("debago", "selected agent is : " + selectedAgent + " and id is : " + realEstateAgentId);
                     actionsAccordingToCreateOrUpdate();
                 });
 
@@ -861,11 +847,9 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                 } else {
                     realEstateAgentId = null;
                 }
-                Log.d("debago", "selected agent is : " + selectedAgent + " and id is : " + realEstateAgentId);
                 actionsAccordingToCreateOrUpdate();
 
             }
-
 
         }
 
@@ -915,7 +899,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
                     String firstname = realEstateAgents.getFirstname();
                     String lastname = realEstateAgents.getLastname();
                     int indexSpinner = getSpinner.getIndexSpinner(agentNameSpinner, firstname + " " + lastname);
-                    Log.d("debago", "set selection in spinner " + firstname + " " + lastname + " and index spinner is: " + agentNameSpinner.getCount());
                     agentNameSpinner.setSelection(indexSpinner);
                 }
 
@@ -969,7 +952,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
 
     private void uploadFileChoice(String id) {
         //Update firestore database with good image url and upload image in Firebase Storage
-        Log.d("debago", "storage helper before uploadFromUri : " + propertyId);
         if (photoUri1 != null)
             storageHelper.uploadFromUri(Uri.parse(photoUri1), id, 1);
         if (photoUri2 != null)

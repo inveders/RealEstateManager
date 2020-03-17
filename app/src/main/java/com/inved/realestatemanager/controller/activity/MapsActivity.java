@@ -10,12 +10,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -201,9 +199,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         latitudeList.add(latitude);
                         longitudeList.add(longitude);
                     }
-
-                } else {
-                    Log.d("debago", "Geocoding no result ");
                 }
 
             });
