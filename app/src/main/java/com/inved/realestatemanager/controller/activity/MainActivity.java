@@ -1,10 +1,11 @@
 package com.inved.realestatemanager.controller.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.firebase.ui.auth.AuthUI;
@@ -13,13 +14,17 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
-import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.sharedpreferences.ManageAgency;
+import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.Utils;
 
 import java.util.Collections;
 import java.util.Objects;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class MainActivity extends BaseActivity {
 
     private static final int RC_SIGN_IN = 123;
@@ -39,7 +44,7 @@ public class MainActivity extends BaseActivity {
                 this.checkIfUserExistInFirebase();
 
             } else {
-                startListPropertyActivity();
+               MainActivityPermissionsDispatcher.startListPropertyActivityWithPermissionCheck(this);
             }
         }
 
@@ -63,12 +68,23 @@ public class MainActivity extends BaseActivity {
     // INTENT TO OPEN ACTIVITY
     // --------------------
 
-    private void startListPropertyActivity() {
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    public void startListPropertyActivity() {
         Intent intent = new Intent(this, ListPropertyActivity.class);
 
         startActivity(intent);
     }
 
+    // --------------
+    // PERMISSIONS
+    // --------------
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
     // --------------------
     // SIGN IN WITH EMAIL ADDRESS
     // --------------------
@@ -123,7 +139,7 @@ public class MainActivity extends BaseActivity {
                     this.checkIfUserExistInFirebase();
 
                 } else {
-                    startListPropertyActivity();
+                    MainActivityPermissionsDispatcher.startListPropertyActivityWithPermissionCheck(this);
                 }
 
 

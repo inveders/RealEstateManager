@@ -20,33 +20,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
-import com.inved.realestatemanager.dao.RealEstateManagerDatabase;
 import com.inved.realestatemanager.domain.GetSpinner;
-import com.inved.realestatemanager.firebase.PropertyHelper;
-import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
-import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
-import com.inved.realestatemanager.models.RealEstateAgents;
-import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
-import com.inved.realestatemanager.sharedpreferences.ManageDatabaseFilling;
-import com.inved.realestatemanager.utils.MainApplication;
 
-import java.util.concurrent.Executors;
-
-import io.reactivex.Completable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableCompletableObserver;
-import io.reactivex.schedulers.Schedulers;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -58,7 +42,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     //Declaration for Navigation Drawer
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    private Disposable disposable;
+
 
     private NavigationView navigationView;
     private Menu mOptionsMenu;
@@ -81,7 +65,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         super.onCreate(savedInstanceState);
 
         tabletSize = getResources().getBoolean(R.bool.isTablet);
-        this.fillDatabaseWithFirebaseValues();
+
         this.configureViewModel();
 
         this.configureToolbarAndNavigationDrawer();
@@ -108,159 +92,17 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     }
 
-    // ---------------------------
-    // SYNC WITH FIREFASE
-    // ---------------------------
 
-    private void fillDatabaseWithFirebaseValues() {
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-
-            RealEstateAgentHelper.getAgentWhateverAgency(FirebaseAuth.getInstance().getCurrentUser().getEmail()).get().addOnCompleteListener(task -> {
-
-                if (task.isSuccessful()) {
-
-                    if (task.getResult() != null) {
-                        if (task.getResult().getDocuments().size() != 0) {
-                            //We have this agency in firebase and we have to put these items in a new Room database
-                            String agencyPlaceIdToSave = task.getResult().getDocuments().get(0).getString("agencyPlaceId");
-                            String agencyNameToSave = task.getResult().getDocuments().get(0).getString("agencyName");
-                            ManageAgency.saveAgencyPlaceId(MainApplication.getInstance().getApplicationContext(), agencyPlaceIdToSave);
-                            ManageAgency.saveAgencyName(MainApplication.getInstance().getApplicationContext(), agencyNameToSave);
-                            if (!ManageDatabaseFilling.isDatabaseFilled(this)) {
-                                launchAsynchroneTask();
-                            }else{
-                                this.checkIfSyncWithFirebaseIsNecessary();
-                            }
-
-
-                        }
-                    }
-                }
-
-            }).addOnFailureListener(e -> {
-            });
-        }
-
-    }
-
-    private void launchAsynchroneTask() {
-
-        disposable = Completable.create(emitter -> {
-            try {
-                prepopulateRealEstateAgents();
-                emitter.onComplete();
-            } catch (Error e) {
-                emitter.onError(e);
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
-                .subscribeWith(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        preopopulateProperties();
-                        ManageDatabaseFilling.saveDatabaseFilledState(MainApplication.getInstance().getApplicationContext(), true);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                });
-
-
-    }
-
-    private void prepopulateRealEstateAgents() {
-        RealEstateAgentHelper.getAllAgents().get().addOnSuccessListener(queryDocumentSnapshots -> {
-
-            if (queryDocumentSnapshots.size() > 0) {
-
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-
-                    RealEstateAgents realEstateAgents1 = documentSnapshot.toObject(RealEstateAgents.class);
-
-                    RealEstateAgents newAgent = RealEstateAgentHelper.resetAgent(realEstateAgents1);
-
-                    //Create real estate agent in room with data from firebase
-                    Executors.newSingleThreadScheduledExecutor().execute(() -> RealEstateManagerDatabase.getInstance(MainApplication.getInstance().getApplicationContext()).realEstateAgentsDao().createRealEstateAgent(newAgent));
-                }
-            }
-        }).addOnFailureListener(e -> {
-        });
-
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
+
 
     }
 
-    private void preopopulateProperties() {
-        PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
-            if (queryDocumentSnapshots.size() > 0) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
-                    Property property = documentSnapshot.toObject(Property.class);
 
-                    Property newProperty = PropertyHelper.resetProperties(property);
-
-                    //Create property in room with data from firebase
-                    Executors.newSingleThreadScheduledExecutor().execute(() -> RealEstateManagerDatabase.getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty));
-
-                }
-                refreshFragment();
-            }
-
-        }).addOnFailureListener(e -> {
-
-        });
-    }
-
-    // ---------------------------
-    // SYNC WITH FIREFASE
-    // ---------------------------
-
-    private void checkIfSyncWithFirebaseIsNecessary() {
-
-        PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
-
-            //We check if database is filling, we don't need to launch this method
-            if (queryDocumentSnapshots.size() > 0) {
-
-                propertyViewModel.getAllProperties().observe(this, properties -> {
-                    if (queryDocumentSnapshots.size() != properties.size()) {
-
-                        //We delete all properties in room if there is a difference between
-                        // properties number in firebase and in room
-                        if (properties.size() != 0) {
-                            for (int i = 0; i < properties.size(); i++) {
-                                propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
-                            }
-                        }
-                        //We create properties from firebase in room
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            Property property = documentSnapshot.toObject(Property.class);
-                            //Create property in room with data from firebase
-                            propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
-                        }
-                    }
-                });
-            } else {
-                propertyViewModel.getAllProperties().observe(this, properties -> {
-                    if (properties.size() != 0) {
-                        //We delete all properties in Room if there is no property in firebase
-                        for (int i = 0; i < properties.size(); i++) {
-                            propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
-                        }
-                    }
-                });
-            }
-
-        }).addOnFailureListener(e -> {
-        });
-    }
 
 
     // ---------------------------

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,29 +23,41 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.api.LogDescriptor;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.DetailActivity;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
+import com.inved.realestatemanager.dao.RealEstateManagerDatabase;
 import com.inved.realestatemanager.firebase.PropertyHelper;
+import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
+import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.sharedpreferences.ManageDatabaseFilling;
 import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.view.PropertyListAdapter;
 import com.inved.realestatemanager.view.PropertyListViewHolder;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Executors;
 
+import io.reactivex.Completable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.schedulers.Schedulers;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
-@RuntimePermissions
 public class ListPropertyFragment extends Fragment implements PropertyListViewHolder.PropertyListInterface, SearchFullScreenDialog.OnClickSearchInterface {
 
     // FOR DESIGN
@@ -57,6 +70,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private TextView noPropertyFoundTextview;
     private int queryCount = 0;
     private boolean tabletSize;
+    private Disposable disposable;
 
     public static final String BOOLEAN_TABLET = "BOOLEAN_TABLET";
     // --------------
@@ -78,9 +92,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_list_property, container, false);
-        if(getContext()!=null)
-        tabletSize= getContext().getResources().getBoolean(R.bool.isTablet);
+        if (getContext() != null)
+            tabletSize = getContext().getResources().getBoolean(R.bool.isTablet);
 
+        this.fillDatabaseWithFirebaseValues();
         noPropertyFoundTextview = mView.findViewById(R.id.fragment_list_property_no_property_found_text);
         openSearchButton = mView.findViewById(R.id.list_property_search_open_floating_button);
         mSwipeRefreshLayout = mView.findViewById(R.id.swipeRefreshLayout);
@@ -176,11 +191,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             dialog.setCancelable(false);
 
             //  dialog.setCallback(this::updatePropertyList);
-
-            if (getFragmentManager() != null) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 dialog.show(ft, "FullscreenDialogFragment");
-            }
+
+
         });
 
     }
@@ -188,7 +202,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     @Override
     public void searchButton(List<Property> properties) {
 
-        ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this, properties);
+        updatePropertyList(properties);
 
     }
 
@@ -207,21 +221,21 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         this.propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
             if (getContext() != null) {
                 if (properties.size() != 0) {
-                    if(tabletSize){
+                    if (tabletSize) {
                         ManageCreateUpdateChoice.saveFirstPropertyIdOnTablet(getContext(), properties.get(0).getPropertyId());
                     }
 
                 }
             }
             callback.onMenuChanged(0, null);
-            ListPropertyFragmentPermissionsDispatcher.updatePropertyListWithPermissionCheck(this, properties);
+            updatePropertyList(properties);
 
         });
     }
 
     // 6 - Update the list of properties
-    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    public void updatePropertyList(List<Property> properties) {
+    private void updatePropertyList(List<Property> properties) {
+        Log.d("debago", "update property list " + properties.size());
         this.adapter.updateData(properties);
         noPropertyFoundTextview.setVisibility(this.adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         if (this.adapter.getItemCount() == 0) {
@@ -251,7 +265,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                         .addToBackStack(null)
                         .commit();
 
-
             } else {
                 //We open activity if we are in portrait mode
                 Intent intent = new Intent(getContext(), DetailActivity.class);
@@ -259,8 +272,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                 intent.putExtra(BOOLEAN_TABLET, false);
                 startActivity(intent);
             }
-
-
         }
 
     }
@@ -287,16 +298,164 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         }
     }
 
-    // --------------
-    // PERMISSIONS
-    // --------------
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // NOTE: delegate the permission handling to generated method
-        ListPropertyFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    // ---------------------------
+    // SYNC WITH FIREFASE
+    // ---------------------------
+
+    private void fillDatabaseWithFirebaseValues() {
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+            RealEstateAgentHelper.getAgentWhateverAgency(FirebaseAuth.getInstance().getCurrentUser().getEmail()).get().addOnCompleteListener(task -> {
+
+                if (task.isSuccessful()) {
+
+                    if (task.getResult() != null) {
+                        if (task.getResult().getDocuments().size() != 0) {
+                            //We have this agency in firebase and we have to put these items in a new Room database
+                            String agencyPlaceIdToSave = task.getResult().getDocuments().get(0).getString("agencyPlaceId");
+                            String agencyNameToSave = task.getResult().getDocuments().get(0).getString("agencyName");
+                            ManageAgency.saveAgencyPlaceId(MainApplication.getInstance().getApplicationContext(), agencyPlaceIdToSave);
+                            ManageAgency.saveAgencyName(MainApplication.getInstance().getApplicationContext(), agencyNameToSave);
+                            if (!ManageDatabaseFilling.isDatabaseFilled(getContext())) {
+                                launchAsynchroneTask();
+                            } else {
+                                this.checkIfSyncWithFirebaseIsNecessary();
+                            }
+                        }
+                    }
+                }
+
+            }).addOnFailureListener(e -> {
+            });
+        }
+
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
+    }
+
+
+    private void launchAsynchroneTask() {
+
+        disposable = Completable.create(emitter -> {
+            try {
+                prepopulateRealEstateAgents();
+                emitter.onComplete();
+            } catch (Error e) {
+                emitter.onError(e);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribeWith(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        preopopulateProperties();
+                        ManageDatabaseFilling.saveDatabaseFilledState(MainApplication.getInstance().getApplicationContext(), true);
+                        getAllProperties();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                });
+
+
+    }
+
+    private void prepopulateRealEstateAgents() {
+        RealEstateAgentHelper.getAllAgents().get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            if (queryDocumentSnapshots.size() > 0) {
+
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+
+                    RealEstateAgents realEstateAgents1 = documentSnapshot.toObject(RealEstateAgents.class);
+
+                    RealEstateAgents newAgent = RealEstateAgentHelper.resetAgent(realEstateAgents1);
+
+                    //Create real estate agent in room with data from firebase
+                    Executors.newSingleThreadScheduledExecutor().execute(() -> RealEstateManagerDatabase.getInstance(MainApplication.getInstance().getApplicationContext()).realEstateAgentsDao().createRealEstateAgent(newAgent));
+                }
+            }
+        }).addOnFailureListener(e -> {
+        });
+
+    }
+
+    private void preopopulateProperties() {
+        PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (queryDocumentSnapshots.size() > 0) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+
+                    Property property = documentSnapshot.toObject(Property.class);
+
+                    Property newProperty = PropertyHelper.resetProperties(property);
+
+                    //Create property in room with data from firebase
+                    Executors.newSingleThreadScheduledExecutor().execute(() -> {
+                        RealEstateManagerDatabase.getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty);
+                        Log.d("debago", "refresh fragment 2");
+                        getAllProperties();
+                    });
+
+                }
+
+            }
+
+        }).addOnFailureListener(e -> {
+
+        });
+    }
+
+    // ---------------------------
+    // SYNC WITH FIREFASE
+    // ---------------------------
+
+    private void checkIfSyncWithFirebaseIsNecessary() {
+
+        PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            //We check if database is filling, we don't need to launch this method
+            if (queryDocumentSnapshots.size() > 0) {
+
+                propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
+                    if (queryDocumentSnapshots.size() != properties.size()) {
+
+                        //We delete all properties in room if there is a difference between
+                        // properties number in firebase and in room
+                        if (properties.size() != 0) {
+                            for (int i = 0; i < properties.size(); i++) {
+                                propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
+                            }
+                        }
+                        //We create properties from firebase in room
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Property property = documentSnapshot.toObject(Property.class);
+                            //Create property in room with data from firebase
+                            propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
+                            Log.d("debago", "refresh fragment 1");
+                            getAllProperties();
+                        }
+                    }
+                });
+            } else {
+                propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
+                    if (properties.size() != 0) {
+                        //We delete all properties in Room if there is no property in firebase
+                        for (int i = 0; i < properties.size(); i++) {
+                            propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
+                        }
+                    }
+                });
+            }
+
+        }).addOnFailureListener(e -> {
+        });
+    }
 
 }
