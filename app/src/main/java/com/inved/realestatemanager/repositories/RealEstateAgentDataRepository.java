@@ -30,6 +30,8 @@ public class RealEstateAgentDataRepository {
 
     // --- UPDATE ---
 
-    public int updateAgent(String realEstateAgentId,String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId){ return this.realEstateAgentsDao.updateAgent(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId); }
+    public int updateAgent(String realEstateAgentId,String firstname, String lastname, String urlPicture,String agencyName,
+                           String agencyPlaceId){ return this.realEstateAgentsDao.updateAgent(realEstateAgentId,firstname,
+            lastname, urlPicture, agencyName, agencyPlaceId); }
 
 }

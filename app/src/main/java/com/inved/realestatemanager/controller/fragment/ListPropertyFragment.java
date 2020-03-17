@@ -202,7 +202,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     // -------------------
 
 
-    // 3 - Get all properties for a real estate agent
+    // 3 - Get all properties
     private void getAllProperties() {
         this.propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
             if (getContext() != null) {

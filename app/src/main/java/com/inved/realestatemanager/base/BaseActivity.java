@@ -3,7 +3,6 @@ package com.inved.realestatemanager.base;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +18,8 @@ import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
 import com.inved.realestatemanager.controller.activity.MainActivity;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.sharedpreferences.ManageAgency;
+import com.inved.realestatemanager.sharedpreferences.ManageDatabaseFilling;
+import com.inved.realestatemanager.utils.MainApplication;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -112,7 +113,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted() {
         return aVoid -> {
             startMainActivity();
-
+            ManageDatabaseFilling.saveDatabaseFilledState(MainApplication.getInstance().getApplicationContext(),false);
             finish();
         };
     }

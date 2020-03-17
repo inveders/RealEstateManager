@@ -85,7 +85,8 @@ public class PropertyDaoTest {
         this.database.propertyDao().insertProperty(PROPERTY_DEMO);
         // TEST
         Property property = LiveDataTestUtil.getValue(this.database.propertyDao().getOneProperty(PROPERTY_ID));
-        assertTrue(property.getCountry().equals(PROPERTY_DEMO.getCountry()) && property.getCountry().equals(PROPERTY_DEMO.getCountry()));
+        assertTrue(property.getCountry().equals(PROPERTY_DEMO.getCountry()) && property.getCountry().
+                equals(PROPERTY_DEMO.getCountry()));
     }
 
 

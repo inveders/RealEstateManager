@@ -14,11 +14,9 @@ public class FinishRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish_register);
         openDialog();
-
     }
 
     private void openDialog() {
-
         AddAgentDialog dialog = new AddAgentDialog();
         dialog.show(getSupportFragmentManager(), "AddAgentDialog");
     }

@@ -94,11 +94,8 @@ public class DetailActivity extends BaseActivity  {
         item.setIcon(R.drawable.ic_menu_update_white_24dp);
         item.setOnMenuItemClickListener(menuItem -> {
             DetailActivityPermissionsDispatcher.startCreatePropertyActivityWithPermissionCheck(this);
-
-
             return true;
         });
-
 
         return true;
     }

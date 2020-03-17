@@ -46,7 +46,6 @@ public class UtilsTest {
         String dollarsConversion = utils.convertEuroToDollars(dollarsRates,euroToConvert);
 
         //Then
-
         Assert.assertEquals("11", dollarsConversion);
 
 
@@ -79,13 +78,11 @@ public class UtilsTest {
 
         //When
         Mockito.when(sharedPrefs.getFloat("KEY_CURRENCY_VALUE", 2)).thenReturn((float) 2.2);
-        double dollarsConversion = utils.convertDollarToEuro(ManageCurrency.getRate(MainApplication.getInstance().getApplicationContext()),dollarsToConvert);
-
+        double dollarsConversion = utils.convertDollarToEuro(ManageCurrency.getRate(MainApplication.getInstance()
+                .getApplicationContext()),dollarsToConvert);
 
         //Then
         Assert.assertEquals(String.valueOf(euroToRetrieve), String.valueOf(dollarsConversion));
-
-
     }
 
 
@@ -95,7 +92,6 @@ public class UtilsTest {
         //Given
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String currentDate = dateFormat.format(new Date());
-
 
         //When
         String goodFormatDate = utils.getTodayDate();

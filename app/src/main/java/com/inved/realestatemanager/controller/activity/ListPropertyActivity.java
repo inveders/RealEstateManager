@@ -5,7 +5,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,18 +65,25 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private PropertyViewModel propertyViewModel;
     private FragmentRefreshListener fragmentRefreshListener;
     private FragmentRefreshListenerDetail fragmentRefreshListenerDetail;
+    private boolean tabletSize;
+
+    /**
+     * si j'ai internet --> firebase
+     * vérifier que la base de données est remplie
+     * si j'ai pas internet --> room
+     */
 
     // --------------------
     // LIFE CYCLE AND VIEW MODEL
     // --------------------
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        tabletSize = getResources().getBoolean(R.bool.isTablet);
         this.fillDatabaseWithFirebaseValues();
         this.configureViewModel();
-        this.checkIfSyncWithFirebaseIsNecessary();
+
         this.configureToolbarAndNavigationDrawer();
 
         //NavigationDrawer
@@ -117,23 +123,29 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     if (task.getResult() != null) {
                         if (task.getResult().getDocuments().size() != 0) {
                             //We have this agency in firebase and we have to put these items in a new Room database
-
                             String agencyPlaceIdToSave = task.getResult().getDocuments().get(0).getString("agencyPlaceId");
                             String agencyNameToSave = task.getResult().getDocuments().get(0).getString("agencyName");
                             ManageAgency.saveAgencyPlaceId(MainApplication.getInstance().getApplicationContext(), agencyPlaceIdToSave);
                             ManageAgency.saveAgencyName(MainApplication.getInstance().getApplicationContext(), agencyNameToSave);
-                            launchAsynchroneTask();
+                            if (!ManageDatabaseFilling.isDatabaseFilled(this)) {
+                                launchAsynchroneTask();
+                            }else{
+                                this.checkIfSyncWithFirebaseIsNecessary();
+                            }
+
 
                         }
                     }
                 }
 
-            }).addOnFailureListener(e -> {});
+            }).addOnFailureListener(e -> {
+            });
         }
 
     }
 
     private void launchAsynchroneTask() {
+
         disposable = Completable.create(emitter -> {
             try {
                 prepopulateRealEstateAgents();
@@ -147,13 +159,15 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                     @Override
                     public void onComplete() {
                         preopopulateProperties();
-
+                        ManageDatabaseFilling.saveDatabaseFilledState(MainApplication.getInstance().getApplicationContext(), true);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                     }
                 });
+
+
     }
 
     private void prepopulateRealEstateAgents() {
@@ -163,19 +177,17 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
-                    RealEstateAgents realEstateAgents = documentSnapshot.toObject(RealEstateAgents.class);
+                    RealEstateAgents realEstateAgents1 = documentSnapshot.toObject(RealEstateAgents.class);
 
-                    RealEstateAgents newAgent = RealEstateAgentHelper.resetAgent(realEstateAgents);
+                    RealEstateAgents newAgent = RealEstateAgentHelper.resetAgent(realEstateAgents1);
 
                     //Create real estate agent in room with data from firebase
                     Executors.newSingleThreadScheduledExecutor().execute(() -> RealEstateManagerDatabase.getInstance(MainApplication.getInstance().getApplicationContext()).realEstateAgentsDao().createRealEstateAgent(newAgent));
                 }
-
             }
-
-
         }).addOnFailureListener(e -> {
         });
+
     }
 
     @Override
@@ -200,7 +212,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
                 }
                 refreshFragment();
             }
-            ManageDatabaseFilling.saveDatabaseFillingState(MainApplication.getInstance().getApplicationContext(), false);
 
         }).addOnFailureListener(e -> {
 
@@ -216,47 +227,36 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         PropertyHelper.getAllProperties().get().addOnSuccessListener(queryDocumentSnapshots -> {
 
             //We check if database is filling, we don't need to launch this method
-            if (!ManageDatabaseFilling.getIsDatabaseFilling(this)) {
-                if (queryDocumentSnapshots.size() > 0) {
+            if (queryDocumentSnapshots.size() > 0) {
 
-                    propertyViewModel.getAllProperties().observe(this, properties -> {
-                        if (queryDocumentSnapshots.size() != properties.size()) {
+                propertyViewModel.getAllProperties().observe(this, properties -> {
+                    if (queryDocumentSnapshots.size() != properties.size()) {
 
-                            //We delete all properties in room if there is a difference between properties number in firebase and in room
-                            if (properties.size() != 0) {
-                                for (int i = 0; i < properties.size(); i++) {
-                                    propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
-                                }
-                            }
-
-                            //We create properties from firebase in room
-                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                Property property = documentSnapshot.toObject(Property.class);
-
-                                //Create property in room with data from firebase
-                                propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
-                            }
-
-
-                        }
-
-
-                    });
-
-
-                } else {
-
-                    propertyViewModel.getAllProperties().observe(this, properties -> {
+                        //We delete all properties in room if there is a difference between
+                        // properties number in firebase and in room
                         if (properties.size() != 0) {
-                            //We delete all properties in Room if there is no property in firebase
                             for (int i = 0; i < properties.size(); i++) {
                                 propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
                             }
                         }
-                    });
-                }
+                        //We create properties from firebase in room
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Property property = documentSnapshot.toObject(Property.class);
+                            //Create property in room with data from firebase
+                            propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
+                        }
+                    }
+                });
+            } else {
+                propertyViewModel.getAllProperties().observe(this, properties -> {
+                    if (properties.size() != 0) {
+                        //We delete all properties in Room if there is no property in firebase
+                        for (int i = 0; i < properties.size(); i++) {
+                            propertyViewModel.deleteProperty(properties.get(i).getPropertyId());
+                        }
+                    }
+                });
             }
-
 
         }).addOnFailureListener(e -> {
         });
@@ -382,43 +382,19 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             goodPropertyId = propertyId;
         }
         if (mOptionsMenu != null) {
-
             MenuItem item = mOptionsMenu.findItem(R.id.menu);
             MenuItem item2 = mOptionsMenu.findItem(R.id.menu2);
-            boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
             if (!tabletSize) {
                 item2.setVisible(false);
             }
             switch (number) {
                 case 0:
                     // add icon and update
-                    item.setIcon(R.drawable.ic_menu_add_white_24dp);
-                    item2.setIcon(R.drawable.ic_menu_update_white_24dp);
-                    if (tabletSize) {
-                        item2.setVisible(true);
-                    } else {
-                        item2.setVisible(false);
-                    }
-                    item.setOnMenuItemClickListener(menuItem -> {
-                        ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
-                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
-                        return true;
-                    });
-                    item2.setOnMenuItemClickListener(menuItem -> {
-                        ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
-
-                        ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
-                        return true;
-                    });
+                    addAndUpdateIcon(item, item2, goodPropertyId);
                     break;
                 case 1:
                     //clear icon
-                    item.setIcon(R.drawable.ic_menu_clear_white_24dp);
-                    item2.setVisible(false);
-                    item.setOnMenuItemClickListener(menuItem -> {
-                        refreshFragment();
-                        return true;
-                    });
+                    clearIcon(item, item2);
                     break;
                 case 2:
                     // edit icon
@@ -431,6 +407,35 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
+    private void addAndUpdateIcon(MenuItem item, MenuItem item2, String goodPropertyId) {
+        item.setIcon(R.drawable.ic_menu_add_white_24dp);
+        item2.setIcon(R.drawable.ic_menu_update_white_24dp);
+        if (tabletSize) {
+            item2.setVisible(true);
+        } else {
+            item2.setVisible(false);
+        }
+        item.setOnMenuItemClickListener(menuItem -> {
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
+            ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
+            return true;
+        });
+        item2.setOnMenuItemClickListener(menuItem -> {
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
+
+            ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
+            return true;
+        });
+    }
+
+    private void clearIcon(MenuItem item, MenuItem item2) {
+        item.setIcon(R.drawable.ic_menu_clear_white_24dp);
+        item2.setVisible(false);
+        item.setOnMenuItemClickListener(menuItem -> {
+            refreshFragment();
+            return true;
+        });
+    }
 
     // ---------------------------
     // INTENTS TO OPEN NEW ACTIVITY

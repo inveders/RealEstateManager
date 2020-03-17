@@ -70,11 +70,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             String mFileName = "/" + localFile.getName();
             File goodFile = new File(storageDir,mFileName);
-           // Log.d("debago", "localfile for agent is " + goodFile);
             if (goodFile.exists()) {
-                Log.d("debago", "file internal exist for agent " + goodFile);
-
-
                 if (goodFile.getPath() != null) {
                     GlideApp.with(MainApplication.getInstance().getApplicationContext())
                             .load(goodFile)
@@ -82,7 +78,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                             .listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    Log.d("debago", "Exception is : " + e);
                                     holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
                                     return false;
                                 }
@@ -97,8 +92,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                 }
 
             } else if (localFile.exists()){
-                Log.d("debago", "file external exist for agent " + localFile);
-
                 if (localFile.getPath() != null) {
                     GlideApp.with(MainApplication.getInstance().getApplicationContext())
                             .load(localFile)
@@ -106,7 +99,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                             .listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    Log.d("debago", "Exception is : " + e);
                                     holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
                                     return false;
                                 }
@@ -122,7 +114,6 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
             }
             else {
 
-                Log.d("debago", "good file NOT exist for agent ");
                 Glide.with(MainApplication.getInstance().getApplicationContext())
                         .load(R.drawable.ic_anon_user_48dp)
                         .apply(RequestOptions.circleCropTransform())
@@ -163,8 +154,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                             String mFileName2 = "/" + splitString.lastCharacters(realEstateAgentsList.get(position).getUrlPicture(),numberCharacter);
                                             File storageDir2 = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                                             File localFile2 = new File(storageDir2 + mFileName2);
-                                            fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> Log.d("debago", ";local item file created from ViewHolder Agent Management")).addOnFailureListener(exception -> {
-                                                Log.d("debago", ";local tem file"+localFile2+" not created  created " + exception.toString());
+                                            fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> {}).addOnFailureListener(exception -> {
                                                 GlideApp.with(MainApplication.getInstance().getApplicationContext())
                                                         .load(R.drawable.ic_anon_user_48dp)
                                                         .into((holder.mAgentPhoto));

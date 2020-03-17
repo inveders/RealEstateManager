@@ -43,6 +43,28 @@ public class RealEstateAgentHelper {
         return new RealEstateAgents(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId);
     }
 
+    public static RealEstateAgents resetAgentDialog(RealEstateAgents realEstateAgents1){
+
+        String realEstateAgentId = realEstateAgents1.getRealEstateAgentId();
+        String agencyPlaceId = realEstateAgents1.getAgencyPlaceId();
+        String agencyName = realEstateAgents1.getAgencyName();
+        String firstname = realEstateAgents1.getFirstname();
+        String lastname = realEstateAgents1.getLastname();
+        String urlPicture = realEstateAgents1.getUrlPicture();
+
+        StorageDownload storageDownload = new StorageDownload();
+
+        if (urlPicture != null && urlPicture.length() < 30) {
+            String uri1 = storageDownload.beginDownload(urlPicture, realEstateAgentId);
+            if (uri1 != null) {
+                urlPicture = uri1;
+            }
+        }
+
+        return new RealEstateAgents(realEstateAgentId, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
+
+    }
+
     // --- GET ---
 
     public static Query getAgentWhateverAgency(String realEstateAgentId){

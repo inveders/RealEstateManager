@@ -32,7 +32,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Check if user is signed in and update UI accordingly.
         if (this.getCurrentUser() != null) {
             if (ManageAgency.getAgencyPlaceId(MainApplication.getInstance().getApplicationContext()) == null) {
@@ -42,8 +41,6 @@ public class MainActivity extends BaseActivity {
             } else {
                 startListPropertyActivity();
             }
-
-
         }
 
         /** 1. I change activity_second in findViewById by activity_main)

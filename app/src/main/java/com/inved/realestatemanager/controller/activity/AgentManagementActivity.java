@@ -1,7 +1,6 @@
 package com.inved.realestatemanager.controller.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +14,6 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
 import com.inved.realestatemanager.controller.dialogs.AddAgentDialog;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
-import com.inved.realestatemanager.firebase.StorageDownload;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
@@ -55,43 +53,17 @@ public class AgentManagementActivity extends BaseActivity implements RecyclerVie
                         //We create agents from firebase in room
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             RealEstateAgents realEstateAgents1 = documentSnapshot.toObject(RealEstateAgents.class);
-
-                            String realEstateAgentId = realEstateAgents1.getRealEstateAgentId();
-                            String agencyPlaceId = realEstateAgents1.getAgencyPlaceId();
-                            String agencyName = realEstateAgents1.getAgencyName();
-                            String firstname = realEstateAgents1.getFirstname();
-                            String lastname = realEstateAgents1.getLastname();
-                            String urlPicture = realEstateAgents1.getUrlPicture();
-
-                            StorageDownload storageDownload = new StorageDownload();
-
-                            if (urlPicture != null && urlPicture.length() < 30) {
-                                String uri1 = storageDownload.beginDownload(urlPicture, realEstateAgentId);
-                                if (uri1 != null) {
-                                    urlPicture = uri1;
-                                }
-                            }
-
-                            RealEstateAgents newAgent = new RealEstateAgents(realEstateAgentId, firstname, lastname, urlPicture, agencyName, agencyPlaceId);
+                            RealEstateAgents newAgent = RealEstateAgentHelper.resetAgentDialog(realEstateAgents1);
 
                             //Create agent in room with data from firebase
                             propertyViewModel.createRealEstateAgent(newAgent);
                             configureRecyclerView();
                         }
-
-
                     }
-
-
                 });
-
-
             }
-
-
         }).addOnFailureListener(e -> {
         });
-
     }
 
     @Override

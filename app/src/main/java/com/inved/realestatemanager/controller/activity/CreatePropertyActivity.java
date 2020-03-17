@@ -31,10 +31,8 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         this.configureToolBar();
         this.configureViewPager();
-
 
         if (getIntent().getStringExtra(PROPERTY_ID_INTENT) != null) {
 

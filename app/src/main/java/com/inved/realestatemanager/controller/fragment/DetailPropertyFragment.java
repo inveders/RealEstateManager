@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +108,23 @@ public class DetailPropertyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_detail_property, container, false);
+        initialization(mView);
+        myImages = new ArrayList<>();
+        if(myImages.size()!=0){
+            myImages.clear();
+        }
+        myDescriptionImage = new ArrayList<>();
 
+        configureViewModel();
+        handleTablet(mView);
+        handleBundle();
+
+        dateOfSaleForPorperty.setOnClickListener(view -> showDatePickerDialog());
+
+        return mView;
+    }
+
+    private void initialization(View mView){
         typeProperty = mView.findViewById(R.id.fragment_detail_property_type_text);
         pricePropertyInDollar = mView.findViewById(R.id.fragment_detail_property_price_text);
         pricePropertyUnit = mView.findViewById(R.id.fragment_detail_property_item_unit_price);
@@ -135,48 +150,34 @@ public class DetailPropertyFragment extends Fragment {
         realEstateAgent = mView.findViewById(R.id.fragment_detail_property_real_estate_agent_text);
         propertyLocalisationImage = mView.findViewById(R.id.fragment_detail_property_location_map);
 
+    }
 
-        myImages = new ArrayList<>();
-        if(myImages.size()!=0){
-            myImages.clear();
-        }
-        myDescriptionImage = new ArrayList<>();
-        configureViewModel();
-
+    private void handleTablet(View mView){
         tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
-
             shimmerFrameLayout = mView.findViewById(R.id.shimmer_view_container_detail);
             showShimmer();
             if (getActivity() != null) {
 
                 ((ListPropertyActivity) getActivity()).setFragmentRefreshListenerDetail(this::getFirstProperty);
-
             }
-
-
             getFirstProperty();
-
-
         } else {
             if (getActivity() != null) {
                 Intent intent = getActivity().getIntent();
                 myPropertyId = intent.getStringExtra(PROPERTY_ID);
-
                 propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
                     if (imageSwitcherNumber == 0) {
                         DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
                         getRealEstateAgent(property.getRealEstateAgentId());
-
                     }
-
                 });
-
                 setMapStatic(myPropertyId);
             }
         }
+    }
 
-
+    private void handleBundle(){
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             myPropertyId = bundle.getString(PROPERTY_ID);
@@ -193,14 +194,8 @@ public class DetailPropertyFragment extends Fragment {
 
             });
             setMapStatic(myPropertyId);
-
         }
-
-        dateOfSaleForPorperty.setOnClickListener(view -> showDatePickerDialog());
-
-        return mView;
     }
-
 
     // 2 - Configuring ViewModel
     private void configureViewModel() {
@@ -263,10 +258,7 @@ public class DetailPropertyFragment extends Fragment {
                 PropertyHelper.updateDateOfSale(selectedDate, myPropertyId);
                 PropertyHelper.updateStatusProperty(status, myPropertyId);
                }
-
         }
-
-
     }
 
     // --------------
@@ -451,7 +443,7 @@ public class DetailPropertyFragment extends Fragment {
 
             SplitString splitString = new SplitString();
             if (getContext() != null) {
-                if (!ManageDatabaseFilling.getIsDatabaseFilling(getContext())) {
+                if (ManageDatabaseFilling.isDatabaseFilled(getContext())) {
 
                     String streetNumber = properties.getStreetNumber();
                     String streetName = properties.getStreetName();
@@ -464,8 +456,6 @@ public class DetailPropertyFragment extends Fragment {
                     geocodingSearch(addressFormatted);
                 }
             }
-
-
         });
 
     }

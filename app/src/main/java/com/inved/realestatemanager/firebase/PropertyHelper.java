@@ -83,42 +83,12 @@ public class PropertyHelper {
         String photoDescription5 = property.getPhotoDescription5();
         String realEstateAgentId = property.getRealEstateAgentId();
 
-        StorageDownload storageDownload = new StorageDownload();
+        photoUri1=downloadPhoto(photoUri1,propertyId);
+        photoUri2=downloadPhoto(photoUri2,propertyId);
+        photoUri3=downloadPhoto(photoUri3,propertyId);
+        photoUri4=downloadPhoto(photoUri4,propertyId);
+        photoUri5=downloadPhoto(photoUri5,propertyId);
 
-        if (photoUri1 != null && photoUri1.length() < 30) {
-            String uri1 = storageDownload.beginDownload(photoUri1, propertyId);
-            if (uri1 != null) {
-                photoUri1 = uri1;
-            }
-        }
-
-        if (photoUri2 != null && photoUri2.length() < 30) {
-            String uri2 = storageDownload.beginDownload(photoUri2, propertyId);
-            if (uri2 != null) {
-                photoUri2 = uri2;
-            }
-        }
-
-        if (photoUri3 != null && photoUri3.length() < 30) {
-            String uri3 = storageDownload.beginDownload(photoUri3, propertyId);
-            if (uri3 != null) {
-                photoUri3 = uri3;
-            }
-        }
-
-        if (photoUri4 != null && photoUri4.length() < 30) {
-            String uri4 = storageDownload.beginDownload(photoUri4, propertyId);
-            if (uri4 != null) {
-                photoUri4 = uri4;
-            }
-        }
-
-        if (photoUri5 != null && photoUri5.length() < 30) {
-            String uri5 = storageDownload.beginDownload(photoUri5, propertyId);
-            if (uri5 != null) {
-                photoUri5 = uri5;
-            }
-        }
 
         return new Property(propertyId, typeProperty, pricePropertyInEuro,
                 surfaceAreaProperty, numberRoomsInProperty,
@@ -127,6 +97,14 @@ public class PropertyHelper {
                 statusProperty, dateOfEntryOnMarketForProperty,
                 dateOfSaleForProperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
                 photoDescription3, photoDescription4, photoDescription5, realEstateAgentId);
+    }
+
+    private static String downloadPhoto(String photo, String propertyId){
+        StorageDownload storageDownload = new StorageDownload();
+        if (photo != null && photo.length() < 30) {
+            return storageDownload.beginDownload(photo, propertyId);
+        }
+        return null;
     }
 
     // --- GET ---
