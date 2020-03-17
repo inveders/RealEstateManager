@@ -207,7 +207,9 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         this.propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
             if (getContext() != null) {
                 if (properties.size() != 0) {
-                    ManageCreateUpdateChoice.saveFirstPropertyIdOnTablet(getContext(), properties.get(0).getPropertyId());
+                    if(tabletSize){
+                        ManageCreateUpdateChoice.saveFirstPropertyIdOnTablet(getContext(), properties.get(0).getPropertyId());
+                    }
 
                 }
             }
@@ -234,7 +236,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public void clickOnCardView(String propertyId) {
 
         if (getActivity() != null) {
-
 
             if (tabletSize) {
                 callback.onMenuChanged(0, propertyId);
