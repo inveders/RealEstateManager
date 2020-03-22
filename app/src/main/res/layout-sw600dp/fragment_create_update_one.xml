@@ -6,7 +6,8 @@
     android:id="@+id/create_update_fragment_one"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:layout_marginStart="64dp"
+    android:layout_marginEnd="64dp"
     android:fillViewport="true"
     >
 
@@ -22,46 +23,31 @@
 
         <!-- TYPE PROPERTY -->
 
-        <TextView
-            android:id="@+id/create_update_type_property_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_large_margin"
-            android:text="@string/fullscreen_dialog__by_type_of_property"
-            style="@style/TextviewStyle"
-            android:layout_marginStart="20dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
             android:id="@+id/create_update_spinner_type_property"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
             android:entries="@array/typeProperty"
-            android:layout_marginStart="@dimen/default_extra_large_margin"
-            app:layout_constraintLeft_toRightOf="@id/create_update_type_property_text"
+            android:textSize="18sp"
+            android:layout_marginTop="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/create_updtate_price_edittext"
             style="@style/EditTextStylewithoutText"
-            app:layout_constraintTop_toTopOf="@id/create_update_type_property_text" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- PRICE LEVEL -->
-        <TextView
-            android:id="@+id/create_update_price_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_extra_mega_large_margin"
-            android:text="@string/create_update_by_price"
-            style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
-            app:layout_constraintTop_toBottomOf="@id/create_update_type_property_text"
-            />
 
         <EditText
             android:id="@+id/create_updtate_price_edittext"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
             app:layout_constraintLeft_toLeftOf="@id/create_update_spinner_type_property"
-              app:layout_constraintBaseline_toBaselineOf="@id/create_update_price_text"
+            app:layout_constraintRight_toLeftOf="@id/create_update_surface_edittext"
             style="@style/EditTextStyleText"
+            android:textSize="18sp"
+            android:layout_marginTop="16sp"
+            app:layout_constraintTop_toBottomOf="@id/create_update_spinner_type_property"
             android:inputType="numberDecimal"
             android:hint="@string/create_update_by_price_hint"
             tools:ignore="LabelFor"
@@ -70,201 +56,159 @@
             />
 
         <!-- SURFACE -->
-        <TextView
-            android:id="@+id/create_update_surface_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_update_by_surface"
-            android:layout_marginStart="@dimen/default_extra_mega_large_margin"
-            style="@style/TextviewStyle"
-            app:layout_constraintRight_toLeftOf="@id/create_update_surface_edittext"
-            android:layout_marginEnd="50dp"
-            app:layout_constraintTop_toTopOf="@id/create_update_price_text" />
-
 
         <EditText
             android:id="@+id/create_update_surface_edittext"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_extra_mega_large_margin"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintLeft_toRightOf="@id/create_updtate_price_edittext"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@id/create_update_surface_text"
-            android:inputType="numberDecimal"
+             android:inputType="numberDecimal"
             style="@style/EditTextStyleText"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/create_updtate_price_edittext"
             android:importantForAutofill="no"
             tools:ignore="LabelFor"
             android:hint="@string/create_update_by_surface"
-            android:layout_marginEnd="20dp"
             />
         <!--LOCALISATION-->
 
-        <TextView
-            android:id="@+id/create_update_street_number_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_extra_mega_large_margin"
-            android:text="@string/create_update_by_street_number"
-            style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
-            app:layout_constraintTop_toBottomOf="@id/create_update_surface_text" />
-
         <EditText
             android:id="@+id/create_update_street_number_edittext"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
             app:layout_constraintLeft_toLeftOf="@id/create_update_spinner_type_property"
-            app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_number_text"
+            app:layout_constraintRight_toLeftOf="@id/create_update_street_compl_edittext"
             android:inputType="number"
+            android:textSize="18sp"
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
+            android:layout_marginTop="16sp"
+            app:layout_constraintTop_toBottomOf="@id/create_updtate_price_edittext"
             android:autofillHints="@string/create_update_by_street_number"
             android:hint="@string/create_update_by_street_number"
             tools:targetApi="o"/>
 
-        <TextView
-            android:id="@+id/create_update_street_compl_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_update_by_street_compl"
-            style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_text"
-            app:layout_constraintTop_toTopOf="@id/create_update_street_number_text" />
-
         <EditText
             android:id="@+id/create_update_street_compl_edittext"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_edittext"
-            app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_compl_text"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintLeft_toRightOf="@id/create_update_street_number_edittext"
+            app:layout_constraintRight_toRightOf="parent"
             android:inputType="text"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/create_update_street_number_edittext"
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
             android:autofillHints="@string/create_update_by_street_compl"
             android:hint="@string/create_update_by_street_compl"
             tools:targetApi="o"/>
 
-        <TextView
-            android:id="@+id/create_update_street_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_extra_large_margin"
-            android:text="@string/create_update_by_street_name"
-            style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
-            app:layout_constraintTop_toBottomOf="@id/create_update_street_compl_text" />
-
         <EditText
             android:id="@+id/create_update_street_name_edittext"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
             app:layout_constraintLeft_toLeftOf="@id/create_update_spinner_type_property"
-            app:layout_constraintBaseline_toBaselineOf="@id/create_update_street_name_text"
+            app:layout_constraintRight_toLeftOf="@id/create_update_zip_code_edittext"
             android:inputType="text"
+            android:textSize="18sp"
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
+            android:layout_marginTop="16sp"
             android:autofillHints="@string/create_update_by_street_name"
+            app:layout_constraintTop_toBottomOf="@id/create_update_street_number_edittext"
             android:hint="@string/create_update_by_street_name"
             tools:targetApi="o"/>
 
 
-        <TextView
-            android:id="@+id/create_update_zip_code_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_update_by_zip_code"
-            style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_text"
-            app:layout_constraintTop_toTopOf="@id/create_update_street_name_text"            />
-
         <EditText
             android:id="@+id/create_update_zip_code_edittext"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_edittext"
-            app:layout_constraintBaseline_toBaselineOf="@id/create_update_zip_code_text"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintLeft_toRightOf="@id/create_update_street_name_edittext"
             style="@style/EditTextStyleText"
             tools:ignore="LabelFor"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="18sp"
             android:autofillHints="@string/create_update_by_zip_code"
             android:hint="@string/create_update_by_zip_code"
+            app:layout_constraintTop_toTopOf="@id/create_update_street_name_edittext"
             tools:targetApi="o"
             android:inputType="number"
             />
 
 
-        <TextView
-            android:id="@+id/create_update_town_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_extra_large_margin"
-            android:text="@string/create_update_by_town_name"
-            style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
-            app:layout_constraintTop_toBottomOf="@id/create_update_zip_code_text" />
-
         <EditText
             android:id="@+id/create_update_town_name_edittext"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
             app:layout_constraintLeft_toLeftOf="@id/create_update_spinner_type_property"
-            app:layout_constraintBaseline_toBaselineOf="@id/create_update_town_name_text"
+            app:layout_constraintRight_toLeftOf="@id/create_update_country_name_autocompleteText"
             android:inputType="text"
+            android:textSize="18sp"
             style="@style/EditTextStyleText"
             android:autofillHints="@string/create_update_by_town_name"
+            android:layout_marginTop="16sp"
+            app:layout_constraintTop_toBottomOf="@id/create_update_street_name_edittext"
             android:hint="@string/create_update_by_town_name"
             tools:targetApi="o"
             tools:ignore="LabelFor" />
 
 
-        <TextView
-            android:id="@+id/create_update_country_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_update_by_country_name"
-            style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_text"
-            app:layout_constraintTop_toTopOf="@id/create_update_town_name_text" />
 
         <AutoCompleteTextView
             android:id="@+id/create_update_country_name_autocompleteText"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_surface_edittext"
-            app:layout_constraintBaseline_toBaselineOf="@id/create_update_country_name_text"
+            android:layout_width="0dp"
+            android:layout_height="55sp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintLeft_toRightOf="@id/create_update_town_name_edittext"
             tools:ignore="LabelFor"
             android:hint="@string/create_update_by_country_name"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/create_update_town_name_edittext"
             style="@style/EditTextStyleText"/>
 
         <!--POINTS OF INTERESTS-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            app:layout_constraintTop_toBottomOf="@id/create_update_spinner_number_rooms"
+            app:layout_constraintBottom_toTopOf="@id/create_update_poi_text"
+            android:background="@color/colorPrimaryDark"/>
 
         <TextView
             android:id="@+id/create_update_poi_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_extra_large_margin"
+            android:layout_marginTop="@dimen/default_extra_mega_large_margin"
             android:text="@string/fullscreen_dialog__by_points_of_interest"
             style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/create_update_spinner_number_bathrooms" />
 
 
         <CheckBox
             android:id="@+id/create_update_checkbox_poi_schools"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog__poi_school"
             android:textAlignment="center"
-            app:layout_constraintHorizontal_weight="1"
+            android:textSize="16sp"
+            app:layout_constraintHorizontal_chainStyle="packed"
             android:buttonTint="@color/colorPrimaryDark"
             app:layout_constraintTop_toBottomOf="@id/create_update_poi_text"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_poi_text"
-            app:layout_constraintRight_toLeftOf="@id/create_update_checkbox_poi_shops"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/create_update_checkbox_poi_oil_station"
             tools:targetApi="lollipop" />
 
         <CheckBox
@@ -274,10 +218,10 @@
             android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog__poi_restaurants"
             android:textAlignment="center"
+            android:textSize="16sp"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/create_update_checkbox_poi_shops"
-            app:layout_constraintRight_toLeftOf="@+id/create_update_checkbox_poi_oil_station"
-            app:layout_constraintTop_toTopOf="@+id/create_update_checkbox_poi_schools"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_schools"
+            app:layout_constraintTop_toBottomOf="@id/create_update_checkbox_poi_shops"
             android:buttonTint="@color/colorPrimaryDark"
 
             tools:targetApi="lollipop"
@@ -290,10 +234,10 @@
             android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog_poi_car_parks"
             android:textAlignment="center"
+            android:textSize="16sp"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/create_update_checkbox_poi_oil_station"
-            app:layout_constraintRight_toLeftOf="@id/create_update_checkbox_poi_tourist_attraction"
-            app:layout_constraintTop_toTopOf="@+id/create_update_checkbox_poi_restaurants"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_oil_station"
+            app:layout_constraintTop_toBottomOf="@+id/create_update_checkbox_poi_oil_station"
             android:buttonTint="@color/colorPrimaryDark"
             tools:targetApi="lollipop"
             />
@@ -305,10 +249,10 @@
             android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog__poi_shops"
             android:textAlignment="center"
-            app:layout_constraintLeft_toRightOf="@id/create_update_checkbox_poi_schools"
-            app:layout_constraintRight_toLeftOf="@id/create_update_checkbox_poi_restaurants"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_schools"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintTop_toTopOf="@id/create_update_checkbox_poi_schools"
+            app:layout_constraintTop_toBottomOf="@id/create_update_checkbox_poi_schools"
             android:buttonTint="@color/colorPrimaryDark"
 
             tools:targetApi="lollipop"/>
@@ -321,45 +265,59 @@
             android:text="@string/fullscreen_dialog_poi_tourist_attraction"
             app:layout_constraintHorizontal_weight="1"
             android:textAlignment="center"
-            app:layout_constraintLeft_toRightOf="@id/create_update_checkbox_poi_car_parks"
-            app:layout_constraintRight_toRightOf="@id/create_update_surface_edittext"
-            app:layout_constraintTop_toTopOf="@id/create_update_checkbox_poi_schools"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/create_update_checkbox_poi_car_parks"
+            app:layout_constraintTop_toBottomOf="@id/create_update_checkbox_poi_car_parks"
             android:buttonTint="@color/colorPrimaryDark"
             tools:targetApi="lollipop"/>
 
         <CheckBox
             android:id="@+id/create_update_checkbox_poi_oil_station"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onCheckboxClicked"
             android:text="@string/fullscreen_dialog_poi_oil_station"
             android:textAlignment="center"
-            app:layout_constraintHorizontal_weight="1"
+            android:textSize="16sp"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toTopOf="@id/create_update_checkbox_poi_schools"
             app:layout_constraintLeft_toRightOf="@id/create_update_checkbox_poi_restaurants"
-            app:layout_constraintRight_toLeftOf="@id/create_update_checkbox_poi_car_parks"
+            app:layout_constraintRight_toRightOf="parent"
             android:buttonTint="@color/colorPrimaryDark"
             tools:targetApi="lollipop"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            app:layout_constraintTop_toBottomOf="@id/create_update_country_name_autocompleteText"
+            app:layout_constraintBottom_toTopOf="@id/create_update_number_room_text"
+            android:background="@color/colorPrimaryDark"/>
+
 
          <!-- NUMBER ROOMS -->
 
         <TextView
             android:id="@+id/create_update_number_room_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_extra_mega_large_margin"
             android:text="@string/create_update_by_number_of_rooms"
             style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="@id/create_update_type_property_text"
-            app:layout_constraintTop_toBottomOf="@id/create_update_country_name_text" />
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/create_update_number_bedroom_text"
+            app:layout_constraintTop_toBottomOf="@id/create_update_country_name_autocompleteText" />
 
         <Spinner
             android:id="@+id/create_update_spinner_number_rooms"
-            android:layout_width="100sp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_large_margin"
             android:entries="@array/numberRooms"
             app:layout_constraintLeft_toLeftOf="@id/create_update_number_room_text"
+            app:layout_constraintRight_toRightOf="@id/create_update_number_room_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_number_room_text"
             style="@style/EditTextStylewithoutText"/>
 
@@ -368,21 +326,25 @@
 
         <TextView
             android:id="@+id/create_update_number_bedroom_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
             android:text="@string/create_update_by_number_of_bedroom"
             style="@style/TextviewStyle"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="16sp"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toRightOf="@id/create_update_number_room_text"
+            app:layout_constraintRight_toLeftOf="@id/create_update_number_bathroom_text"
             app:layout_constraintTop_toTopOf="@id/create_update_number_room_text" />
 
         <Spinner
             android:id="@+id/create_update_spinner_number_bedroom"
-            android:layout_width="100sp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_large_margin"
             android:entries="@array/numberBedrooms"
             app:layout_constraintLeft_toLeftOf="@id/create_update_number_bedroom_text"
+            app:layout_constraintRight_toRightOf="@id/create_update_number_bedroom_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_number_bedroom_text"
             style="@style/EditTextStylewithoutText"/>
 
@@ -391,31 +353,35 @@
 
         <TextView
             android:id="@+id/create_update_number_bathroom_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
             android:text="@string/create_update_by_number_of_bathroom"
             style="@style/TextviewStyle"
+            android:layout_marginStart="16sp"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toRightOf="@id/create_update_number_bedroom_text"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/create_update_number_room_text" />
 
         <Spinner
             android:id="@+id/create_update_spinner_number_bathrooms"
-            android:layout_width="100sp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+
             android:layout_marginTop="@dimen/default_large_margin"
             android:entries="@array/numberBathrooms"
             app:layout_constraintLeft_toLeftOf="@id/create_update_number_bathroom_text"
             app:layout_constraintTop_toBottomOf="@id/create_update_number_bathroom_text"
+            app:layout_constraintRight_toRightOf="parent"
             style="@style/EditTextStylewithoutText"/>
 
         <Button
             android:id="@+id/create_update_next_button"
-            android:layout_marginTop="@dimen/default_extra_large_margin"
+            android:layout_marginTop="@dimen/default_extra_double_large_margin"
             android:text="@string/create_update_next_button"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_update_checkbox_poi_car_parks"
+            app:layout_constraintTop_toBottomOf="@id/create_update_checkbox_poi_restaurants"
             style="@style/ButtonStyle"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

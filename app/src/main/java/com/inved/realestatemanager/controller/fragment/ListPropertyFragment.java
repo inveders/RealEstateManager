@@ -194,7 +194,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 dialog.show(ft, "FullscreenDialogFragment");
 
-
         });
 
     }
