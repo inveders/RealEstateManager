@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -97,7 +98,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         this.fillDatabaseWithFirebaseValues();
         noPropertyFoundTextview = mView.findViewById(R.id.fragment_list_property_no_property_found_text);
-        openSearchButton = mView.findViewById(R.id.list_property_search_open_floating_button);
         mSwipeRefreshLayout = mView.findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = mView.findViewById(R.id.fragment_list_property_recycler_view);
         recyclerView.setAdapter(this.adapter);
@@ -112,8 +112,15 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             ((ListPropertyActivity) getActivity()).setFragmentRefreshListener(this::getAllProperties);
 
         }
+        openSearchButton = mView.findViewById(R.id.list_property_search_open_floating_button);
+        if (!tabletSize) {
+            openSearchButton.show();
+            startSearchProperty();
+        } else {
+            Log.d("debago","we are here floating");
+            openSearchButton.hide();
+        }
 
-        startSearchProperty();
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             mSwipeRefreshLayout.setRefreshing(true);
             refreshWithFirebase();
@@ -191,8 +198,11 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             dialog.setCancelable(false);
 
             //  dialog.setCallback(this::updatePropertyList);
-                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            if(getActivity()!=null){
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 dialog.show(ft, "FullscreenDialogFragment");
+            }
+
 
         });
 

@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.navigation.NavigationView;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.base.BaseActivity;
+import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.domain.GetSpinner;
@@ -226,13 +227,15 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         if (mOptionsMenu != null) {
             MenuItem item = mOptionsMenu.findItem(R.id.menu);
             MenuItem item2 = mOptionsMenu.findItem(R.id.menu2);
+            MenuItem item3 = mOptionsMenu.findItem(R.id.menu3);
             if (!tabletSize) {
                 item2.setVisible(false);
+                item3.setVisible(false);
             }
             switch (number) {
                 case 0:
                     // add icon and update
-                    addAndUpdateIcon(item, item2, goodPropertyId);
+                    addAndUpdateAndSearchIcon(item, item2, item3,goodPropertyId);
                     break;
                 case 1:
                     //clear icon
@@ -249,13 +252,16 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
-    private void addAndUpdateIcon(MenuItem item, MenuItem item2, String goodPropertyId) {
+    private void addAndUpdateAndSearchIcon(MenuItem item, MenuItem item2,MenuItem item3, String goodPropertyId) {
         item.setIcon(R.drawable.ic_menu_add_white_24dp);
         item2.setIcon(R.drawable.ic_menu_update_white_24dp);
+        item3.setIcon(R.drawable.ic_menu_search_white_24dp);
         if (tabletSize) {
             item2.setVisible(true);
+            item3.setVisible(true);
         } else {
             item2.setVisible(false);
+            item3.setVisible(false);
         }
         item.setOnMenuItemClickListener(menuItem -> {
             ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
@@ -268,7 +274,24 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
             return true;
         });
+
+        item3.setOnMenuItemClickListener(menuItem -> {
+
+                onMenuChanged(1, null);
+                //setHasOptionsMenu(true);
+                // Create an instance of the dialog fragment and show it
+                SearchFullScreenDialog dialog = new SearchFullScreenDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getSupportFragmentManager(), "FullscreenDialogFragment");
+
+            return true;
+        });
     }
+
+    // --------------
+    // SEARCH
+    // --------------
 
     private void clearIcon(MenuItem item, MenuItem item2) {
         item.setIcon(R.drawable.ic_menu_clear_white_24dp);

@@ -18,6 +18,7 @@
     <!-- MENU -->
     <string name="create_button">Create</string>
     <string name="update_button">Update</string>
+    <string name="search_button">Update</string>
 
     <!-- MENU DRAWER -->
     <string name="menu_drawer_agents_management">Agents management</string>

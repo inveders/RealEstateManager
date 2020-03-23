@@ -1,5 +1,6 @@
 package com.inved.realestatemanager.base;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     // LIFE CYCLE
     // --------------------
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +38,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }else{
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
     }

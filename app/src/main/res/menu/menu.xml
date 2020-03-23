@@ -13,4 +13,10 @@
         android:title="@string/update_button"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/menu3"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/search_button"
+        app:showAsAction="ifRoom"/>
+
 </menu>
