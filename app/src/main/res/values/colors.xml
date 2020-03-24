@@ -8,6 +8,7 @@
     <color name="textDatePicker">#F44336</color>
     <color name="colorAubergine">#370028</color>
     <color name="colorGrey">#DFDADA</color>
+    <color name="colorGreyDark">#3A3939</color>
 
 
 </resources>

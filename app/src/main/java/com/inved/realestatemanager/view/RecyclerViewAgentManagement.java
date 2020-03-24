@@ -21,6 +21,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,7 +40,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
     private AgentManagementInterface callback;
     private Context context;
-
+    private ShimmerFrameLayout shimmerFrameLayout;
     private List<RealEstateAgents> realEstateAgentsList;
 
     public RecyclerViewAgentManagement(Context context, AgentManagementInterface callback) {
@@ -56,6 +57,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_agent_management_item, parent, false);
 
+        shimmerFrameLayout = v.findViewById(R.id.shimmer_view_container_detail);
         return new ViewHolder(v);
     }
 
@@ -64,7 +66,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
         holder.mAgentName.setText(MainApplication.getResourses().getString(R.string.detail_property_real_estate_agent_text, realEstateAgentsList.get(position).getFirstname(), realEstateAgentsList.get(position).getLastname()));
         holder.mAgentAgency.setText(realEstateAgentsList.get(position).getAgencyName());
         if (realEstateAgentsList.get(position).getUrlPicture() != null) {
-
+            showShimmer();
             File localFile = new File(realEstateAgentsList.get(position).getUrlPicture());
 
             File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -79,16 +81,19 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                     holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
+
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    Log.d("debago", "onResourceYEAH 5");
 
                                     return false;
                                 }
                             })
                             .into(holder.mAgentPhoto);
+                    stopShimmer();
                 }
 
             } else if (localFile.exists()){
@@ -100,16 +105,19 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                     holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
+
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    Log.d("debago", "onResourceYEAH 4");
 
                                     return false;
                                 }
                             })
                             .into(holder.mAgentPhoto);
+                    stopShimmer();
                 }
             }
             else {
@@ -121,6 +129,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 Log.e("debago", "Exception is : " + e);
+
                                 return false;
                             }
 
@@ -132,6 +141,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                             }
                         })
                         .into(holder.mAgentPhoto);
+                stopShimmer();
 
                 SplitString splitString = new SplitString();
 
@@ -157,7 +167,23 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                             fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> {}).addOnFailureListener(exception -> {
                                                 GlideApp.with(MainApplication.getInstance().getApplicationContext())
                                                         .load(R.drawable.ic_anon_user_48dp)
+                                                        .listener(new RequestListener<Drawable>() {
+                                                            @Override
+                                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                                Log.e("debago", "Exception is : " + e);
+
+                                                                return false;
+                                                            }
+
+                                                            @Override
+                                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                                Log.d("debago", "onResourceReady");
+
+                                                                return false;
+                                                            }
+                                                        })
                                                         .into((holder.mAgentPhoto));
+                                                stopShimmer();
                                             });
 
                                             GlideApp.with(MainApplication.getInstance().getApplicationContext())
@@ -167,6 +193,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                                         @Override
                                                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                                             Log.e("debago", "Exception is : " + e);
+
                                                             return false;
                                                         }
 
@@ -178,6 +205,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                                         }
                                                     })
                                                     .into(holder.mAgentPhoto);
+                                            stopShimmer();
                                         }
 
                                     }
@@ -273,6 +301,15 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
     public interface AgentManagementInterface {
         void onEditAgent(String id);
+    }
+
+    private void stopShimmer() {
+        shimmerFrameLayout.stopShimmer();
+        shimmerFrameLayout.hideShimmer();
+    }
+
+    private void showShimmer() {
+        shimmerFrameLayout.showShimmer(true);
     }
 
 }

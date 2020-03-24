@@ -1,55 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/agent_management_item"
+    android:id="@+id/agentManagement"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dip">
+    android:layout_margin="@dimen/default_margin"
+    android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/agent_management_item_image"
-        android:layout_width="62dp"
-        android:layout_height="56dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:contentDescription="@string/description_image"
-        app:layout_constraintCircleRadius="130dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_anon_user_48dp" />
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/agent_management_name_agent_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:text="@string/agent_management_text"
-        android:textStyle="bold"
-        app:layout_constrainedWidth="true"
-        android:layout_marginTop="@dimen/default_margin"
-        app:layout_constraintLeft_toRightOf="@+id/agent_management_item_image"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="@dimen/default_margin"
-        app:layout_constraintTop_toTopOf="@id/agent_management_item_image"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/agent_management_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dip">
 
-    <TextView
-        android:id="@+id/agent_management_agence_name_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/agent_management_item_image"
+                android:layout_width="62dp"
+                android:layout_height="56dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/description_image"
+                android:scaleType="fitCenter"
+                app:layout_constraintCircleRadius="130dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_anon_user_48dp" />
 
-        android:text="@string/agent_management_agence_text"
-        android:textStyle="bold"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintTop_toBottomOf="@id/agent_management_name_agent_text"
-        app:layout_constraintLeft_toLeftOf="@+id/agent_management_name_agent_text"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="@dimen/default_margin"
+            <TextView
+                android:id="@+id/agent_management_name_agent_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:text="@string/agent_management_text"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintLeft_toRightOf="@+id/agent_management_item_image"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/agent_management_item_image" />
 
-        />
+            <TextView
+                android:id="@+id/agent_management_agence_name_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginEnd="@dimen/default_margin"
+                android:text="@string/agent_management_agence_text"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintLeft_toLeftOf="@+id/agent_management_name_agent_text"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/agent_management_name_agent_text"
+
+                />
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+</androidx.core.widget.NestedScrollView>
