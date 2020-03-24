@@ -90,7 +90,9 @@ public class DetailActivity extends BaseActivity  {
 
         MenuItem item = menu.findItem(R.id.menu);
         MenuItem item2 = menu.findItem(R.id.menu2);
+        MenuItem item3 = menu.findItem(R.id.menu3);
         item2.setVisible(false);
+        item3.setVisible(false);
         item.setIcon(R.drawable.ic_menu_update_white_24dp);
         item.setOnMenuItemClickListener(menuItem -> {
             DetailActivityPermissionsDispatcher.startCreatePropertyActivityWithPermissionCheck(this);

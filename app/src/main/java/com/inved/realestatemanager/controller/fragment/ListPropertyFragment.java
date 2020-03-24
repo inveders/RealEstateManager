@@ -346,7 +346,11 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     @Override
     public void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
+
+        if(disposable!=null){
+            disposable.dispose();
+        }
+
     }
 
 
