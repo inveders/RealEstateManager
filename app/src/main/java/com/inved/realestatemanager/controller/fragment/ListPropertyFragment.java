@@ -112,8 +112,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             openSearchButton.show();
             startSearchProperty();
         } else {
-            openSearchButton.setVisibility(View.GONE);
-          //  openSearchButton.hide();
+           openSearchButton.hide();
         }
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
@@ -252,7 +251,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                 openSearchButton.show();
             }
         }
-
     }
 
     @Override
