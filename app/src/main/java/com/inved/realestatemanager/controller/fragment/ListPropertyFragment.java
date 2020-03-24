@@ -1,6 +1,5 @@
 package com.inved.realestatemanager.controller.fragment;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.api.LogDescriptor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.inved.realestatemanager.R;
@@ -47,15 +44,12 @@ import com.inved.realestatemanager.view.PropertyListAdapter;
 import com.inved.realestatemanager.view.PropertyListViewHolder;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 
 import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
 
 import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
@@ -110,6 +104,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         if (getActivity() != null) {
 
             ((ListPropertyActivity) getActivity()).setFragmentRefreshListener(this::getAllProperties);
+            ((ListPropertyActivity) getActivity()).setFragmentRefreshSearchListener(this::updatePropertyList);
 
         }
         openSearchButton = mView.findViewById(R.id.list_property_search_open_floating_button);
@@ -117,7 +112,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             openSearchButton.show();
             startSearchProperty();
         } else {
-            Log.d("debago","we are here floating");
+
+            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) openSearchButton.getLayoutParams();
+            p.setAnchorId(View.NO_ID);
+            openSearchButton.setLayoutParams(p);
             openSearchButton.hide();
         }
 
@@ -193,12 +191,13 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             callback.onMenuChanged(1, null);
             //setHasOptionsMenu(true);
             // Create an instance of the dialog fragment and show it
-            SearchFullScreenDialog dialog = new SearchFullScreenDialog();
-            dialog.setTargetFragment(this, 1);
-            dialog.setCancelable(false);
 
             //  dialog.setCallback(this::updatePropertyList);
             if(getActivity()!=null){
+                SearchFullScreenDialog dialog = new SearchFullScreenDialog();
+                dialog.setTargetFragment(this, 1);
+                dialog.setCancelable(false);
+
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 dialog.show(ft, "FullscreenDialogFragment");
             }
@@ -327,10 +326,12 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                             String agencyNameToSave = task.getResult().getDocuments().get(0).getString("agencyName");
                             ManageAgency.saveAgencyPlaceId(MainApplication.getInstance().getApplicationContext(), agencyPlaceIdToSave);
                             ManageAgency.saveAgencyName(MainApplication.getInstance().getApplicationContext(), agencyNameToSave);
-                            if (!ManageDatabaseFilling.isDatabaseFilled(getContext())) {
-                                launchAsynchroneTask();
-                            } else {
-                                this.checkIfSyncWithFirebaseIsNecessary();
+                            if(getContext()!=null){
+                                if (!ManageDatabaseFilling.isDatabaseFilled(getContext())) {
+                                    launchAsynchroneTask();
+                                } else {
+                                    this.checkIfSyncWithFirebaseIsNecessary();
+                                }
                             }
                         }
                     }

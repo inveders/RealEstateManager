@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
@@ -28,14 +29,19 @@ import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.domain.GetSpinner;
 import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
+import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
+
+import java.util.List;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.inved.realestatemanager.controller.activity.DetailActivity.PROPERTY_ID_INTENT;
+import static com.inved.realestatemanager.controller.fragment.ListPropertyFragment.BOOLEAN_TABLET;
+import static com.inved.realestatemanager.view.PropertyListViewHolder.PROPERTY_ID;
 
 @RuntimePermissions
 public class ListPropertyActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ListPropertyFragment.MenuChangementsInterface {
@@ -50,6 +56,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private PropertyViewModel propertyViewModel;
     private FragmentRefreshListener fragmentRefreshListener;
     private FragmentRefreshListenerDetail fragmentRefreshListenerDetail;
+    private FragmentRefreshSearchListener fragmentRefreshSearchListener;
+
     private boolean tabletSize;
 
     /**
@@ -285,6 +293,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
                 dialog.show(getSupportFragmentManager(), "FullscreenDialogFragment");
 
+
+
             return true;
         });
     }
@@ -388,6 +398,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     public interface FragmentRefreshListener {
         void onRefresh();
 
+
     }
 
     public FragmentRefreshListener getFragmentRefreshListener() {
@@ -411,5 +422,44 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     public void setFragmentRefreshListenerDetail(FragmentRefreshListenerDetail fragmentRefreshListenerDetail) {
         this.fragmentRefreshListenerDetail = fragmentRefreshListenerDetail;
     }
+
+    public interface FragmentRefreshSearchListener {
+       void onRefreshAfterSearch(List<Property> properties);
+
+    }
+
+    public FragmentRefreshSearchListener getFragmentRefreshSearchListener() {
+        return fragmentRefreshSearchListener;
+    }
+
+    public void setFragmentRefreshSearchListener(FragmentRefreshSearchListener fragmentRefreshSearchListener) {
+        this.fragmentRefreshSearchListener = fragmentRefreshSearchListener;
+    }
+
+
+    public void refreshFragmentAfterSearch(List<Property> properties){
+        if (getFragmentRefreshSearchListener() != null) {
+            getFragmentRefreshSearchListener().onRefreshAfterSearch(properties);
+        }
+
+        String propertyId = properties.get(0).getPropertyId();
+        Fragment detailFragment = new DetailPropertyFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(PROPERTY_ID, propertyId);
+        bundle.putBoolean(BOOLEAN_TABLET, true);
+        detailFragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.activity_detail_frame_layout, detailFragment, "fragmentDetail")
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+
+    public void cancelDialog(){
+        onMenuChanged(0, null);
+    }
+
 }
 

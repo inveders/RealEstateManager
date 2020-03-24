@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
+import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
+import com.inved.realestatemanager.controller.activity.MainActivity;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.injections.Injection;
@@ -123,7 +125,15 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
         cancelSearchButton.setOnClickListener(v -> {
             getDialog().cancel();
-            callback.cancelButton();
+
+
+            if(callback!=null){
+                callback.cancelButton();
+            }else{
+                if(getActivity()!=null){
+                    ((ListPropertyActivity) getActivity()).cancelDialog();
+                }
+            }
         });
         searchActionButton.setOnClickListener(v -> this.startSearchProperty());
         return view;
@@ -186,12 +196,16 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
         });
     }
 
-
     // Update the list of Real Estate item
     private void updateRealEstateItemsList(List<Property> properties) {
 
-        callback.searchButton(properties);
-
+        if(callback!=null){
+            callback.searchButton(properties);
+        }else{
+            if(getActivity()!=null){
+                ((ListPropertyActivity) getActivity()).refreshFragmentAfterSearch(properties);
+            }
+        }
     }
 
     // --------------
@@ -302,19 +316,14 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
 
                         this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
                                 mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
-                                .observe(getViewLifecycleOwner(), properties -> {
-                                    updateRealEstateItemsList(properties);
-
-                                });
+                                .observe(getViewLifecycleOwner(), this::updateRealEstateItemsList);
                     });
 
 
                 } else {
                     this.propertyViewModel.searchProperty(mTypeProperty, town, minSurface, maxSurface, minPrice, maxPrice,
                             mMinBedroom, mMaxBedroom, country, mStatus, realEstateAgentId)
-                            .observe(getViewLifecycleOwner(), properties -> {
-                                updateRealEstateItemsList(properties);
-                            });
+                            .observe(getViewLifecycleOwner(), this::updateRealEstateItemsList);
                 }
 
 

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +111,7 @@ public class DetailPropertyFragment extends Fragment {
         View mView = inflater.inflate(R.layout.fragment_detail_property, container, false);
         initialization(mView);
         myImages = new ArrayList<>();
-        if(myImages.size()!=0){
+        if (myImages.size() != 0) {
             myImages.clear();
         }
         myDescriptionImage = new ArrayList<>();
@@ -124,7 +125,7 @@ public class DetailPropertyFragment extends Fragment {
         return mView;
     }
 
-    private void initialization(View mView){
+    private void initialization(View mView) {
         typeProperty = mView.findViewById(R.id.fragment_detail_property_type_text);
         pricePropertyInDollar = mView.findViewById(R.id.fragment_detail_property_price_text);
         pricePropertyUnit = mView.findViewById(R.id.fragment_detail_property_item_unit_price);
@@ -152,7 +153,7 @@ public class DetailPropertyFragment extends Fragment {
 
     }
 
-    private void handleTablet(View mView){
+    private void handleTablet(View mView) {
         tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize) {
             shimmerFrameLayout = mView.findViewById(R.id.shimmer_view_container_detail);
@@ -177,11 +178,11 @@ public class DetailPropertyFragment extends Fragment {
         }
     }
 
-    private void handleBundle(){
+    private void handleBundle() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             myPropertyId = bundle.getString(PROPERTY_ID);
-            if(bundle.getBoolean(BOOLEAN_TABLET)){
+            if (bundle.getBoolean(BOOLEAN_TABLET)) {
                 myImages.clear();
             }
             configureViewModel();
@@ -205,13 +206,13 @@ public class DetailPropertyFragment extends Fragment {
     }
 
 
+    private void getFirstProperty() {
 
-    private void getFirstProperty(){
         propertyViewModel.getAllProperties().observe(getViewLifecycleOwner(), properties -> {
-            if(properties.size()!=0){
+            if (properties.size() != 0) {
                 myPropertyId = properties.get(0).getPropertyId();
                 propertyViewModel.getOneProperty(myPropertyId).observe(getViewLifecycleOwner(), property -> {
-                     if (imageSwitcherNumber == 0) {
+                    if (imageSwitcherNumber == 0) {
                         DetailPropertyFragmentPermissionsDispatcher.updateWithPropertyWithPermissionCheck(this, property);
                         getRealEstateAgent(property.getRealEstateAgentId());
                     }
@@ -221,7 +222,6 @@ public class DetailPropertyFragment extends Fragment {
 
         });
     }
-
 
     // --------------
     // DATE PICKER
@@ -257,7 +257,7 @@ public class DetailPropertyFragment extends Fragment {
                 //set the value in firebase
                 PropertyHelper.updateDateOfSale(selectedDate, myPropertyId);
                 PropertyHelper.updateStatusProperty(status, myPropertyId);
-               }
+            }
         }
     }
 
@@ -334,7 +334,7 @@ public class DetailPropertyFragment extends Fragment {
             return imageView;
         });
 
-        if(imageManagementNumber==0){
+        if (imageManagementNumber == 0) {
             imagesManagement(property.getPhotoUri1(), property.getPhotoDescription1());
             imagesManagement(property.getPhotoUri2(), property.getPhotoDescription2());
             imagesManagement(property.getPhotoUri3(), property.getPhotoDescription3());
@@ -342,12 +342,12 @@ public class DetailPropertyFragment extends Fragment {
             imagesManagement(property.getPhotoUri5(), property.getPhotoDescription5());
 
         }
-        imageManagementNumber=1;
+        imageManagementNumber = 1;
         myImagesManagement();
 
         clickOnImagesArrow();
-        if(tabletSize)
-        stopShimmer();
+        if (tabletSize)
+            stopShimmer();
 
     }
 
