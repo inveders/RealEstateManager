@@ -155,7 +155,9 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String result = spinnerCurrency.getSelectedItem().toString();
-                ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
+                if(view!=null){
+                    ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
+                }
                 ManageCurrency.saveCurrency(ListPropertyActivity.this, result);
                 refreshFragment();
                 refreshFragmentDetailInTablet();

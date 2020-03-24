@@ -689,9 +689,6 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
     }
 
 
-
-
-
     // --------------
     // SPINNER
     // --------------

@@ -112,11 +112,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             openSearchButton.show();
             startSearchProperty();
         } else {
-
-            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) openSearchButton.getLayoutParams();
-            p.setAnchorId(View.NO_ID);
-            openSearchButton.setLayoutParams(p);
-            openSearchButton.hide();
+            openSearchButton.setVisibility(View.GONE);
+          //  openSearchButton.hide();
         }
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
@@ -173,9 +170,11 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
             } else {
                 Toast.makeText(getContext(), this.getString(R.string.no_properties_in_firebase), Toast.LENGTH_SHORT).show();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
         }).addOnFailureListener(e -> {
+            mSwipeRefreshLayout.setRefreshing(false);
         });
     }
 
@@ -249,7 +248,9 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         if (this.adapter.getItemCount() == 0) {
             openSearchButton.hide();
         } else {
-            openSearchButton.show();
+            if(!tabletSize){
+                openSearchButton.show();
+            }
         }
 
     }

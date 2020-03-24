@@ -213,21 +213,14 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                             }
                         });
 
-
-
-
-
-
-
                     }
-
-
                 }
             }
 
 
         } else {
             holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
+            stopShimmer();
         }
 
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){

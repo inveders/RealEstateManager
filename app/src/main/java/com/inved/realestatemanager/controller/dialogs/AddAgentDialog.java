@@ -4,8 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,13 +23,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -35,9 +42,12 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
+import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.firebase.StorageHelper;
 import com.inved.realestatemanager.injections.Injection;
@@ -314,7 +324,8 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
             if (realEstateAgents.getUrlPicture() != null) {
                 urlPicture = realEstateAgents.getUrlPicture();
-                showImageInCircle(realEstateAgents.getUrlPicture());
+               // showImageInCircle(realEstateAgents.getUrlPicture());
+                showImage(realEstateAgents.getUrlPicture());
             }else{
                 Log.e(TAG,"getUrlPicture is null ");
             }
@@ -436,17 +447,175 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private void showImageInCircle(String photoStringFromRoom) {
 
+        Log.d("debago","the photo is "+photoStringFromRoom);
         Uri fileUri = Uri.parse(photoStringFromRoom);
         if (fileUri.getPath() != null) {
             Glide.with(MainApplication.getInstance().getApplicationContext())
                     .load(new File(fileUri.getPath()))
                     .apply(RequestOptions.circleCropTransform())
                     .placeholder(R.drawable.ic_anon_user_48dp)
-                    .into((agentPhoto));
+                    .into(agentPhoto);
 
         }
     }
 
+
+    private void showImage(String photoUrl){
+
+        if (photoUrl != null) {
+
+            File localFile = new File(photoUrl);
+
+            File storageDir = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            String mFileName = "/" + localFile.getName();
+            File goodFile = new File(storageDir, mFileName);
+            if (goodFile.exists()) {
+                if (goodFile.getPath() != null) {
+                    GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                            .load(goodFile)
+                            .apply(RequestOptions.circleCropTransform())
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    agentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
+
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    Log.d("debago", "onResourceYEAH 5");
+
+                                    return false;
+                                }
+                            })
+                            .into(agentPhoto);
+                }
+
+            } else if (localFile.exists()) {
+                if (localFile.getPath() != null) {
+                    GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                            .load(localFile)
+                            .apply(RequestOptions.circleCropTransform())
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    agentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
+
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    Log.d("debago", "onResourceYEAH 4");
+
+                                    return false;
+                                }
+                            })
+                            .into(agentPhoto);
+                }
+            } else {
+
+                Glide.with(MainApplication.getInstance().getApplicationContext())
+                        .load(R.drawable.ic_anon_user_48dp)
+                        .apply(RequestOptions.circleCropTransform())
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                Log.e("debago", "Exception is : " + e);
+
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                Log.d("debago", "onResourceReady");
+
+                                return false;
+                            }
+                        })
+                        .into(agentPhoto);
+
+                SplitString splitString = new SplitString();
+
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    String agentId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    if (agentId != null) {
+
+                        RealEstateAgentHelper.getAgentWhateverAgency(agentId).get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+
+                                if (task.getResult() != null) {
+                                    if (task.getResult().getDocuments().size() != 0) {
+                                        String photoUriFromFirebase = task.getResult().getDocuments().get(0).getString("urlPicture");
+                                        if (photoUriFromFirebase != null) {
+                                            int numberCharacter = photoUriFromFirebase.length();
+
+                                          /*  StorageReference fileReference = FirebaseStorage.getInstance().getReference(realEstateAgentId).child("Pictures")
+                                                    .child(splitString.lastCharacters(photoUrl, numberCharacter));
+
+                                            String mFileName2 = "/" + splitString.lastCharacters(photoUrl, numberCharacter);
+                                            File storageDir2 = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                                            File localFile2 = new File(storageDir2 + mFileName2);
+                                            fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> {
+                                            }).addOnFailureListener(exception -> {
+                                                GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                                                        .load(R.drawable.ic_anon_user_48dp)
+                                                        .listener(new RequestListener<Drawable>() {
+                                                            @Override
+                                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                                Log.e("debago", "Exception is : " + e);
+
+                                                                return false;
+                                                            }
+
+                                                            @Override
+                                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                                Log.d("debago", "onResourceReady");
+
+                                                                return false;
+                                                            }
+                                                        })
+                                                        .into(agentPhoto);
+
+                                            });
+
+                                            GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                                                    .load(fileReference)
+                                                    .apply(RequestOptions.circleCropTransform())
+                                                    .listener(new RequestListener<Drawable>() {
+                                                        @Override
+                                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                            Log.e("debago", "Exception is : " + e);
+
+                                                            return false;
+                                                        }
+
+                                                        @Override
+                                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                            Log.d("debago", "onResourceReady");
+
+                                                            return false;
+                                                        }
+                                                    })
+                                                    .into(agentPhoto);*/
+
+                                        }
+
+                                    }
+                                }
+                            }
+                        });
+
+
+                    }
+
+
+                }
+            }
+
+        }
+    }
     // --------------
     // PERMISSION
     // --------------
