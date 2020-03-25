@@ -66,6 +66,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private int queryCount = 0;
     private boolean tabletSize;
     private Disposable disposable;
+    private Disposable disposableFirebase;
 
     public static final String BOOLEAN_TABLET = "BOOLEAN_TABLET";
     // --------------
@@ -117,7 +118,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             mSwipeRefreshLayout.setRefreshing(true);
-            refreshWithFirebase();
+            launchFirebaseAsynchroneTask();
         });
 
         return mView;
@@ -157,12 +158,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                             queryCount++;
                         }
                     }
-
-                    new Handler().postDelayed(() -> {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        getAllProperties();
-                        queryCount = 0;
-                    }, 5000);
 
                 });
 
@@ -243,6 +238,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private void updatePropertyList(List<Property> properties) {
         Log.d("debago", "update property list " + properties.size());
         this.adapter.updateData(properties);
+        //TODO : voir si c'est possible d'implémenter ça dans un ViewModel
         noPropertyFoundTextview.setVisibility(this.adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         if (this.adapter.getItemCount() == 0) {
             openSearchButton.hide();
@@ -350,6 +346,10 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             disposable.dispose();
         }
 
+        if(disposableFirebase!=null){
+            disposableFirebase.dispose();
+        }
+
     }
 
 
@@ -370,6 +370,34 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                         preopopulateProperties();
                         ManageDatabaseFilling.saveDatabaseFilledState(MainApplication.getInstance().getApplicationContext(), true);
                         getAllProperties();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                });
+
+
+    }
+
+
+    private void launchFirebaseAsynchroneTask() {
+
+        disposableFirebase = Completable.create(emitter -> {
+            try {
+                refreshWithFirebase();
+                emitter.onComplete();
+            } catch (Error e) {
+                emitter.onError(e);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribeWith(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        getAllProperties();
+                        queryCount = 0;
                     }
 
                     @Override
