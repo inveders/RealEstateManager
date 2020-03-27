@@ -56,12 +56,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private boolean tabletSize;
 
-    /**
-     * si j'ai internet --> firebase
-     * vérifier que la base de données est remplie
-     * si j'ai pas internet --> room
-     */
-
     // --------------------
     // LIFE CYCLE AND VIEW MODEL
     // --------------------
@@ -191,7 +185,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            ListPropertyActivity.this.finish();
         }
     }
 
@@ -232,7 +226,10 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             switch (number) {
                 case 0:
                     // add icon and update
-                    addAndUpdateAndSearchIcon(item, item2, item3,goodPropertyId);
+                    updateAndSearchIconVisibility(item2, item3);
+                    manageAddIcon(item,goodPropertyId);
+                    manageUpdateIcon(item2,goodPropertyId);
+                    manageSearchIcon(item3);
                     break;
                 case 1:
                     //clear icon
@@ -249,8 +246,8 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
         }
     }
 
-    private void addAndUpdateAndSearchIcon(MenuItem item, MenuItem item2,MenuItem item3, String goodPropertyId) {
-        item.setIcon(R.drawable.ic_menu_add_white_24dp);
+    private void updateAndSearchIconVisibility(MenuItem item2, MenuItem item3) {
+
         item2.setIcon(R.drawable.ic_menu_update_white_24dp);
         item3.setIcon(R.drawable.ic_menu_search_white_24dp);
         if (tabletSize) {
@@ -260,6 +257,11 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             item2.setVisible(false);
             item3.setVisible(false);
         }
+
+    }
+
+    private void manageAddIcon(MenuItem item,String goodPropertyId) {
+        item.setIcon(R.drawable.ic_menu_add_white_24dp);
         item.setOnMenuItemClickListener(menuItem -> {
             if(tabletSize){
                 ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
@@ -269,6 +271,9 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
             return true;
         });
+    }
+
+    private void manageUpdateIcon(MenuItem item2,String goodPropertyId) {
         item2.setOnMenuItemClickListener(menuItem -> {
             ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
 
@@ -276,22 +281,21 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             return true;
         });
 
+    }
+
+    private void manageSearchIcon(MenuItem item3) {
         item3.setOnMenuItemClickListener(menuItem -> {
 
-                onMenuChanged(1, null);
-                //setHasOptionsMenu(true);
-                // Create an instance of the dialog fragment and show it
-                SearchFullScreenDialog dialog = new SearchFullScreenDialog();
-                dialog.setCancelable(false);
+            onMenuChanged(1, null);
+            // Create an instance of the dialog fragment and show it
+            SearchFullScreenDialog dialog = new SearchFullScreenDialog();
+            dialog.setCancelable(false);
 
-                dialog.show(getSupportFragmentManager(), "FullscreenDialogFragment");
-
-
+            dialog.show(getSupportFragmentManager(), "FullscreenDialogFragment");
 
             return true;
         });
     }
-
     // --------------
     // SEARCH
     // --------------
@@ -454,7 +458,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
 
     }
-
 
     public void cancelDialog(){
         onMenuChanged(0, null);

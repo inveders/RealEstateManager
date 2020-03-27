@@ -84,7 +84,9 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
     private ImageView agentPhoto;
     private EditText lastnameEditText;
     private EditText firstnameEditText;
-
+    private Button addPhotoButton;
+    private TextView addActionButton;
+    private ImageButton cancelSearchButton;
     private AutocompleteSupportFragment autocompleteFragment;
     private Bundle bundle;
     private String agencyName;
@@ -102,21 +104,29 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-       View view = inflater.inflate(R.layout.layout_add_agent_dialog, container, false);
+        View view = inflater.inflate(R.layout.layout_add_agent_dialog, container, false);
 
-        imageCameraOrGallery=new ImageCameraOrGallery();
+        imageCameraOrGallery = new ImageCameraOrGallery();
         agentPhoto = view.findViewById(R.id.add_agent_photo);
-        Button addPhotoButton = view.findViewById(R.id.add_agent_add_photo_button);
+        addPhotoButton = view.findViewById(R.id.add_agent_add_photo_button);
         lastnameEditText = view.findViewById(R.id.add_agent_edittext_lastname);
         firstnameEditText = view.findViewById(R.id.add_agent_edittext_firstname);
-        TextView addActionButton = view.findViewById(R.id.add_agent_dialog_add_new_agent);
-        ImageButton cancelSearchButton = view.findViewById(R.id.agent_add_dialog_close);
+        addActionButton = view.findViewById(R.id.add_agent_dialog_add_new_agent);
+        cancelSearchButton = view.findViewById(R.id.agent_add_dialog_close);
 
         //Initialize TextWatcher
         firstnameEditText.addTextChangedListener(this);
         lastnameEditText.addTextChangedListener(this);
         mCompressor = new FileCompressor();
         this.configureViewModel();
+
+        initializeMethods();
+        autocompleteAgency();
+
+        return view;
+    }
+
+    private void initializeMethods() {
 
         if (getDialog() != null) {
             getDialog().setTitle(getString(R.string.add_agent_dialog_title));
@@ -134,15 +144,10 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
         }
 
-        autocompleteAgency();
-
         addPhotoButton.setOnClickListener(v -> selectImage());
         cancelSearchButton.setOnClickListener(v -> getDialog().dismiss());
         addActionButton.setOnClickListener(v -> this.createOrUpdateRealEstateAgent());
-
-        return view;
     }
-
 
     private void configureViewModel() {
         ViewModelFactory viewModelFactory = Injection.provideViewModelFactory(getContext());
@@ -153,7 +158,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
     public void onDestroyView() {
         super.onDestroyView();
         //To close the autocompletefragment to avoid to duplicate his id
-        if(autocompleteFragment != null && getActivity() != null && !getActivity().isFinishing()) {
+        if (autocompleteFragment != null && getActivity() != null && !getActivity().isFinishing()) {
             getActivity().getSupportFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
         }
     }
@@ -225,9 +230,9 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             firstnameEditText.setError(getString(R.string.set_error_add_agent_firstname));
         } else if (lastnameEditText.getText().toString().isEmpty()) {
             lastnameEditText.setError(getString(R.string.set_error_add_agent_lastname));
-        } else if (agencyName==null) {
-            if(getActivity()!=null){
-                agencyName=ManageAgency.getAgencyName(getActivity());
+        } else if (agencyName == null) {
+            if (getActivity() != null) {
+                agencyName = ManageAgency.getAgencyName(getActivity());
             }
 
 
@@ -320,10 +325,10 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
             if (realEstateAgents.getUrlPicture() != null) {
                 urlPicture = realEstateAgents.getUrlPicture();
-               // showImageInCircle(realEstateAgents.getUrlPicture());
+                // showImageInCircle(realEstateAgents.getUrlPicture());
                 showImage(realEstateAgents.getUrlPicture());
-            }else{
-                Log.e(TAG,"getUrlPicture is null ");
+            } else {
+                Log.e(TAG, "getUrlPicture is null ");
             }
 
 
@@ -362,7 +367,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
      * Capture image from camera
      */
 
-    @NeedsPermission({Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE})
+    @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE})
     void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (getContext() != null) {
@@ -413,7 +418,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                     if (selectedImage != null) {
+                    if (selectedImage != null) {
                         urlPicture = imageCameraOrGallery.getRealPathFromUri(selectedImage);
                         showImageInCircle(urlPicture);
                     }
@@ -455,7 +460,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
     }
 
 
-    private void showImage(String photoUrl){
+    private void showImage(String photoUrl) {
 
         if (photoUrl != null) {
 
@@ -466,48 +471,12 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             File goodFile = new File(storageDir, mFileName);
             if (goodFile.exists()) {
                 if (goodFile.getPath() != null) {
-                    GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                            .load(goodFile)
-                            .apply(RequestOptions.circleCropTransform())
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    agentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
-
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    Log.d("debago", "onResourceYEAH 5");
-
-                                    return false;
-                                }
-                            })
-                            .into(agentPhoto);
+                    imageInGlide(goodFile);
                 }
 
             } else if (localFile.exists()) {
                 if (localFile.getPath() != null) {
-                    GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                            .load(localFile)
-                            .apply(RequestOptions.circleCropTransform())
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    agentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
-
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    Log.d("debago", "onResourceYEAH 4");
-
-                                    return false;
-                                }
-                            })
-                            .into(agentPhoto);
+                    imageInGlide(localFile);
                 }
             } else {
 
@@ -534,6 +503,29 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             }
 
         }
+    }
+
+    private void imageInGlide(File file){
+        GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                .load(file)
+                .apply(RequestOptions.circleCropTransform())
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        agentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
+
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        Log.d("debago", "onResourceYEAH 5");
+
+                        return false;
+                    }
+                })
+                .into(agentPhoto);
+
     }
     // --------------
     // PERMISSION

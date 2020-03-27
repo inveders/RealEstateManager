@@ -62,9 +62,7 @@ public class MainActivity extends BaseActivity {
                MainActivityPermissionsDispatcher.startListPropertyActivityWithPermissionCheck(this);
             }
         }
-
-
-
+        
         this.connexionButton();
 
     }

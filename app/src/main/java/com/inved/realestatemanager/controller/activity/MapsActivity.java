@@ -50,9 +50,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //FOR LOCATION
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1500; // 1000 meters for tests, after come back to 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute*/
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60;
 
     //View Model
     private PropertyViewModel propertyViewModel;
@@ -101,16 +101,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     // --------------
     // CONFIGURE MAP
     // --------------
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
     private void configureMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
