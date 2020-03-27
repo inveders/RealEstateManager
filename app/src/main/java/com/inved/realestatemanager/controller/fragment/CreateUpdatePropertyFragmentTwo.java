@@ -200,7 +200,7 @@ public class CreateUpdatePropertyFragmentTwo extends Fragment implements Adapter
             context = MainApplication.getInstance().getApplicationContext();
         }
 
-        mCompressor = new FileCompressor(context);
+        mCompressor = new FileCompressor();
 
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
             propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);

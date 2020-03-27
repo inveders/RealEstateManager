@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import com.inved.realestatemanager.models.RealEstateAgents;
 
@@ -28,7 +27,7 @@ public interface RealEstateAgentsDao {
     LiveData<List<RealEstateAgents>> getAllRealEstateAgents();
 
     @Query("DELETE FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
-    int deleteRealEstateAgent(String realEstateAgentId);
+    void deleteRealEstateAgent(String realEstateAgentId);
 
     @Query("UPDATE RealEstateAgents SET firstname = :firstname, lastname = :lastname,urlPicture = :urlPicture,agencyName = :agencyName,agencyPlaceId = :agencyPlaceId WHERE realEstateAgentId = :realEstateAgentId")
     int updateAgent(String realEstateAgentId, String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId);

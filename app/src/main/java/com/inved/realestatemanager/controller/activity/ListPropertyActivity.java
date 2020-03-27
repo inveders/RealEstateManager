@@ -19,7 +19,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 import com.inved.realestatemanager.R;
@@ -28,10 +27,7 @@ import com.inved.realestatemanager.controller.dialogs.SearchFullScreenDialog;
 import com.inved.realestatemanager.controller.fragment.DetailPropertyFragment;
 import com.inved.realestatemanager.controller.fragment.ListPropertyFragment;
 import com.inved.realestatemanager.domain.GetSpinner;
-import com.inved.realestatemanager.injections.Injection;
-import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
-import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
 import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
 
@@ -75,8 +71,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
         tabletSize = getResources().getBoolean(R.bool.isTablet);
 
-        this.configureViewModel();
-
         this.configureToolbarAndNavigationDrawer();
 
         //NavigationDrawer
@@ -94,13 +88,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     protected int getLayoutContentViewID() {
         return R.layout.activity_list_property;
     }
-
-    protected void configureViewModel() {
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
-        PropertyViewModel propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
-
-    }
-
 
 
     @Override

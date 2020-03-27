@@ -1,8 +1,6 @@
 package com.inved.realestatemanager.models;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.inved.realestatemanager.repositories.PropertyDataRepository;
@@ -50,11 +48,6 @@ public class PropertyViewModel extends ViewModel {
     public void updateRealEstateAgent(String realEstateAgentId, String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId) {
 
         executor.execute(() -> realEstateAgentDataSource.updateAgent(realEstateAgentId,firstname, lastname, urlPicture, agencyName, agencyPlaceId));
-
-    }
-
-    public void deleteRealEstateAgent(String realEstateAgentId) {
-        executor.execute(() -> realEstateAgentDataSource.deleteRealEstateAgent(realEstateAgentId));
     }
 
     // -------------
@@ -110,10 +103,6 @@ public class PropertyViewModel extends ViewModel {
         executor.execute(() -> propertyDataSource.updateDateOfSaleForProperty(dateOfSaleForProperty,status,propertyId));
     }
 
-    public void updateSelected(Boolean selected,String propertyId) {
-        executor.execute(() -> propertyDataSource.updateSelected(selected,propertyId));
-    }
-
     // -------------
     // FOR SEARCH
     // -------------
@@ -121,21 +110,6 @@ public class PropertyViewModel extends ViewModel {
     public LiveData<List<Property>> searchProperty(String type, String town, double minSurface, double maxSurface, double minPrice, double maxPrice,
                                                    int minBedRoom, int maxBedRoom, String country, String status, String realEstateAgentId) {
         return propertyDataSource.searchProperty(type, town, minSurface, maxSurface, minPrice, maxPrice, minBedRoom,maxBedRoom,country,status,realEstateAgentId);
-    }
-
-    // -------------
-    // FOR END DOWNLOAD TRIGGER
-    // -------------
-
-    public void setEndOfDownload() {
-
-        getEndOfDownload(propertyDataSource.setEndOfDownloadLiveData());
-
-    }
-
-    public LiveData<Integer> getEndOfDownload(LiveData<Integer> myData) {
-
-        return myData;
     }
 
 }

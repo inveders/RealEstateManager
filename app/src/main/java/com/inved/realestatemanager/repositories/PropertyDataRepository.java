@@ -1,7 +1,6 @@
 package com.inved.realestatemanager.repositories;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.inved.realestatemanager.dao.PropertyDao;
 import com.inved.realestatemanager.models.Property;
@@ -15,7 +14,6 @@ public class PropertyDataRepository {
     private final PropertyDao propertyDao;
     private RoomSearchQuery roomSearchQuery = new RoomSearchQuery();
     private RoomUpdateQuery roomUpdateQuery = new RoomUpdateQuery();
-    private MutableLiveData<Integer> mutableLiveData = new MutableLiveData<>();
 
     public PropertyDataRepository(PropertyDao propertyDao) { this.propertyDao = propertyDao; }
 
@@ -48,35 +46,26 @@ public class PropertyDataRepository {
 
     // --- UPDATE ---
 
-    public int updateDateOfSaleForProperty(String dateOfSale,String status,String propertyId){ return propertyDao.updateDateOfSaleForProperty(dateOfSale,status, propertyId); }
+    public void updateDateOfSaleForProperty(String dateOfSale, String status, String propertyId){
+        propertyDao.updateDateOfSaleForProperty(dateOfSale, status, propertyId);
+    }
 
-    public int updateSelected(Boolean selected,String propertyId){ return propertyDao.updateSelected(selected,propertyId); }
 
-
-    public int updateProperty(String typeProperty, double pricePropertyInEuro,
-                                                   double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
-                                                   int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
-                                                   String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
-                                                   String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
-                                                   boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
-                                                   String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
-                                                   String photoDescription4, String photoDescription5, String realEstateAgentId,String propertyId) {
-        return this.propertyDao.updateProperty(roomUpdateQuery.queryRoomUpdateDatabase(typeProperty, pricePropertyInEuro,
+    public void updateProperty(String typeProperty, double pricePropertyInEuro,
+                               double surfaceAreaProperty, String numberRoomsInProperty, String numberBathroomsInProperty,
+                               int numberBedroomsInProperty, String fullDescriptionText, String streetNumber,
+                               String streetName, String zipCode, String townProperty, String country, String addressCompl, String pointOfInterest,
+                               String statusProperty, String dateOfEntryOnMarketForProperty, String dateOfSaleForPorperty,
+                               boolean selected, String photoUri1, String photoUri2, String photoUri3, String photoUri4,
+                               String photoUri5, String photoDescription1, String photoDescription2, String photoDescription3,
+                               String photoDescription4, String photoDescription5, String realEstateAgentId, String propertyId) {
+        this.propertyDao.updateProperty(roomUpdateQuery.queryRoomUpdateDatabase(typeProperty, pricePropertyInEuro,
                 surfaceAreaProperty, numberRoomsInProperty, numberBathroomsInProperty, numberBedroomsInProperty,
                 fullDescriptionText, streetNumber, streetName, zipCode, townProperty, country, addressCompl, pointOfInterest,
                 statusProperty, dateOfEntryOnMarketForProperty, dateOfSaleForPorperty, selected, photoUri1, photoUri2, photoUri3, photoUri4, photoUri5, photoDescription1, photoDescription2,
-                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId,propertyId));
+                photoDescription3, photoDescription4, photoDescription5, realEstateAgentId, propertyId));
 
     }
 
-    // --- SET ---
-    public MutableLiveData<Integer> setEndOfDownloadLiveData(){
-
-        mutableLiveData.setValue(1);
-        //If we send 1, so download is finish
-
-
-        return mutableLiveData;
-    }
 
 }

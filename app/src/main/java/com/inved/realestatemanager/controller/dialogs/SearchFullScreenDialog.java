@@ -1,7 +1,6 @@
 package com.inved.realestatemanager.controller.dialogs;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
-import com.inved.realestatemanager.controller.activity.MainActivity;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.injections.Injection;
@@ -28,7 +25,6 @@ import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.Property;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
-import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
 import com.inved.realestatemanager.utils.Utils;
 
 import java.util.ArrayList;
@@ -236,7 +232,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
             if (minBedroomSpinner.getSelectedItem().toString().equals("7+")) {
                 mMinBedroom = 7;
             } else {
-                mMinBedroom = Integer.valueOf(minBedroomSpinner.getSelectedItem().toString());
+                mMinBedroom = Integer.parseInt(minBedroomSpinner.getSelectedItem().toString());
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_number_bedroom_max) {
@@ -244,7 +240,7 @@ public class SearchFullScreenDialog extends DialogFragment implements AdapterVie
             if (maxBedroomSpinner.getSelectedItem().toString().equals("7+")) {
                 mMaxBedroom = 7;
             } else {
-                mMaxBedroom = Integer.valueOf(maxBedroomSpinner.getSelectedItem().toString());
+                mMaxBedroom = Integer.parseInt(maxBedroomSpinner.getSelectedItem().toString());
             }
 
         } else if (parent.getId() == R.id.dialog_spinner_agent_name) {

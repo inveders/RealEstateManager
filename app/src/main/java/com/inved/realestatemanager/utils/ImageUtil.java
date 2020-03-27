@@ -37,7 +37,7 @@ class ImageUtil {
         return new File(destinationPath);
     }
 
-    static Bitmap decodeSampledBitmapFromFile(File imageFile, int reqWidth, int reqHeight)
+    private static Bitmap decodeSampledBitmapFromFile(File imageFile, int reqWidth, int reqHeight)
             throws IOException {
         // First decode with inJustDecodeBounds=true to check dimensions
         BitmapFactory.Options options = new BitmapFactory.Options();

@@ -1,7 +1,6 @@
 package com.inved.realestatemanager.firebase;
 
 import android.os.Environment;
-import android.util.Log;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -9,9 +8,9 @@ import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
 
-public class StorageDownload {
+class StorageDownload {
 
-    public String beginDownload(String getLastPathFromFirebase, String documentId) {
+    String beginDownload(String getLastPathFromFirebase, String documentId) {
         StorageReference fileReference = FirebaseStorage.getInstance().getReference(documentId).child("Pictures")
                 .child(getLastPathFromFirebase);
 
@@ -22,7 +21,7 @@ public class StorageDownload {
         String filePath = "file://" + storageDir + mFileName;
 
         if (!localFile.exists()) {
-            fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {}).addOnFailureListener(exception -> exception.toString());
+            fileReference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {}).addOnFailureListener(Throwable::toString);
         }
 
         return filePath;

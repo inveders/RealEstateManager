@@ -24,6 +24,21 @@ import java.util.Objects;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+/**
+  1. I change activity_second in findViewById by activity_main)
+   before:  this.textViewMain = findViewById(R.id.activity_second_activity_text_view_main);
+
+   after:  this.textViewMain = findViewById(R.id.activity_main_activity_text_view_main);
+  2. I put a string in the setText because before there was an integer (quantity) in the setText. I had Integer.toString(quantity)
+ private void configureTextViewQuantity(){
+ int quantity = Utils.convertDollarToEuro(100);
+ this.textViewQuantity.setTextSize(20);
+
+ before : this.textViewQuantity.setText(quantity);
+
+ after : this.textViewQuantity.setText(Integer.toString(quantity));
+ }*/
+
 @RuntimePermissions
 public class MainActivity extends BaseActivity {
 
@@ -48,11 +63,6 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-        /** 1. I change activity_second in findViewById by activity_main)
-       before:  this.textViewMain = findViewById(R.id.activity_second_activity_text_view_main);
-
-       after:  this.textViewMain = findViewById(R.id.activity_main_activity_text_view_main);
-       */
 
 
         this.connexionButton();
@@ -161,15 +171,7 @@ public class MainActivity extends BaseActivity {
         Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
-    /** 2. I put a string in the setText because before there was an integer (quantity) in the setText. I had Integer.toString(quantity)
-     private void configureTextViewQuantity(){
-     int quantity = Utils.convertDollarToEuro(100);
-     this.textViewQuantity.setTextSize(20);
 
-     before : this.textViewQuantity.setText(quantity);
-
-     after : this.textViewQuantity.setText(Integer.toString(quantity));
-     }*/
 
 
 }

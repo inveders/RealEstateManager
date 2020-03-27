@@ -1,10 +1,8 @@
 package com.inved.realestatemanager.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 

@@ -327,7 +327,7 @@ public class PropertyListViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void glideNoImage() {
+    private void glideNoImage() {
         GlideApp.with(MainApplication.getInstance().getApplicationContext())
                 .load(R.drawable.no_image)
                 .into((photo));

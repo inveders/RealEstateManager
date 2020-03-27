@@ -1,13 +1,12 @@
 package com.inved.realestatemanager.firebase;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.inved.realestatemanager.models.RealEstateAgents;
-import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.sharedpreferences.ManageAgency;
+import com.inved.realestatemanager.utils.MainApplication;
 
 public class RealEstateAgentHelper {
 
@@ -23,12 +22,12 @@ public class RealEstateAgentHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createAgent(String realEstateAgendId,String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId) {
+    public static void createAgent(String realEstateAgendId, String firstname, String lastname, String urlPicture, String agencyName, String agencyPlaceId) {
         // 1 - Create Obj
 
         RealEstateAgents realEstateAgentsToCreate = new RealEstateAgents(realEstateAgendId, firstname, lastname,urlPicture, agencyName,agencyPlaceId);
 
-        return RealEstateAgentHelper.getUsersCollection().document(realEstateAgendId).set(realEstateAgentsToCreate);
+        RealEstateAgentHelper.getUsersCollection().document(realEstateAgendId).set(realEstateAgentsToCreate);
     }
 
     public static RealEstateAgents resetAgent(RealEstateAgents realEstateAgents){
@@ -96,9 +95,4 @@ public class RealEstateAgentHelper {
 
     }
 
-    // --- DELETE ---
-
-    public static Task<Void> deleteAgent(String realEstateAgentId) {
-        return RealEstateAgentHelper.getUsersCollection().document(realEstateAgentId).delete();
-    }
 }

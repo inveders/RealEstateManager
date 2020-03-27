@@ -22,7 +22,6 @@ public class RealEstateAgentDataRepository {
     // --- GET ALL REAL ESTATE AGENTS ---
     public LiveData<List<RealEstateAgents>> getAllRealEstateAgents() { return this.realEstateAgentsDao.getAllRealEstateAgents(); }
 
-    public void deleteRealEstateAgent(String realEstateAgentId) { this.realEstateAgentsDao.deleteRealEstateAgent(realEstateAgentId); }
 
 // --- CREATE ---
 
@@ -30,8 +29,10 @@ public class RealEstateAgentDataRepository {
 
     // --- UPDATE ---
 
-    public int updateAgent(String realEstateAgentId,String firstname, String lastname, String urlPicture,String agencyName,
-                           String agencyPlaceId){ return this.realEstateAgentsDao.updateAgent(realEstateAgentId,firstname,
-            lastname, urlPicture, agencyName, agencyPlaceId); }
+    public void updateAgent(String realEstateAgentId, String firstname, String lastname, String urlPicture, String agencyName,
+                            String agencyPlaceId){
+        this.realEstateAgentsDao.updateAgent(realEstateAgentId, firstname,
+                lastname, urlPicture, agencyName, agencyPlaceId);
+    }
 
 }

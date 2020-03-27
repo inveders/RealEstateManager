@@ -162,27 +162,24 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                             String mFileName2 = "/" + splitString.lastCharacters(realEstateAgentsList.get(position).getUrlPicture(),numberCharacter);
                                             File storageDir2 = MainApplication.getInstance().getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                                             File localFile2 = new File(storageDir2 + mFileName2);
-                                            fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> {}).addOnFailureListener(exception -> {
-                                                GlideApp.with(MainApplication.getInstance().getApplicationContext())
-                                                        .load(R.drawable.ic_anon_user_48dp)
-                                                        .listener(new RequestListener<Drawable>() {
-                                                            @Override
-                                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                                                Log.e("debago", "Exception is : " + e);
-                                                                stopShimmer();
-                                                                return false;
-                                                            }
+                                            fileReference.getFile(localFile2).addOnSuccessListener(taskSnapshot -> {}).addOnFailureListener(exception -> GlideApp.with(MainApplication.getInstance().getApplicationContext())
+                                                    .load(R.drawable.ic_anon_user_48dp)
+                                                    .listener(new RequestListener<Drawable>() {
+                                                        @Override
+                                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                            Log.e("debago", "Exception is : " + e);
+                                                            stopShimmer();
+                                                            return false;
+                                                        }
 
-                                                            @Override
-                                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                                                Log.d("debago", "onResourceReady");
-                                                                stopShimmer();
-                                                                return false;
-                                                            }
-                                                        })
-                                                        .into((holder.mAgentPhoto));
-
-                                            });
+                                                        @Override
+                                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                            Log.d("debago", "onResourceReady");
+                                                            stopShimmer();
+                                                            return false;
+                                                        }
+                                                    })
+                                                    .into((holder.mAgentPhoto)));
 
                                             GlideApp.with(MainApplication.getInstance().getApplicationContext())
                                                     .load(fileReference)
@@ -254,7 +251,7 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
 
 
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView mAgentName;
         ImageView mAgentPhoto;

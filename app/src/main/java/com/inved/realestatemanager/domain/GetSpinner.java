@@ -18,7 +18,7 @@ public class GetSpinner {
     //private method of your class
     public int getIndexSpinnerInt(Spinner spinner, int myInt) {
         for (int i = 0; i < spinner.getCount(); i++) {
-            if (Integer.valueOf(spinner.getItemAtPosition(i).toString()) == myInt) {
+            if (Integer.parseInt(spinner.getItemAtPosition(i).toString()) == myInt) {
                 return i;
             }
         }

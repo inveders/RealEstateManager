@@ -11,7 +11,6 @@ import androidx.room.PrimaryKey;
 
 public class Property {
 
-    @NonNull
     @PrimaryKey
     private String propertyId;
     private String typeProperty;

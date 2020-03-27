@@ -8,7 +8,6 @@ import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.Utils;
 
 import org.junit.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -17,7 +16,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -25,12 +23,11 @@ public class UtilsTest {
 
     private Utils utils;
     private SharedPreferences sharedPrefs;
-    private Context context;
 
     @Before
-    public void before() throws Exception {
+    public void before() {
         this.sharedPrefs = Mockito.mock(SharedPreferences.class);
-        this.context = Mockito.mock(Context.class);
+        Context context = Mockito.mock(Context.class);
         this.utils = Mockito.spy(new Utils());
         Mockito.when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPrefs);
     }

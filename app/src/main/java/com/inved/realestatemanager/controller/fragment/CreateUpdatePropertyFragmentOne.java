@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.CreatePropertyActivity;
@@ -31,8 +30,8 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.CreateUpdatePropertyViewModel;
 import com.inved.realestatemanager.models.PropertyViewModel;
-import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.sharedpreferences.ManageCreateUpdateChoice;
+import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.Utils;
 
 import java.util.ArrayList;
@@ -227,8 +226,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         } else if (streetNameEditText.getText().toString().trim().isEmpty()) {
             streetNameEditText.setError(getString(R.string.set_error_street_name));
         } else {
-            double price = Double.valueOf(priceEditText.getText().toString());
-            double surfaceAreaProperty = Double.valueOf(surfaceEditText.getText().toString());
+            double price = Double.parseDouble(priceEditText.getText().toString());
+            double surfaceAreaProperty = Double.parseDouble(surfaceEditText.getText().toString());
             String streetNumber = streetNumberEditText.getText().toString();
             String streetName = streetNameEditText.getText().toString();
             String zipCode = zipCodeEditText.getText().toString();
@@ -380,7 +379,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             } else if(numberBedroomSpinner.getSelectedItem().toString().equals("0")){
                 numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design);
             }else {
-                numberBedroomsInProperty = Integer.valueOf(numberBedroomSpinner.getSelectedItem().toString());
+                numberBedroomsInProperty = Integer.parseInt(numberBedroomSpinner.getSelectedItem().toString());
                 numberBedroomSpinner.setBackgroundResource(R.drawable.edit_text_design_focused);
             }
 

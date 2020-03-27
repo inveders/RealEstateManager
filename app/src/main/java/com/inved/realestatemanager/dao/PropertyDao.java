@@ -35,7 +35,7 @@ public interface PropertyDao {
     LiveData<List<Property>> searchProperty(SupportSQLiteQuery query);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertProperty(Property property);
+    void insertProperty(Property property);
 
     @RawQuery(observedEntities = Property.class)
     int updateProperty(SupportSQLiteQuery query);
@@ -48,7 +48,7 @@ public interface PropertyDao {
     int updateSelected(Boolean selected,String propertyId);
 
     @Query("DELETE FROM Property WHERE propertyId = :propertyId")
-    int deleteProperty(String propertyId);
+    void deleteProperty(String propertyId);
 
 }
 

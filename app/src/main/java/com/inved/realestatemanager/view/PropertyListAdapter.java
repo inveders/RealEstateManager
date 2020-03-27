@@ -34,7 +34,7 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListViewHo
     @Override
     @NonNull
     public PropertyListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(R.layout.fragment_list_property_item, parent, false);
