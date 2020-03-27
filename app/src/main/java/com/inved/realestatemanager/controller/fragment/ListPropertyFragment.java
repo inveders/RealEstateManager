@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -66,7 +65,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     private int queryCount = 0;
     private boolean tabletSize;
     private Disposable disposable;
-    private Disposable disposableFirebase;
 
     public static final String BOOLEAN_TABLET = "BOOLEAN_TABLET";
     // --------------
@@ -113,12 +111,12 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
             openSearchButton.show();
             startSearchProperty();
         } else {
-           openSearchButton.hide();
+            openSearchButton.hide();
         }
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             mSwipeRefreshLayout.setRefreshing(true);
-            launchFirebaseAsynchroneTask();
+            refreshWithFirebase();
         });
 
         return mView;
@@ -159,6 +157,12 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                         }
                     }
 
+                    new Handler().postDelayed(() -> {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        getAllProperties();
+                        queryCount = 0;
+                    }, 5000);
+
                 });
 
 
@@ -167,14 +171,13 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                 mSwipeRefreshLayout.setRefreshing(false);
             }
 
-        }).addOnFailureListener(e -> {
-            mSwipeRefreshLayout.setRefreshing(false);
-        });
+        }).addOnFailureListener(e -> mSwipeRefreshLayout.setRefreshing(false));
     }
 
-    // --------------
-    // SEARCH
-    // --------------
+
+// --------------
+// SEARCH
+// --------------
 
 
     private void startSearchProperty() {
@@ -182,11 +185,9 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         openSearchButton.setOnClickListener(v -> {
 
             callback.onMenuChanged(1, null);
-            //setHasOptionsMenu(true);
             // Create an instance of the dialog fragment and show it
 
-            //  dialog.setCallback(this::updatePropertyList);
-            if(getActivity()!=null){
+            if (getActivity() != null) {
                 SearchFullScreenDialog dialog = new SearchFullScreenDialog();
                 dialog.setTargetFragment(this, 1);
                 dialog.setCancelable(false);
@@ -212,9 +213,9 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
         callback.onMenuChanged(0, null);
     }
 
-    // -------------------
-    // DATA
-    // -------------------
+// -------------------
+// DATA
+// -------------------
 
 
     // 3 - Get all properties
@@ -229,6 +230,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                 }
             }
             callback.onMenuChanged(0, null);
+
             updatePropertyList(properties);
 
         });
@@ -236,14 +238,14 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
 
     // 6 - Update the list of properties
     private void updatePropertyList(List<Property> properties) {
-        Log.d("debago", "update property list " + properties.size());
+
         this.adapter.updateData(properties);
         //TODO : voir si c'est possible d'implémenter ça dans un ViewModel
         noPropertyFoundTextview.setVisibility(this.adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         if (this.adapter.getItemCount() == 0) {
             openSearchButton.hide();
         } else {
-            if(!tabletSize){
+            if (!tabletSize) {
                 openSearchButton.show();
             }
         }
@@ -280,16 +282,16 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     }
 
 
-    // --------------
-    // INTERFACE
-    // --------------
+// --------------
+// INTERFACE
+// --------------
 
-    //Interface beween ListPropertyActivity and ListPropertyFragment
+//Interface beween ListPropertyActivity and ListPropertyFragment
 
-    public interface MenuChangementsInterface {
-        void onMenuChanged(int number, String propertyId);
+public interface MenuChangementsInterface {
+    void onMenuChanged(int number, String propertyId);
 
-    }
+}
 
     // 3 - Create callback to parent activity
     private void createCallbackToParentActivity() {
@@ -321,7 +323,7 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                             String agencyNameToSave = task.getResult().getDocuments().get(0).getString("agencyName");
                             ManageAgency.saveAgencyPlaceId(MainApplication.getInstance().getApplicationContext(), agencyPlaceIdToSave);
                             ManageAgency.saveAgencyName(MainApplication.getInstance().getApplicationContext(), agencyNameToSave);
-                            if(getContext()!=null){
+                            if (getContext() != null) {
                                 if (!ManageDatabaseFilling.isDatabaseFilled(getContext())) {
                                     launchAsynchroneTask();
                                 } else {
@@ -342,12 +344,8 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
     public void onDestroy() {
         super.onDestroy();
 
-        if(disposable!=null){
+        if (disposable != null) {
             disposable.dispose();
-        }
-
-        if(disposableFirebase!=null){
-            disposableFirebase.dispose();
         }
 
     }
@@ -370,34 +368,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                         preopopulateProperties();
                         ManageDatabaseFilling.saveDatabaseFilledState(MainApplication.getInstance().getApplicationContext(), true);
                         getAllProperties();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                });
-
-
-    }
-
-
-    private void launchFirebaseAsynchroneTask() {
-
-        disposableFirebase = Completable.create(emitter -> {
-            try {
-                refreshWithFirebase();
-                emitter.onComplete();
-            } catch (Error e) {
-                emitter.onError(e);
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
-                .subscribeWith(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        getAllProperties();
-                        queryCount = 0;
                     }
 
                     @Override
@@ -440,7 +410,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                     //Create property in room with data from firebase
                     Executors.newSingleThreadScheduledExecutor().execute(() -> {
                         RealEstateManagerDatabase.getInstance(MainApplication.getInstance().getApplicationContext()).propertyDao().insertProperty(newProperty);
-                        Log.d("debago", "refresh fragment 2");
                         getAllProperties();
                     });
 
@@ -479,7 +448,6 @@ public class ListPropertyFragment extends Fragment implements PropertyListViewHo
                             Property property = documentSnapshot.toObject(Property.class);
                             //Create property in room with data from firebase
                             propertyViewModel.createProperty(PropertyHelper.resetProperties(property));
-                            Log.d("debago", "refresh fragment 1");
                             getAllProperties();
                         }
                     }

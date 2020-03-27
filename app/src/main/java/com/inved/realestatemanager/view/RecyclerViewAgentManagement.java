@@ -29,7 +29,7 @@ import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.SplitString;
 import com.inved.realestatemanager.firebase.RealEstateAgentHelper;
 import com.inved.realestatemanager.models.RealEstateAgents;
-import com.inved.realestatemanager.utils.GlideApp;
+import com.inved.realestatemanager.utils    .GlideApp;
 import com.inved.realestatemanager.utils.MainApplication;
 
 import java.io.File;
@@ -81,19 +81,19 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                     holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
-
+                                    stopShimmer();
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                     Log.d("debago", "onResourceYEAH 5");
-
+                                    stopShimmer();
                                     return false;
                                 }
                             })
                             .into(holder.mAgentPhoto);
-                    stopShimmer();
+
                 }
 
             } else if (localFile.exists()){
@@ -105,19 +105,18 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                     holder.mAgentPhoto.setImageResource(R.drawable.ic_anon_user_48dp);
-
+                                    stopShimmer();
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                     Log.d("debago", "onResourceYEAH 4");
-
+                                    stopShimmer();
                                     return false;
                                 }
                             })
                             .into(holder.mAgentPhoto);
-                    stopShimmer();
                 }
             }
             else {
@@ -129,19 +128,18 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 Log.e("debago", "Exception is : " + e);
-
+                                stopShimmer();
                                 return false;
                             }
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 Log.d("debago", "onResourceReady");
-
+                                stopShimmer();
                                 return false;
                             }
                         })
                         .into(holder.mAgentPhoto);
-                stopShimmer();
 
                 SplitString splitString = new SplitString();
 
@@ -171,19 +169,19 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                                             @Override
                                                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                                                 Log.e("debago", "Exception is : " + e);
-
+                                                                stopShimmer();
                                                                 return false;
                                                             }
 
                                                             @Override
                                                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                                                 Log.d("debago", "onResourceReady");
-
+                                                                stopShimmer();
                                                                 return false;
                                                             }
                                                         })
                                                         .into((holder.mAgentPhoto));
-                                                stopShimmer();
+
                                             });
 
                                             GlideApp.with(MainApplication.getInstance().getApplicationContext())
@@ -193,19 +191,18 @@ public class RecyclerViewAgentManagement extends RecyclerView.Adapter<RecyclerVi
                                                         @Override
                                                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                                             Log.e("debago", "Exception is : " + e);
-
+                                                            stopShimmer();
                                                             return false;
                                                         }
 
                                                         @Override
                                                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                                            Log.d("debago", "onResourceReady");
-
+                                                            Log.d("debago", "onResourceReady 2");
+                                                            stopShimmer();
                                                             return false;
                                                         }
                                                     })
                                                     .into(holder.mAgentPhoto);
-                                            stopShimmer();
                                         }
 
                                     }

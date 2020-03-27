@@ -27,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -42,8 +41,6 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.inved.realestatemanager.BuildConfig;
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.controller.activity.ListPropertyActivity;
@@ -54,11 +51,11 @@ import com.inved.realestatemanager.injections.Injection;
 import com.inved.realestatemanager.injections.ViewModelFactory;
 import com.inved.realestatemanager.models.PropertyViewModel;
 import com.inved.realestatemanager.models.RealEstateAgents;
+import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 import com.inved.realestatemanager.utils.FileCompressor;
 import com.inved.realestatemanager.utils.GlideApp;
 import com.inved.realestatemanager.utils.ImageCameraOrGallery;
 import com.inved.realestatemanager.utils.MainApplication;
-import com.inved.realestatemanager.sharedpreferences.ManageAgency;
 
 import java.io.File;
 import java.io.IOException;
@@ -366,7 +363,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
      * Capture image from camera
      */
 
-    @NeedsPermission(Manifest.permission.CAMERA)
+    @NeedsPermission({Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE})
     void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (getContext() != null) {
@@ -447,7 +444,6 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     private void showImageInCircle(String photoStringFromRoom) {
 
-        Log.d("debago","the photo is "+photoStringFromRoom);
         Uri fileUri = Uri.parse(photoStringFromRoom);
         if (fileUri.getPath() != null) {
             Glide.with(MainApplication.getInstance().getApplicationContext())
@@ -529,7 +525,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                Log.d("debago", "onResourceReady");
+                                Log.d("debago", "onResourceReady 3");
 
                                 return false;
                             }

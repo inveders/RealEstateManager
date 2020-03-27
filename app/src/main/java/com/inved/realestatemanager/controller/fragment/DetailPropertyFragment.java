@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -266,7 +265,7 @@ public class DetailPropertyFragment extends Fragment {
     // --------------
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    public void updateWithProperty(Property property) {
+    void updateWithProperty(Property property) {
 
         UnitConversion unitConversion = new UnitConversion();
 
@@ -417,6 +416,7 @@ public class DetailPropertyFragment extends Fragment {
                 imagePosition--;
                 if (imagePosition == 0 && myImages.size() != 0) {
                     prevImage.setVisibility(View.INVISIBLE);
+                    nextImage.setVisibility(View.VISIBLE);
                 } else {
                     prevImage.setVisibility(View.VISIBLE);
                     nextImage.setVisibility(View.VISIBLE);

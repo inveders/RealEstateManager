@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -53,7 +54,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     private NavigationView navigationView;
     private Menu mOptionsMenu;
-    private PropertyViewModel propertyViewModel;
     private FragmentRefreshListener fragmentRefreshListener;
     private FragmentRefreshListenerDetail fragmentRefreshListenerDetail;
     private FragmentRefreshSearchListener fragmentRefreshSearchListener;
@@ -97,7 +97,7 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
 
     protected void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
-        this.propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
+        PropertyViewModel propertyViewModel = new ViewModelProvider(this, mViewModelFactory).get(PropertyViewModel.class);
 
     }
 
@@ -274,7 +274,11 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             item3.setVisible(false);
         }
         item.setOnMenuItemClickListener(menuItem -> {
-            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
+            if(tabletSize){
+                ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
+            }else{
+                ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
+            }
             ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
             return true;
         });
@@ -444,17 +448,23 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
             getFragmentRefreshSearchListener().onRefreshAfterSearch(properties);
         }
 
-        String propertyId = properties.get(0).getPropertyId();
-        Fragment detailFragment = new DetailPropertyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(PROPERTY_ID, propertyId);
-        bundle.putBoolean(BOOLEAN_TABLET, true);
-        detailFragment.setArguments(bundle);
+        if(properties.size()!=0){
+            String propertyId = properties.get(0).getPropertyId();
+            Fragment detailFragment = new DetailPropertyFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(PROPERTY_ID, propertyId);
+            bundle.putBoolean(BOOLEAN_TABLET, true);
+            detailFragment.setArguments(bundle);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.activity_detail_frame_layout, detailFragment, "fragmentDetail")
-                .addToBackStack(null)
-                .commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.activity_detail_frame_layout, detailFragment, "fragmentDetail")
+                    .addToBackStack(null)
+                    .commit();
+        }else{
+            Toast.makeText(this, getString(R.string.list_property_no_property_found), Toast.LENGTH_SHORT).show();
+            refreshFragment();
+        }
+
 
     }
 

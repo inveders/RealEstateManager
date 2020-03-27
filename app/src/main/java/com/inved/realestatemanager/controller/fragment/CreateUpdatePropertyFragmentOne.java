@@ -124,7 +124,9 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         //We check if it's a new add property or just a modification
         if (getActivity() != null) {
             context = getActivity();
-        } else {
+        } else if(getContext()!=null) {
+            context = getContext();
+        }else {
             context = MainApplication.getInstance().getApplicationContext();
         }
 
