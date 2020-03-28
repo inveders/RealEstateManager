@@ -140,7 +140,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("debago","onview created "+ManageCreateUpdateChoice.getCreateUpdateChoice(context));
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
             String propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
             this.updateUIwithDataFromDatabase(propertyId);
@@ -279,7 +278,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     @SuppressLint("SetTextI18n")
     private void updateUIwithDataFromDatabase(String propertyId) {
-        Log.d("debago","here in update");
+
         propertyViewModel.getOneProperty(propertyId).observe(getViewLifecycleOwner(), property -> {
 
             priceEditText.setText(utils.getPriceInGoodCurrencyDoubleType(property.getPricePropertyInEuro()));

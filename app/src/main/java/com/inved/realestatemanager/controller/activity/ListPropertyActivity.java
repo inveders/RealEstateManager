@@ -273,7 +273,6 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private void manageUpdateIcon(MenuItem item2,String goodPropertyId) {
         item2.setOnMenuItemClickListener(menuItem -> {
 
-            Log.d("debago","update property is "+goodPropertyId);
             ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
 
             ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);

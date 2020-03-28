@@ -13,7 +13,6 @@ public class ManageCreateUpdateChoice {
     private static final String KEY_FIRST_PROPERTY_ID_DATA = "KEY_FIRST_PROPERTY_ID_DATA";
 
     public static void saveCreateUpdateChoice(Context context, String createUpdateChoice) {
-        Log.d("debago","in save update choice "+createUpdateChoice);
         SharedPreferences sharedPreferences = context.getSharedPreferences(KEY_CREATE_UPDATE_CHOICE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_CREATE_UPDATE_CHOICE_DATA, createUpdateChoice);

@@ -36,7 +36,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         this.configureViewPager();
 
         if (getIntent().getStringExtra(PROPERTY_ID_INTENT) != null) {
-            Log.d("debago","update property is in create update property "+getIntent().getStringExtra(PROPERTY_ID_INTENT));
+
             //If different of null, we retrieve the property Id to update the item
             String propertyId = getIntent().getStringExtra(PROPERTY_ID_INTENT);
             //We send values in fragment one for create update activity
