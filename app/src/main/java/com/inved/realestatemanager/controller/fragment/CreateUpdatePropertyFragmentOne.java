@@ -35,7 +35,6 @@ import com.inved.realestatemanager.utils.MainApplication;
 import com.inved.realestatemanager.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CreateUpdatePropertyFragmentOne extends Fragment implements AdapterView.OnItemSelectedListener,TextWatcher {
@@ -59,7 +58,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private EditText additionnalEditText;
     private AutoCompleteTextView countryEditText;
 
-
     private CheckBox schoolCheckBox;
     private CheckBox restaurantsCheckBox;
     private CheckBox carParksCheckBox;
@@ -67,6 +65,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     private CheckBox touristAttractionCheckBox;
     private CheckBox oilStationCheckBox;
 
+    private JoinCheckBoxInString joinCheckBoxInString;
     //String for spinners
     private String typeProperty = null;
     private String numberRoomsInProperty = "0";
@@ -90,7 +89,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         View v = inflater.inflate(R.layout.fragment_create_update_one, container, false);
         Button nextButton = v.findViewById(R.id.create_update_next_button);
         utils = new Utils();
-
+        joinCheckBoxInString = new JoinCheckBoxInString();
         typePropertySpinner = v.findViewById(R.id.create_update_spinner_type_property);
         numberRoomSpinner = v.findViewById(R.id.create_update_spinner_number_rooms);
         numberBedroomSpinner = v.findViewById(R.id.create_update_spinner_number_bedroom);
@@ -233,7 +232,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             String zipCode = zipCodeEditText.getText().toString();
             String townProperty = townNameEditText.getText().toString();
             String country = countryEditText.getText().toString();
-            String pointOfInterest = fillPoiCheckboxList();
+            String pointOfInterest = joinCheckBoxInString.fillPoiCheckboxList(shopsCheckBox,restaurantsCheckBox,schoolCheckBox,carParksCheckBox,touristAttractionCheckBox,oilStationCheckBox);
             String additionnal = additionnalEditText.getText().toString();
 
             List<Object> myList = new ArrayList<>();
@@ -260,37 +259,6 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     }
 
-    private String fillPoiCheckboxList() {
-
-        List<String> pointsOfInterestList = new ArrayList<>();
-        //Delete all elements of the List before to verify is checkbox are checked.
-        pointsOfInterestList.clear();
-
-        // Check which checkbox was clicked
-        if (shopsCheckBox.isChecked())
-            pointsOfInterestList.add(getString(R.string.fullscreen_dialog__poi_shops));
-        if (restaurantsCheckBox.isChecked())
-            pointsOfInterestList.add(getString(R.string.fullscreen_dialog__poi_restaurants));
-        if (schoolCheckBox.isChecked())
-            pointsOfInterestList.add(getString(R.string.fullscreen_dialog__poi_school));
-        if (carParksCheckBox.isChecked())
-            pointsOfInterestList.add(getString(R.string.fullscreen_dialog_poi_car_parks));
-        if (touristAttractionCheckBox.isChecked())
-            pointsOfInterestList.add(getString(R.string.fullscreen_dialog_poi_tourist_attraction));
-        if (oilStationCheckBox.isChecked())
-            pointsOfInterestList.add(getString(R.string.fullscreen_dialog_poi_oil_station));
-
-        String myList;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            myList = String.join(",", pointsOfInterestList);
-        }else{
-            JoinCheckBoxInString joinCheckBoxInString = new JoinCheckBoxInString();
-            myList=joinCheckBoxInString.joinMethod(pointsOfInterestList);
-        }
-
-        return myList;
-    }
-
     // --------------
     // UPDATE PROPERTY
     // --------------
@@ -306,8 +274,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             zipCodeEditText.setText(property.getZipCode());
             townNameEditText.setText(property.getTownProperty());
             countryEditText.setText(property.getCountry());
-            splitPoiInCheckbox(property.getPointOfInterest());
-
+            joinCheckBoxInString.splitPoiInCheckbox(property.getPointOfInterest(),shopsCheckBox,restaurantsCheckBox,schoolCheckBox,carParksCheckBox,touristAttractionCheckBox,oilStationCheckBox);
             typePropertySpinner.setSelection(getSpinner.getIndexSpinner(typePropertySpinner, property.getTypeProperty()));
             typePropertySpinner.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
             numberRoomSpinner.setSelection(getSpinner.getIndexSpinner(numberRoomSpinner, property.getNumberRoomsInProperty()));
@@ -317,32 +284,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         });
     }
 
-    //Split poi list from Room to know wich checkbox is checked
-    private void splitPoiInCheckbox(String propertyPointOfInterest) {
 
-        ArrayList<String> poiList = new ArrayList<>(Arrays.asList(propertyPointOfInterest.split(",")));
-
-        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_school))) {
-
-            schoolCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_restaurants))) {
-            restaurantsCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog__poi_shops))) {
-            shopsCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_tourist_attraction))) {
-            touristAttractionCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_car_parks))) {
-            carParksCheckBox.setChecked(true);
-        }
-        if (poiList.contains(getString(R.string.fullscreen_dialog_poi_oil_station))) {
-            oilStationCheckBox.setChecked(true);
-        }
-
-    }
 
 
     // --------------
