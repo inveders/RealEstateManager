@@ -1,6 +1,7 @@
 package com.inved.realestatemanager.controller.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -35,7 +36,7 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
         this.configureViewPager();
 
         if (getIntent().getStringExtra(PROPERTY_ID_INTENT) != null) {
-
+            Log.d("debago","update property is in create update property "+getIntent().getStringExtra(PROPERTY_ID_INTENT));
             //If different of null, we retrieve the property Id to update the item
             String propertyId = getIntent().getStringExtra(PROPERTY_ID_INTENT);
             //We send values in fragment one for create update activity
@@ -61,7 +62,12 @@ public class CreatePropertyActivity extends BaseActivity implements CreateUpdate
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.page_name_activity_create_property));
+            if (getIntent().getStringExtra(PROPERTY_ID_INTENT) != null) {
+                getSupportActionBar().setTitle(getString(R.string.page_name_activity_update_property));
+            }else{
+                getSupportActionBar().setTitle(getString(R.string.page_name_activity_create_property));
+            }
+
         }
 
     }

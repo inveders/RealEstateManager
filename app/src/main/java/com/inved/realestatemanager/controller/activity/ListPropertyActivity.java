@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -263,19 +264,17 @@ public class ListPropertyActivity extends BaseActivity implements NavigationView
     private void manageAddIcon(MenuItem item,String goodPropertyId) {
         item.setIcon(R.drawable.ic_menu_add_white_24dp);
         item.setOnMenuItemClickListener(menuItem -> {
-            if(tabletSize){
-                ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
-            }else{
-                ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
-            }
-            ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
+            ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, null);
             return true;
         });
     }
 
     private void manageUpdateIcon(MenuItem item2,String goodPropertyId) {
         item2.setOnMenuItemClickListener(menuItem -> {
-            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, null);
+
+            Log.d("debago","update property is "+goodPropertyId);
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(this, goodPropertyId);
 
             ListPropertyActivityPermissionsDispatcher.startCreateUpdatePropertyActivityWithPermissionCheck(this, goodPropertyId);
             return true;

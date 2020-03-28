@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class RealEstateAgents {
 
+    @NonNull
     @PrimaryKey
     private String realEstateAgentId;
 

@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +76,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     private Context context;
     private Utils utils;
+    private boolean tabletSize;
 
 
 
@@ -89,6 +91,8 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
         View v = inflater.inflate(R.layout.fragment_create_update_one, container, false);
         Button nextButton = v.findViewById(R.id.create_update_next_button);
         utils = new Utils();
+        if (getContext() != null)
+            tabletSize = getContext().getResources().getBoolean(R.bool.isTablet);
         joinCheckBoxInString = new JoinCheckBoxInString();
         typePropertySpinner = v.findViewById(R.id.create_update_spinner_type_property);
         numberRoomSpinner = v.findViewById(R.id.create_update_spinner_number_rooms);
@@ -128,12 +132,19 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
             context = MainApplication.getInstance().getApplicationContext();
         }
 
+
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("debago","onview created "+ManageCreateUpdateChoice.getCreateUpdateChoice(context));
         if (ManageCreateUpdateChoice.getCreateUpdateChoice(context) != null) {
             String propertyId = ManageCreateUpdateChoice.getCreateUpdateChoice(context);
             this.updateUIwithDataFromDatabase(propertyId);
         }
-
-        return v;
     }
 
     // 2 - Configuring ViewModel
@@ -157,7 +168,10 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
     public void onDetach() {
         super.onDetach();
 
-        ManageCreateUpdateChoice.saveCreateUpdateChoice(context, null);
+        if(!tabletSize){
+            ManageCreateUpdateChoice.saveCreateUpdateChoice(context, null);
+        }
+
 
     }
 
@@ -265,6 +279,7 @@ public class CreateUpdatePropertyFragmentOne extends Fragment implements Adapter
 
     @SuppressLint("SetTextI18n")
     private void updateUIwithDataFromDatabase(String propertyId) {
+        Log.d("debago","here in update");
         propertyViewModel.getOneProperty(propertyId).observe(getViewLifecycleOwner(), property -> {
 
             priceEditText.setText(utils.getPriceInGoodCurrencyDoubleType(property.getPricePropertyInEuro()));
