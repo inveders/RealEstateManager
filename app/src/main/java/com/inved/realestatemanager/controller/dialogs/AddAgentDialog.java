@@ -173,8 +173,7 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             Places.initialize(getActivity(), MAP_API_KEY);
 
             // Initialize the AutocompleteSupportFragment.
-            autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
-
+            autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment_agency);
 
             // Specify the types of place data to return.
             if (autocompleteFragment != null) {
@@ -320,7 +319,9 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
             }
 
             if (realEstateAgents.getAgencyName() != null) {
-                autocompleteFragment.setText(realEstateAgents.getAgencyName());
+                if(autocompleteFragment!=null){
+                    autocompleteFragment.setText(realEstateAgents.getAgencyName());
+                }
             }
 
             if (realEstateAgents.getUrlPicture() != null) {
