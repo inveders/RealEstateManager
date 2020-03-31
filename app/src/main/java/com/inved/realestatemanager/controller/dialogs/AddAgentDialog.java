@@ -156,11 +156,17 @@ public class AddAgentDialog extends DialogFragment implements TextWatcher {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
+
         //To close the autocompletefragment to avoid to duplicate his id
-        if (autocompleteFragment != null && getActivity() != null && !getActivity().isFinishing()) {
-            getActivity().getSupportFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
+        if (autocompleteFragment != null) {
+            getChildFragmentManager().beginTransaction().remove(autocompleteFragment).commitAllowingStateLoss();
         }
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     // --------------
