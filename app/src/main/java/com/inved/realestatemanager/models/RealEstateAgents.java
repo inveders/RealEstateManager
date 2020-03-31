@@ -1,5 +1,7 @@
 package com.inved.realestatemanager.models;
 
+import android.content.ContentValues;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -18,6 +20,7 @@ public class RealEstateAgents {
     private String agencyPlaceId;
 
 
+
     public RealEstateAgents(){}
 
     public RealEstateAgents(@NonNull String realEstateAgentId, String firstname, String lastname, String urlPicture, String agencyName, String agencyPlaceId) {
@@ -27,6 +30,18 @@ public class RealEstateAgents {
         this.urlPicture = urlPicture;
         this.agencyName =agencyName;
         this.agencyPlaceId=agencyPlaceId;
+    }
+
+    // --- UTILS ---
+    public static RealEstateAgents fromContentValues(ContentValues values) {
+        final RealEstateAgents agents = new RealEstateAgents("",null,null,null,null,null);
+        if (values.containsKey("realEstateAgentId")) agents.setRealEstateAgentId(values.getAsString("realEstateAgentId"));
+        if (values.containsKey("firstname")) agents.setFirstname(values.getAsString("firstname"));
+        if (values.containsKey("lastname")) agents.setLastname(values.getAsString("lastname"));
+        if (values.containsKey("urlPicture")) agents.setUrlPicture(values.getAsString("urlPicture"));
+        if (values.containsKey("agencyName")) agents.setAgencyName(values.getAsString("agencyName"));
+        if (values.containsKey("agencyPlaceId")) agents.setAgencyPlaceId(values.getAsString("agencyPlaceId"));
+        return agents;
     }
 
     public String getRealEstateAgentId() {

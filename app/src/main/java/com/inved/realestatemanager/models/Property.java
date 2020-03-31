@@ -1,5 +1,7 @@
 package com.inved.realestatemanager.models;
 
+import android.content.ContentValues;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -87,6 +89,48 @@ public class Property {
         this.photoDescription5 = photoDescription5;
         this.realEstateAgentId = realEstateAgentId;
     }
+
+    // --- UTILS ---
+    public static Property fromContentValues(ContentValues values) {
+        final Property property = new Property("",null,0.0,0.0,null,null,0,null,null,null,null,null,null,null,null,null,null,
+                null,false,null,null,null,null,null,null,null,null,null,null,"");
+        if (values.containsKey("propertyId")) property.setPropertyId(values.getAsString("propertyId"));
+        if (values.containsKey("typeProperty")) property.setTypeProperty(values.getAsString("typeProperty"));
+        if (values.containsKey("pricePropertyInEuro")) property.setPricePropertyInEuro(values.getAsDouble("pricePropertyInEuro"));
+        if (values.containsKey("surfaceAreaProperty")) property.setSurfaceAreaProperty(values.getAsDouble("surfaceAreaProperty"));
+        if (values.containsKey("numberRoomsInProperty")) property.setNumberRoomsInProperty(values.getAsString("numberRoomsInProperty"));
+        if (values.containsKey("numberBathroomsInProperty")) property.setNumberBathroomsInProperty(values.getAsString("numberBathroomsInProperty"));
+        if (values.containsKey("numberBedroomsInProperty")) property.setNumberBedroomsInProperty(values.getAsInteger("numberBedroomsInProperty"));
+        if (values.containsKey("fullDescriptionProperty")) property.setFullDescriptionProperty(values.getAsString("fullDescriptionProperty"));
+
+        if (values.containsKey("streetNumber")) property.setStreetNumber(values.getAsString("streetNumber"));
+        if (values.containsKey("streetName")) property.setStreetName(values.getAsString("streetName"));
+        if (values.containsKey("zipCode")) property.setZipCode(values.getAsString("zipCode"));
+        if (values.containsKey("townProperty")) property.setTownProperty(values.getAsString("townProperty"));
+        if (values.containsKey("country")) property.setCountry(values.getAsString("country"));
+        if (values.containsKey("addressCompl")) property.setAddressCompl(values.getAsString("addressCompl"));
+        if (values.containsKey("pointOfInterest")) property.setPointOfInterest(values.getAsString("pointOfInterest"));
+        if (values.containsKey("statusProperty")) property.setStatusProperty(values.getAsString("statusProperty"));
+        if (values.containsKey("dateOfEntryOnMarketForProperty")) property.setDateOfEntryOnMarketForProperty(values.getAsString("dateOfEntryOnMarketForProperty"));
+        if (values.containsKey("dateOfSaleForProperty")) property.setDateOfSaleForProperty(values.getAsString("dateOfSaleForProperty"));
+
+        if (values.containsKey("selected")) property.setSelected(values.getAsBoolean("selected"));
+        if (values.containsKey("photoUri1")) property.setPhotoUri1(values.getAsString("photoUri1"));
+        if (values.containsKey("photoUri2")) property.setPhotoUri2(values.getAsString("photoUri2"));
+        if (values.containsKey("photoUri3")) property.setPhotoUri3(values.getAsString("photoUri3"));
+        if (values.containsKey("photoUri4")) property.setPhotoUri4(values.getAsString("photoUri4"));
+        if (values.containsKey("photoUri5")) property.setPhotoUri5(values.getAsString("photoUri5"));
+        if (values.containsKey("photoDescription1")) property.setPhotoDescription1(values.getAsString("photoDescription1"));
+        if (values.containsKey("photoDescription2")) property.setPhotoDescription2(values.getAsString("photoDescription2"));
+        if (values.containsKey("photoDescription3")) property.setPhotoDescription3(values.getAsString("photoDescription3"));
+        if (values.containsKey("photoDescription4")) property.setPhotoDescription4(values.getAsString("photoDescription4"));
+        if (values.containsKey("photoDescription5")) property.setPhotoDescription5(values.getAsString("photoDescription5"));
+        if (values.containsKey("realEstateAgentId")) property.setRealEstateAgentId(values.getAsString("realEstateAgentId"));
+
+        return property;
+    }
+
+
 
     public void setPropertyId(@NonNull String propertyId) {
         this.propertyId = propertyId;

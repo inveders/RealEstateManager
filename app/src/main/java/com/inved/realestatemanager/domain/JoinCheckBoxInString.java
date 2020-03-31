@@ -11,7 +11,7 @@ import java.util.List;
 
 public class JoinCheckBoxInString {
 
-    private String joinMethod(List<String> input) {
+    public String joinMethod(List<String> input) {
 
         if (input == null || input.size() <= 0) return "";
 

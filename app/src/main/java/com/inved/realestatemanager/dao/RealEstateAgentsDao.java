@@ -1,5 +1,7 @@
 package com.inved.realestatemanager.dao;
 
+import android.database.Cursor;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -14,11 +16,13 @@ import java.util.List;
 public interface RealEstateAgentsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void createRealEstateAgent(RealEstateAgents realEstateAgents);
+    long createRealEstateAgent(RealEstateAgents realEstateAgents);
 
     @Query("SELECT * FROM RealEstateAgents WHERE firstname LIKE :firstname AND lastname LIKE :lastname")
     LiveData<RealEstateAgents> getRealEstateAgentByName(String firstname, String lastname);
 
+    @Query("SELECT * FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
+    Cursor getAgentsWithCursor(long realEstateAgentId);
 
     @Query("SELECT * FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
     LiveData<RealEstateAgents> getRealEstateAgentById(String realEstateAgentId);

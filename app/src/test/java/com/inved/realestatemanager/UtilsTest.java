@@ -2,6 +2,7 @@ package com.inved.realestatemanager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
 import com.inved.realestatemanager.utils.MainApplication;
@@ -10,7 +11,11 @@ import com.inved.realestatemanager.utils.Utils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +28,7 @@ public class UtilsTest {
 
     private Utils utils;
     private SharedPreferences sharedPrefs;
+
 
     @Before
     public void before() {

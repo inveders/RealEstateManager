@@ -1,5 +1,7 @@
 package com.inved.realestatemanager.dao;
 
+import android.database.Cursor;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -21,6 +23,8 @@ public interface PropertyDao {
     @Query("SELECT * FROM Property")
     LiveData<List<Property>> getAllProperties();
 
+    @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
+    Cursor getPropertiesWithCursor(long propertyId);
 
     @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
     LiveData<Property> getOneProperty(String propertyId);
@@ -35,7 +39,7 @@ public interface PropertyDao {
     LiveData<List<Property>> searchProperty(SupportSQLiteQuery query);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertProperty(Property property);
+    long insertProperty(Property property);
 
     @RawQuery(observedEntities = Property.class)
     int updateProperty(SupportSQLiteQuery query);
