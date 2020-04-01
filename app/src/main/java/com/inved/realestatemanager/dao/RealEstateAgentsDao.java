@@ -22,7 +22,7 @@ public interface RealEstateAgentsDao {
     LiveData<RealEstateAgents> getRealEstateAgentByName(String firstname, String lastname);
 
     @Query("SELECT * FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
-    Cursor getAgentsWithCursor(long realEstateAgentId);
+    Cursor getAgentsWithCursor(String realEstateAgentId);
 
     @Query("SELECT * FROM RealEstateAgents WHERE realEstateAgentId = :realEstateAgentId")
     LiveData<RealEstateAgents> getRealEstateAgentById(String realEstateAgentId);

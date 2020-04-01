@@ -98,14 +98,10 @@
         </provider>
 
         <provider
-            android:name=".provider.PropertyContentProvider"
+            android:name=".provider.RealEstateManagerContentProvider"
             android:authorities="${applicationId}.provider"
             android:exported="true"/>
 
-        <provider
-            android:name=".provider.AgentsContentProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="true"/>
     </application>
 
 </manifest>

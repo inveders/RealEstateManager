@@ -39,7 +39,7 @@ public class PropertyDataRepository {
 
     // --- CREATE ---
 
-    public long createItem(Property property){return propertyDao.insertProperty(property); }
+    public void createItem(Property property){propertyDao.insertProperty(property); }
 
     // --- DELETE ---
     public void deleteItem(String propertyId){ propertyDao.deleteProperty(propertyId); }

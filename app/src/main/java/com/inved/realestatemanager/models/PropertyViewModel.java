@@ -39,10 +39,9 @@ public class PropertyViewModel extends ViewModel {
         return realEstateAgentDataSource.getAllRealEstateAgents();
     }
 
-    public long createRealEstateAgent(RealEstateAgents realEstateAgent) {
+    public void createRealEstateAgent(RealEstateAgents realEstateAgent) {
 
         executor.execute(() -> realEstateAgentDataSource.createAgent(realEstateAgent));
-        return 0;
     }
 
     public void updateRealEstateAgent(String realEstateAgentId, String firstname, String lastname, String urlPicture,String agencyName,String agencyPlaceId) {
@@ -74,9 +73,9 @@ public class PropertyViewModel extends ViewModel {
         return propertyDataSource.getMaxSurface();
     }
 
-    public long createProperty(Property property) {
+    public void createProperty(Property property) {
          executor.execute(() -> propertyDataSource.createItem(property));
-        return 0;
+
     }
 
     public void deleteProperty(String propertyId) {

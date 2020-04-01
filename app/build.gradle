@@ -71,6 +71,7 @@ dependencies {
     androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
     //STETHO TO SEE SQL DATABASE FROM PC
     implementation 'com.facebook.stetho:stetho:1.5.1'

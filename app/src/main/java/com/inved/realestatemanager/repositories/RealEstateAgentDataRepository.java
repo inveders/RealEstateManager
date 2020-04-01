@@ -25,7 +25,7 @@ public class RealEstateAgentDataRepository {
 
 // --- CREATE ---
 
-    public long createAgent(RealEstateAgents realEstateAgents){ return realEstateAgentsDao.createRealEstateAgent(realEstateAgents); }
+    public void createAgent(RealEstateAgents realEstateAgents){ realEstateAgentsDao.createRealEstateAgent(realEstateAgents); }
 
     // --- UPDATE ---
 
