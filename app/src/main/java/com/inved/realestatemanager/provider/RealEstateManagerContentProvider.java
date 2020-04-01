@@ -53,7 +53,6 @@ public class RealEstateManagerContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
         final int code = MATCHER.match(uri);
-        Log.d("debago", "the code is " + code+" and uri is "+uri);
         if (code == CODE_AGENT_ITEM) {
             final Context context = getContext();
             if (context == null) {
@@ -65,10 +64,7 @@ public class RealEstateManagerContentProvider extends ContentProvider {
             String[] result = uri.toString().split("/");
             for (String s : result) agentemail = s;
 
-            Log.d("debago", "the agent email is " + agentemail);
-
             cursor = agentsDao.getAgentsWithCursor(agentemail);
-            Log.d("debago", "the cursor agent " + cursor.getCount());
 
             cursor.setNotificationUri(context.getContentResolver(), uri);
             return cursor;
@@ -83,10 +79,7 @@ public class RealEstateManagerContentProvider extends ContentProvider {
             String[] result = uri.toString().split("/");
             for (String s : result) propertyId = s;
 
-            Log.d("debago", "the propertyId is " + propertyId);
-
             cursor = propertyDao.getPropertiesWithCursor(propertyId);
-            Log.d("debago", "the cursor property " + cursor.getCount());
 
             cursor.setNotificationUri(context.getContentResolver(), uri);
             return cursor;
@@ -98,7 +91,6 @@ public class RealEstateManagerContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        Log.d("debago","uri in getType is uri "+MATCHER.match(uri));
         switch (MATCHER.match(uri)) {
             case CODE_AGENT_ITEM:
                 return "vnd.android.cursor.item/" + AUTHORITY + "." + TABLE_NAME_AGENT;
@@ -121,7 +113,6 @@ public class RealEstateManagerContentProvider extends ContentProvider {
         }else if(uri.equals(URI_PROPERTY)){
             code2=2;
         }
-        Log.d("debago","uri in insert is uri "+code2);
         switch (code2) {
             case CODE_AGENT_ITEM:
                 if (getContext() != null) {
@@ -130,7 +121,6 @@ public class RealEstateManagerContentProvider extends ContentProvider {
                         id = RealEstateManagerDatabase.getInstance(getContext()).realEstateAgentsDao().createRealEstateAgent(RealEstateAgents.fromContentValues(contentValues));
                         if (id != 0) {
                             getContext().getContentResolver().notifyChange(uri, null);
-                            Log.d("debago", "the result of that " + Uri.withAppendedPath(uri, contentValues.getAsString("realEstateAgentId")));
                             return Uri.withAppendedPath(uri, contentValues.getAsString("realEstateAgentId"));
                         }
                     }
@@ -143,7 +133,6 @@ public class RealEstateManagerContentProvider extends ContentProvider {
                         id = RealEstateManagerDatabase.getInstance(getContext()).propertyDao().insertProperty(Property.fromContentValues(contentValues));
                         if (id != 0) {
                             getContext().getContentResolver().notifyChange(uri, null);
-                            Log.d("debago", "the result property of that " + Uri.withAppendedPath(uri, contentValues.getAsString("propertyId")));
                             return Uri.withAppendedPath(uri, contentValues.getAsString("propertyId"));
                         }
                     }

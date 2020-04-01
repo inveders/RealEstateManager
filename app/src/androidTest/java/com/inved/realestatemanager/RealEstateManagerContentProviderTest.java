@@ -74,9 +74,7 @@ public class RealEstateManagerContentProviderTest {
     @Test
     public void insertAndGetProperty() {
         // BEFORE : Adding demo property
-        Log.d("debago","before");
         mContentResolver.insert(RealEstateManagerContentProvider.URI_AGENT, generateAgent());
-        Log.d("debago","before");
         mContentResolver.insert(RealEstateManagerContentProvider.URI_PROPERTY, generateProperty());
         // TEST
         final Cursor cursor = mContentResolver.query(Uri.withAppendedPath(RealEstateManagerContentProvider.URI_PROPERTY, PROPERTY_ID), null, null, null, null);
