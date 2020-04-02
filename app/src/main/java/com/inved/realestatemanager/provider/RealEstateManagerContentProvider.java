@@ -106,7 +106,6 @@ public class RealEstateManagerContentProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
 
-
         int code2=0;
         if(uri.equals(URI_AGENT)){
             code2=1;

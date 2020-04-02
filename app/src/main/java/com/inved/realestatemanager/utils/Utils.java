@@ -3,15 +3,12 @@ package com.inved.realestatemanager.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.inved.realestatemanager.R;
 import com.inved.realestatemanager.domain.UnitConversion;
 import com.inved.realestatemanager.sharedpreferences.ManageCurrency;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
@@ -47,7 +44,6 @@ public class Utils {
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumFractionDigits(2);
         format.setMaximumFractionDigits(2);
-        //format.format(dollarsRates * euroToConvert);
         return unitConversion.changeDoubleToStringWithThousandSeparator(dollarsRates * euroToConvert);
     }
 
@@ -183,21 +179,6 @@ public class Utils {
         return false;
     }
 
-    public static void enableData(Context context, boolean enable) {
-        final WifiManager wifiManager = (WifiManager) MainApplication.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        wifiManager.setWifiEnabled(enable);
-
-       /* ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        try {
-            Method m = cm.getClass().getDeclaredMethod("setMobileDataEnabled", boolean.class);
-            m.invoke(cm, enable);
-        } catch (Exception e) {
-        }
-        */
-
-
-
-    }
 
 
 }
